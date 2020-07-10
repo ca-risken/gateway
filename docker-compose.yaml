@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  gateway:
+    networks:
+      - local-shared
+    build:
+      context: .
+      args:
+        - GITHUB_USER=${GITHUB_USER}
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
+    environment:
+      - PORT=8080
+      - FINDING_SVC_ADDR=${FINDING_SVC_ADDR}
+    ports:
+      - "8080:8080"
+
+networks:
+  local-shared:
+    external: true
+    
