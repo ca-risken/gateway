@@ -7,16 +7,20 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
-func newRouter(svc gatewayService) *chi.Mux {
+func newRouter(svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 	r.Use(httpLogger)
-	r.Use(middleware.StripSlashes) // convert URI path. like `/hoge/111/` -> `/hoge/111`
+	r.Use(middleware.StripSlashes)
+	r.Use(svc.authn)
+
+	r.Get("/signin", signinHandler)
 
 	r.Route("/finding", func(r chi.Router) {
-		r.Get("/", svc.listFindingHandler)
+		r.Use(svc.authzWithProject)
+		r.Get("/list", svc.listFindingHandler)
 		r.Get("/detail", svc.getFindingHandler)
 		r.Get("/tag", svc.listFindingTagHandler)
 		r.Group(func(r chi.Router) {
@@ -28,7 +32,8 @@ func newRouter(svc gatewayService) *chi.Mux {
 		})
 	})
 	r.Route("/resource", func(r chi.Router) {
-		r.Get("/", svc.listResourceHandler)
+		r.Use(svc.authzWithProject)
+		r.Get("/list", svc.listResourceHandler)
 		r.Get("/detail", svc.getResourceHandler)
 		r.Get("/tag", svc.listResourceTagHandler)
 		r.Group(func(r chi.Router) {

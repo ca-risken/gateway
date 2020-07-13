@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/CyberAgent/mimosa-core/proto/finding"
+	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/kelseyhightower/envconfig"
 	"google.golang.org/grpc"
 )
@@ -18,39 +19,40 @@ const (
 
 type gatewayService struct {
 	port          string
+	uidHeader     string
 	findingClient finding.FindingServiceClient
+	iamClient     iam.IAMServiceClient
 }
 
 type gatewayConf struct {
-	Port           string `default:"8080"`
-	FindingSvcAddr string `required:"true" split_words:"true"`
+	Port               string `default:"8080"`
+	UserIdentityHeader string `required:"true" split_words:"true"`
+	FindingSvcAddr     string `required:"true" split_words:"true"`
+	IAMSvcAddr         string `required:"true" split_words:"true"`
 }
 
-func newGatewayService() (gatewayService, error) {
+func newGatewayService() (*gatewayService, error) {
 	var conf gatewayConf
 	err := envconfig.Process("", &conf)
 	if err != nil {
-		return gatewayService{}, err
+		return nil, err
 	}
 
 	ctx := context.Background()
-	conn, err := getGRPCConn(ctx, conf.FindingSvcAddr)
-	if err != nil {
-		return gatewayService{}, err
-	}
-	svc := gatewayService{
+	return &gatewayService{
 		port:          conf.Port,
-		findingClient: finding.NewFindingServiceClient(conn),
-	}
-	return svc, nil
+		uidHeader:     conf.UserIdentityHeader,
+		findingClient: finding.NewFindingServiceClient(getGRPCConn(ctx, conf.FindingSvcAddr)),
+		iamClient:     iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
+	}, nil
 }
 
-func getGRPCConn(ctx context.Context, addr string) (*grpc.ClientConn, error) {
+func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
 	conn, err := grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithTimeout(time.Second*3))
 	if err != nil {
-		return nil, err
+		appLogger.Fatalf("Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)
 	}
-	return conn, nil
+	return conn
 }
 
 func writeResponse(w http.ResponseWriter, status int, body map[string]interface{}) {
