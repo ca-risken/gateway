@@ -12,6 +12,7 @@ services:
     environment:
       - PORT=8080
       - FINDING_SVC_ADDR=${FINDING_SVC_ADDR}
+      - IAM_SVC_ADDR=${IAM_SVC_ADDR}
     ports:
       - "8080:8080"
 
