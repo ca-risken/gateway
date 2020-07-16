@@ -25,9 +25,11 @@ type requestUser struct {
 // signinHandler: OIDC proxy backend signin process.
 func signinHandler(w http.ResponseWriter, r *http.Request) {
 	if user, ok := r.Context().Value(userKey).(*requestUser); !ok {
+		appLogger.Infof("Unauthenticated: Invalid requestUser type")
 		http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 		return
 	} else if user == nil || zero.IsZeroVal(user.userID) {
+		appLogger.Infof("Unauthenticated: No mimosa-user")
 		http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 		return
 	}
@@ -67,6 +69,7 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		u, ok := r.Context().Value(userKey).(*requestUser)
 		if !ok {
+			appLogger.Infof("Unauthenticated: Invalid requestUser type.")
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
