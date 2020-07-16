@@ -48,6 +48,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		sub := r.Header.Get(g.uidHeader)
 		if sub != "" {
+			appLogger.Debugf("sub: %s", sub)
 			resp, err := g.iamClient.GetUser(r.Context(), &iam.GetUserRequest{Sub: sub})
 			if err != nil {
 				appLogger.Errorf("Failed to GetUser request, err=%+v", err)
