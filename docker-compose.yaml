@@ -11,6 +11,7 @@ services:
         - GITHUB_TOKEN=${GITHUB_TOKEN}
     environment:
       - PORT=8080
+      - DEBUG=true
       - FINDING_SVC_ADDR=${FINDING_SVC_ADDR}
       - IAM_SVC_ADDR=${IAM_SVC_ADDR}
     ports:

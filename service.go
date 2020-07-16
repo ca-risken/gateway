@@ -9,6 +9,7 @@ import (
 	"github.com/CyberAgent/mimosa-core/proto/finding"
 	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/kelseyhightower/envconfig"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
@@ -26,6 +27,7 @@ type gatewayService struct {
 
 type gatewayConf struct {
 	Port               string `default:"8080"`
+	Debug              bool   `default:"false"`
 	UserIdentityHeader string `required:"true" split_words:"true"`
 	FindingSvcAddr     string `required:"true" split_words:"true"`
 	IAMSvcAddr         string `required:"true" split_words:"true"`
@@ -36,6 +38,10 @@ func newGatewayService() (*gatewayService, error) {
 	err := envconfig.Process("", &conf)
 	if err != nil {
 		return nil, err
+	}
+
+	if conf.Debug {
+		appLogger.SetLevel(logrus.DebugLevel)
 	}
 
 	ctx := context.Background()
