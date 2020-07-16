@@ -46,6 +46,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 
 func (g *gatewayService) authn(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		appLogger.Debugf("header dump: %+v", r.Header) // TODO delete
 		sub := r.Header.Get(g.uidHeader)
 		if sub != "" {
 			appLogger.Debugf("sub: %s", sub)
