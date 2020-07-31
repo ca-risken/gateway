@@ -26,7 +26,7 @@ type gatewayService struct {
 }
 
 type gatewayConf struct {
-	Port               string `default:"8080"`
+	Port               string `default:"8000"`
 	Debug              bool   `default:"false"`
 	UserIdentityHeader string `required:"true" split_words:"true"`
 	FindingSvcAddr     string `required:"true" split_words:"true"`
