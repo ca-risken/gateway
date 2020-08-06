@@ -13,13 +13,13 @@ help:
 .PHONY: health-check
 health-check:
 	curl -is -XGET \
-		'http://localhost:8080/healthz/'
+		'http://localhost:8000/healthz/'
 
 .PHONY: signin
 signin:
 	curl -is -XGET \
 		--header 'x-amzn-oidc-identity: alice' \
-		'http://localhost:8080/signin/'
+		'http://localhost:8000/signin/'
 
 .PHONY: list-finding
 list-finding:
@@ -27,7 +27,7 @@ list-finding:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/finding/list?project_id=1001&data_source=aws:guardduty,aws:access-analizer'
+		'http://localhost:8000/finding/list-finding/?project_id=1001&data_source=aws:guardduty,aws:access-analizer'
 
 .PHONY: get-finding
 get-finding:
@@ -35,7 +35,7 @@ get-finding:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/finding/detail/?project_id=1001&finding_id=1001'
+		'http://localhost:8000/finding/get-finding/?project_id=1001&finding_id=1001'
 
 .PHONY: put-finding
 put-finding:
@@ -44,7 +44,7 @@ put-finding:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "finding":{"description":"desc", "data_source":"ds", "data_source_id":"ds-004", "resource_name":"rn", "project_id":1001, "original_score":55.51, "original_max_score":100.0, "data":"{\"key\":\"value\"}"}}' \
-		'http://localhost:8080/finding/put/'
+		'http://localhost:8000/finding/put-finding/'
 
 .PHONY: delete-finding
 delete-finding:
@@ -53,7 +53,7 @@ delete-finding:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "finding_id":1005}' \
-		'http://localhost:8080/finding/delete/'
+		'http://localhost:8000/finding/delete-finding/'
 
 .PHONY: list-finding-tag
 list-finding-tag:
@@ -61,7 +61,7 @@ list-finding-tag:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/finding/tag/?project_id=1001&finding_id=1001'
+		'http://localhost:8000/finding/list-finding-tag/?project_id=1001&finding_id=1001'
 
 .PHONY: tag-finding
 tag-finding:
@@ -70,7 +70,7 @@ tag-finding:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "tag":{"finding_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}' \
-		'http://localhost:8080/finding/tag/put/'
+		'http://localhost:8000/finding/tag-finding/'
 
 .PHONY: untag-finding
 untag-finding:
@@ -79,7 +79,7 @@ untag-finding:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "finding_tag_id":1002}' \
-		'http://localhost:8080/finding/tag/delete'
+		'http://localhost:8000/finding/untag-finding/'
 
 .PHONY: list-resource
 list-resource:
@@ -87,7 +87,7 @@ list-resource:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/resource/list?project_id=1001'
+		'http://localhost:8000/finding/list-resource/?project_id=1001'
 
 .PHONY: get-resource
 get-resource:
@@ -95,7 +95,7 @@ get-resource:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/resource/detail/?project_id=1001&resource_id=1001'
+		'http://localhost:8000/finding/get-resource/?project_id=1001&resource_id=1001'
 
 .PHONY: put-resource
 put-resource:
@@ -104,7 +104,7 @@ put-resource:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "resource":{"resource_name":"rn", "project_id":1001}}' \
-		'http://localhost:8080/resource/put/'
+		'http://localhost:8000/finding/put-resource/'
 
 .PHONY: delete-resource
 delete-resource:
@@ -113,7 +113,7 @@ delete-resource:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "resource_id":1003}' \
-		'http://localhost:8080/resource/delete/'
+		'http://localhost:8000/finding/delete-resource/'
 
 .PHONY: list-resource-tag
 list-resource-tag:
@@ -121,7 +121,7 @@ list-resource-tag:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/resource/tag/?project_id=1001&resource_id=1001'
+		'http://localhost:8000/finding/list-resource-tag/?project_id=1001&resource_id=1001'
 
 .PHONY: tag-resource
 tag-resource:
@@ -130,7 +130,7 @@ tag-resource:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "tag":{"resource_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}' \
-		'http://localhost:8080/resource/tag/put/'
+		'http://localhost:8000/finding/tag-resource/'
 
 .PHONY: untag-resource
 untag-resource:
@@ -139,7 +139,7 @@ untag-resource:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--data '{"project_id":1001, "resource_tag_id":1004}' \
-		'http://localhost:8080/resource/tag/delete/'
+		'http://localhost:8000/finding/untag-resource/'
 
 
 # @see https://github.com/CyberAgent/mimosa-common/tree/master/local

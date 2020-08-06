@@ -10,12 +10,12 @@ services:
         - GITHUB_USER=${GITHUB_USER}
         - GITHUB_TOKEN=${GITHUB_TOKEN}
     environment:
-      - PORT=8080
+      - PORT=8000
       - DEBUG=true
       - FINDING_SVC_ADDR=${FINDING_SVC_ADDR}
       - IAM_SVC_ADDR=${IAM_SVC_ADDR}
     ports:
-      - "8080:8080"
+      - "8000:8000"
 
 networks:
   local-shared:
