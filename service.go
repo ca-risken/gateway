@@ -6,8 +6,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/CyberAgent/mimosa-aws/proto/aws"
 	"github.com/CyberAgent/mimosa-core/proto/finding"
 	"github.com/CyberAgent/mimosa-core/proto/iam"
+	"github.com/CyberAgent/mimosa-core/proto/project"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -23,6 +25,8 @@ type gatewayService struct {
 	uidHeader     string
 	findingClient finding.FindingServiceClient
 	iamClient     iam.IAMServiceClient
+	projectClient project.ProjectServiceClient
+	awsClient     aws.AWSServiceClient
 }
 
 type gatewayConf struct {
@@ -31,6 +35,8 @@ type gatewayConf struct {
 	UserIdentityHeader string `required:"true" split_words:"true"`
 	FindingSvcAddr     string `required:"true" split_words:"true"`
 	IAMSvcAddr         string `required:"true" split_words:"true"`
+	ProjectSvcAddr     string `required:"true" split_words:"true"`
+	AWSSvcAddr         string `required:"true" split_words:"true"`
 }
 
 func newGatewayService() (*gatewayService, error) {
@@ -50,6 +56,8 @@ func newGatewayService() (*gatewayService, error) {
 		uidHeader:     conf.UserIdentityHeader,
 		findingClient: finding.NewFindingServiceClient(getGRPCConn(ctx, conf.FindingSvcAddr)),
 		iamClient:     iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
+		projectClient: project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
+		awsClient:     aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
 	}, nil
 }
 

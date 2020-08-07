@@ -20,28 +20,77 @@ func newRouter(svc *gatewayService) *chi.Mux {
 
 	r.Route("/finding", func(r chi.Router) {
 		r.Use(svc.authzWithProject)
-		r.Get("/list", svc.listFindingHandler)
-		r.Get("/detail", svc.getFindingHandler)
-		r.Get("/tag", svc.listFindingTagHandler)
+		r.Get("/list-finding", svc.listFindingHandler)
+		r.Get("/get-finding", svc.getFindingHandler)
+		r.Get("/list-finding-tag", svc.listFindingTagHandler)
+		r.Get("/list-resource", svc.listResourceHandler)
+		r.Get("/get-resource", svc.getResourceHandler)
+		r.Get("/list-resource-tag", svc.listResourceTagHandler)
 		r.Group(func(r chi.Router) {
 			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/put", svc.putFindingHandler)
-			r.Post("/delete", svc.deleteFindingHandler)
-			r.Post("/tag/put", svc.tagFindingHandler)
-			r.Post("/tag/delete", svc.untagFindingHandler)
+			r.Post("/put-finding", svc.putFindingHandler)
+			r.Post("/delete-finding", svc.deleteFindingHandler)
+			r.Post("/tag-finding", svc.tagFindingHandler)
+			r.Post("/untag-finding", svc.untagFindingHandler)
+			r.Post("/put-resource", svc.putResourceHandler)
+			r.Post("/delete-resource", svc.deleteResourceHandler)
+			r.Post("/tag-resource", svc.tagResourceHandler)
+			r.Post("/untag-resource", svc.untagResourceHandler)
 		})
 	})
-	r.Route("/resource", func(r chi.Router) {
-		r.Use(svc.authzWithProject)
-		r.Get("/list", svc.listResourceHandler)
-		r.Get("/detail", svc.getResourceHandler)
-		r.Get("/tag", svc.listResourceTagHandler)
+
+	r.Route("/iam", func(r chi.Router) {
+		r.Get("/list-user", svc.listUserHandler)
+		r.Get("/get-user", svc.getUserHandler)
 		r.Group(func(r chi.Router) {
 			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/put", svc.putResourceHandler)
-			r.Post("/delete", svc.deleteResourceHandler)
-			r.Post("/tag/put", svc.tagResourceHandler)
-			r.Post("/tag/delete", svc.untagResourceHandler)
+			r.Post("/put-user", svc.putUserHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(svc.authzWithProject)
+			r.Get("/list-role", svc.listRoleHandler)
+			r.Get("/get-role", svc.getRoleHandler)
+			r.Get("/list-policy", svc.listPolicyHandler)
+			r.Get("/get-policy", svc.getPolicyHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType("application/json"))
+				r.Post("/put-role", svc.putRoleHandler)
+				r.Post("/delete-role", svc.deleteRoleHandler)
+				r.Post("/attach-role", svc.attachRoleHandler)
+				r.Post("/detach-role", svc.detachRoleHandler)
+				r.Post("/put-policy", svc.putPolicyHandler)
+				r.Post("/delete-policy", svc.deletePolicyHandler)
+				r.Post("/attach-policy", svc.attachPolicyHandler)
+				r.Post("/detach-policy", svc.detachPolicyHandler)
+			})
+		})
+	})
+
+	r.Route("/project", func(r chi.Router) {
+		r.Get("/list-project", svc.listProjectHandler)
+		r.Group(func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/create-project", svc.createProjectHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(svc.authzWithProject)
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/update-project", svc.updateProjectHandler)
+			r.Post("/delete-project", svc.deleteProjectHandler)
+		})
+	})
+
+	r.Route("/aws", func(r chi.Router) {
+		r.Use(svc.authzWithProject)
+		r.Get("/list-aws", svc.listAWSHandler)
+		r.Get("/list-datasource", svc.listDataSourceHandler)
+		r.Group(func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/put-aws", svc.putAWSHandler)
+			r.Post("/delete-aws", svc.deleteAWSHandler)
+			r.Post("/attach-datasource", svc.attachDataSourceHandler)
+			r.Post("/detach-datasource", svc.detachDataSourceHandler)
+			r.Post("/invoke-scan", svc.detachDataSourceHandler)
 		})
 	})
 
