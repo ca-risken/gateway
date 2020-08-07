@@ -14,6 +14,7 @@ services:
       - DEBUG=true
       - FINDING_SVC_ADDR=${FINDING_SVC_ADDR}
       - IAM_SVC_ADDR=${IAM_SVC_ADDR}
+      - PROJECT_SVC_ADDR=${PROJECT_SVC_ADDR}
     ports:
       - "8000:8000"
 

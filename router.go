@@ -66,6 +66,20 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 	})
 
+	r.Route("/project", func(r chi.Router) {
+		r.Get("/list-project", svc.listProjectHandler)
+		r.Group(func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/create-project", svc.createProjectHandler)
+		})
+		r.Group(func(r chi.Router) {
+			r.Use(svc.authzWithProject)
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/update-project", svc.updateProjectHandler)
+			r.Post("/delete-project", svc.deleteProjectHandler)
+		})
+	})
+
 	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r
 }

@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200803075743-1244e3cbbcf5
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20200803075743-1244e3cbbcf5
+	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20200807055414-eefbfe4897b2
 	github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/golang/protobuf v1.4.2
@@ -19,6 +20,5 @@ require (
 	golang.org/x/text v0.3.3 // indirect
 	google.golang.org/genproto v0.0.0-20200804151602-45615f50871c // indirect
 	google.golang.org/grpc v1.31.0
-	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )

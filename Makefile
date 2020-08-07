@@ -23,7 +23,8 @@ go-test:
 go-mod-update:
 	go get -u \
 			github.com/CyberAgent/mimosa-core/proto/finding \
-			github.com/CyberAgent/mimosa-core/proto/iam
+			github.com/CyberAgent/mimosa-core/proto/iam \
+			github.com/CyberAgent/mimosa-core/proto/project
 
 .PHONY: run
 run: go-test network
@@ -314,3 +315,41 @@ detach-policy:
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001, "role_id":1001, "policy_id":1005}' \
 		'http://localhost:8000/iam/detach-policy/'
+
+.PHONY: list-project
+list-project:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/project/list-project/?user_id=1001'
+
+.PHONY: create-project
+create-project:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"user_id":1001, "name":"test-pj"}' \
+		'http://localhost:8000/project/create-project/'
+
+.PHONY: update-project
+update-project:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1006, "name":"test-pj-x"}' \
+		'http://localhost:8000/project/update-project/'
+
+.PHONY: delete-project
+delete-project:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1007}' \
+		'http://localhost:8000/project/delete-project/'

@@ -368,17 +368,17 @@ func TestDeleteRoleHandler(t *testing.T) {
 		iamClient: iamMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1, "role_id":1}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1, "role_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid parameter",
@@ -386,17 +386,16 @@ func TestDeleteRoleHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1, "role_id":1}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "role_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.existsMockResp {
-				iamMock.On("DeleteRole").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("DeleteRole").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -487,17 +486,17 @@ func TestDetachRoleHandler(t *testing.T) {
 		iamClient: iamMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1, "role_id":1, "user_id":1}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1, "role_id":1, "user_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid parameter",
@@ -505,17 +504,16 @@ func TestDetachRoleHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1, "role_id":1, "user_id":1}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "role_id":1, "user_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.existsMockResp {
-				iamMock.On("DetachRole").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("DetachRole").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -722,17 +720,17 @@ func TestDeletePolicyHandler(t *testing.T) {
 		iamClient: iamMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1, "policy_id":1}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1, "policy_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid parameter",
@@ -740,17 +738,16 @@ func TestDeletePolicyHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1, "policy_id":1}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "policy_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.existsMockResp {
-				iamMock.On("DeletePolicy").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("DeletePolicy").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -841,17 +838,17 @@ func TestDetachPolicyHandler(t *testing.T) {
 		iamClient: iamMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1, "role_id":1, "policy_id":1}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1, "role_id":1, "policy_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid parameter",
@@ -859,17 +856,16 @@ func TestDetachPolicyHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1, "role_id":1, "policy_id":1}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "role_id":1, "policy_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.existsMockResp {
-				iamMock.On("DetachPolicy").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("DetachPolicy").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
