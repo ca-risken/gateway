@@ -59,7 +59,7 @@ func TestListFindingHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/finding/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/finding/list-finding/?"+c.input, nil)
 			svc.listFindingHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -124,7 +124,7 @@ func TestGetFindingHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/finding/detail?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/finding/get-finding/?"+c.input, nil)
 			svc.getFindingHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -183,7 +183,7 @@ func TestPutFindingHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/finding/put", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/put-finding/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putFindingHandler(rec, req)
 			// Check Response
@@ -244,7 +244,7 @@ func TestDeleteFindingHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/finding/delete", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/delete-finding/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteFindingHandler(rec, req)
 			// Check Response
@@ -313,7 +313,7 @@ func TestListFindingTagHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/finding/tag?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/finding/list-finding-tag/?"+c.input, nil)
 			svc.listFindingTagHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -372,7 +372,7 @@ func TestTagFindingHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/finding/tag/put", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/tag-finding", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.tagFindingHandler(rec, req)
 			// Check Response
@@ -433,7 +433,7 @@ func TestUntagFindingHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/finding/tag/delete", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/untag-finding/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.untagFindingHandler(rec, req)
 			// Check Response
@@ -499,7 +499,7 @@ func TestListResourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/resource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/finding/list-resource/?"+c.input, nil)
 			svc.listResourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -564,7 +564,7 @@ func TestGetResourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/resource/detail?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/finding/get-resource?"+c.input, nil)
 			svc.getResourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -623,7 +623,7 @@ func TestPutResourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/resource/put", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/put-resource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putResourceHandler(rec, req)
 			// Check Response
@@ -684,7 +684,7 @@ func TestDeleteResourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/resource/delete", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/delete-resource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteResourceHandler(rec, req)
 			// Check Response
@@ -753,7 +753,7 @@ func TestListResourceTagHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/resource/tag?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/finding/list-resource-tag?"+c.input, nil)
 			svc.listResourceTagHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -812,7 +812,7 @@ func TestTagResourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/resource/tag/put", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/tag-resource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.tagResourceHandler(rec, req)
 			// Check Response
@@ -873,7 +873,7 @@ func TestUntagResourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/resource/tag/delete", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/finding/untag-resource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.untagResourceHandler(rec, req)
 			// Check Response

@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 	"encoding/base64"
+	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -68,6 +70,12 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		buf, err := ioutil.ReadAll(r.Body)
+		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+		if err != nil {
+			http.Error(w, "Could not read body", http.StatusInternalServerError)
+			return
+		}
 		u, ok := r.Context().Value(userKey).(*requestUser)
 		if !ok {
 			appLogger.Infof("Unauthenticated: Invalid requestUser type.")
@@ -79,9 +87,10 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 			return
 		}
 		if !g.authzProject(u, r) {
-			http.Error(w, "Unautorized", http.StatusForbidden)
+			http.Error(w, "Unauthorized xxx", http.StatusForbidden)
 			return
 		}
+		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)

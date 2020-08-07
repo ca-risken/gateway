@@ -10,138 +10,6 @@ help:
 	@echo "\n---------------- sub-command list ----------------"
 	@cat Makefile | grep -e "^.PHONY:" | grep -v "all" | cut -f2 -d' '
 
-.PHONY: health-check
-health-check:
-	curl -is -XGET \
-		'http://localhost:8080/healthz/'
-
-.PHONY: signin
-signin:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		'http://localhost:8080/signin/'
-
-.PHONY: list-finding
-list-finding:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/finding/list?project_id=1001&data_source=aws:guardduty,aws:access-analizer'
-
-.PHONY: get-finding
-get-finding:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/finding/detail/?project_id=1001&finding_id=1001'
-
-.PHONY: put-finding
-put-finding:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "finding":{"description":"desc", "data_source":"ds", "data_source_id":"ds-004", "resource_name":"rn", "project_id":1001, "original_score":55.51, "original_max_score":100.0, "data":"{\"key\":\"value\"}"}}' \
-		'http://localhost:8080/finding/put/'
-
-.PHONY: delete-finding
-delete-finding:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "finding_id":1005}' \
-		'http://localhost:8080/finding/delete/'
-
-.PHONY: list-finding-tag
-list-finding-tag:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/finding/tag/?project_id=1001&finding_id=1001'
-
-.PHONY: tag-finding
-tag-finding:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "tag":{"finding_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}' \
-		'http://localhost:8080/finding/tag/put/'
-
-.PHONY: untag-finding
-untag-finding:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "finding_tag_id":1002}' \
-		'http://localhost:8080/finding/tag/delete'
-
-.PHONY: list-resource
-list-resource:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/resource/list?project_id=1001'
-
-.PHONY: get-resource
-get-resource:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/resource/detail/?project_id=1001&resource_id=1001'
-
-.PHONY: put-resource
-put-resource:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "resource":{"resource_name":"rn", "project_id":1001}}' \
-		'http://localhost:8080/resource/put/'
-
-.PHONY: delete-resource
-delete-resource:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "resource_id":1003}' \
-		'http://localhost:8080/resource/delete/'
-
-.PHONY: list-resource-tag
-list-resource-tag:
-	curl -is -XGET -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8080/resource/tag/?project_id=1001&resource_id=1001'
-
-.PHONY: tag-resource
-tag-resource:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "tag":{"resource_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}' \
-		'http://localhost:8080/resource/tag/put/'
-
-.PHONY: untag-resource
-untag-resource:
-	curl -is -XPOST -H 'Content-Type: application/json' \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--data '{"project_id":1001, "resource_tag_id":1004}' \
-		'http://localhost:8080/resource/tag/delete/'
-
-
 # @see https://github.com/CyberAgent/mimosa-common/tree/master/local
 .PHONY: network
 network:
@@ -168,3 +36,281 @@ log:
 .PHONY: stop
 stop:
 	. env.sh && docker-compose down
+
+
+.PHONY: health-check
+health-check:
+	curl -is -XGET \
+		'http://localhost:8000/healthz/'
+
+.PHONY: signin
+signin:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		'http://localhost:8000/signin/'
+
+.PHONY: list-finding
+list-finding:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/finding/list-finding/?project_id=1001&data_source=aws:guardduty,aws:access-analizer'
+
+.PHONY: get-finding
+get-finding:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/finding/get-finding/?project_id=1001&finding_id=1001'
+
+.PHONY: put-finding
+put-finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "finding":{"description":"desc", "data_source":"ds", "data_source_id":"ds-004", "resource_name":"rn", "project_id":1001, "original_score":55.51, "original_max_score":100.0, "data":"{\"key\":\"value\"}"}}' \
+		'http://localhost:8000/finding/put-finding/'
+
+.PHONY: delete-finding
+delete-finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "finding_id":1005}' \
+		'http://localhost:8000/finding/delete-finding/'
+
+.PHONY: list-finding-tag
+list-finding-tag:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/finding/list-finding-tag/?project_id=1001&finding_id=1001'
+
+.PHONY: tag-finding
+tag-finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "tag":{"finding_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}' \
+		'http://localhost:8000/finding/tag-finding/'
+
+.PHONY: untag-finding
+untag-finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "finding_tag_id":1002}' \
+		'http://localhost:8000/finding/untag-finding/'
+
+.PHONY: list-resource
+list-resource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/finding/list-resource/?project_id=1001'
+
+.PHONY: get-resource
+get-resource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/finding/get-resource/?project_id=1001&resource_id=1001'
+
+.PHONY: put-resource
+put-resource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "resource":{"resource_name":"rn", "project_id":1001}}' \
+		'http://localhost:8000/finding/put-resource/'
+
+.PHONY: delete-resource
+delete-resource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "resource_id":1003}' \
+		'http://localhost:8000/finding/delete-resource/'
+
+.PHONY: list-resource-tag
+list-resource-tag:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/finding/list-resource-tag/?project_id=1001&resource_id=1001'
+
+.PHONY: tag-resource
+tag-resource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "tag":{"resource_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}' \
+		'http://localhost:8000/finding/tag-resource/'
+
+.PHONY: untag-resource
+untag-resource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "resource_tag_id":1004}' \
+		'http://localhost:8000/finding/untag-resource/'
+
+.PHONY: list-user
+list-user:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/iam/list-user/'
+
+.PHONY: get-user
+get-user:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/iam/get-user/?user_id=1001'
+
+.PHONY: put-user
+put-user:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"user":{"sub":"sub", "name":"nm", "activated":true}}' \
+		'http://localhost:8000/iam/put-user/'
+
+.PHONY: list-role
+list-role:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/iam/list-role/?project_id=1001'
+
+.PHONY: get-role
+get-role:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/iam/get-role/?project_id=1001&role_id=1001'
+
+.PHONY: put-role
+put-role:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "role":{"project_id":1001, "name":"nm"}}' \
+		'http://localhost:8000/iam/put-role/'
+
+.PHONY: delete-role
+delete-role:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "role_id":1008}' \
+		'http://localhost:8000/iam/delete-role/'
+
+.PHONY: attach-role
+attach-role:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "user_id":1001, "role_id":1005}' \
+		'http://localhost:8000/iam/attach-role/'
+
+.PHONY: detach-role
+detach-role:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "user_id":1001, "role_id":1005}' \
+		'http://localhost:8000/iam/detach-role/'
+
+.PHONY: list-policy
+list-policy:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/iam/list-policy/?project_id=1001'
+
+.PHONY: get-policy
+get-policy:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/iam/get-policy/?project_id=1001&policy_id=1001'
+
+.PHONY: put-policy
+put-policy:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "policy":{"name":"nm", "project_id":1001, "action_ptn":".*", "resource_ptn":".*"}}' \
+		'http://localhost:8000/iam/put-policy/'
+
+.PHONY: delete-policy
+delete-policy:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "policy_id":1008}' \
+		'http://localhost:8000/iam/delete-policy/'
+
+.PHONY: attach-policy
+attach-policy:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "role_id":1001, "policy_id":1005}' \
+		'http://localhost:8000/iam/attach-policy/'
+
+.PHONY: detach-policy
+detach-policy:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "role_id":1001, "policy_id":1005}' \
+		'http://localhost:8000/iam/detach-policy/'
