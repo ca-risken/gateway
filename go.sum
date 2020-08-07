@@ -1,5 +1,8 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/CyberAgent/mimosa-aws v0.0.0-20200804164209-f0eae226d636 h1:zN39M/DJbKwsypT8JTPRJQyXsQV9i2OoXygg4pzqy2c=
+github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20200804164209-f0eae226d636 h1:5RuIJn9G0PwTWmBf+4fs5DTnB/rAawk1pwB7N6zEC7Q=
+github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20200804164209-f0eae226d636/go.mod h1:x1QQrb7ktNUqynjtQ3pUh2NEJKpR8SiTKhxJ01CB1i0=
 github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200706055852-e44bbb0bf6e2 h1:DH/zBKUQoXiIZieQpF7nQGP3csGQmXOOnz7RsBW4u+w=
 github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200706055852-e44bbb0bf6e2/go.mod h1:G0wI9XG7mhLG99b/iRRkefGrAXte0qg4eVJKfCVf8ls=
 github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20200710091650-055f15455906 h1:jr/lgdB6gLByGc9aFaa6kvLG3uPQHz2quxIGWZXaPbU=
