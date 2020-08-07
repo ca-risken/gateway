@@ -80,6 +80,20 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 	})
 
+	r.Route("/aws", func(r chi.Router) {
+		r.Use(svc.authzWithProject)
+		r.Get("/list-aws", svc.listAWSHandler)
+		r.Get("/list-datasource", svc.listDataSourceHandler)
+		r.Group(func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/put-aws", svc.putAWSHandler)
+			r.Post("/delete-aws", svc.deleteAWSHandler)
+			r.Post("/attach-datasource", svc.attachDataSourceHandler)
+			r.Post("/detach-datasource", svc.detachDataSourceHandler)
+			r.Post("/invoke-scan", svc.detachDataSourceHandler)
+		})
+	})
+
 	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r
 }

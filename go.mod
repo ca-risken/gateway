@@ -3,6 +3,7 @@ module github.com/CyberAgent/mimosa-gateway
 go 1.13
 
 require (
+	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20200804164209-f0eae226d636
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200803075743-1244e3cbbcf5
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20200803075743-1244e3cbbcf5
 	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20200807055414-eefbfe4897b2

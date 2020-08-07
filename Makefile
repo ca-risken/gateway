@@ -353,3 +353,69 @@ delete-project:
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1007}' \
 		'http://localhost:8000/project/delete-project/'
+
+.PHONY: list-aws
+list-aws:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/aws/list-aws/?project_id=1001'
+
+.PHONY: put-aws
+put-aws:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "aws":{"project_id":1001, "name":"hoge-aws", "aws_account_id":"123456789012"}}' \
+		'http://localhost:8000/aws/put-aws/'
+
+.PHONY: delete-aws
+delete-aws:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "aws_id":1002}' \
+		'http://localhost:8000/aws/delete-aws/'
+
+.PHONY: list-datasource
+list-datasource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/aws/list-datasource/?project_id=1001&aws_id=1003'
+
+.PHONY: attach-datasource
+attach-datasource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "attach_data_source":{"aws_id":1003, "aws_data_source_id":1001, "project_id":1001, "assume_role_arn":"hoge-role", "external_id":""}}' \
+		'http://localhost:8000/aws/attach-datasource/'
+
+.PHONY: detach-datasource
+detach-datasource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "aws_id":1003, "aws_data_source_id":1001}' \
+		'http://localhost:8000/aws/detach-datasource/'
+
+.PHONY: invoke-scan
+invoke-scan:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "aws_id":1003, "aws_data_source_id":1001}' \
+		'http://localhost:8000/aws/invoke-scan/'
