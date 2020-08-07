@@ -50,7 +50,11 @@ func bindQuery(out interface{}, r *http.Request) error {
 
 // bindBodyJSON bindding body parameter binding
 func bindBodyJSON(out interface{}, r *http.Request) error {
-	defer r.Body.Close()
+	// body, err := ioutil.ReadAll(r.Body)
+	// if err != nil {
+	// 	return err
+	// }
+	// return json.Unmarshal(body, out) // Need to read the body several times.(json.Decoder is only once)
 	return json.NewDecoder(r.Body).Decode(out)
 }
 

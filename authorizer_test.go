@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/CyberAgent/mimosa-core/proto/iam"
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
 )
@@ -227,10 +228,67 @@ type mockIAMClient struct {
 	mock.Mock
 }
 
+func (m *mockIAMClient) ListUser(context.Context, *iam.ListUserRequest, ...grpc.CallOption) (*iam.ListUserResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.ListUserResponse), args.Error(1)
+}
 func (m *mockIAMClient) GetUser(context.Context, *iam.GetUserRequest, ...grpc.CallOption) (*iam.GetUserResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*iam.GetUserResponse), args.Error(1)
 }
+func (m *mockIAMClient) PutUser(context.Context, *iam.PutUserRequest, ...grpc.CallOption) (*iam.PutUserResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.PutUserResponse), args.Error(1)
+}
+func (m *mockIAMClient) ListRole(context.Context, *iam.ListRoleRequest, ...grpc.CallOption) (*iam.ListRoleResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.ListRoleResponse), args.Error(1)
+}
+func (m *mockIAMClient) GetRole(context.Context, *iam.GetRoleRequest, ...grpc.CallOption) (*iam.GetRoleResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.GetRoleResponse), args.Error(1)
+}
+func (m *mockIAMClient) PutRole(context.Context, *iam.PutRoleRequest, ...grpc.CallOption) (*iam.PutRoleResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.PutRoleResponse), args.Error(1)
+}
+func (m *mockIAMClient) DeleteRole(context.Context, *iam.DeleteRoleRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockIAMClient) AttachRole(context.Context, *iam.AttachRoleRequest, ...grpc.CallOption) (*iam.AttachRoleResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.AttachRoleResponse), args.Error(1)
+}
+func (m *mockIAMClient) DetachRole(context.Context, *iam.DetachRoleRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockIAMClient) ListPolicy(context.Context, *iam.ListPolicyRequest, ...grpc.CallOption) (*iam.ListPolicyResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.ListPolicyResponse), args.Error(1)
+}
+func (m *mockIAMClient) GetPolicy(context.Context, *iam.GetPolicyRequest, ...grpc.CallOption) (*iam.GetPolicyResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.GetPolicyResponse), args.Error(1)
+}
+func (m *mockIAMClient) PutPolicy(context.Context, *iam.PutPolicyRequest, ...grpc.CallOption) (*iam.PutPolicyResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.PutPolicyResponse), args.Error(1)
+}
+func (m *mockIAMClient) DeletePolicy(context.Context, *iam.DeletePolicyRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockIAMClient) AttachPolicy(context.Context, *iam.AttachPolicyRequest, ...grpc.CallOption) (*iam.AttachPolicyResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.AttachPolicyResponse), args.Error(1)
+}
+func (m *mockIAMClient) DetachPolicy(context.Context, *iam.DetachPolicyRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+
 func (m *mockIAMClient) IsAuthorized(context.Context, *iam.IsAuthorizedRequest, ...grpc.CallOption) (*iam.IsAuthorizedResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*iam.IsAuthorizedResponse), args.Error(1)
