@@ -19,6 +19,8 @@ ENV PORT= \
     USER_IDENTITY_HEADER=x-amzn-oidc-identity \
     FINDING_SVC_ADDR= \
     IAM_SVC_ADDR= \
+    PROJECT_SVC_ADDR= \
+    AWS_SVC_ADDR= \
     TZ=Asia/Tokyo
 WORKDIR /usr/local/mimosa-gateway
 ENTRYPOINT ["/usr/local/bin/env-injector"]

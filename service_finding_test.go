@@ -211,17 +211,17 @@ func TestDeleteFindingHandler(t *testing.T) {
 		findingClient: findingMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1, "finding_id":1005}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1, "finding_id":1005}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid request",
@@ -229,18 +229,17 @@ func TestDeleteFindingHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1, "finding_id":9999}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "finding_id":9999}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			// Regist mock response
-			if c.existsMockResp {
-				findingMock.On("DeleteFinding").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("DeleteFinding").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -400,17 +399,17 @@ func TestUntagFindingHandler(t *testing.T) {
 		findingClient: findingMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1001, "finding_tag_id":1002}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1001, "finding_tag_id":1002}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid request",
@@ -418,18 +417,17 @@ func TestUntagFindingHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1001, "finding_tag_id":9999}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1001, "finding_tag_id":9999}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			// Regist mock response
-			if c.existsMockResp {
-				findingMock.On("UntagFinding").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("UntagFinding").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -651,17 +649,17 @@ func TestDeleteResourceHandler(t *testing.T) {
 		findingClient: findingMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1001, "resource_id":1003}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1001, "resource_id":1003}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid request",
@@ -669,18 +667,17 @@ func TestDeleteResourceHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1001, "resource_id":1003}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1001, "resource_id":1003}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			// Regist mock response
-			if c.existsMockResp {
-				findingMock.On("DeleteResource").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("DeleteResource").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -840,17 +837,17 @@ func TestUntagResourceHandler(t *testing.T) {
 		findingClient: findingMock,
 	}
 	cases := []struct {
-		name           string
-		input          string
-		existsMockResp bool
-		mockErr        error
-		wantStatus     int
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
 	}{
 		{
-			name:           "OK",
-			input:          `{"project_id":1001, "resource_tag_id":1004}`,
-			existsMockResp: true,
-			wantStatus:     http.StatusOK,
+			name:       "OK",
+			input:      `{"project_id":1001, "resource_tag_id":1004}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
 		},
 		{
 			name:       "NG Invalid request",
@@ -858,18 +855,17 @@ func TestUntagResourceHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "NG Backend service error",
-			input:          `{"project_id":1001, "resource_tag_id":1004}`,
-			wantStatus:     http.StatusInternalServerError,
-			existsMockResp: true,
-			mockErr:        errors.New("something wrong"),
+			name:       "NG Backend service error",
+			input:      `{"project_id":1001, "resource_tag_id":1004}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			// Regist mock response
-			if c.existsMockResp {
-				findingMock.On("UntagResource").Return(&empty.Empty{}, c.mockErr).Once()
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("UntagResource").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
