@@ -7,6 +7,7 @@ require (
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200807055414-eefbfe4897b2
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20200807055414-eefbfe4897b2
 	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20200807055414-eefbfe4897b2
+	github.com/CyberAgent/mimosa-osint/pkg/pb/osint v0.0.0-20200831110612-77e6945a21ea
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/golang/protobuf v1.4.2
 	github.com/gorilla/schema v1.1.0

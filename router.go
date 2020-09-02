@@ -94,6 +94,26 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 	})
 
+	r.Route("/osint", func(r chi.Router) {
+		r.Use(svc.authzWithProject)
+		r.Get("/list-osint", svc.listOSINTHandler)
+		r.Get("/list-datasource", svc.listDataSourceHandler)
+		r.Get("/list-rel-datasource", svc.listDataSourceHandler)
+		r.Get("/get-osint", svc.listOSINTHandler)
+		r.Get("/get-datasource", svc.listDataSourceHandler)
+		r.Get("/get-rel-datasource", svc.listDataSourceHandler)
+		r.Group(func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/put-osint", svc.putOSINTHandler)
+			r.Post("/delete-osint", svc.deleteOSINTHandler)
+			r.Post("/put-datasource", svc.putOSINTDataSourceHandler)
+			r.Post("/delete-datasource", svc.deleteOSINTDataSourceHandler)
+			r.Post("/put-rel-datasource", svc.putOSINTResultHandler)
+			r.Post("/delete-rel-datasource", svc.deleteOSINTResultHandler)
+			r.Post("/start-osint", svc.startOSINTHandler)
+		})
+	})
+
 	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r
 }

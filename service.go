@@ -10,6 +10,7 @@ import (
 	"github.com/CyberAgent/mimosa-core/proto/finding"
 	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/CyberAgent/mimosa-core/proto/project"
+	"github.com/CyberAgent/mimosa-osint/pkg/pb/osint"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -27,6 +28,7 @@ type gatewayService struct {
 	iamClient     iam.IAMServiceClient
 	projectClient project.ProjectServiceClient
 	awsClient     aws.AWSServiceClient
+	osintClient   osint.OSINTServiceClient
 }
 
 type gatewayConf struct {
@@ -37,6 +39,7 @@ type gatewayConf struct {
 	IAMSvcAddr         string `required:"true" split_words:"true"`
 	ProjectSvcAddr     string `required:"true" split_words:"true"`
 	AWSSvcAddr         string `required:"true" split_words:"true"`
+	OSINTSvcAddr       string `required:"true" split_words:"true"`
 }
 
 func newGatewayService() (*gatewayService, error) {
@@ -58,6 +61,7 @@ func newGatewayService() (*gatewayService, error) {
 		iamClient:     iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
 		projectClient: project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
 		awsClient:     aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
+		osintClient:   osint.NewOSINTServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
 	}, nil
 }
 
