@@ -114,6 +114,26 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 	})
 
+	r.Route("/diagnosis", func(r chi.Router) {
+		r.Use(svc.authzWithProject)
+		r.Get("/list-diagnosis", svc.listDiagnosisHandler)
+		r.Get("/list-datasource", svc.listDiagnosisDataSourceHandler)
+		r.Get("/list-rel-datasource", svc.listRelDiagnosisDataSourceHandler)
+		r.Get("/get-diagnosis", svc.getDiagnosisHandler)
+		r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
+		r.Get("/get-rel-datasource", svc.getRelDiagnosisDataSourceHandler)
+		r.Group(func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/put-diagnosis", svc.putDiagnosisHandler)
+			r.Post("/delete-diagnosis", svc.deleteDiagnosisHandler)
+			r.Post("/put-datasource", svc.putDiagnosisDataSourceHandler)
+			r.Post("/delete-datasource", svc.deleteDiagnosisDataSourceHandler)
+			r.Post("/put-rel-datasource", svc.putRelDiagnosisDataSourceHandler)
+			r.Post("/delete-rel-datasource", svc.deleteRelDiagnosisDataSourceHandler)
+			r.Post("/start-diagnosis", svc.startDiagnosisHandler)
+		})
+	})
+
 	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r
 }

@@ -7,6 +7,7 @@ require (
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200807055414-eefbfe4897b2
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20200807055414-eefbfe4897b2
 	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20200807055414-eefbfe4897b2
+	github.com/CyberAgent/mimosa-diagnosis/pkg/pb/diagnosis v0.0.0-20200903022243-30a2d211ca0d
 	github.com/CyberAgent/mimosa-osint/pkg/pb/osint v0.0.0-20200831110612-77e6945a21ea
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/golang/protobuf v1.4.2
@@ -15,5 +16,5 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 	github.com/stretchr/testify v1.6.1
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
-	google.golang.org/grpc v1.31.0
+	google.golang.org/grpc v1.31.1
 )

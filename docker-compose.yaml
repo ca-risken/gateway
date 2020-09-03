@@ -17,7 +17,8 @@ services:
       - PROJECT_SVC_ADDR=${PROJECT_SVC_ADDR}
       - AWS_SVC_ADDR=${AWS_SVC_ADDR}
       - OSINT_SVC_ADDR=${OSINT_SVC_ADDR}
-    ports:
+      - DIAGNOSIS_SVC_ADDR=${DIAGNOSIS_SVC_ADDR}
+      ports:
       - "8000:8000"
 
 networks:
