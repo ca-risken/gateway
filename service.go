@@ -10,6 +10,7 @@ import (
 	"github.com/CyberAgent/mimosa-core/proto/finding"
 	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/CyberAgent/mimosa-core/proto/project"
+	"github.com/CyberAgent/mimosa-diagnosis/pkg/pb/diagnosis"
 	"github.com/CyberAgent/mimosa-osint/pkg/pb/osint"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
@@ -22,13 +23,14 @@ const (
 )
 
 type gatewayService struct {
-	port          string
-	uidHeader     string
-	findingClient finding.FindingServiceClient
-	iamClient     iam.IAMServiceClient
-	projectClient project.ProjectServiceClient
-	awsClient     aws.AWSServiceClient
-	osintClient   osint.OSINTServiceClient
+	port            string
+	uidHeader       string
+	findingClient   finding.FindingServiceClient
+	iamClient       iam.IAMServiceClient
+	projectClient   project.ProjectServiceClient
+	awsClient       aws.AWSServiceClient
+	osintClient     osint.OSINTServiceClient
+	diagnosisClient diagnosis.DiagnosisServiceClient
 }
 
 type gatewayConf struct {
@@ -39,7 +41,7 @@ type gatewayConf struct {
 	IAMSvcAddr         string `required:"true" split_words:"true"`
 	ProjectSvcAddr     string `required:"true" split_words:"true"`
 	AWSSvcAddr         string `required:"true" split_words:"true"`
-	OSINTSvcAddr       string `required:"true" split_words:"true"`
+	DiagnosisSvcAddr   string `required:"true" split_words:"true"`
 }
 
 func newGatewayService() (*gatewayService, error) {
@@ -55,13 +57,13 @@ func newGatewayService() (*gatewayService, error) {
 
 	ctx := context.Background()
 	return &gatewayService{
-		port:          conf.Port,
-		uidHeader:     conf.UserIdentityHeader,
-		findingClient: finding.NewFindingServiceClient(getGRPCConn(ctx, conf.FindingSvcAddr)),
-		iamClient:     iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
-		projectClient: project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
-		awsClient:     aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
-		osintClient:   osint.NewOSINTServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
+		port:            conf.Port,
+		uidHeader:       conf.UserIdentityHeader,
+		findingClient:   finding.NewFindingServiceClient(getGRPCConn(ctx, conf.FindingSvcAddr)),
+		iamClient:       iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
+		projectClient:   project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
+		awsClient:       aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
+		diagnosisClient: diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
 	}, nil
 }
 
