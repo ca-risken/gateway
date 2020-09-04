@@ -41,6 +41,7 @@ type gatewayConf struct {
 	IAMSvcAddr         string `required:"true" split_words:"true"`
 	ProjectSvcAddr     string `required:"true" split_words:"true"`
 	AWSSvcAddr         string `required:"true" split_words:"true"`
+	OSINTSvcAddr       string `required:"true" split_words:"true"`
 	DiagnosisSvcAddr   string `required:"true" split_words:"true"`
 }
 
@@ -63,6 +64,7 @@ func newGatewayService() (*gatewayService, error) {
 		iamClient:       iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
 		projectClient:   project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
 		awsClient:       aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
+		osintClient:     osint.NewOSINTServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
 		diagnosisClient: diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
 	}, nil
 }

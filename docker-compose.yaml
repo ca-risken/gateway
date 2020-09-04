@@ -18,7 +18,7 @@ services:
       - AWS_SVC_ADDR=${AWS_SVC_ADDR}
       - OSINT_SVC_ADDR=${OSINT_SVC_ADDR}
       - DIAGNOSIS_SVC_ADDR=${DIAGNOSIS_SVC_ADDR}
-      ports:
+    ports:
       - "8000:8000"
 
 networks:
