@@ -97,11 +97,11 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Route("/osint", func(r chi.Router) {
 		r.Use(svc.authzWithProject)
 		r.Get("/list-osint", svc.listOSINTHandler)
-		r.Get("/list-datasource", svc.listDataSourceHandler)
-		r.Get("/list-rel-datasource", svc.listDataSourceHandler)
-		r.Get("/get-osint", svc.listOSINTHandler)
-		r.Get("/get-datasource", svc.listDataSourceHandler)
-		r.Get("/get-rel-datasource", svc.listDataSourceHandler)
+		r.Get("/list-datasource", svc.listOSINTDataSourceHandler)
+		r.Get("/list-rel-datasource", svc.listOSINTResultHandler)
+		r.Get("/get-osint", svc.getOSINTHandler)
+		r.Get("/get-datasource", svc.getOSINTDataSourceHandler)
+		r.Get("/get-rel-datasource", svc.getOSINTResultHandler)
 		r.Group(func(r chi.Router) {
 			r.Use(middleware.AllowContentType("application/json"))
 			r.Post("/put-osint", svc.putOSINTHandler)

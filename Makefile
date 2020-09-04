@@ -420,3 +420,239 @@ invoke-scan:
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001, "aws_id":1003, "aws_data_source_id":1001}' \
 		'http://localhost:8000/aws/invoke-scan/'
+
+.PHONY: list-osint
+list-osint:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/osint/list-osint/?project_id=1001'
+
+.PHONY: get-osint
+get-osint:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/osint/get-osint/?project_id=1001&osint_id=1'
+
+.PHONY: put-osint
+put-osint:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint":{"project_id":1001, "name":"hoge-osint"}}' \
+		'http://localhost:8000/osint/put-osint/'
+
+.PHONY: delete-osint
+delete-osint:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint_id":3}' \
+		'http://localhost:8000/osint/delete-osint/'
+
+.PHONY: list-osint_data_source
+list-osint_data_source:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/osint/list-datasource/?project_id=1001'
+
+.PHONY: get-osint_data_source
+get-osint_data_source:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/osint/get-datasource/?project_id=1001&osint_data_source_id=1'
+
+.PHONY: put-osint_data_source
+put-osint_data_source:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint_data_source":{"project_id":1001, "name":"hoge-osint", "description":"osint-datasource", "max_score": 10.0}}' \
+		'http://localhost:8000/osint/put-datasource/'
+
+.PHONY: delete-osint_data_source
+delete-osint_data_source:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint_data_source_id":3}' \
+		'http://localhost:8000/osint/delete-datasource/'
+
+.PHONY: list-osint_result
+list-osint_result:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/osint/list-rel-datasource/?project_id=1001'
+
+.PHONY: get-osint_result
+get-osint_result:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/osint/get-rel-datasource/?project_id=1001&osint_result_id=1'
+
+.PHONY: put-osint_result
+put-osint_result:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint_result":{"osint_id":1, "osint_data_source_id":1, "resource_type":"osint_resource_type", "resource_name":"osint_resource_name"}}' \
+		'http://localhost:8000/osint/put-rel-datasource/'
+
+.PHONY: delete-osint_result
+delete-osint_result:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint_result_id":3}' \
+		'http://localhost:8000/osint/delete-rel-datasource/'
+
+.PHONY: start-osint
+start-osint:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint_result_id":1}' \
+		'http://localhost:8000/osint/start-osint/'
+
+.PHONY: list-diagnosis
+list-diagnosis:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/diagnosis/list-diagnosis/?project_id=1001'
+
+.PHONY: get-diagnosis
+get-diagnosis:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/diagnosis/get-diagnosis/?project_id=1001&diagnosis_id=1'
+
+.PHONY: put-diagnosis
+put-diagnosis:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "diagnosis":{"name":"hoge-diagnosis"}}' \
+		'http://localhost:8000/diagnosis/put-diagnosis/'
+
+.PHONY: delete-diagnosis
+delete-diagnosis:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "diagnosis_id":3}' \
+		'http://localhost:8000/diagnosis/delete-diagnosis/'
+
+.PHONY: list-diagnosis_data_source
+list-diagnosis_data_source:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/diagnosis/list-datasource/?project_id=1001'
+
+.PHONY: get-diagnosis_data_source
+get-diagnosis_data_source:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/diagnosis/get-datasource/?project_id=1001&diagnosis_data_source_id=2'
+
+.PHONY: put-diagnosis_data_source
+put-diagnosis_data_source:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "diagnosis_data_source":{"name":"hoge-diagnosis", "description":"diagnosis-datasource", "max_score": 10.0}}' \
+		'http://localhost:8000/diagnosis/put-datasource/'
+
+.PHONY: delete-diagnosis_data_source
+delete-diagnosis_data_source:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "diagnosis_data_source_id":3}' \
+		'http://localhost:8000/diagnosis/delete-datasource/'
+
+.PHONY: list-rel_diagnosis_datasource
+list-rel_diagnosis_datasource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/diagnosis/list-rel-datasource/?project_id=1001'
+
+.PHONY: get-rel_diagnosis_datasource
+get-rel_diagnosis_datasource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/diagnosis/get-rel-datasource/?project_id=1001&rel_diagnosis_data_source_id=1'
+
+.PHONY: put-rel_diagnosis_datasource
+put-rel_diagnosis_datasource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "rel_diagnosis_data_source":{"diagnosis_id":1, "diagnosis_data_source_id":1, "record_id":"diagnosis_record_id", "jira_id":"diagnosis_jira_id", "jira_key":"diagnosis_jira_key"}}' \
+		'http://localhost:8000/diagnosis/put-rel-datasource/'
+
+.PHONY: delete-rel_diagnosis_datasource
+delete-rel_diagnosis_datasource:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "rel_diagnosis_data_source_id":3}' \
+		'http://localhost:8000/diagnosis/delete-rel-datasource/'
+
+.PHONY: start-diagnosis
+start-diagnosis:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "rel_diagnosis_data_source_id":1}' \
+		'http://localhost:8000/diagnosis/start-diagnosis/'
