@@ -10,6 +10,7 @@ require (
 	github.com/CyberAgent/mimosa-diagnosis/pkg/pb/diagnosis v0.0.0-20200903022243-30a2d211ca0d
 	github.com/CyberAgent/mimosa-osint/pkg/pb/osint v0.0.0-20200904020518-fb1badc58c0d
 	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/go-chi/cors v1.1.1
 	github.com/golang/protobuf v1.4.2
 	github.com/gorilla/schema v1.1.0
 	github.com/kelseyhightower/envconfig v1.4.0

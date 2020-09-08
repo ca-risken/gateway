@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
 )
 
 func newRouter(svc *gatewayService) *chi.Mux {
@@ -12,6 +13,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
+	r.Use(cors.Handler(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "HEAD", "OPTIONS"},
+		AllowedHeaders: []string{"*"},
+	}))
 	r.Use(httpLogger)
 	r.Use(middleware.StripSlashes)
 	r.Use(svc.authn)
