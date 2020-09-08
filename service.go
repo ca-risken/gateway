@@ -85,7 +85,6 @@ func writeResponse(w http.ResponseWriter, status int, body map[string]interface{
 		return
 	}
 	w.Header().Add("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(status)
 	w.Write(buf)
 }
