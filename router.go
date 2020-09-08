@@ -102,11 +102,11 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Route("/osint", func(r chi.Router) {
 		r.Use(svc.authzWithProject)
 		r.Get("/list-osint", svc.listOSINTHandler)
-		r.Get("/list-datasource", svc.listDataSourceHandler)
-		r.Get("/list-rel-datasource", svc.listDataSourceHandler)
-		r.Get("/get-osint", svc.listOSINTHandler)
-		r.Get("/get-datasource", svc.listDataSourceHandler)
-		r.Get("/get-rel-datasource", svc.listDataSourceHandler)
+		r.Get("/list-datasource", svc.listOSINTDataSourceHandler)
+		r.Get("/list-rel-datasource", svc.listOSINTResultHandler)
+		r.Get("/get-osint", svc.getOSINTHandler)
+		r.Get("/get-datasource", svc.getOSINTDataSourceHandler)
+		r.Get("/get-rel-datasource", svc.getOSINTResultHandler)
 		r.Group(func(r chi.Router) {
 			r.Use(middleware.AllowContentType("application/json"))
 			r.Post("/put-osint", svc.putOSINTHandler)
@@ -116,6 +116,26 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Post("/put-rel-datasource", svc.putOSINTResultHandler)
 			r.Post("/delete-rel-datasource", svc.deleteOSINTResultHandler)
 			r.Post("/start-osint", svc.startOSINTHandler)
+		})
+	})
+
+	r.Route("/diagnosis", func(r chi.Router) {
+		r.Use(svc.authzWithProject)
+		r.Get("/list-diagnosis", svc.listDiagnosisHandler)
+		r.Get("/list-datasource", svc.listDiagnosisDataSourceHandler)
+		r.Get("/list-rel-datasource", svc.listRelDiagnosisDataSourceHandler)
+		r.Get("/get-diagnosis", svc.getDiagnosisHandler)
+		r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
+		r.Get("/get-rel-datasource", svc.getRelDiagnosisDataSourceHandler)
+		r.Group(func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/put-diagnosis", svc.putDiagnosisHandler)
+			r.Post("/delete-diagnosis", svc.deleteDiagnosisHandler)
+			r.Post("/put-datasource", svc.putDiagnosisDataSourceHandler)
+			r.Post("/delete-datasource", svc.deleteDiagnosisDataSourceHandler)
+			r.Post("/put-rel-datasource", svc.putRelDiagnosisDataSourceHandler)
+			r.Post("/delete-rel-datasource", svc.deleteRelDiagnosisDataSourceHandler)
+			r.Post("/start-diagnosis", svc.startDiagnosisHandler)
 		})
 	})
 
