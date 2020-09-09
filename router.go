@@ -5,7 +5,6 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/go-chi/cors"
 )
 
 func newRouter(svc *gatewayService) *chi.Mux {
@@ -13,129 +12,133 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
-	r.Use(cors.Handler(cors.Options{
-		AllowedMethods: []string{"GET", "POST", "HEAD", "OPTIONS"},
-		AllowedHeaders: []string{"*"},
-	}))
+	// r.Use(cors.Handler(cors.Options{
+	// 	AllowedOrigins:   []string{"http://localhost:8080"},
+	// 	AllowedMethods:   []string{"GET", "POST", "HEAD", "OPTIONS"},
+	// 	AllowedHeaders:   []string{"*"},
+	// 	AllowCredentials: true,
+	// }))
 	r.Use(httpLogger)
 	r.Use(middleware.StripSlashes)
 	r.Use(svc.authn)
 
-	r.Get("/signin", signinHandler)
+	r.Route("/api/v1", func(r chi.Router) {
+		r.Get("/signin", signinHandler)
 
-	r.Route("/finding", func(r chi.Router) {
-		r.Use(svc.authzWithProject)
-		r.Get("/list-finding", svc.listFindingHandler)
-		r.Get("/get-finding", svc.getFindingHandler)
-		r.Get("/list-finding-tag", svc.listFindingTagHandler)
-		r.Get("/list-resource", svc.listResourceHandler)
-		r.Get("/get-resource", svc.getResourceHandler)
-		r.Get("/list-resource-tag", svc.listResourceTagHandler)
-		r.Group(func(r chi.Router) {
-			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/put-finding", svc.putFindingHandler)
-			r.Post("/delete-finding", svc.deleteFindingHandler)
-			r.Post("/tag-finding", svc.tagFindingHandler)
-			r.Post("/untag-finding", svc.untagFindingHandler)
-			r.Post("/put-resource", svc.putResourceHandler)
-			r.Post("/delete-resource", svc.deleteResourceHandler)
-			r.Post("/tag-resource", svc.tagResourceHandler)
-			r.Post("/untag-resource", svc.untagResourceHandler)
-		})
-	})
-
-	r.Route("/iam", func(r chi.Router) {
-		r.Get("/list-user", svc.listUserHandler)
-		r.Get("/get-user", svc.getUserHandler)
-		r.Group(func(r chi.Router) {
-			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/put-user", svc.putUserHandler)
-		})
-		r.Group(func(r chi.Router) {
+		r.Route("/finding", func(r chi.Router) {
 			r.Use(svc.authzWithProject)
-			r.Get("/list-role", svc.listRoleHandler)
-			r.Get("/get-role", svc.getRoleHandler)
-			r.Get("/list-policy", svc.listPolicyHandler)
-			r.Get("/get-policy", svc.getPolicyHandler)
+			r.Get("/list-finding", svc.listFindingHandler)
+			r.Get("/get-finding", svc.getFindingHandler)
+			r.Get("/list-finding-tag", svc.listFindingTagHandler)
+			r.Get("/list-resource", svc.listResourceHandler)
+			r.Get("/get-resource", svc.getResourceHandler)
+			r.Get("/list-resource-tag", svc.listResourceTagHandler)
 			r.Group(func(r chi.Router) {
 				r.Use(middleware.AllowContentType("application/json"))
-				r.Post("/put-role", svc.putRoleHandler)
-				r.Post("/delete-role", svc.deleteRoleHandler)
-				r.Post("/attach-role", svc.attachRoleHandler)
-				r.Post("/detach-role", svc.detachRoleHandler)
-				r.Post("/put-policy", svc.putPolicyHandler)
-				r.Post("/delete-policy", svc.deletePolicyHandler)
-				r.Post("/attach-policy", svc.attachPolicyHandler)
-				r.Post("/detach-policy", svc.detachPolicyHandler)
+				r.Post("/put-finding", svc.putFindingHandler)
+				r.Post("/delete-finding", svc.deleteFindingHandler)
+				r.Post("/tag-finding", svc.tagFindingHandler)
+				r.Post("/untag-finding", svc.untagFindingHandler)
+				r.Post("/put-resource", svc.putResourceHandler)
+				r.Post("/delete-resource", svc.deleteResourceHandler)
+				r.Post("/tag-resource", svc.tagResourceHandler)
+				r.Post("/untag-resource", svc.untagResourceHandler)
 			})
 		})
-	})
 
-	r.Route("/project", func(r chi.Router) {
-		r.Get("/list-project", svc.listProjectHandler)
-		r.Group(func(r chi.Router) {
-			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/create-project", svc.createProjectHandler)
+		r.Route("/iam", func(r chi.Router) {
+			r.Get("/list-user", svc.listUserHandler)
+			r.Get("/get-user", svc.getUserHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType("application/json"))
+				r.Post("/put-user", svc.putUserHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-role", svc.listRoleHandler)
+				r.Get("/get-role", svc.getRoleHandler)
+				r.Get("/list-policy", svc.listPolicyHandler)
+				r.Get("/get-policy", svc.getPolicyHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType("application/json"))
+					r.Post("/put-role", svc.putRoleHandler)
+					r.Post("/delete-role", svc.deleteRoleHandler)
+					r.Post("/attach-role", svc.attachRoleHandler)
+					r.Post("/detach-role", svc.detachRoleHandler)
+					r.Post("/put-policy", svc.putPolicyHandler)
+					r.Post("/delete-policy", svc.deletePolicyHandler)
+					r.Post("/attach-policy", svc.attachPolicyHandler)
+					r.Post("/detach-policy", svc.detachPolicyHandler)
+				})
+			})
 		})
-		r.Group(func(r chi.Router) {
+
+		r.Route("/project", func(r chi.Router) {
+			r.Get("/list-project", svc.listProjectHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType("application/json"))
+				r.Post("/create-project", svc.createProjectHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Use(middleware.AllowContentType("application/json"))
+				r.Post("/update-project", svc.updateProjectHandler)
+				r.Post("/delete-project", svc.deleteProjectHandler)
+			})
+		})
+
+		r.Route("/aws", func(r chi.Router) {
 			r.Use(svc.authzWithProject)
-			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/update-project", svc.updateProjectHandler)
-			r.Post("/delete-project", svc.deleteProjectHandler)
+			r.Get("/list-aws", svc.listAWSHandler)
+			r.Get("/list-datasource", svc.listDataSourceHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType("application/json"))
+				r.Post("/put-aws", svc.putAWSHandler)
+				r.Post("/delete-aws", svc.deleteAWSHandler)
+				r.Post("/attach-datasource", svc.attachDataSourceHandler)
+				r.Post("/detach-datasource", svc.detachDataSourceHandler)
+				r.Post("/invoke-scan", svc.detachDataSourceHandler)
+			})
 		})
-	})
 
-	r.Route("/aws", func(r chi.Router) {
-		r.Use(svc.authzWithProject)
-		r.Get("/list-aws", svc.listAWSHandler)
-		r.Get("/list-datasource", svc.listDataSourceHandler)
-		r.Group(func(r chi.Router) {
-			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/put-aws", svc.putAWSHandler)
-			r.Post("/delete-aws", svc.deleteAWSHandler)
-			r.Post("/attach-datasource", svc.attachDataSourceHandler)
-			r.Post("/detach-datasource", svc.detachDataSourceHandler)
-			r.Post("/invoke-scan", svc.detachDataSourceHandler)
+		r.Route("/osint", func(r chi.Router) {
+			r.Use(svc.authzWithProject)
+			r.Get("/list-osint", svc.listOSINTHandler)
+			r.Get("/list-datasource", svc.listOSINTDataSourceHandler)
+			r.Get("/list-rel-datasource", svc.listOSINTResultHandler)
+			r.Get("/get-osint", svc.getOSINTHandler)
+			r.Get("/get-datasource", svc.getOSINTDataSourceHandler)
+			r.Get("/get-rel-datasource", svc.getOSINTResultHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType("application/json"))
+				r.Post("/put-osint", svc.putOSINTHandler)
+				r.Post("/delete-osint", svc.deleteOSINTHandler)
+				r.Post("/put-datasource", svc.putOSINTDataSourceHandler)
+				r.Post("/delete-datasource", svc.deleteOSINTDataSourceHandler)
+				r.Post("/put-rel-datasource", svc.putOSINTResultHandler)
+				r.Post("/delete-rel-datasource", svc.deleteOSINTResultHandler)
+				r.Post("/start-osint", svc.startOSINTHandler)
+			})
 		})
-	})
 
-	r.Route("/osint", func(r chi.Router) {
-		r.Use(svc.authzWithProject)
-		r.Get("/list-osint", svc.listOSINTHandler)
-		r.Get("/list-datasource", svc.listOSINTDataSourceHandler)
-		r.Get("/list-rel-datasource", svc.listOSINTResultHandler)
-		r.Get("/get-osint", svc.getOSINTHandler)
-		r.Get("/get-datasource", svc.getOSINTDataSourceHandler)
-		r.Get("/get-rel-datasource", svc.getOSINTResultHandler)
-		r.Group(func(r chi.Router) {
-			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/put-osint", svc.putOSINTHandler)
-			r.Post("/delete-osint", svc.deleteOSINTHandler)
-			r.Post("/put-datasource", svc.putOSINTDataSourceHandler)
-			r.Post("/delete-datasource", svc.deleteOSINTDataSourceHandler)
-			r.Post("/put-rel-datasource", svc.putOSINTResultHandler)
-			r.Post("/delete-rel-datasource", svc.deleteOSINTResultHandler)
-			r.Post("/start-osint", svc.startOSINTHandler)
-		})
-	})
-
-	r.Route("/diagnosis", func(r chi.Router) {
-		r.Use(svc.authzWithProject)
-		r.Get("/list-diagnosis", svc.listDiagnosisHandler)
-		r.Get("/list-datasource", svc.listDiagnosisDataSourceHandler)
-		r.Get("/list-rel-datasource", svc.listRelDiagnosisDataSourceHandler)
-		r.Get("/get-diagnosis", svc.getDiagnosisHandler)
-		r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
-		r.Get("/get-rel-datasource", svc.getRelDiagnosisDataSourceHandler)
-		r.Group(func(r chi.Router) {
-			r.Use(middleware.AllowContentType("application/json"))
-			r.Post("/put-diagnosis", svc.putDiagnosisHandler)
-			r.Post("/delete-diagnosis", svc.deleteDiagnosisHandler)
-			r.Post("/put-datasource", svc.putDiagnosisDataSourceHandler)
-			r.Post("/delete-datasource", svc.deleteDiagnosisDataSourceHandler)
-			r.Post("/put-rel-datasource", svc.putRelDiagnosisDataSourceHandler)
-			r.Post("/delete-rel-datasource", svc.deleteRelDiagnosisDataSourceHandler)
-			r.Post("/start-diagnosis", svc.startDiagnosisHandler)
+		r.Route("/diagnosis", func(r chi.Router) {
+			r.Use(svc.authzWithProject)
+			r.Get("/list-diagnosis", svc.listDiagnosisHandler)
+			r.Get("/list-datasource", svc.listDiagnosisDataSourceHandler)
+			r.Get("/list-rel-datasource", svc.listRelDiagnosisDataSourceHandler)
+			r.Get("/get-diagnosis", svc.getDiagnosisHandler)
+			r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
+			r.Get("/get-rel-datasource", svc.getRelDiagnosisDataSourceHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType("application/json"))
+				r.Post("/put-diagnosis", svc.putDiagnosisHandler)
+				r.Post("/delete-diagnosis", svc.deleteDiagnosisHandler)
+				r.Post("/put-datasource", svc.putDiagnosisDataSourceHandler)
+				r.Post("/delete-datasource", svc.deleteDiagnosisDataSourceHandler)
+				r.Post("/put-rel-datasource", svc.putRelDiagnosisDataSourceHandler)
+				r.Post("/delete-rel-datasource", svc.deleteRelDiagnosisDataSourceHandler)
+				r.Post("/start-diagnosis", svc.startDiagnosisHandler)
+			})
 		})
 	})
 

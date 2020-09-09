@@ -22,7 +22,7 @@ func TestSigninHandler(t *testing.T) {
 		{
 			name:  "OK",
 			input: &requestUser{sub: "sub", userID: 123},
-			want:  http.StatusSeeOther,
+			want:  http.StatusOK,
 		},
 		{
 			name:  "NG No user",
@@ -33,7 +33,7 @@ func TestSigninHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/signin", nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/signin", nil)
 			req = req.WithContext(context.WithValue(req.Context(), userKey, c.input))
 			signinHandler(rec, req)
 			got := rec.Result().StatusCode
@@ -78,7 +78,7 @@ func TestValidCSRFToken(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			req, _ := http.NewRequest(http.MethodPost, "/test", nil)
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/test", nil)
 			req.Header.Add("X-XSRF-TOKEN", c.inputHeader)
 			req.AddCookie(&http.Cookie{Name: "XSRF-TOKEN", Value: c.inputCookie})
 			got := validCSRFToken(req)
@@ -133,7 +133,7 @@ func TestAuthzProject(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
 				iamMock.On("IsAuthorized").Return(c.mockResp, c.mockErr).Once()
 			}
-			req, _ := http.NewRequest(http.MethodGet, "/service/action?"+c.inputProject, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/service/action?"+c.inputProject, nil)
 			got := svc.authzProject(c.inputUser, req)
 			if got != c.want {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
@@ -150,12 +150,12 @@ func TestGetActionNameFromURI(t *testing.T) {
 	}{
 		{
 			name:  "OK",
-			input: "/service/path1/path2",
+			input: "/api/v1/service/path1/path2",
 			want:  "service/path1",
 		},
 		{
 			name:  "OK No sub paths",
-			input: "/service/",
+			input: "/api/v1/service/",
 			want:  "service/",
 		},
 		{
@@ -170,7 +170,7 @@ func TestGetActionNameFromURI(t *testing.T) {
 		},
 		{
 			name:  "NG No sub slashes",
-			input: "/service-action1-action2",
+			input: "/api/v1/service-action1-action2",
 			want:  "",
 		},
 	}
@@ -192,12 +192,12 @@ func TestGetServiceNameFromURI(t *testing.T) {
 	}{
 		{
 			name:  "OK",
-			input: "/service/path1/path2",
+			input: "/api/v1/service/path1/path2",
 			want:  "service",
 		},
 		{
 			name:  "OK No sub paths",
-			input: "/service",
+			input: "/api/v1/service",
 			want:  "service",
 		},
 		{

@@ -43,7 +43,8 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		Path:   "/",
 		Secure: r.Header.Get("X-Forwarded-Proto") == "https",
 	})
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	// http.Redirect(w, r, "/", http.StatusSeeOther)
+	writeResponse(w, http.StatusOK, map[string]interface{}{})
 }
 
 func (g *gatewayService) authn(next http.Handler) http.Handler {
@@ -135,12 +136,14 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	return resp.Ok
 }
 
-// getActionNameFromURI: `/service/path1/path2/...` will return `service/path1`
+const prefixURI = "/api/v1/"
+
+// getActionNameFromURI: `/api/v1/service/path1/path2/...` will return `service/path1`
 func getActionNameFromURI(uri string) string {
-	if !strings.HasPrefix(uri, "/") {
+	if !strings.HasPrefix(uri, prefixURI) {
 		return ""
 	}
-	paths := strings.Split(strings.Replace(uri, "/", "", 1), "/")
+	paths := strings.Split(strings.Replace(uri, prefixURI, "", 1), "/")
 	if len(paths) < 2 {
 		return ""
 	}
@@ -149,10 +152,10 @@ func getActionNameFromURI(uri string) string {
 
 // getServiceNameFromURI: `/service/path1/path2/...` will return `service`
 func getServiceNameFromURI(uri string) string {
-	if !strings.HasPrefix(uri, "/") {
+	if !strings.HasPrefix(uri, prefixURI) {
 		return ""
 	}
-	paths := strings.Split(strings.Replace(uri, "/", "", 1), "/")
+	paths := strings.Split(strings.Replace(uri, prefixURI, "", 1), "/")
 	if len(paths) < 1 {
 		return ""
 	}
