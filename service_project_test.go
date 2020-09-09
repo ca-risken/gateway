@@ -52,7 +52,7 @@ func TestListProjectHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/project/list-project/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/project/list-project/?"+c.input, nil)
 			svc.listProjectHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -110,7 +110,7 @@ func TestCreateProjectHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/project/create-project/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/project/create-project/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.createProjectHandler(rec, req)
 			// Check Response
@@ -169,7 +169,7 @@ func TestUpdateProjectHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/project/update-project/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/project/update-project/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.updateProjectHandler(rec, req)
 			// Check Response
@@ -228,7 +228,7 @@ func TestDeleteProjectHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/project/delete-project/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/project/delete-project/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteProjectHandler(rec, req)
 			// Check Response

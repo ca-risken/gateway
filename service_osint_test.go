@@ -52,7 +52,7 @@ func TestListOSINTHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/osint/list-osint/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/list-osint/?"+c.input, nil)
 			svc.listOSINTHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -115,7 +115,7 @@ func TestGetOSINTHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/osint/get-osint/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/get-osint/?"+c.input, nil)
 			svc.getOSINTHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -173,7 +173,7 @@ func TestPutOSINTHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/osint/put-osint/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/put-osint/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putOSINTHandler(rec, req)
 			// Check Response
@@ -232,7 +232,7 @@ func TestDeleteOSINTHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/osint/delete-osint/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/delete-osint/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteOSINTHandler(rec, req)
 			// Check Response
@@ -291,7 +291,7 @@ func TestListOSINTDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/osint/list-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/list-datasource/?"+c.input, nil)
 			svc.listOSINTDataSourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -354,7 +354,7 @@ func TestGetOSINTDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/osint/get-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/get-datasource/?"+c.input, nil)
 			svc.getOSINTDataSourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -412,7 +412,7 @@ func TestPutOSINTDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/osint/put-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/put-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putOSINTDataSourceHandler(rec, req)
 			// Check Response
@@ -471,7 +471,7 @@ func TestDeleteOSINTDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/osint/delete-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/delete-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteOSINTDataSourceHandler(rec, req)
 			// Check Response
@@ -530,7 +530,7 @@ func TestListOSINTResultHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/osint/list-rel-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/list-rel-datasource/?"+c.input, nil)
 			svc.listOSINTResultHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -593,7 +593,7 @@ func TestGetOSINTResultHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/osint/get-rel-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/get-rel-datasource/?"+c.input, nil)
 			svc.getOSINTResultHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -651,7 +651,7 @@ func TestPutOSINTResultHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/osint/put-rel-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/put-rel-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putOSINTResultHandler(rec, req)
 			// Check Response
@@ -710,7 +710,7 @@ func TestDeleteOSINTResultHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/osint/delete-rel-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/delete-rel-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteOSINTResultHandler(rec, req)
 			// Check Response
@@ -769,7 +769,7 @@ func TestStartOSINTHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/osint/start-osint/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/start-osint/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.startOSINTHandler(rec, req)
 			// Check Response

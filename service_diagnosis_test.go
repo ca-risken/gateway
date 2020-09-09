@@ -52,7 +52,7 @@ func TestListDiagnosisHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/diagnosis/list-diagnosis/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-diagnosis/?"+c.input, nil)
 			svc.listDiagnosisHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -115,7 +115,7 @@ func TestGetDiagnosisHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/diagnosis/get-diagnosis/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-diagnosis/?"+c.input, nil)
 			svc.getDiagnosisHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -173,7 +173,7 @@ func TestPutDiagnosisHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/diagnosis/put-diagnosis/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-diagnosis/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putDiagnosisHandler(rec, req)
 			// Check Response
@@ -232,7 +232,7 @@ func TestDeleteDiagnosisHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/diagnosis/delete-diagnosis/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-diagnosis/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteDiagnosisHandler(rec, req)
 			// Check Response
@@ -291,7 +291,7 @@ func TestListDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/diagnosis/list-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-datasource/?"+c.input, nil)
 			svc.listDiagnosisDataSourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -354,7 +354,7 @@ func TestGetDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/diagnosis/get-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-datasource/?"+c.input, nil)
 			svc.getDiagnosisDataSourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -412,7 +412,7 @@ func TestPutDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/diagnosis/put-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putDiagnosisDataSourceHandler(rec, req)
 			// Check Response
@@ -471,7 +471,7 @@ func TestDeleteDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/diagnosis/delete-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteDiagnosisDataSourceHandler(rec, req)
 			// Check Response
@@ -530,7 +530,7 @@ func TestListRelDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/diagnosis/list-rel-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-rel-datasource/?"+c.input, nil)
 			svc.listRelDiagnosisDataSourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -593,7 +593,7 @@ func TestGetRelDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/diagnosis/get-rel-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-rel-datasource/?"+c.input, nil)
 			svc.getRelDiagnosisDataSourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -651,7 +651,7 @@ func TestPutRelDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/diagnosis/put-rel-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-rel-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putRelDiagnosisDataSourceHandler(rec, req)
 			// Check Response
@@ -710,7 +710,7 @@ func TestDeleteRelDiagnosisDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/diagnosis/delete-rel-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-rel-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteRelDiagnosisDataSourceHandler(rec, req)
 			// Check Response
@@ -769,7 +769,7 @@ func TestStartDiagnosisHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/diagnosis/start-diagnosis/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/start-diagnosis/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.startDiagnosisHandler(rec, req)
 			// Check Response
