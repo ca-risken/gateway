@@ -52,7 +52,7 @@ func TestListAWSHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/aws/list-aws/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/aws/list-aws/?"+c.input, nil)
 			svc.listAWSHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -110,7 +110,7 @@ func TestPutAWSHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/aws/put-aws/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/aws/put-aws/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putAWSHandler(rec, req)
 			// Check Response
@@ -169,7 +169,7 @@ func TestDeleteAWSHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/aws/delete-aws/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/aws/delete-aws/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteAWSHandler(rec, req)
 			// Check Response
@@ -228,7 +228,7 @@ func TestListDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/aws/list-datasource/?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/aws/list-datasource/?"+c.input, nil)
 			svc.listDataSourceHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -286,7 +286,7 @@ func TestAttachDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/aws/attach-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/aws/attach-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.attachDataSourceHandler(rec, req)
 			// Check Response
@@ -345,7 +345,7 @@ func TestDetachDataSourceHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/aws/detach-datasource/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/aws/detach-datasource/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.detachDataSourceHandler(rec, req)
 			// Check Response
@@ -404,7 +404,7 @@ func TestInvokeScanHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/aws/invoke-scan/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/aws/invoke-scan/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.invokeScanHandler(rec, req)
 			// Check Response

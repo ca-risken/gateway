@@ -49,7 +49,7 @@ func TestListUserHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/iam/list-user?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/list-user?"+c.input, nil)
 			svc.listUserHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -107,7 +107,7 @@ func TestGetUserHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/iam/get-user?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/get-user?"+c.input, nil)
 			svc.getUserHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -165,7 +165,7 @@ func TestPutUserHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/put-user/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/put-user/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putUserHandler(rec, req)
 			// Check Response
@@ -224,7 +224,7 @@ func TestListRoleHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/iam/list-role?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/list-role?"+c.input, nil)
 			svc.listRoleHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -282,7 +282,7 @@ func TestGetRoleHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/iam/get-role?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/get-role?"+c.input, nil)
 			svc.getRoleHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -340,7 +340,7 @@ func TestPutRoleHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/put-role/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/put-role/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putRoleHandler(rec, req)
 			// Check Response
@@ -399,7 +399,7 @@ func TestDeleteRoleHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/delete-role/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/delete-role/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deleteRoleHandler(rec, req)
 			// Check Response
@@ -458,7 +458,7 @@ func TestAttachRoleHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/attach-role/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/attach-role/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.attachRoleHandler(rec, req)
 			// Check Response
@@ -517,7 +517,7 @@ func TestDetachRoleHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/detach-role/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/detach-role/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.detachRoleHandler(rec, req)
 			// Check Response
@@ -576,7 +576,7 @@ func TestListPolicyHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/iam/list-policy?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/list-policy?"+c.input, nil)
 			svc.listPolicyHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -634,7 +634,7 @@ func TestGetPolicyHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/iam/get-policy?"+c.input, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/get-policy?"+c.input, nil)
 			svc.getPolicyHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
@@ -692,7 +692,7 @@ func TestPutPolicyHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/put-policy/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/put-policy/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putPolicyHandler(rec, req)
 			// Check Response
@@ -751,7 +751,7 @@ func TestDeletePolicyHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/delete-policy/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/delete-policy/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.deletePolicyHandler(rec, req)
 			// Check Response
@@ -810,7 +810,7 @@ func TestAttachPolicyHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/attach-policy/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/attach-policy/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.attachPolicyHandler(rec, req)
 			// Check Response
@@ -869,7 +869,7 @@ func TestDetachPolicyHandler(t *testing.T) {
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/iam/detach-policy/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/detach-policy/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.detachPolicyHandler(rec, req)
 			// Check Response
