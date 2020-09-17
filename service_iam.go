@@ -39,7 +39,11 @@ func (g *gatewayService) getUserHandler(w http.ResponseWriter, r *http.Request) 
 func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) {
 	req := &iam.PutUserRequest{}
 	bind(req, r)
+	if req.User != nil && g.uidHeader != "" {
+		req.User.Sub = r.Header.Get(g.uidHeader) // force update sub
+	}
 	if err := req.Validate(); err != nil {
+		appLogger.Debugf("debug: %v", err)
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}

@@ -7,17 +7,15 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
+const (
+	contenTypeJSON = "application/json"
+)
+
 func newRouter(svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
-	// r.Use(cors.Handler(cors.Options{
-	// 	AllowedOrigins:   []string{"http://localhost:8080"},
-	// 	AllowedMethods:   []string{"GET", "POST", "HEAD", "OPTIONS"},
-	// 	AllowedHeaders:   []string{"*"},
-	// 	AllowCredentials: true,
-	// }))
 	r.Use(httpLogger)
 	r.Use(middleware.StripSlashes)
 	r.Use(svc.authn)
@@ -34,7 +32,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/get-resource", svc.getResourceHandler)
 			r.Get("/list-resource-tag", svc.listResourceTagHandler)
 			r.Group(func(r chi.Router) {
-				r.Use(middleware.AllowContentType("application/json"))
+				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-finding", svc.putFindingHandler)
 				r.Post("/delete-finding", svc.deleteFindingHandler)
 				r.Post("/tag-finding", svc.tagFindingHandler)
@@ -50,7 +48,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/list-user", svc.listUserHandler)
 			r.Get("/get-user", svc.getUserHandler)
 			r.Group(func(r chi.Router) {
-				r.Use(middleware.AllowContentType("application/json"))
+				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-user", svc.putUserHandler)
 			})
 			r.Group(func(r chi.Router) {
@@ -60,7 +58,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/list-policy", svc.listPolicyHandler)
 				r.Get("/get-policy", svc.getPolicyHandler)
 				r.Group(func(r chi.Router) {
-					r.Use(middleware.AllowContentType("application/json"))
+					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/put-role", svc.putRoleHandler)
 					r.Post("/delete-role", svc.deleteRoleHandler)
 					r.Post("/attach-role", svc.attachRoleHandler)
@@ -76,12 +74,12 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		r.Route("/project", func(r chi.Router) {
 			r.Get("/list-project", svc.listProjectHandler)
 			r.Group(func(r chi.Router) {
-				r.Use(middleware.AllowContentType("application/json"))
+				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/create-project", svc.createProjectHandler)
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
-				r.Use(middleware.AllowContentType("application/json"))
+				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/update-project", svc.updateProjectHandler)
 				r.Post("/delete-project", svc.deleteProjectHandler)
 			})
@@ -92,7 +90,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/list-aws", svc.listAWSHandler)
 			r.Get("/list-datasource", svc.listDataSourceHandler)
 			r.Group(func(r chi.Router) {
-				r.Use(middleware.AllowContentType("application/json"))
+				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-aws", svc.putAWSHandler)
 				r.Post("/delete-aws", svc.deleteAWSHandler)
 				r.Post("/attach-datasource", svc.attachDataSourceHandler)
@@ -110,7 +108,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/get-datasource", svc.getOSINTDataSourceHandler)
 			r.Get("/get-rel-datasource", svc.getOSINTResultHandler)
 			r.Group(func(r chi.Router) {
-				r.Use(middleware.AllowContentType("application/json"))
+				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-osint", svc.putOSINTHandler)
 				r.Post("/delete-osint", svc.deleteOSINTHandler)
 				r.Post("/put-datasource", svc.putOSINTDataSourceHandler)
@@ -130,7 +128,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
 			r.Get("/get-rel-datasource", svc.getRelDiagnosisDataSourceHandler)
 			r.Group(func(r chi.Router) {
-				r.Use(middleware.AllowContentType("application/json"))
+				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-diagnosis", svc.putDiagnosisHandler)
 				r.Post("/delete-diagnosis", svc.deleteDiagnosisHandler)
 				r.Post("/put-datasource", svc.putDiagnosisDataSourceHandler)
