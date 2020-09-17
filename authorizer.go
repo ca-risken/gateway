@@ -35,6 +35,8 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 		return
 	}
+	signinUser := r.Context().Value(userKey).(*requestUser)
+
 	token := make([]byte, 24)
 	rand.Read(token)
 	http.SetCookie(w, &http.Cookie{
@@ -43,8 +45,9 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		Path:   "/",
 		Secure: r.Header.Get("X-Forwarded-Proto") == "https",
 	})
-	// http.Redirect(w, r, "/", http.StatusSeeOther)
-	writeResponse(w, http.StatusOK, map[string]interface{}{})
+	writeResponse(w, http.StatusOK, map[string]interface{}{
+		"user_id": signinUser.userID,
+	})
 }
 
 func (g *gatewayService) authn(next http.Handler) http.Handler {
