@@ -95,7 +95,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-aws", svc.deleteAWSHandler)
 				r.Post("/attach-datasource", svc.attachDataSourceHandler)
 				r.Post("/detach-datasource", svc.detachDataSourceHandler)
-				r.Post("/invoke-scan", svc.detachDataSourceHandler)
+				r.Post("/invoke-scan", svc.invokeScanHandler)
 			})
 		})
 
