@@ -355,6 +355,294 @@ delete-project:
 		--data '{"project_id":1007}' \
 		'http://localhost:8000/api/v1/project/delete-project/'
 
+.PHONY: list-alert
+list-alert:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-alert/?project_id=1001'
+
+.PHONY: get-alert
+get-alert:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-alert/?project_id=1001&alert_id=1001'
+
+.PHONY: upsert-alert
+upsert-alert:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"alert":{"alert_condition_id":1001,"description":"test_desc","severity":"high","project_id":1001,"activated":true}}' \
+		'http://localhost:8000/api/v1/alert/put-alert/'
+
+.PHONY: delete-alert
+delete-alert:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"alert_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-alert/'
+
+.PHONY: list-alert_history
+list-alert_history:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-history/?project_id=1001'
+
+.PHONY: get-alert_history
+get-alert_history:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-history/?project_id=1001&alert_history_id=1001'
+
+.PHONY: upsert-alert_history
+upsert-alert_history:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"alert_history":{"alert_id":1021,"description":"test_desc","severity":"high","project_id":1001,"history_type":"created"}}' \
+		'http://localhost:8000/api/v1/alert/put-history/'
+
+.PHONY: delete-alert_history
+delete-alert_history:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"alert_history_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-history/'
+
+.PHONY: list-rel_alert_finding
+list-rel_alert_finding:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-rel_alert_finding/?project_id=1001'
+
+.PHONY: get-rel_alert_finding
+get-rel_alert_finding:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-rel_alert_finding/?project_id=1001&alert_id=1001&finding_id=1001'
+
+.PHONY: upsert-rel_alert_finding
+upsert-rel_alert_finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"rel_alert_finding":{"alert_id":1021,"finding_id":1001,"project_id":1001}}' \
+		'http://localhost:8000/api/v1/alert/put-rel_alert_finding/'
+
+.PHONY: delete-rel_alert_finding
+delete-rel_alert_finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"alert_id":1001,"finding_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-rel_alert_finding/'
+
+.PHONY: list-alert_condition
+list-alert_condition:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-condition/?project_id=1001'
+
+.PHONY: get-alert_condition
+get-alert_condition:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-condition/?project_id=1001&alert_condition_id=1001'
+
+.PHONY: upsert-alert_condition
+upsert-alert_condition:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"alert_condition":{"description":"test_desc","severity":"high","project_id":1001,"and_or":"and","enabled":true}}' \
+		'http://localhost:8000/api/v1/alert/put-condition/'
+
+.PHONY: delete-alert_condition
+delete-alert_condition:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"alert_condition_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-condition/'
+
+.PHONY: list-alert_rule
+list-alert_rule:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-rule/?project_id=1001'
+
+.PHONY: get-alert_rule
+get-alert_rule:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-rule/?project_id=1001&alert_rule_id=1001'
+
+.PHONY: upsert-alert_rule
+upsert-alert_rule:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"alert_rule":{"name":"test_rule","score":1.0,"resource_name":"test_resource","tag":"test_tag","finding_cnt": 1,"project_id":1001}}' \
+		'http://localhost:8000/api/v1/alert/put-rule/'
+
+.PHONY: delete-alert_rule
+delete-alert_rule:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"alert_rule_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-rule/'
+
+.PHONY: list-alert_cond_rule
+list-alert_cond_rule:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-condition_rule/?project_id=1001'
+
+.PHONY: get-alert_cond_rule
+get-alert_cond_rule:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-condition_rule/?project_id=1001&alert_condition_id=1001&alert_rule_id=1001'
+
+.PHONY: upsert-alert_cond_rule
+upsert-alert_cond_rule:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"alert_cond_rule":{"alert_condition_id":1001,"alert_rule_id":1001,"project_id":1001}}' \
+		'http://localhost:8000/api/v1/alert/put-condition_rule/'
+
+.PHONY: delete-alert_cond_rule
+delete-alert_cond_rule:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"alert_condition_id":1001,"alert_rule_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-condition_rule/'
+
+.PHONY: list-notification
+list-notification:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-notification/?project_id=1001'
+
+.PHONY: get-notification
+get-notification:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-notification/?project_id=1001&notification_id=1001'
+
+.PHONY: upsert-notification
+upsert-notification:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"notification":{"name":"test_notification","type":"slack","notify_setting":"{\"test_key\":\"test_value\"}","project_id":1001}}' \
+		'http://localhost:8000/api/v1/alert/put-notification/'
+
+.PHONY: delete-notification
+delete-notification:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"notification_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-notification/'
+
+.PHONY: list-alert_cond_notification
+list-alert_cond_notification:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/list-condition_notification/?project_id=1001'
+
+.PHONY: get-alert_cond_notification
+get-alert_cond_notification:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/alert/get-condition_notification/?project_id=1001&alert_condition_id=1001&notification_id=1001'
+
+.PHONY: upsert-alert_cond_notification
+upsert-alert_cond_notification:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"alert_cond_notification":{"alert_condition_id":1001,"notification_id":1001,"project_id":1001}}' \
+		'http://localhost:8000/api/v1/alert/put-condition_notification/'
+
+.PHONY: delete-alert_cond_notification
+delete-alert_cond_notification:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"alert_condition_id":1001,"notification_id":1001,"project_id":1001}' \
+		'http://localhost:8000/api/v1/alert/delete-condition_notification/'
+
 .PHONY: list-aws
 list-aws:
 	curl -is -XGET \

@@ -39,6 +39,8 @@ github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym
 github.com/BurntSushi/xgb v0.0.0-20200324125942-20f126ea2843/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20200804164209-f0eae226d636 h1:5RuIJn9G0PwTWmBf+4fs5DTnB/rAawk1pwB7N6zEC7Q=
 github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20200804164209-f0eae226d636/go.mod h1:x1QQrb7ktNUqynjtQ3pUh2NEJKpR8SiTKhxJ01CB1i0=
+github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20201002084919-60987e30c1b4 h1:4GsonoljW6qmBocprnDL/8zzhsnNXACeIjuiSF82hlM=
+github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20201002084919-60987e30c1b4/go.mod h1:MLS2kA0EbJA+isrb5Oa3t1V4GflD72t2KHAu6gT5Bxk=
 github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200925101508-72c4ff41158e h1:dKmJVGYsM7BPH3vsVks0ECxtvL1LyiiCegJnC9MEutA=
 github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20200925101508-72c4ff41158e/go.mod h1:G0wI9XG7mhLG99b/iRRkefGrAXte0qg4eVJKfCVf8ls=
 github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20200925101508-72c4ff41158e h1:YiaqF8/geZllQUeU/pweaEvCoKGEFOL0w5o5ttMXGDI=
