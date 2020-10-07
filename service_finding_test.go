@@ -287,8 +287,8 @@ func TestListFindingTagHandler(t *testing.T) {
 			name:  "OK Response exists",
 			input: `project_id=1&finding_id=1002`,
 			mockResp: &finding.ListFindingTagResponse{Tag: []*finding.FindingTag{
-				{FindingTagId: 1, FindingId: 1002, ProjectId: 1, TagKey: "k1", TagValue: "v"},
-				{FindingTagId: 2, FindingId: 1002, ProjectId: 1, TagKey: "k2", TagValue: "v"},
+				{FindingTagId: 1, FindingId: 1002, ProjectId: 1, Tag: "tag1"},
+				{FindingTagId: 2, FindingId: 1002, ProjectId: 1, Tag: "tag2"},
 			}},
 			wantStatus: http.StatusOK,
 		},
@@ -347,7 +347,7 @@ func TestTagFindingHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1001, "tag":{"finding_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}`,
+			input:      `{"project_id":1001, "tag":{"finding_id":1001, "project_id":1001, "tag":"tag"}}`,
 			mockResp:   &finding.TagFindingResponse{Tag: &finding.FindingTag{FindingTagId: 1001}},
 			wantStatus: http.StatusOK,
 		},
@@ -358,7 +358,7 @@ func TestTagFindingHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1001, "tag":{"finding_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}`,
+			input:      `{"project_id":1001, "tag":{"finding_id":1001, "project_id":1001, "tag":"tag"}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
@@ -725,8 +725,8 @@ func TestListResourceTagHandler(t *testing.T) {
 			name:  "OK Response exists",
 			input: `project_id=1&resource_id=1001`,
 			mockResp: &finding.ListResourceTagResponse{Tag: []*finding.ResourceTag{
-				{ResourceTagId: 1, ResourceId: 1001, ProjectId: 1, TagKey: "k1", TagValue: "v"},
-				{ResourceTagId: 2, ResourceId: 1001, ProjectId: 1, TagKey: "k2", TagValue: "v"},
+				{ResourceTagId: 1, ResourceId: 1001, ProjectId: 1, Tag: "tag1"},
+				{ResourceTagId: 2, ResourceId: 1001, ProjectId: 1, Tag: "tag2"},
 			}},
 			wantStatus: http.StatusOK,
 		},
@@ -785,7 +785,7 @@ func TestTagResourceHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1001, "tag":{"resource_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}`,
+			input:      `{"project_id":1001, "tag":{"resource_id":1001, "project_id":1001, "tag":"tag"}}`,
 			mockResp:   &finding.TagResourceResponse{Tag: &finding.ResourceTag{ResourceTagId: 1001}},
 			wantStatus: http.StatusOK,
 		},
@@ -796,7 +796,7 @@ func TestTagResourceHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1001, "tag":{"resource_id":1001, "project_id":1001, "tag_key":"test", "tag_value":"true"}}`,
+			input:      `{"project_id":1001, "tag":{"resource_id":1001, "project_id":1001, "tag":"tag"}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
