@@ -22,10 +22,8 @@ go-test:
 .PHONY: go-mod-update
 go-mod-update:
 	go get -u \
-			github.com/CyberAgent/mimosa-core/proto/finding \
-			github.com/CyberAgent/mimosa-core/proto/iam \
-			github.com/CyberAgent/mimosa-core/proto/project \
-			github.com/CyberAgent/mimosa-aws/proto/aws
+			github.com/CyberAgent/mimosa-core/... \
+			github.com/CyberAgent/mimosa-aws/...
 
 .PHONY: run
 run: go-test network
