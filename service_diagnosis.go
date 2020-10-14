@@ -3,68 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-diagnosis/pkg/pb/diagnosis"
+	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
 )
-
-func (g *gatewayService) listDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.ListDiagnosisRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.ListDiagnosis(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) getDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.GetDiagnosisRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.GetDiagnosis(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) putDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.PutDiagnosisRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.PutDiagnosis(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) deleteDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.DeleteDiagnosisRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.DeleteDiagnosis(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
 
 func (g *gatewayService) listDiagnosisDataSourceHandler(w http.ResponseWriter, r *http.Request) {
 	req := &diagnosis.ListDiagnosisDataSourceRequest{}
@@ -126,14 +66,14 @@ func (g *gatewayService) deleteDiagnosisDataSourceHandler(w http.ResponseWriter,
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) listRelDiagnosisDataSourceHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.ListRelDiagnosisDataSourceRequest{}
+func (g *gatewayService) listJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.ListJiraSettingRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.diagnosisClient.ListRelDiagnosisDataSource(r.Context(), req)
+	resp, err := g.diagnosisClient.ListJiraSetting(r.Context(), req)
 	if err != nil {
 		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -141,14 +81,14 @@ func (g *gatewayService) listRelDiagnosisDataSourceHandler(w http.ResponseWriter
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) getRelDiagnosisDataSourceHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.GetRelDiagnosisDataSourceRequest{}
+func (g *gatewayService) getJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.GetJiraSettingRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.diagnosisClient.GetRelDiagnosisDataSource(r.Context(), req)
+	resp, err := g.diagnosisClient.GetJiraSetting(r.Context(), req)
 	if err != nil {
 		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -156,14 +96,14 @@ func (g *gatewayService) getRelDiagnosisDataSourceHandler(w http.ResponseWriter,
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putRelDiagnosisDataSourceHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.PutRelDiagnosisDataSourceRequest{}
+func (g *gatewayService) putJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.PutJiraSettingRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.diagnosisClient.PutRelDiagnosisDataSource(r.Context(), req)
+	resp, err := g.diagnosisClient.PutJiraSetting(r.Context(), req)
 	if err != nil {
 		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -171,14 +111,14 @@ func (g *gatewayService) putRelDiagnosisDataSourceHandler(w http.ResponseWriter,
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) deleteRelDiagnosisDataSourceHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.DeleteRelDiagnosisDataSourceRequest{}
+func (g *gatewayService) deleteJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.DeleteJiraSettingRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.diagnosisClient.DeleteRelDiagnosisDataSource(r.Context(), req)
+	resp, err := g.diagnosisClient.DeleteJiraSetting(r.Context(), req)
 	if err != nil {
 		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return

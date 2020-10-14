@@ -11,7 +11,7 @@ import (
 	"github.com/CyberAgent/mimosa-core/proto/finding"
 	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/CyberAgent/mimosa-core/proto/project"
-	"github.com/CyberAgent/mimosa-diagnosis/pkg/pb/diagnosis"
+	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
 	"github.com/CyberAgent/mimosa-osint/pkg/pb/osint"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"

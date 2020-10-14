@@ -8,17 +8,22 @@ require (
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20201008070434-23d44883ce88
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20201008070434-23d44883ce88
 	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20201008070434-23d44883ce88
-	github.com/CyberAgent/mimosa-diagnosis/pkg/pb/diagnosis v0.0.0-20200903022243-30a2d211ca0d
+	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201013111037-bf1eb2b9314c
 	github.com/CyberAgent/mimosa-osint/pkg/pb/osint v0.0.0-20200904020518-fb1badc58c0d
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/golang/protobuf v1.4.2
+	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/gorilla/schema v1.1.0
 	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/stretchr/testify v1.6.1
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb // indirect
-	golang.org/x/sys v0.0.0-20201009025420-dfb3f7c4e634 // indirect
-	google.golang.org/genproto v0.0.0-20201009135657-4d944d34d83c // indirect
+	golang.org/x/sys v0.0.0-20201013132646-2da7054afaeb // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	google.golang.org/genproto v0.0.0-20201013134114-7f9ee70cb474 // indirect
 	google.golang.org/grpc v1.33.0
+	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200605160147-a5ece683394c // indirect
 )
