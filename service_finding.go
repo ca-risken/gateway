@@ -96,6 +96,24 @@ func (g *gatewayService) listFindingTagHandler(w http.ResponseWriter, r *http.Re
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listFindingTagNameHandler(w http.ResponseWriter, r *http.Request) {
+	// bind
+	req := &finding.ListFindingTagNameRequest{}
+	bind(req, r)
+	// validate
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	// call backend service
+	resp, err := g.findingClient.ListFindingTagName(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) tagFindingHandler(w http.ResponseWriter, r *http.Request) {
 	// bind
 	req := &finding.TagFindingRequest{}
@@ -215,6 +233,24 @@ func (g *gatewayService) listResourceTagHandler(w http.ResponseWriter, r *http.R
 	}
 	// call backend service
 	resp, err := g.findingClient.ListResourceTag(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) listResourceTagNameHandler(w http.ResponseWriter, r *http.Request) {
+	// bind
+	req := &finding.ListResourceTagNameRequest{}
+	bind(req, r)
+	// validate
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	// call backend service
+	resp, err := g.findingClient.ListResourceTagName(r.Context(), req)
 	if err != nil {
 		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return

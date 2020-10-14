@@ -4,11 +4,11 @@ go 1.15
 
 require (
 	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20201007090221-b965da2aae67
-	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20201008070434-23d44883ce88
-	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20201008070434-23d44883ce88
-	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20201008070434-23d44883ce88
-	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20201008070434-23d44883ce88
-	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201013111037-bf1eb2b9314c
+	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20201014103709-5f476e6c1da9
+	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20201014103709-5f476e6c1da9
+	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20201014103709-5f476e6c1da9
+	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20201014103709-5f476e6c1da9
+	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201014104952-ef4d3eaa07ff
 	github.com/CyberAgent/mimosa-osint/pkg/pb/osint v0.0.0-20200904020518-fb1badc58c0d
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/golang/protobuf v1.4.2
@@ -20,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb // indirect
-	golang.org/x/sys v0.0.0-20201013132646-2da7054afaeb // indirect
+	golang.org/x/sys v0.0.0-20201014080544-cc95f250f6bc // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/genproto v0.0.0-20201013134114-7f9ee70cb474 // indirect
 	google.golang.org/grpc v1.33.0
