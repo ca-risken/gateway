@@ -333,6 +333,68 @@ func TestListFindingTagHandler(t *testing.T) {
 	}
 }
 
+func TestListFindingTagNameHandler(t *testing.T) {
+	findingMock := &mockFindingClient{}
+	svc := gatewayService{
+		findingClient: findingMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *finding.ListFindingTagNameResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK Empty",
+			input:      `project_id=1`,
+			mockResp:   &finding.ListFindingTagNameResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "OK Response exists",
+			input:      `project_id=1`,
+			mockResp:   &finding.ListFindingTagNameResponse{Tag: []string{"tag1", "tag2"}},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid request",
+			input:      `project_id=invalid-project`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("ListFindingTagName").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/finding/list-finding-tag-name/?"+c.input, nil)
+			svc.listFindingTagNameHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
 func TestTagFindingHandler(t *testing.T) {
 	findingMock := &mockFindingClient{}
 	svc := gatewayService{
@@ -918,6 +980,10 @@ func (m *mockFindingClient) ListFindingTag(context.Context, *finding.ListFinding
 	args := m.Called()
 	return args.Get(0).(*finding.ListFindingTagResponse), args.Error(1)
 }
+func (m *mockFindingClient) ListFindingTagName(context.Context, *finding.ListFindingTagNameRequest, ...grpc.CallOption) (*finding.ListFindingTagNameResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*finding.ListFindingTagNameResponse), args.Error(1)
+}
 func (m *mockFindingClient) TagFinding(context.Context, *finding.TagFindingRequest, ...grpc.CallOption) (*finding.TagFindingResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*finding.TagFindingResponse), args.Error(1)
@@ -945,6 +1011,10 @@ func (m *mockFindingClient) DeleteResource(context.Context, *finding.DeleteResou
 func (m *mockFindingClient) ListResourceTag(context.Context, *finding.ListResourceTagRequest, ...grpc.CallOption) (*finding.ListResourceTagResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*finding.ListResourceTagResponse), args.Error(1)
+}
+func (m *mockFindingClient) ListResourceTagName(context.Context, *finding.ListResourceTagNameRequest, ...grpc.CallOption) (*finding.ListResourceTagNameResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*finding.ListResourceTagNameResponse), args.Error(1)
 }
 func (m *mockFindingClient) TagResource(context.Context, *finding.TagResourceRequest, ...grpc.CallOption) (*finding.TagResourceResponse, error) {
 	args := m.Called()

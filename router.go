@@ -28,9 +28,11 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/list-finding", svc.listFindingHandler)
 			r.Get("/get-finding", svc.getFindingHandler)
 			r.Get("/list-finding-tag", svc.listFindingTagHandler)
+			r.Get("/list-finding-tag-name", svc.listFindingTagNameHandler)
 			r.Get("/list-resource", svc.listResourceHandler)
 			r.Get("/get-resource", svc.getResourceHandler)
 			r.Get("/list-resource-tag", svc.listResourceTagHandler)
+			r.Get("/list-resource-tag-name", svc.listResourceTagNameHandler)
 			r.Group(func(r chi.Router) {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-finding", svc.putFindingHandler)
