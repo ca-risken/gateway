@@ -194,6 +194,14 @@ get-user:
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		'http://localhost:8000/api/v1/iam/get-user/?user_id=1001'
 
+.PHONY: is-admin
+is-admin:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/iam/is-admin/?user_id=1001'
+
 .PHONY: put-user
 put-user:
 	curl -is -XPOST \
@@ -645,7 +653,7 @@ delete-alert_cond_notification:
 .PHONY: list-aws
 list-aws:
 	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
+		--header 'x-amzn-oidc-identity: bob' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		'http://localhost:8000/api/v1/aws/list-aws/?project_id=1001'

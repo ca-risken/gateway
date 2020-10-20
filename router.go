@@ -49,6 +49,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		r.Route("/iam", func(r chi.Router) {
 			r.Get("/list-user", svc.listUserHandler)
 			r.Get("/get-user", svc.getUserHandler)
+			r.Get("/is-admin", svc.isAdminHandler)
 			r.Group(func(r chi.Router) {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-user", svc.putUserHandler)
@@ -128,28 +129,43 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 
 		r.Route("/aws", func(r chi.Router) {
-			r.Use(svc.authzWithProject)
-			r.Get("/list-aws", svc.listAWSHandler)
-			r.Get("/list-datasource", svc.listDataSourceHandler)
 			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-aws", svc.listAWSHandler)
+				r.Get("/list-datasource", svc.listDataSourceHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/invoke-scan", svc.invokeScanHandler)
+				})
+			})
+			r.Group(func(r chi.Router) {
+				// Admin API
+				r.Use(svc.authzOnlyAdmin)
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-aws", svc.putAWSHandler)
 				r.Post("/delete-aws", svc.deleteAWSHandler)
 				r.Post("/attach-datasource", svc.attachDataSourceHandler)
 				r.Post("/detach-datasource", svc.detachDataSourceHandler)
-				r.Post("/invoke-scan", svc.invokeScanHandler)
 			})
 		})
 
 		r.Route("/osint", func(r chi.Router) {
-			r.Use(svc.authzWithProject)
-			r.Get("/list-osint", svc.listOSINTHandler)
-			r.Get("/list-datasource", svc.listOSINTDataSourceHandler)
-			r.Get("/list-rel-datasource", svc.listOSINTResultHandler)
-			r.Get("/get-osint", svc.getOSINTHandler)
-			r.Get("/get-datasource", svc.getOSINTDataSourceHandler)
-			r.Get("/get-rel-datasource", svc.getOSINTResultHandler)
 			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-osint", svc.listOSINTHandler)
+				r.Get("/list-datasource", svc.listOSINTDataSourceHandler)
+				r.Get("/list-rel-datasource", svc.listOSINTResultHandler)
+				r.Get("/get-osint", svc.getOSINTHandler)
+				r.Get("/get-datasource", svc.getOSINTDataSourceHandler)
+				r.Get("/get-rel-datasource", svc.getOSINTResultHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/start-osint", svc.startOSINTHandler)
+				})
+			})
+			r.Group(func(r chi.Router) {
+				// Admin API
+				r.Use(svc.authzOnlyAdmin)
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-osint", svc.putOSINTHandler)
 				r.Post("/delete-osint", svc.deleteOSINTHandler)
@@ -157,23 +173,29 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-datasource", svc.deleteOSINTDataSourceHandler)
 				r.Post("/put-rel-datasource", svc.putOSINTResultHandler)
 				r.Post("/delete-rel-datasource", svc.deleteOSINTResultHandler)
-				r.Post("/start-osint", svc.startOSINTHandler)
 			})
 		})
 
 		r.Route("/diagnosis", func(r chi.Router) {
-			r.Use(svc.authzWithProject)
-			r.Get("/list-datasource", svc.listDiagnosisDataSourceHandler)
-			r.Get("/list-jira-setting", svc.listJiraSettingHandler)
-			r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
-			r.Get("/get-jira-setting", svc.getJiraSettingHandler)
 			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-datasource", svc.listDiagnosisDataSourceHandler)
+				r.Get("/list-jira-setting", svc.listJiraSettingHandler)
+				r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
+				r.Get("/get-jira-setting", svc.getJiraSettingHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/start-diagnosis", svc.startDiagnosisHandler)
+				})
+			})
+			r.Group(func(r chi.Router) {
+				// Admin API
+				r.Use(svc.authzOnlyAdmin)
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-datasource", svc.putDiagnosisDataSourceHandler)
 				r.Post("/delete-datasource", svc.deleteDiagnosisDataSourceHandler)
 				r.Post("/put-jira-setting", svc.putJiraSettingHandler)
 				r.Post("/delete-jira-setting", svc.deleteJiraSettingHandler)
-				r.Post("/start-diagnosis", svc.startDiagnosisHandler)
 			})
 		})
 	})
