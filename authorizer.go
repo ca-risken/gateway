@@ -5,6 +5,8 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -53,23 +55,82 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 func (g *gatewayService) authn(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		sub := r.Header.Get(g.uidHeader)
-		if sub != "" {
-			appLogger.Debugf("sub: %s", sub)
-			resp, err := g.iamClient.GetUser(r.Context(), &iam.GetUserRequest{Sub: sub})
-			if err != nil {
-				appLogger.Errorf("Failed to GetUser request, err=%+v", err)
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
-				return
-			}
-			if resp != nil && resp.User != nil {
-				next.ServeHTTP(w, r.WithContext(
-					context.WithValue(r.Context(), userKey, &requestUser{sub: sub, userID: resp.User.UserId})))
-				return
-			}
+		if sub == "" {
+			next.ServeHTTP(w, r)
+			return
+		}
+		appLogger.Debugf("sub: %s", sub)
+		resp, err := g.iamClient.GetUser(r.Context(), &iam.GetUserRequest{Sub: sub})
+		if err != nil {
+			appLogger.Warnf("Failed to GetUser request, err=%+v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		if resp != nil && resp.User != nil {
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(r.Context(), userKey, &requestUser{sub: sub, userID: resp.User.UserId})))
+			return
+		}
+		// Try user auto provisioning
+		oidcData := r.Header.Get(g.oidcDataHeader) // r.Header.Get("X-Amzn-Oidc-Data")
+		userName, err := g.getUserName(oidcData)
+		if err != nil {
+			appLogger.Warnf("Failed to get username from oidc data, err=%+v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		putResp, err := g.iamClient.PutUser(r.Context(), &iam.PutUserRequest{
+			User: &iam.UserForUpsert{
+				Sub:       sub,
+				Name:      userName,
+				Activated: true,
+			},
+		})
+		if err != nil {
+			appLogger.Warnf("Failed to PutUser request, err=%+v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		if putResp != nil && putResp.User != nil {
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(r.Context(), userKey, &requestUser{sub: sub, userID: putResp.User.UserId})))
+			return
 		}
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
+}
+
+type userCalim struct {
+	Sub        string `json:"sub"`
+	Identities string `json:"identities"`
+	Username   string `json:"username"`
+	Exp        string `json:"exp"`
+	Iss        string `json:"iss"`
+}
+
+func (g *gatewayService) getUserName(jwt string) (string, error) {
+	parts := strings.Split(jwt, ".")
+	if len(parts) != 3 {
+		return "", errors.New("Invalid JWT string pattern")
+	}
+	// Decode JWT
+	claimBytes, err := base64.StdEncoding.DecodeString(parts[1])
+	if err != nil {
+		return "", err
+	}
+	var user userCalim
+	if err := json.NewDecoder(bytes.NewBuffer(claimBytes)).Decode(&user); err != nil {
+		return "", err
+	}
+	username := user.Username
+	for _, idp := range g.idpProviderName {
+		if strings.HasPrefix(strings.ToLower(username), strings.ToLower(idp)+"_") {
+			username = strings.Replace(username, idp+"_", "", 1)
+			break
+		}
+	}
+	return username, nil
 }
 
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {

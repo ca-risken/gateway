@@ -26,6 +26,8 @@ const (
 type gatewayService struct {
 	port            string
 	uidHeader       string
+	oidcDataHeader  string
+	idpProviderName []string
 	findingClient   finding.FindingServiceClient
 	iamClient       iam.IAMServiceClient
 	projectClient   project.ProjectServiceClient
@@ -36,16 +38,18 @@ type gatewayService struct {
 }
 
 type gatewayConf struct {
-	Port               string `default:"8000"`
-	Debug              bool   `default:"false"`
-	UserIdentityHeader string `required:"true" split_words:"true"`
-	FindingSvcAddr     string `required:"true" split_words:"true"`
-	IAMSvcAddr         string `required:"true" split_words:"true"`
-	ProjectSvcAddr     string `required:"true" split_words:"true"`
-	AlertSvcAddr       string `required:"true" split_words:"true"`
-	AWSSvcAddr         string `required:"true" split_words:"true"`
-	OSINTSvcAddr       string `required:"true" split_words:"true"`
-	DiagnosisSvcAddr   string `required:"true" split_words:"true"`
+	Port               string   `default:"8000"`
+	Debug              bool     `default:"false"`
+	UserIdentityHeader string   `required:"true" split_words:"true"`
+	OidcDataHeader     string   `required:"true" split_words:"true"`
+	IdpProviderName    []string `required:"true" split_words:"true"`
+	FindingSvcAddr     string   `required:"true" split_words:"true"`
+	IAMSvcAddr         string   `required:"true" split_words:"true"`
+	ProjectSvcAddr     string   `required:"true" split_words:"true"`
+	AlertSvcAddr       string   `required:"true" split_words:"true"`
+	AWSSvcAddr         string   `required:"true" split_words:"true"`
+	OSINTSvcAddr       string   `required:"true" split_words:"true"`
+	DiagnosisSvcAddr   string   `required:"true" split_words:"true"`
 }
 
 func newGatewayService() (*gatewayService, error) {
@@ -63,6 +67,8 @@ func newGatewayService() (*gatewayService, error) {
 	return &gatewayService{
 		port:            conf.Port,
 		uidHeader:       conf.UserIdentityHeader,
+		oidcDataHeader:  conf.OidcDataHeader,
+		idpProviderName: conf.IdpProviderName,
 		findingClient:   finding.NewFindingServiceClient(getGRPCConn(ctx, conf.FindingSvcAddr)),
 		iamClient:       iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
 		projectClient:   project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),

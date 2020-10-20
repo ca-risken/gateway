@@ -15,8 +15,10 @@ RUN apk add --no-cache ca-certificates tzdata \
   && tar xvfz env-injector_0.0.5_linux_amd64.tar.gz && mv env-injector /usr/local/bin/ && rm /tmp/*
 COPY --from=builder /go/bin/mimosa-gateway /usr/local/mimosa-gateway/bin/
 ENV PORT= \
-    DEBUG=false \
+    DEBUG= \
     USER_IDENTITY_HEADER=x-amzn-oidc-identity \
+    OIDC_DATA_HEADER=x-amzn-oidc-data \
+    IDP_PROVIDER_NAME= \
     FINDING_SVC_ADDR= \
     IAM_SVC_ADDR= \
     PROJECT_SVC_ADDR= \
