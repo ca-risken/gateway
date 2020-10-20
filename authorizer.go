@@ -102,11 +102,8 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 }
 
 type userCalim struct {
-	Sub        string `json:"sub"`
-	Identities string `json:"identities"`
-	Username   string `json:"username"`
-	Exp        string `json:"exp"`
-	Iss        string `json:"iss"`
+	Sub      string `json:"sub"`
+	Username string `json:"username"`
 }
 
 func (g *gatewayService) getUserName(jwt string) (string, error) {
