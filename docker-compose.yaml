@@ -12,6 +12,9 @@ services:
     environment:
       - PORT=8000
       - DEBUG=true
+      - USER_IDENTITY_HEADER=x-amzn-oidc-identity
+      - OIDC_DATA_HEADER=x-amzn-oidc-data
+      - IDP_PROVIDER_NAME=${IDP_PROVIDER_NAME}
       - FINDING_SVC_ADDR=${FINDING_SVC_ADDR}
       - IAM_SVC_ADDR=${IAM_SVC_ADDR}
       - PROJECT_SVC_ADDR=${PROJECT_SVC_ADDR}
