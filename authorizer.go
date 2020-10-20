@@ -158,6 +158,27 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
+func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		u, ok := r.Context().Value(userKey).(*requestUser)
+		if !ok {
+			appLogger.Infof("Unauthenticated: Invalid requestUser type.")
+			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		if !validCSRFToken(r) {
+			http.Error(w, "Invalid token", http.StatusForbidden)
+			return
+		}
+		if !g.authzAdmin(u.userID, r) {
+			http.Error(w, "Unauthorized admin API", http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
 func validCSRFToken(r *http.Request) bool {
 	headerToken := r.Header.Get("X-XSRF-TOKEN")
 	if headerToken == "" {
@@ -221,4 +242,17 @@ func getServiceNameFromURI(uri string) string {
 		return ""
 	}
 	return paths[0]
+}
+
+func (g *gatewayService) authzAdmin(userID uint32, r *http.Request) bool {
+	if zero.IsZeroVal(userID) {
+		return false
+	}
+	req := &iam.IsAdminRequest{UserId: userID}
+	resp, err := g.iamClient.IsAdmin(r.Context(), req)
+	if err != nil {
+		appLogger.Errorf("Failed to IsAdmin requuest, request=%+v, err=%+v", req, err)
+		return false
+	}
+	return resp.Ok
 }

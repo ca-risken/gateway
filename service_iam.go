@@ -36,6 +36,21 @@ func (g *gatewayService) getUserHandler(w http.ResponseWriter, r *http.Request) 
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) isAdminHandler(w http.ResponseWriter, r *http.Request) {
+	req := &iam.IsAdminRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.IsAdmin(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) {
 	req := &iam.PutUserRequest{}
 	bind(req, r)

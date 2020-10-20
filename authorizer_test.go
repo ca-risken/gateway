@@ -221,6 +221,49 @@ func TestGetServiceNameFromURI(t *testing.T) {
 	}
 }
 
+func TestAuthzAdmin(t *testing.T) {
+	iamMock := &mockIAMClient{}
+	svc := gatewayService{
+		iamClient: iamMock,
+	}
+	cases := []struct {
+		name      string
+		inputUser uint32
+		want      bool
+		mockResp  *iam.IsAdminResponse
+		mockErr   error
+	}{
+		{
+			name:      "OK",
+			inputUser: 1,
+			mockResp:  &iam.IsAdminResponse{Ok: true},
+			want:      true,
+		},
+		{
+			name:      "NG Invalid userID",
+			inputUser: 0,
+			want:      false,
+		},
+		{
+			name:      "NG IAM error",
+			inputUser: 1,
+			want:      false,
+			mockErr:   errors.New("something error"),
+		}}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("IsAdmin").Return(c.mockResp, c.mockErr).Once()
+			}
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/admin/api/", nil)
+			got := svc.authzAdmin(c.inputUser, req)
+			if got != c.want {
+				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
+			}
+		})
+	}
+}
+
 /**
  * Mock Client
 **/
@@ -288,8 +331,11 @@ func (m *mockIAMClient) DetachPolicy(context.Context, *iam.DetachPolicyRequest, 
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
-
 func (m *mockIAMClient) IsAuthorized(context.Context, *iam.IsAuthorizedRequest, ...grpc.CallOption) (*iam.IsAuthorizedResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*iam.IsAuthorizedResponse), args.Error(1)
+}
+func (m *mockIAMClient) IsAdmin(context.Context, *iam.IsAdminRequest, ...grpc.CallOption) (*iam.IsAdminResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.IsAdminResponse), args.Error(1)
 }

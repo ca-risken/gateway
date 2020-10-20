@@ -150,7 +150,7 @@ func TestPutAlertHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1001, "alert":{"alert_condition_id":1001,"description":"desc","severity":"high","project_id":1001,"activated":true}}`,
+			input:      `{"project_id":1001, "alert":{"alert_condition_id":1001,"description":"desc","severity":"high","project_id":1001,"activated":true, "status":1}}`,
 			mockResp:   &alert.PutAlertResponse{},
 			wantStatus: http.StatusOK,
 		},
@@ -161,7 +161,7 @@ func TestPutAlertHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1001, "alert":{"alert_condition_id":1001,"description":"desc","severity":"high","project_id":1001,"activated":true}}`,
+			input:      `{"project_id":1001, "alert":{"alert_condition_id":1001,"description":"desc","severity":"high","project_id":1001,"activated":true, "status":1}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
