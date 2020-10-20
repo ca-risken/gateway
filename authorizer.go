@@ -54,8 +54,6 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 
 func (g *gatewayService) authn(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		// TODO: remove
-		appLogger.Debugf("debug: %+v", r.Header)
 		sub := r.Header.Get(g.uidHeader)
 		if sub == "" {
 			next.ServeHTTP(w, r)
@@ -78,6 +76,8 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 		userName, err := g.getUserName(oidcData)
 		if err != nil {
 			appLogger.Warnf("Failed to get username from oidc data, err=%+v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
 		}
 		putResp, err := g.iamClient.PutUser(r.Context(), &iam.PutUserRequest{
 			User: &iam.UserForUpsert{
