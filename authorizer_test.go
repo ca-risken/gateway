@@ -227,39 +227,63 @@ func TestAuthzAdmin(t *testing.T) {
 		iamClient: iamMock,
 	}
 	cases := []struct {
-		name      string
-		inputUser uint32
-		want      bool
-		mockResp  *iam.IsAdminResponse
-		mockErr   error
+		name          string
+		inputUser     *requestUser
+		inputProject  string
+		want          bool
+		mockAdminResp *iam.IsAdminResponse
+		mockAdminErr  error
+		mockAuthzResp *iam.IsAuthorizedResponse
+		mockAuthzErr  error
 	}{
 		{
-			name:      "OK",
-			inputUser: 1,
-			mockResp:  &iam.IsAdminResponse{Ok: true},
-			want:      true,
+			name:          "OK",
+			inputUser:     &requestUser{sub: "sub", userID: 1},
+			inputProject:  "project_id=1",
+			mockAdminResp: &iam.IsAdminResponse{Ok: true},
+			mockAuthzResp: &iam.IsAuthorizedResponse{Ok: true},
+			want:          true,
 		},
 		{
-			name:      "NG Invalid userID",
-			inputUser: 0,
-			want:      false,
+			name:         "NG Invalid userID",
+			inputUser:    &requestUser{sub: "sub", userID: 0},
+			inputProject: "project_id=1",
+			want:         false,
 		},
 		{
-			name:      "NG IAM error",
-			inputUser: 1,
-			want:      false,
-			mockErr:   errors.New("something error"),
-		}}
+			name:         "NG Admin API error",
+			inputUser:    &requestUser{sub: "sub", userID: 1},
+			inputProject: "project_id=1",
+			want:         false,
+			mockAdminErr: errors.New("something error"),
+		},
+		{
+			name:          "NG Authz API error",
+			inputUser:     &requestUser{sub: "sub", userID: 1},
+			inputProject:  "project_id=1",
+			want:          false,
+			mockAdminResp: &iam.IsAdminResponse{Ok: true},
+			mockAuthzErr:  errors.New("something error"),
+		},
+	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.mockResp != nil || c.mockErr != nil {
-				iamMock.On("IsAdmin").Return(c.mockResp, c.mockErr).Once()
+			if c.mockAdminResp != nil || c.mockAdminErr != nil {
+				iamMock.On("IsAdmin").Return(c.mockAdminResp, c.mockAdminErr).Once()
 			}
-			req, _ := http.NewRequest(http.MethodGet, "/api/v1/admin/api/", nil)
+			if c.mockAuthzResp != nil || c.mockAuthzErr != nil {
+				iamMock.On("IsAuthorized").Return(c.mockAuthzResp, c.mockAuthzErr).Once()
+			}
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/admin/api/?"+c.inputProject, nil)
 			got := svc.authzAdmin(c.inputUser, req)
 			if got != c.want {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
 			}
+			c.mockAdminResp = nil
+			c.mockAdminErr = nil
+			c.mockAuthzResp = nil
+			c.mockAuthzErr = nil
+
 		})
 	}
 }

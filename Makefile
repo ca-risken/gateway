@@ -653,7 +653,7 @@ delete-alert_cond_notification:
 .PHONY: list-aws
 list-aws:
 	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
+		--header 'x-amzn-oidc-identity: bob' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		'http://localhost:8000/api/v1/aws/list-aws/?project_id=1001'
@@ -661,7 +661,7 @@ list-aws:
 .PHONY: put-aws
 put-aws:
 	curl -is -XPOST \
-		--header 'x-amzn-oidc-identity: bob' \
+		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
