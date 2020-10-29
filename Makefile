@@ -730,7 +730,7 @@ get-osint:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/osint/get-osint/?project_id=1001&osint_id=1'
+		'http://localhost:8000/api/v1/osint/get-osint/?project_id=1001&osint_id=1001'
 
 .PHONY: put-osint
 put-osint:
@@ -739,7 +739,7 @@ put-osint:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "osint":{"project_id":1001, "name":"hoge-osint"}}' \
+		--data '{"project_id":1001, "osint":{"project_id":1001, "resource_type":"Domain", "resource_name":"example.com"}}' \
 		'http://localhost:8000/api/v1/osint/put-osint/'
 
 .PHONY: delete-osint
@@ -749,7 +749,7 @@ delete-osint:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "osint_id":3}' \
+		--data '{"project_id":1001, "osint_id":1003}' \
 		'http://localhost:8000/api/v1/osint/delete-osint/'
 
 .PHONY: list-osint_data_source
@@ -766,7 +766,7 @@ get-osint_data_source:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/osint/get-datasource/?project_id=1001&osint_data_source_id=1'
+		'http://localhost:8000/api/v1/osint/get-datasource/?project_id=1001&osint_data_source_id=1001'
 
 .PHONY: put-osint_data_source
 put-osint_data_source:
@@ -785,54 +785,126 @@ delete-osint_data_source:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "osint_data_source_id":3}' \
+		--data '{"project_id":1001, "osint_data_source_id":1002}' \
 		'http://localhost:8000/api/v1/osint/delete-datasource/'
 
-.PHONY: list-osint_result
-list-osint_result:
+.PHONY: list-rel_osint_data_source
+list-rel_osint_data_source:
 	curl -is -XGET \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		'http://localhost:8000/api/v1/osint/list-rel-datasource/?project_id=1001'
 
-.PHONY: get-osint_result
-get-osint_result:
+.PHONY: get-rel_osint_data_source
+get-rel_osint_data_source:
 	curl -is -XGET \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/osint/get-rel-datasource/?project_id=1001&osint_result_id=1'
+		'http://localhost:8000/api/v1/osint/get-rel-datasource/?project_id=1001&rel_osint_data_source_id=1001'
 
-.PHONY: put-osint_result
-put-osint_result:
+.PHONY: put-rel_osint_data_source
+put-rel_osint_data_source:
 	curl -is -XPOST \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "osint_result":{"osint_id":1, "osint_data_source_id":1, "resource_type":"osint_resource_type", "resource_name":"osint_resource_name"}}' \
+		--data '{"project_id":1001, "rel_osint_data_source":{"osint_id":1001, "osint_data_source_id":1001, "project_id":1001, "status": 1}}' \
 		'http://localhost:8000/api/v1/osint/put-rel-datasource/'
 
-.PHONY: delete-osint_result
-delete-osint_result:
+.PHONY: delete-rel_osint_data_source
+delete-rel_osint_data_source:
 	curl -is -XPOST \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "osint_result_id":3}' \
+		--data '{"project_id":1001, "rel_osint_data_source_id":1003}' \
 		'http://localhost:8000/api/v1/osint/delete-rel-datasource/'
 
-.PHONY: start-osint
-start-osint:
+.PHONY: list-osint_detect_word
+list-osint_detect_word:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/osint/list-word/?project_id=1001'
+
+.PHONY: get-osint_detect_word
+get-osint_detect_word:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/osint/get-word/?project_id=1001&osint_detect_word_id=1001'
+
+.PHONY: put-osint_detect_word
+put-osint_detect_word:
 	curl -is -XPOST \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "osint_result_id":1}' \
-		'http://localhost:8000/api/v1/osint/start-osint/'
+		--data '{"project_id":1001, "osint_detect_word":{"word":"hoge", "project_id":1001}}' \
+		'http://localhost:8000/api/v1/osint/put-word/'
+
+.PHONY: delete-osint_detect_word
+delete-osint_detect_word:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "osint_detect_word_id":1003}' \
+		'http://localhost:8000/api/v1/osint/delete-word/'
+
+.PHONY: list-rel_osint_detect_word
+list-rel_osint_detect_word:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/osint/list-rel-word/?project_id=1001'
+
+.PHONY: get-rel_osint_detect_word
+get-rel_osint_detect_word:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/osint/get-rel-word/?project_id=1001&rel_osint_detect_word_id=1001'
+
+.PHONY: put-rel_osint_detect_word
+put-rel_osint_detect_word:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "rel_osint_detect_word":{"rel_osint_data_source_id":1001, "osint_detect_word_id": 1003, "project_id":1001}}' \
+		'http://localhost:8000/api/v1/osint/put-rel-word/'
+
+.PHONY: delete-rel_osint_detect_word
+delete-rel_osint_detect_word:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "rel_osint_detect_word_id":1003}' \
+		'http://localhost:8000/api/v1/osint/delete-rel-word/'
+
+.PHONY: invoke-osint-scan
+invoke-osint-scan:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "rel_osint_data_source_id":1001}' \
+		'http://localhost:8000/api/v1/osint/invoke-scan/'
 
 .PHONY: list-diagnosis_data_source
 list-diagnosis_data_source:
