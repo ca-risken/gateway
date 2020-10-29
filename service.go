@@ -12,7 +12,7 @@ import (
 	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/CyberAgent/mimosa-core/proto/project"
 	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
-	"github.com/CyberAgent/mimosa-osint/pkg/pb/osint"
+	"github.com/CyberAgent/mimosa-osint/proto/osint"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -33,7 +33,7 @@ type gatewayService struct {
 	projectClient   project.ProjectServiceClient
 	alertClient     alert.AlertServiceClient
 	awsClient       aws.AWSServiceClient
-	osintClient     osint.OSINTServiceClient
+	osintClient     osint.OsintServiceClient
 	diagnosisClient diagnosis.DiagnosisServiceClient
 }
 
@@ -74,7 +74,7 @@ func newGatewayService() (*gatewayService, error) {
 		projectClient:   project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
 		alertClient:     alert.NewAlertServiceClient(getGRPCConn(ctx, conf.AlertSvcAddr)),
 		awsClient:       aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
-		osintClient:     osint.NewOSINTServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
+		osintClient:     osint.NewOsintServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
 		diagnosisClient: diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
 	}, nil
 }
