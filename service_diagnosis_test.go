@@ -493,7 +493,7 @@ func TestDeleteJiraSettingHandler(t *testing.T) {
 	}
 }
 
-func TestStartDiagnosisHandler(t *testing.T) {
+func TestInvokeDiagnosisScanHandler(t *testing.T) {
 	diagnosisMock := &mockDiagnosisClient{}
 	svc := gatewayService{
 		diagnosisClient: diagnosisMock,
@@ -501,14 +501,14 @@ func TestStartDiagnosisHandler(t *testing.T) {
 	cases := []struct {
 		name       string
 		input      string
-		mockResp   *diagnosis.StartDiagnosisResponse
+		mockResp   *diagnosis.InvokeScanResponse
 		mockErr    error
 		wantStatus int
 	}{
 		{
 			name:       "OK",
 			input:      `{"project_id": 1, "jira_setting_id":1}`,
-			mockResp:   &diagnosis.StartDiagnosisResponse{},
+			mockResp:   &diagnosis.InvokeScanResponse{},
 			wantStatus: http.StatusOK,
 		},
 		{
@@ -526,13 +526,13 @@ func TestStartDiagnosisHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				diagnosisMock.On("StartDiagnosis").Return(c.mockResp, c.mockErr).Once()
+				diagnosisMock.On("InvokeScan").Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/start-diagnosis/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/invoke-scan/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
-			svc.startDiagnosisHandler(rec, req)
+			svc.invokeDiagnosisScanHandler(rec, req)
 			// Check Response
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
@@ -591,7 +591,11 @@ func (m *mockDiagnosisClient) DeleteJiraSetting(context.Context, *diagnosis.Dele
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
-func (m *mockDiagnosisClient) StartDiagnosis(context.Context, *diagnosis.StartDiagnosisRequest, ...grpc.CallOption) (*diagnosis.StartDiagnosisResponse, error) {
+func (m *mockDiagnosisClient) InvokeScan(context.Context, *diagnosis.InvokeScanRequest, ...grpc.CallOption) (*diagnosis.InvokeScanResponse, error) {
 	args := m.Called()
-	return args.Get(0).(*diagnosis.StartDiagnosisResponse), args.Error(1)
+	return args.Get(0).(*diagnosis.InvokeScanResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) InvokeScanAll(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
 }

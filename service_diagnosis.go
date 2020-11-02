@@ -126,14 +126,14 @@ func (g *gatewayService) deleteJiraSettingHandler(w http.ResponseWriter, r *http
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) startDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.StartDiagnosisRequest{}
+func (g *gatewayService) invokeDiagnosisScanHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.InvokeScanRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.diagnosisClient.StartDiagnosis(r.Context(), req)
+	resp, err := g.diagnosisClient.InvokeScan(r.Context(), req)
 	if err != nil {
 		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return
