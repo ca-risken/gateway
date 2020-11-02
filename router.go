@@ -189,7 +189,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/get-jira-setting", svc.getJiraSettingHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
-					r.Post("/start-diagnosis", svc.startDiagnosisHandler)
+					r.Post("/invoke-scan", svc.invokeDiagnosisScanHandler)
 				})
 			})
 			r.Group(func(r chi.Router) {

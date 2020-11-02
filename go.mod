@@ -8,7 +8,7 @@ require (
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20201028054340-f4dee5a77a75
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20201028054340-f4dee5a77a75
 	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20201028054340-f4dee5a77a75
-	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201019144846-94a28c6be318
+	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201102104958-713d5ff0f488
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20201102010932-4bbc843802a4
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/golang/protobuf v1.4.3

@@ -943,12 +943,12 @@ delete-jira_setting:
 		--data '{"project_id":1001, "jira_setting_id":1003}' \
 		'http://localhost:8000/api/v1/diagnosis/delete-jira-setting/'
 
-.PHONY: start-diagnosis
-start-diagnosis:
+.PHONY: invoke-diagnosis-scan
+invoke-diagnosis-scan:
 	curl -is -XPOST \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001, "jira_setting_id":1001}' \
-		'http://localhost:8000/api/v1/diagnosis/start-diagnosis/'
+		'http://localhost:8000/api/v1/diagnosis/invoke-scan/'
