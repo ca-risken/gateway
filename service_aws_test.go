@@ -461,3 +461,7 @@ func (m *mockAWSClient) InvokeScan(context.Context, *aws.InvokeScanRequest, ...g
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
+func (m *mockAWSClient) InvokeScanAll(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}

@@ -867,7 +867,7 @@ func TestPutOsintDetectWordHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1, "osint_detect_word":{"project_id":1,"word":"hoge"}}`,
+			input:      `{"project_id":1, "osint_detect_word":{"project_id":1,"word":"hoge","rel_osint_data_source_id":1}}`,
 			mockResp:   &osint.PutOsintDetectWordResponse{},
 			wantStatus: http.StatusOK,
 		},
@@ -878,7 +878,7 @@ func TestPutOsintDetectWordHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1, "osint_detect_word":{"project_id":1,"word":"hoge"}}`,
+			input:      `{"project_id":1, "osint_detect_word":{"project_id":1,"word":"hoge","rel_osint_data_source_id":1}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
@@ -971,244 +971,6 @@ func TestDeleteOsintDetectWordHandler(t *testing.T) {
 	}
 }
 
-func TestListRelOsintDetectWordHandler(t *testing.T) {
-	osintMock := &mockOsintClient{}
-	svc := gatewayService{
-		osintClient: osintMock,
-	}
-	cases := []struct {
-		name       string
-		input      string
-		mockResp   *osint.ListRelOsintDetectWordResponse
-		mockErr    error
-		wantStatus int
-	}{
-		{
-			name:       "OK",
-			input:      `project_id=1`,
-			mockResp:   &osint.ListRelOsintDetectWordResponse{},
-			wantStatus: http.StatusOK,
-		},
-		{
-			name:       "NG Invalid parameter",
-			input:      `hoge=123`,
-			wantStatus: http.StatusBadRequest,
-		},
-		{
-			name:       "NG Backend service error",
-			input:      `project_id=1`,
-			wantStatus: http.StatusInternalServerError,
-			mockErr:    errors.New("something wrong"),
-		},
-	}
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if c.mockResp != nil || c.mockErr != nil {
-				osintMock.On("ListRelOsintDetectWord").Return(c.mockResp, c.mockErr).Once()
-			}
-			// Invoke HTTP Request
-			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/list-rel-word/?"+c.input, nil)
-			svc.listRelOsintDetectWordHandler(rec, req)
-			// Check Response
-			if c.wantStatus != rec.Code {
-				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
-			}
-			resp := map[string]interface{}{}
-			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
-				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
-			}
-			jsonKey := successJSONKey
-			if c.wantStatus != http.StatusOK {
-				jsonKey = errorJSONKey
-			}
-			if _, ok := resp[jsonKey]; !ok {
-				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
-			}
-		})
-	}
-}
-
-func TestGetRelOsintDetectWordHandler(t *testing.T) {
-	osintMock := &mockOsintClient{}
-	svc := gatewayService{
-		osintClient: osintMock,
-	}
-	cases := []struct {
-		name       string
-		input      string
-		mockResp   *osint.GetRelOsintDetectWordResponse
-		mockErr    error
-		wantStatus int
-	}{
-		{
-			name:       "OK",
-			input:      `project_id=1&rel_osint_detect_word_id=1`,
-			mockResp:   &osint.GetRelOsintDetectWordResponse{},
-			wantStatus: http.StatusOK,
-		},
-		{
-			name:       "NG Invalid parameter",
-			input:      `project_id=1`,
-			wantStatus: http.StatusBadRequest,
-		},
-		{
-			name:       "NG Invalid parameter",
-			input:      `rel_osint_detect_word_id=1`,
-			wantStatus: http.StatusBadRequest,
-		},
-		{
-			name:       "NG Backend service error",
-			input:      `project_id=1&rel_osint_detect_word_id=1`,
-			wantStatus: http.StatusInternalServerError,
-			mockErr:    errors.New("something wrong"),
-		},
-	}
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if c.mockResp != nil || c.mockErr != nil {
-				osintMock.On("GetRelOsintDetectWord").Return(c.mockResp, c.mockErr).Once()
-			}
-			// Invoke HTTP Request
-			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/api/v1/osint/get-rel-word/?"+c.input, nil)
-			svc.getRelOsintDetectWordHandler(rec, req)
-			// Check Response
-			if c.wantStatus != rec.Code {
-				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
-			}
-			resp := map[string]interface{}{}
-			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
-				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
-			}
-			jsonKey := successJSONKey
-			if c.wantStatus != http.StatusOK {
-				jsonKey = errorJSONKey
-			}
-			if _, ok := resp[jsonKey]; !ok {
-				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
-			}
-		})
-	}
-}
-
-func TestPutRelOsintDetectWordHandler(t *testing.T) {
-	osintMock := &mockOsintClient{}
-	svc := gatewayService{
-		osintClient: osintMock,
-	}
-	cases := []struct {
-		name       string
-		input      string
-		mockResp   *osint.PutRelOsintDetectWordResponse
-		mockErr    error
-		wantStatus int
-	}{
-		{
-			name:       "OK",
-			input:      `{"project_id":1, "rel_osint_detect_word":{"project_id":1,"rel_osint_data_source_id":1,"osint_detect_word_id":1}}`,
-			mockResp:   &osint.PutRelOsintDetectWordResponse{},
-			wantStatus: http.StatusOK,
-		},
-		{
-			name:       "NG Invalid parameter",
-			input:      `invalid_param`,
-			wantStatus: http.StatusBadRequest,
-		},
-		{
-			name:       "NG Backend service error",
-			input:      `{"project_id":1, "rel_osint_detect_word":{"project_id":1,"rel_osint_data_source_id":1,"osint_detect_word_id":1}}`,
-			wantStatus: http.StatusInternalServerError,
-			mockErr:    errors.New("something wrong"),
-		},
-	}
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if c.mockResp != nil || c.mockErr != nil {
-				osintMock.On("PutRelOsintDetectWord").Return(c.mockResp, c.mockErr).Once()
-			}
-			// Invoke HTTP Request
-			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/put-rel-word/", strings.NewReader(c.input))
-			req.Header.Add("Content-Type", "application/json")
-			svc.putRelOsintDetectWordHandler(rec, req)
-			// Check Response
-			if c.wantStatus != rec.Code {
-				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
-			}
-			resp := map[string]interface{}{}
-			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
-				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
-			}
-			jsonKey := successJSONKey
-			if c.wantStatus != http.StatusOK {
-				jsonKey = errorJSONKey
-			}
-			if _, ok := resp[jsonKey]; !ok {
-				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
-			}
-		})
-	}
-}
-
-func TestDeleteRelOsintDetectWordHandler(t *testing.T) {
-	osintMock := &mockOsintClient{}
-	svc := gatewayService{
-		osintClient: osintMock,
-	}
-	cases := []struct {
-		name       string
-		input      string
-		mockResp   *empty.Empty
-		mockErr    error
-		wantStatus int
-	}{
-		{
-			name:       "OK",
-			input:      `{"project_id": 1, "rel_osint_detect_word_id":1}`,
-			mockResp:   &empty.Empty{},
-			wantStatus: http.StatusOK,
-		},
-		{
-			name:       "NG Invalid parameter",
-			input:      `invalid_param`,
-			wantStatus: http.StatusBadRequest,
-		},
-		{
-			name:       "NG Backend service error",
-			input:      `{"project_id": 1, "rel_osint_detect_word_id":1}`,
-			wantStatus: http.StatusInternalServerError,
-			mockErr:    errors.New("something wrong"),
-		},
-	}
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if c.mockResp != nil || c.mockErr != nil {
-				osintMock.On("DeleteRelOsintDetectWord").Return(c.mockResp, c.mockErr).Once()
-			}
-			// Invoke HTTP Request
-			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/api/v1/osint/delete-rel-word/", strings.NewReader(c.input))
-			req.Header.Add("Content-Type", "application/json")
-			svc.deleteRelOsintDetectWordHandler(rec, req)
-			// Check Response
-			if c.wantStatus != rec.Code {
-				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
-			}
-			resp := map[string]interface{}{}
-			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
-				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
-			}
-			jsonKey := successJSONKey
-			if c.wantStatus != http.StatusOK {
-				jsonKey = errorJSONKey
-			}
-			if _, ok := resp[jsonKey]; !ok {
-				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
-			}
-		})
-	}
-}
 func TestOsintInvokeScanHandler(t *testing.T) {
 	osintMock := &mockOsintClient{}
 	svc := gatewayService{
@@ -1340,22 +1102,6 @@ func (m *mockOsintClient) PutOsintDetectWord(context.Context, *osint.PutOsintDet
 	return args.Get(0).(*osint.PutOsintDetectWordResponse), args.Error(1)
 }
 func (m *mockOsintClient) DeleteOsintDetectWord(context.Context, *osint.DeleteOsintDetectWordRequest, ...grpc.CallOption) (*empty.Empty, error) {
-	args := m.Called()
-	return args.Get(0).(*empty.Empty), args.Error(1)
-}
-func (m *mockOsintClient) ListRelOsintDetectWord(context.Context, *osint.ListRelOsintDetectWordRequest, ...grpc.CallOption) (*osint.ListRelOsintDetectWordResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*osint.ListRelOsintDetectWordResponse), args.Error(1)
-}
-func (m *mockOsintClient) GetRelOsintDetectWord(context.Context, *osint.GetRelOsintDetectWordRequest, ...grpc.CallOption) (*osint.GetRelOsintDetectWordResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*osint.GetRelOsintDetectWordResponse), args.Error(1)
-}
-func (m *mockOsintClient) PutRelOsintDetectWord(context.Context, *osint.PutRelOsintDetectWordRequest, ...grpc.CallOption) (*osint.PutRelOsintDetectWordResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*osint.PutRelOsintDetectWordResponse), args.Error(1)
-}
-func (m *mockOsintClient) DeleteRelOsintDetectWord(context.Context, *osint.DeleteRelOsintDetectWordRequest, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }

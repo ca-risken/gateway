@@ -156,12 +156,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/list-datasource", svc.listOsintDataSourceHandler)
 				r.Get("/list-rel-datasource", svc.listRelOsintDataSourceHandler)
 				r.Get("/list-word", svc.listOsintDetectWordHandler)
-				r.Get("/list-rel-word", svc.listRelOsintDetectWordHandler)
 				r.Get("/get-osint", svc.getOsintHandler)
 				r.Get("/get-datasource", svc.getOsintDataSourceHandler)
 				r.Get("/get-rel-datasource", svc.getRelOsintDataSourceHandler)
 				r.Get("/get-word", svc.getOsintDetectWordHandler)
-				r.Get("/get-rel-word", svc.getRelOsintDetectWordHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/invoke-scan", svc.invokeOsintScanHandler)
@@ -171,8 +169,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-rel-datasource", svc.deleteRelOsintDataSourceHandler)
 					r.Post("/put-word", svc.putOsintDetectWordHandler)
 					r.Post("/delete-word", svc.deleteOsintDetectWordHandler)
-					r.Post("/put-rel-word", svc.putRelOsintDetectWordHandler)
-					r.Post("/delete-rel-word", svc.deleteRelOsintDetectWordHandler)
 				})
 			})
 			r.Group(func(r chi.Router) {
