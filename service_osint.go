@@ -246,66 +246,6 @@ func (g *gatewayService) deleteOsintDetectWordHandler(w http.ResponseWriter, r *
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) listRelOsintDetectWordHandler(w http.ResponseWriter, r *http.Request) {
-	req := &osint.ListRelOsintDetectWordRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.osintClient.ListRelOsintDetectWord(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) getRelOsintDetectWordHandler(w http.ResponseWriter, r *http.Request) {
-	req := &osint.GetRelOsintDetectWordRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.osintClient.GetRelOsintDetectWord(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) putRelOsintDetectWordHandler(w http.ResponseWriter, r *http.Request) {
-	req := &osint.PutRelOsintDetectWordRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.osintClient.PutRelOsintDetectWord(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) deleteRelOsintDetectWordHandler(w http.ResponseWriter, r *http.Request) {
-	req := &osint.DeleteRelOsintDetectWordRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.osintClient.DeleteRelOsintDetectWord(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) invokeOsintScanHandler(w http.ResponseWriter, r *http.Request) {
 	req := &osint.InvokeScanRequest{}
 	bind(req, r)

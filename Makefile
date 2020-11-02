@@ -847,7 +847,7 @@ put-osint_detect_word:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "osint_detect_word":{"word":"hoge", "project_id":1001}}' \
+		--data '{"project_id":1001, "osint_detect_word":{"rel_osint_data_source_id":1001, "word":"hoge", "project_id":1001}}' \
 		'http://localhost:8000/api/v1/osint/put-word/'
 
 .PHONY: delete-osint_detect_word
@@ -860,41 +860,6 @@ delete-osint_detect_word:
 		--data '{"project_id":1001, "osint_detect_word_id":1003}' \
 		'http://localhost:8000/api/v1/osint/delete-word/'
 
-.PHONY: list-rel_osint_detect_word
-list-rel_osint_detect_word:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/osint/list-rel-word/?project_id=1001'
-
-.PHONY: get-rel_osint_detect_word
-get-rel_osint_detect_word:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/osint/get-rel-word/?project_id=1001&rel_osint_detect_word_id=1001'
-
-.PHONY: put-rel_osint_detect_word
-put-rel_osint_detect_word:
-	curl -is -XPOST \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "rel_osint_detect_word":{"rel_osint_data_source_id":1001, "osint_detect_word_id": 1003, "project_id":1001}}' \
-		'http://localhost:8000/api/v1/osint/put-rel-word/'
-
-.PHONY: delete-rel_osint_detect_word
-delete-rel_osint_detect_word:
-	curl -is -XPOST \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "rel_osint_detect_word_id":1003}' \
-		'http://localhost:8000/api/v1/osint/delete-rel-word/'
 
 .PHONY: invoke-osint-scan
 invoke-osint-scan:
