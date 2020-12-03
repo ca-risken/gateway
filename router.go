@@ -205,8 +205,11 @@ func newRouter(svc *gatewayService) *chi.Mux {
 
 		r.Route("/code", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
-				r.Use(svc.authzWithProject)
+				// project any
 				r.Get("/list-datasource", svc.listCodeDataSourceHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
 				r.Get("/list-gitleaks", svc.listGitleaksHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
