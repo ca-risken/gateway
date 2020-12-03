@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20201028055844-033176fbea90
+	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20201201102629-44e0042262ae
 	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20201028054340-f4dee5a77a75
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20201028054340-f4dee5a77a75
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20201028054340-f4dee5a77a75
@@ -22,7 +23,7 @@ require (
 	golang.org/x/net v0.0.0-20201031054903-ff519b6c9102 // indirect
 	golang.org/x/sys v0.0.0-20201101102859-da207088b7d1 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	google.golang.org/grpc v1.33.1
+	google.golang.org/grpc v1.33.2
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200605160147-a5ece683394c // indirect
 )

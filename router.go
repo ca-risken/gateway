@@ -202,6 +202,20 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-jira-setting", svc.deleteJiraSettingHandler)
 			})
 		})
+
+		r.Route("/code", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-datasource", svc.listCodeDataSourceHandler)
+				r.Get("/list-gitleaks", svc.listGitleaksHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/put-gitleaks", svc.putGitleaksHandler)
+					r.Post("/delete-gitleaks", svc.deleteGitleaksHandler)
+					r.Post("/invoke-scan-gitleaks", svc.invokeScanGitleaksHandler)
+				})
+			})
+		})
 	})
 
 	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })

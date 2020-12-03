@@ -2,6 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20201028055844-033176fbea90 h1:3ZrFQ7QQmeyIQh/H0zvm6EG9uWnIijQeBeuonUpT9jc=
 github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20201028055844-033176fbea90/go.mod h1:ht8yad4dQ4gdCSdwohK5GKxfY62peymhuY7SivEeYH8=
+github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20201201102629-44e0042262ae h1:7Dsoe8XIwmA7idAL0/p9o0OIwY3iHglVqeh9Mrs3B/I=
+github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20201201102629-44e0042262ae/go.mod h1:LDj7GA+nPuNqVToEQK/PniXlI/MI0dXNRIpNfZ4TpYw=
 github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20201028054340-f4dee5a77a75 h1:+fEgZJGO2jS1ydGZtSguhcb8J/AQMWUcNq36wcqdE0Y=
 github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20201028054340-f4dee5a77a75/go.mod h1:SoIakGpoIi9IY2qrHp4h3MPG1NZBiIyZRq3bZYvKcqE=
 github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20201028054340-f4dee5a77a75 h1:delBZXxWHPbevXCFPYcjwpiiaIgPCXyFJGWzYyLPqC0=
@@ -147,6 +149,8 @@ google.golang.org/grpc v1.33.0 h1:IBKSUNL2uBS2DkJBncPP+TwT0sp9tgA8A75NjHt6umg=
 google.golang.org/grpc v1.33.0/go.mod h1:fr5YgcSWrqhRRxogOsw7RzIpsmvOZ6IcH4kBYTpR3n0=
 google.golang.org/grpc v1.33.1 h1:DGeFlSan2f+WEtCERJ4J9GJWk15TxUi8QGagfI87Xyc=
 google.golang.org/grpc v1.33.1/go.mod h1:fr5YgcSWrqhRRxogOsw7RzIpsmvOZ6IcH4kBYTpR3n0=
+google.golang.org/grpc v1.33.2 h1:EQyQC3sa8M+p6Ulc8yy9SWSS2GVwyRc83gAbG8lrl4o=
+google.golang.org/grpc v1.33.2/go.mod h1:JMHMWHQWaTccqQQlmk3MJZS+GWXOdAesneDmEnv2fbc=
 google.golang.org/protobuf v0.0.0-20200109180630-ec00e32a8dfd/go.mod h1:DFci5gLYBciE7Vtevhsrf46CRTquxDuWsQurQQe4oz8=
 google.golang.org/protobuf v0.0.0-20200221191635-4d8936d0db64/go.mod h1:kwYJMbMJ01Woi6D6+Kah6886xMZcty6N08ah7+eCXa0=
 google.golang.org/protobuf v0.0.0-20200228230310-ab0ca4ff8a60/go.mod h1:cfTl7dwQJ+fmap5saPgwCLgHXTUD7jkjRqWcaiX5VyM=

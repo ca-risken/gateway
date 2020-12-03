@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/CyberAgent/mimosa-aws/proto/aws"
+	"github.com/CyberAgent/mimosa-code/proto/code"
 	"github.com/CyberAgent/mimosa-core/proto/alert"
 	"github.com/CyberAgent/mimosa-core/proto/finding"
 	"github.com/CyberAgent/mimosa-core/proto/iam"
@@ -35,6 +36,7 @@ type gatewayService struct {
 	awsClient       aws.AWSServiceClient
 	osintClient     osint.OsintServiceClient
 	diagnosisClient diagnosis.DiagnosisServiceClient
+	codeClient      code.CodeServiceClient
 }
 
 type gatewayConf struct {
@@ -50,6 +52,7 @@ type gatewayConf struct {
 	AWSSvcAddr         string   `required:"true" split_words:"true"`
 	OSINTSvcAddr       string   `required:"true" split_words:"true"`
 	DiagnosisSvcAddr   string   `required:"true" split_words:"true"`
+	CodeSvcAddr        string   `required:"true" split_words:"true"`
 }
 
 func newGatewayService() (*gatewayService, error) {
@@ -76,6 +79,7 @@ func newGatewayService() (*gatewayService, error) {
 		awsClient:       aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
 		osintClient:     osint.NewOsintServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
 		diagnosisClient: diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
+		codeClient:      code.NewCodeServiceClient(getGRPCConn(ctx, conf.CodeSvcAddr)),
 	}, nil
 }
 

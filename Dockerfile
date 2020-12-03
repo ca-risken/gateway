@@ -26,6 +26,7 @@ ENV PORT= \
     AWS_SVC_ADDR= \
     OSINT_SVC_ADDR= \
     DIAGNOSIS_SVC_ADDR= \
+    CODE_SVC_ADDR= \
     TZ=Asia/Tokyo
 WORKDIR /usr/local/mimosa-gateway
 ENTRYPOINT ["/usr/local/bin/env-injector"]

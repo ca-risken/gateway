@@ -952,3 +952,49 @@ invoke-diagnosis-scan:
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001, "jira_setting_id":1001}' \
 		'http://localhost:8000/api/v1/diagnosis/invoke-scan/'
+
+.PHONY: list-code-datasource
+list-code-datasource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/code/list-datasource/?project_id=1001'
+
+.PHONY: list-gitleaks
+list-gitleaks:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/code/list-gitleaks/?project_id=1001'
+
+.PHONY: put-gitleaks
+put-gitleaks:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "gitleaks": {"gitleaks_id":1001, "code_data_source_id":1001, "name":"test-gitleaks", "project_id":1001, "type":2, "target_resource":"gitleakstest"}}' \
+		'http://localhost:8000/api/v1/code/put-gitleaks/'
+
+.PHONY: delete-gitleaks
+delete-gitleaks:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "gitleaks_id":1001}' \
+		'http://localhost:8000/api/v1/code/delete-gitleaks/'
+
+.PHONY: invoke-scan-gitleaks
+invoke-scan-gitleaks:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "gitleaks_id":1001}' \
+		'http://localhost:8000/api/v1/code/invoke-scan-gitleaks/'
