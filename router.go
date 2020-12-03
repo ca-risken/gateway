@@ -136,6 +136,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/invoke-scan", svc.invokeScanHandler)
+					r.Post("/attach-datasource", svc.attachDataSourceHandler)
+					r.Post("/detach-datasource", svc.detachDataSourceHandler)
 				})
 			})
 			r.Group(func(r chi.Router) {
@@ -144,8 +146,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-aws", svc.putAWSHandler)
 				r.Post("/delete-aws", svc.deleteAWSHandler)
-				r.Post("/attach-datasource", svc.attachDataSourceHandler)
-				r.Post("/detach-datasource", svc.detachDataSourceHandler)
 			})
 		})
 
@@ -200,6 +200,20 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-datasource", svc.deleteDiagnosisDataSourceHandler)
 				r.Post("/put-jira-setting", svc.putJiraSettingHandler)
 				r.Post("/delete-jira-setting", svc.deleteJiraSettingHandler)
+			})
+		})
+
+		r.Route("/code", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-datasource", svc.listCodeDataSourceHandler)
+				r.Get("/list-gitleaks", svc.listGitleaksHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/put-gitleaks", svc.putGitleaksHandler)
+					r.Post("/delete-gitleaks", svc.deleteGitleaksHandler)
+					r.Post("/invoke-scan-gitleaks", svc.invokeScanGitleaksHandler)
+				})
 			})
 		})
 	})
