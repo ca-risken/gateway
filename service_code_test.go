@@ -331,3 +331,15 @@ func (m *mockCodeClient) InvokeScanAllGitleaks(context.Context, *empty.Empty, ..
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
+func (m *mockCodeClient) ListEnterpriseOrg(ctx context.Context, in *code.ListEnterpriseOrgRequest, opts ...grpc.CallOption) (*code.ListEnterpriseOrgResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*code.ListEnterpriseOrgResponse), args.Error(1)
+}
+func (m *mockCodeClient) PutEnterpriseOrg(ctx context.Context, in *code.PutEnterpriseOrgRequest, opts ...grpc.CallOption) (*code.PutEnterpriseOrgResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*code.PutEnterpriseOrgResponse), args.Error(1)
+}
+func (m *mockCodeClient) DeleteEnterpriseOrg(ctx context.Context, in *code.DeleteEnterpriseOrgRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
