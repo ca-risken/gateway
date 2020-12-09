@@ -11,6 +11,7 @@ RUN go install -v
 
 FROM alpine
 RUN apk add --no-cache ca-certificates tzdata \
+  && mkdir -p /usr/local/mimosa-gateway/doc \
   && cd /tmp/ && wget -q https://github.com/okzk/env-injector/releases/download/v0.0.5/env-injector_0.0.5_linux_amd64.tar.gz \
   && tar xvfz env-injector_0.0.5_linux_amd64.tar.gz && mv env-injector /usr/local/bin/ && rm /tmp/*
 COPY --from=builder /go/bin/mimosa-gateway /usr/local/mimosa-gateway/bin/

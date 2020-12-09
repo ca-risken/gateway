@@ -24,11 +24,17 @@ go-mod-update:
 	go get -u \
 			github.com/CyberAgent/mimosa-core/... \
 			github.com/CyberAgent/mimosa-aws/... \
-			github.com/CyberAgent/mimosa-diagnosis/...
+			github.com/CyberAgent/mimosa-diagnosis/... \
+			github.com/CyberAgent/mimosa-code/...
 
 .PHONY: run
 run: go-test network
 	. env.sh && docker-compose up -d --build
+
+.PHONY: doc
+doc: go-test
+	. env.sh && ls *.go | grep -v '_test.go' | xargs go run
+	# docker cp mimosa-gateway_gateway_1:/usr/local/mimosa-gateway/API.md  ./doc/README.md
 
 .PHONY: log
 log:
