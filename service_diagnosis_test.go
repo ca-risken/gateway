@@ -493,6 +493,245 @@ func TestDeleteJiraSettingHandler(t *testing.T) {
 	}
 }
 
+func TestListWpscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.ListWpscanSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&diagnosis_data_source_id=1`,
+			mockResp:   &diagnosis.ListWpscanSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      ``,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("ListWpscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-wpscan-setting/?"+c.input, nil)
+			svc.listWpscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestGetWpscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.GetWpscanSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&wpscan_setting_id=1`,
+			mockResp:   &diagnosis.GetWpscanSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `project_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `wpscan_setting_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1&wpscan_setting_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("GetWpscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-wpscan-setting/?"+c.input, nil)
+			svc.getWpscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestPutWpscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.PutWpscanSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "wpscan_setting":{"project_id":1,"diagnosis_data_source_id":1,"target_url":"http://example.com"}}`,
+			mockResp:   &diagnosis.PutWpscanSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "wpscan_setting":{"project_id":1,"diagnosis_data_source_id":1,"target_url":"http://example.com"}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("PutWpscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-wpscan-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putWpscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestDeleteWpscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id": 1, "wpscan_setting_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id": 1, "wpscan_setting_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("DeleteWpscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-wpscan-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deleteWpscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
 func TestInvokeDiagnosisScanHandler(t *testing.T) {
 	diagnosisMock := &mockDiagnosisClient{}
 	svc := gatewayService{
@@ -507,7 +746,7 @@ func TestInvokeDiagnosisScanHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id": 1, "jira_setting_id":1}`,
+			input:      `{"project_id": 1, "setting_id":1,"diagnosis_data_source_id":1}`,
 			mockResp:   &diagnosis.InvokeScanResponse{},
 			wantStatus: http.StatusOK,
 		},
@@ -518,7 +757,7 @@ func TestInvokeDiagnosisScanHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id": 1, "jira_setting_id":1}`,
+			input:      `{"project_id": 1, "setting_id":1, "diagnosis_data_source_id":1}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
@@ -591,6 +830,23 @@ func (m *mockDiagnosisClient) DeleteJiraSetting(context.Context, *diagnosis.Dele
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
+func (m *mockDiagnosisClient) ListWpscanSetting(context.Context, *diagnosis.ListWpscanSettingRequest, ...grpc.CallOption) (*diagnosis.ListWpscanSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.ListWpscanSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) GetWpscanSetting(context.Context, *diagnosis.GetWpscanSettingRequest, ...grpc.CallOption) (*diagnosis.GetWpscanSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.GetWpscanSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) PutWpscanSetting(context.Context, *diagnosis.PutWpscanSettingRequest, ...grpc.CallOption) (*diagnosis.PutWpscanSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.PutWpscanSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) DeleteWpscanSetting(context.Context, *diagnosis.DeleteWpscanSettingRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+
 func (m *mockDiagnosisClient) InvokeScan(context.Context, *diagnosis.InvokeScanRequest, ...grpc.CallOption) (*diagnosis.InvokeScanResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*diagnosis.InvokeScanResponse), args.Error(1)
