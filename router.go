@@ -185,8 +185,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(svc.authzWithProject)
 				r.Get("/list-datasource", svc.listDiagnosisDataSourceHandler)
 				r.Get("/list-jira-setting", svc.listJiraSettingHandler)
+				r.Get("/list-wpscan-setting", svc.listWpscanSettingHandler)
 				r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
 				r.Get("/get-jira-setting", svc.getJiraSettingHandler)
+				r.Get("/get-wpscan-setting", svc.getWpscanSettingHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/invoke-scan", svc.invokeDiagnosisScanHandler)
@@ -200,6 +202,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-datasource", svc.deleteDiagnosisDataSourceHandler)
 				r.Post("/put-jira-setting", svc.putJiraSettingHandler)
 				r.Post("/delete-jira-setting", svc.deleteJiraSettingHandler)
+				r.Post("/put-wpscan-setting", svc.putWpscanSettingHandler)
+				r.Post("/delete-wpscan-setting", svc.deleteWpscanSettingHandler)
 			})
 		})
 

@@ -315,6 +315,10 @@ func (m *mockCodeClient) ListGitleaks(context.Context, *code.ListGitleaksRequest
 	args := m.Called()
 	return args.Get(0).(*code.ListGitleaksResponse), args.Error(1)
 }
+func (m *mockCodeClient) GetGitleaks(context.Context, *code.GetGitleaksRequest, ...grpc.CallOption) (*code.GetGitleaksResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*code.GetGitleaksResponse), args.Error(1)
+}
 func (m *mockCodeClient) PutGitleaks(context.Context, *code.PutGitleaksRequest, ...grpc.CallOption) (*code.PutGitleaksResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*code.PutGitleaksResponse), args.Error(1)
