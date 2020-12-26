@@ -19,6 +19,9 @@ github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20201028054340-f4dee5a77a
 github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20201028054340-f4dee5a77a75/go.mod h1:aLR5wwhPFyT4saOfd8UzEq8GtrVz82KBTDwT47Eic7Q=
 github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201102104958-713d5ff0f488 h1:1rnZtZb0h9czSELbrJZmAXjOCppo2jBgmm0byF6jWRU=
 github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201102104958-713d5ff0f488/go.mod h1:xNsOp4oUyWK0o9iTwKIDPp/zMI7KjCahu24CEBWBWTk=
+github.com/CyberAgent/mimosa-google v0.0.0-20201226130725-77d0ffce78a7 h1:q1s9ppC/p6KnPzBMozfLpE1+lLtiDZKVRGK2cAr9ruA=
+github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20201226130725-77d0ffce78a7 h1:5SQuZG8oHR4PF5hotlFq4RmWiQtBNCiVHR6GKcnEFD8=
+github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20201226130725-77d0ffce78a7/go.mod h1:sMYG+14Nw5lKOFAhd7rhoJS2pBNtjZlXGPsms6NHsPk=
 github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20201102010932-4bbc843802a4 h1:YSwdiCXne0zZgmY9KetDttyFTLS1rvB+5XyhUckYdIM=
 github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20201102010932-4bbc843802a4/go.mod h1:Mpsp84ZR/6hTRZoaSV7pvcMpf8bYOHsjNZykOdWI6nk=
 github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 h1:zV3ejI06GQ59hwDQAvmK1qxOQGB3WuVTRoY0okPTAv0=
