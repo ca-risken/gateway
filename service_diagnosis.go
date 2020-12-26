@@ -126,6 +126,66 @@ func (g *gatewayService) deleteJiraSettingHandler(w http.ResponseWriter, r *http
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listWpscanSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.ListWpscanSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.ListWpscanSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) getWpscanSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.GetWpscanSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.GetWpscanSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) putWpscanSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.PutWpscanSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.PutWpscanSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deleteWpscanSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.DeleteWpscanSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.DeleteWpscanSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) invokeDiagnosisScanHandler(w http.ResponseWriter, r *http.Request) {
 	req := &diagnosis.InvokeScanRequest{}
 	bind(req, r)
