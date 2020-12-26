@@ -11,6 +11,7 @@ require (
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20201130105221-b9659eb5f70a
 	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20201130105221-b9659eb5f70a
 	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20201211101006-e98cdc7e4b33
+	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20201226130725-77d0ffce78a7
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20201212161035-16644ae849ae
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/docgen v1.1.0
