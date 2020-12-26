@@ -23,6 +23,7 @@ services:
       - OSINT_SVC_ADDR=${OSINT_SVC_ADDR}
       - DIAGNOSIS_SVC_ADDR=${DIAGNOSIS_SVC_ADDR}
       - CODE_SVC_ADDR=${CODE_SVC_ADDR}
+      - GOOGLE_SVC_ADDR=${GOOGLE_SVC_ADDR}
     ports:
       - "8000:8000"
 

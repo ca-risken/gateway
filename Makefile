@@ -25,7 +25,8 @@ go-mod-update:
 			github.com/CyberAgent/mimosa-core/... \
 			github.com/CyberAgent/mimosa-aws/... \
 			github.com/CyberAgent/mimosa-diagnosis/... \
-			github.com/CyberAgent/mimosa-code/...
+			github.com/CyberAgent/mimosa-code/... \
+			github.com/CyberAgent/mimosa-google/... 
 
 .PHONY: run
 run: go-test network
@@ -34,7 +35,6 @@ run: go-test network
 .PHONY: doc
 doc: go-test
 	. env.sh && ls *.go | grep -v '_test.go' | xargs go run
-	# docker cp mimosa-gateway_gateway_1:/usr/local/mimosa-gateway/API.md  ./doc/README.md
 
 .PHONY: log
 log:
@@ -1004,3 +1004,57 @@ invoke-scan-gitleaks:
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001, "gitleaks_id":1001}' \
 		'http://localhost:8000/api/v1/code/invoke-scan-gitleaks/'
+
+.PHONY: list-google-datasource
+list-google-datasource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/google/list-google-datasource/?project_id=1001'
+
+.PHONY: list-gcp
+list-gcp:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/google/list-gcp/?project_id=1001'
+
+.PHONY: get-gcp
+get-gcp:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/google/get-gcp/?project_id=1001&gcp_id=1001'
+
+.PHONY: put-gcp
+put-gcp:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "gcp": {"gcp_id":1002, "google_data_source_id":1001, "name":"test", "project_id":1001, "gcp_project_id":"test"}}' \
+		'http://localhost:8000/api/v1/google/put-gcp/'
+
+.PHONY: delete-gcp
+delete-gcp:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "gcp_id":1002}' \
+		'http://localhost:8000/api/v1/google/delete-gcp/'
+
+.PHONY: invoke-scan-gcp
+invoke-scan-gcp:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "gcp_id":1001}' \
+		'http://localhost:8000/api/v1/google/invoke-scan-gcp/'

@@ -223,8 +223,31 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				})
 			})
 		})
-	})
 
+		r.Route("/google", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				// project any
+				r.Get("/list-google-datasource", svc.listGoogleDataSourceHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-gcp", svc.listGCPHandler)
+				r.Get("/get-gcp", svc.getGCPHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/invoke-scan-gcp", svc.invokeScanGCPHandler)
+				})
+			})
+			r.Group(func(r chi.Router) {
+				// Admin API
+				r.Use(svc.authzOnlyAdmin)
+				r.Use(middleware.AllowContentType(contenTypeJSON))
+				r.Post("/put-gcp", svc.putGCPHandler)
+				r.Post("/delete-gcp", svc.deleteGCPHandler)
+			})
+		})
+
+	})
 	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r
 }

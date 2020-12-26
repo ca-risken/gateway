@@ -13,6 +13,7 @@ import (
 	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/CyberAgent/mimosa-core/proto/project"
 	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
+	"github.com/CyberAgent/mimosa-google/proto/google"
 	"github.com/CyberAgent/mimosa-osint/proto/osint"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
@@ -37,6 +38,7 @@ type gatewayService struct {
 	osintClient     osint.OsintServiceClient
 	diagnosisClient diagnosis.DiagnosisServiceClient
 	codeClient      code.CodeServiceClient
+	googleClient    google.GoogleServiceClient
 }
 
 type gatewayConf struct {
@@ -53,6 +55,7 @@ type gatewayConf struct {
 	OSINTSvcAddr       string   `required:"true" split_words:"true"`
 	DiagnosisSvcAddr   string   `required:"true" split_words:"true"`
 	CodeSvcAddr        string   `required:"true" split_words:"true"`
+	GoogleSvcAddr      string   `required:"true" split_words:"true"`
 }
 
 func newGatewayService() (*gatewayService, error) {
@@ -80,6 +83,7 @@ func newGatewayService() (*gatewayService, error) {
 		osintClient:     osint.NewOsintServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
 		diagnosisClient: diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
 		codeClient:      code.NewCodeServiceClient(getGRPCConn(ctx, conf.CodeSvcAddr)),
+		googleClient:    google.NewGoogleServiceClient(getGRPCConn(ctx, conf.GoogleSvcAddr)),
 	}, nil
 }
 
