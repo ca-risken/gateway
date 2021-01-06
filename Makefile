@@ -1036,7 +1036,7 @@ put-gcp:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "gcp": {"gcp_id":1002, "google_data_source_id":1001, "name":"test", "project_id":1001, "gcp_project_id":"test"}}' \
+		--data '{"project_id":1001, "gcp": {"gcp_id":1002, "name":"test", "project_id":1001, "gcp_project_id":"test"}}' \
 		'http://localhost:8000/api/v1/google/put-gcp/'
 
 .PHONY: delete-gcp
@@ -1056,5 +1056,5 @@ invoke-scan-gcp:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "gcp_id":1001}' \
+		--data '{"project_id":1001, "gcp_id":1001, "google_data_source_id":1001}' \
 		'http://localhost:8000/api/v1/google/invoke-scan-gcp/'
