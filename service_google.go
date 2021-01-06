@@ -81,6 +81,66 @@ func (g *gatewayService) deleteGCPHandler(w http.ResponseWriter, r *http.Request
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listGCPDataSourceHandler(w http.ResponseWriter, r *http.Request) {
+	req := &google.ListGCPDataSourceRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.googleClient.ListGCPDataSource(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) getGCPDataSourceHandler(w http.ResponseWriter, r *http.Request) {
+	req := &google.GetGCPDataSourceRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.googleClient.GetGCPDataSource(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) attachGCPDataSourceHandler(w http.ResponseWriter, r *http.Request) {
+	req := &google.AttachGCPDataSourceRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.googleClient.AttachGCPDataSource(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) detachGCPDataSourceHandler(w http.ResponseWriter, r *http.Request) {
+	req := &google.DetachGCPDataSourceRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.googleClient.DetachGCPDataSource(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) invokeScanGCPHandler(w http.ResponseWriter, r *http.Request) {
 	req := &google.InvokeScanGCPRequest{}
 	bind(req, r)

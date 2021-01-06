@@ -232,9 +232,13 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
 				r.Get("/list-gcp", svc.listGCPHandler)
+				r.Get("/list-gcp-datasource", svc.listGCPDataSourceHandler)
 				r.Get("/get-gcp", svc.getGCPHandler)
+				r.Get("/get-gcp-datasource", svc.getGCPDataSourceHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/attach-gcp-datasource", svc.attachGCPDataSourceHandler)
+					r.Post("/detach-gcp-datasource", svc.detachGCPDataSourceHandler)
 					r.Post("/invoke-scan-gcp", svc.invokeScanGCPHandler)
 				})
 			})
