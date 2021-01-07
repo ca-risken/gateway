@@ -293,3 +293,54 @@ func (g *gatewayService) untagResourceHandler(w http.ResponseWriter, r *http.Req
 	}
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
+
+func (g *gatewayService) getPendFindingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &finding.GetPendFindingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.findingClient.GetPendFinding(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) putPendFindingHandler(w http.ResponseWriter, r *http.Request) {
+	// bind
+	req := &finding.PutPendFindingRequest{}
+	bind(req, r)
+	// validate
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	// call backend service
+	resp, err := g.findingClient.PutPendFinding(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deletePendFindingHandler(w http.ResponseWriter, r *http.Request) {
+	// bind
+	req := &finding.DeletePendFindingRequest{}
+	bind(req, r)
+	// validate
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	// call backend service
+	resp, err := g.findingClient.DeletePendFinding(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
