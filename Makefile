@@ -120,6 +120,34 @@ untag-finding:
 		--data '{"project_id":1001, "finding_tag_id":1002}' \
 		'http://localhost:8000/api/v1/finding/untag-finding/'
 
+.PHONY: get-pend-finding
+get-pend-finding:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/finding/get-pend-finding/?project_id=1001&finding_id=1001'
+
+.PHONY: put-pend-finding
+put-pend-finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "pend_finding":{"finding_id":1001, "project_id":1001}}' \
+		'http://localhost:8000/api/v1/finding/put-pend-finding/'
+
+.PHONY: delete-pend-finding
+delete-pend-finding:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "finding_id":1001}' \
+		'http://localhost:8000/api/v1/finding/delete-pend-finding/'
+
 .PHONY: list-resource
 list-resource:
 	curl -is -XGET \

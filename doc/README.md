@@ -830,6 +830,24 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/diagnosis/*/delete-wpscan-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/diagnosis/***
+		- **/delete-wpscan-setting**
+			- _POST_
+				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).deleteWpscanSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/diagnosis/*/get-datasource`</summary>
 
 - [RequestID]()
@@ -861,6 +879,23 @@ MIMOSA API document by go-chi.
 			- _GET_
 				- [main.(*gatewayService).authzWithProject-fm]()
 				- [main.(*gatewayService).getJiraSettingHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/diagnosis/*/get-wpscan-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/diagnosis/***
+		- **/get-wpscan-setting**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).getWpscanSettingHandler-fm]()
 
 </details>
 <details>
@@ -916,6 +951,23 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/diagnosis/*/list-wpscan-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/diagnosis/***
+		- **/list-wpscan-setting**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).listWpscanSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/diagnosis/*/put-datasource`</summary>
 
 - [RequestID]()
@@ -952,6 +1004,24 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/diagnosis/*/put-wpscan-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/diagnosis/***
+		- **/put-wpscan-setting**
+			- _POST_
+				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putWpscanSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/finding/*/delete-finding`</summary>
 
 - [RequestID]()
@@ -967,6 +1037,24 @@ MIMOSA API document by go-chi.
 			- _POST_
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).deleteFindingHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/finding/*/delete-pend-finding`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/finding/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/delete-pend-finding**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).deletePendFindingHandler-fm]()
 
 </details>
 <details>
@@ -1002,6 +1090,23 @@ MIMOSA API document by go-chi.
 		- **/get-finding**
 			- _GET_
 				- [main.(*gatewayService).getFindingHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/finding/*/get-pend-finding`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/finding/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/get-pend-finding**
+			- _GET_
+				- [main.(*gatewayService).getPendFindingHandler-fm]()
 
 </details>
 <details>
@@ -1142,6 +1247,24 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/finding/*/put-pend-finding`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/finding/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/put-pend-finding**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putPendFindingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/finding/*/put-resource`</summary>
 
 - [RequestID]()
@@ -1229,6 +1352,180 @@ MIMOSA API document by go-chi.
 			- _POST_
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).untagResourceHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/attach-gcp-datasource`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/attach-gcp-datasource**
+			- _POST_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).attachGCPDataSourceHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/delete-gcp`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/delete-gcp**
+			- _POST_
+				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).deleteGCPHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/detach-gcp-datasource`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/detach-gcp-datasource**
+			- _POST_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).detachGCPDataSourceHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/get-gcp`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/get-gcp**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).getGCPHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/get-gcp-datasource`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/get-gcp-datasource**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).getGCPDataSourceHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/invoke-scan-gcp`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/invoke-scan-gcp**
+			- _POST_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).invokeScanGCPHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/list-gcp`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/list-gcp**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).listGCPHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/list-gcp-datasource`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/list-gcp-datasource**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).listGCPDataSourceHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/list-google-datasource`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/list-google-datasource**
+			- _GET_
+				- [main.(*gatewayService).listGoogleDataSourceHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/google/*/put-gcp`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [Recoverer]()
+- [RequestLogger.func1]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/google/***
+		- **/put-gcp**
+			- _POST_
+				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putGCPHandler-fm]()
 
 </details>
 <details>
@@ -1905,4 +2202,4 @@ MIMOSA API document by go-chi.
 
 </details>
 
-Total # of routes: 109
+Total # of routes: 126
