@@ -684,6 +684,21 @@ delete-alert_cond_notification:
 		--data '{"alert_condition_id":1001,"notification_id":1001,"project_id":1001}' \
 		'http://localhost:8000/api/v1/alert/delete-condition_notification/'
 
+.PHONY: get-report
+get-report:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/report/get-report/?project_id=1001'
+
+get-report-all:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/report/get-report-all/'
+
 .PHONY: list-aws
 list-aws:
 	curl -is -XGET \

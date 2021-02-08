@@ -131,6 +131,18 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 		})
 
+		r.Route("/report", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/get-report", svc.getReportFindingHandler)
+			})
+			r.Group(func(r chi.Router) {
+				// Admin API
+				r.Use(svc.authzOnlyAdmin)
+				r.Get("/get-report-all", svc.getReportFindingAllHandler)
+			})
+		})
+
 		r.Route("/aws", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)

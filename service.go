@@ -12,6 +12,7 @@ import (
 	"github.com/CyberAgent/mimosa-core/proto/finding"
 	"github.com/CyberAgent/mimosa-core/proto/iam"
 	"github.com/CyberAgent/mimosa-core/proto/project"
+	"github.com/CyberAgent/mimosa-core/proto/report"
 	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
 	"github.com/CyberAgent/mimosa-google/proto/google"
 	"github.com/CyberAgent/mimosa-osint/proto/osint"
@@ -34,6 +35,7 @@ type gatewayService struct {
 	iamClient       iam.IAMServiceClient
 	projectClient   project.ProjectServiceClient
 	alertClient     alert.AlertServiceClient
+	reportClient    report.ReportServiceClient
 	awsClient       aws.AWSServiceClient
 	osintClient     osint.OsintServiceClient
 	diagnosisClient diagnosis.DiagnosisServiceClient
@@ -51,6 +53,7 @@ type gatewayConf struct {
 	IAMSvcAddr         string   `required:"true" split_words:"true"`
 	ProjectSvcAddr     string   `required:"true" split_words:"true"`
 	AlertSvcAddr       string   `required:"true" split_words:"true"`
+	ReportSvcAddr      string   `required:"true" split_words:"true"`
 	AWSSvcAddr         string   `required:"true" split_words:"true"`
 	OSINTSvcAddr       string   `required:"true" split_words:"true"`
 	DiagnosisSvcAddr   string   `required:"true" split_words:"true"`
@@ -79,6 +82,7 @@ func newGatewayService() (*gatewayService, error) {
 		iamClient:       iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
 		projectClient:   project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
 		alertClient:     alert.NewAlertServiceClient(getGRPCConn(ctx, conf.AlertSvcAddr)),
+		reportClient:    report.NewReportServiceClient(getGRPCConn(ctx, conf.ReportSvcAddr)),
 		awsClient:       aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
 		osintClient:     osint.NewOsintServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
 		diagnosisClient: diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
