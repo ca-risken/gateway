@@ -697,7 +697,7 @@ get-report-all:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/report/get-report-all/'
+		'http://localhost:8000/api/v1/report/get-report-all/?project_id=1001'
 
 .PHONY: list-aws
 list-aws:
