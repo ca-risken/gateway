@@ -5,11 +5,11 @@ go 1.15
 require (
 	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210202055625-75615fbf8bf3
 	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210112054648-4bb5e10d2749
-	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210207234421-cd9c3ff3b49d
-	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210207234421-cd9c3ff3b49d
-	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210207234421-cd9c3ff3b49d
-	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210207234421-cd9c3ff3b49d
-	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210207234421-cd9c3ff3b49d
+	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210209104417-2487b497b0aa
+	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210209104417-2487b497b0aa
+	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210209104417-2487b497b0aa
+	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210209104417-2487b497b0aa
+	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210209104417-2487b497b0aa
 	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210202021001-ea131136177f
 	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210122131541-9499608d6366
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20201227224327-9a6fddbeed4c
