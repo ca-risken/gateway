@@ -8,9 +8,7 @@ export GITHUB_TOKEN="your_token_here"
 export GOPRIVATE="github.com/CyberAgent/*"
 
 # build
-export AWS_ACCOUNT_ID="123456789012"
-export AWS_DEFAULT_REGION="ap-northeast-1"
-export REGISTORY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+export AWS_REGION="ap-northeast-1"
 
 # gateway
 export PORT="8000"

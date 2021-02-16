@@ -6,11 +6,17 @@ cd "$(dirname "$0")"
 . ../env.sh
 
 # setting remote repository
-export IMAGE="gateway/gateway"
-export TAG="local-test-$(date '+%Y%m%d')"
+TAG="local-test-$(date '+%Y%m%d')"
+IMAGE_GATEWAY="gateway/gateway"
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+REGISTORY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 
 # build & push
-docker build --build-arg GITHUB_USER=${GITHUB_USER} --build-arg GITHUB_TOKEN=${GITHUB_TOKEN} -t ${IMAGE}:${TAG} ..
-$(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
-docker tag ${IMAGE}:${TAG} ${REGISTORY}/${IMAGE}:${TAG}
-docker push ${REGISTORY}/${IMAGE}:${TAG}
+aws ecr get-login-password --region ${AWS_REGION} \
+  | docker login \
+    --username AWS \
+    --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+docker build --build-arg GITHUB_USER=${GITHUB_USER} --build-arg GITHUB_TOKEN=${GITHUB_TOKEN} -t ${IMAGE_GATEWAY}:${TAG} ..
+docker tag ${IMAGE_GATEWAY}:${TAG} ${REGISTORY}/${IMAGE_GATEWAY}:${TAG}
+docker push ${REGISTORY}/${IMAGE_GATEWAY}:${TAG}
