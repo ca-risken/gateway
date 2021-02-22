@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/CyberAgent/mimosa-core/proto/iam"
@@ -52,11 +53,15 @@ func (g *gatewayService) isAdminHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) {
-	req := &iam.PutUserRequest{}
-	bind(req, r)
-	if req.User != nil && g.uidHeader != "" {
-		req.User.Sub = r.Header.Get(g.uidHeader) // force update sub
+	user, err := getRequestUser(r)
+	if err != nil {
+		writeResponse(w, http.StatusUnauthorized, map[string]interface{}{errorJSONKey: errors.New("InvalidUser")})
 	}
+	req := &iam.PutUserRequest{
+		User: &iam.UserForUpsert{},
+	}
+	req.User.Sub = user.sub // force update sub
+	bind(req, r)
 	if err := req.Validate(); err != nil {
 		appLogger.Debugf("debug: %v", err)
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

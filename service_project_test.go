@@ -111,6 +111,7 @@ func TestCreateProjectHandler(t *testing.T) {
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/project/create-project/", strings.NewReader(c.input))
+			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{sub: "sub", userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
 			svc.createProjectHandler(rec, req)
 			// Check Response

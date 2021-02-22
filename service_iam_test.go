@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -222,6 +223,7 @@ func TestPutUserHandler(t *testing.T) {
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/put-user/", strings.NewReader(c.input))
+			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{sub: "xxx", userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putUserHandler(rec, req)
 			// Check Response
