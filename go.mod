@@ -1,6 +1,6 @@
 module githug.com/CyberAgent/mimosa-gateway
 
-go 1.15
+go 1.16
 
 require (
 	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210202055625-75615fbf8bf3

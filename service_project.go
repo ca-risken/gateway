@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/CyberAgent/mimosa-core/proto/project"
@@ -22,7 +23,12 @@ func (g *gatewayService) listProjectHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (g *gatewayService) createProjectHandler(w http.ResponseWriter, r *http.Request) {
+	user, err := getRequestUser(r)
+	if err != nil {
+		writeResponse(w, http.StatusUnauthorized, map[string]interface{}{errorJSONKey: errors.New("InvalidUser")})
+	}
 	req := &project.CreateProjectRequest{}
+	req.UserId = user.userID // force update by own userID
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

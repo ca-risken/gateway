@@ -26,19 +26,21 @@ type requestUser struct {
 	userID uint32
 }
 
+func getRequestUser(r *http.Request) (*requestUser, error) {
+	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || zero.IsZeroVal(u.userID) {
+		return nil, errors.New("User not found")
+	}
+	return r.Context().Value(userKey).(*requestUser), nil
+}
+
 // signinHandler: OIDC proxy backend signin process.
 func signinHandler(w http.ResponseWriter, r *http.Request) {
-	if user, ok := r.Context().Value(userKey).(*requestUser); !ok {
-		appLogger.Infof("Unauthenticated: Invalid requestUser type")
-		http.Error(w, "Unauthenticated", http.StatusUnauthorized)
-		return
-	} else if user == nil || zero.IsZeroVal(user.userID) {
-		appLogger.Infof("Unauthenticated: No mimosa-user")
+	signinUser, err := getRequestUser(r)
+	if err != nil {
+		appLogger.Infof("Unauthenticated: %+v", err)
 		http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 		return
 	}
-	signinUser := r.Context().Value(userKey).(*requestUser)
-
 	token := make([]byte, 24)
 	rand.Read(token)
 	http.SetCookie(w, &http.Cookie{
@@ -138,9 +140,9 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
-		u, ok := r.Context().Value(userKey).(*requestUser)
-		if !ok {
-			appLogger.Infof("Unauthenticated: Invalid requestUser type.")
+		u, err := getRequestUser(r)
+		if err != nil {
+			appLogger.Infof("Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
@@ -166,9 +168,9 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
-		u, ok := r.Context().Value(userKey).(*requestUser)
-		if !ok {
-			appLogger.Infof("Unauthenticated: Invalid requestUser type.")
+		u, err := getRequestUser(r)
+		if err != nil {
+			appLogger.Infof("Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
