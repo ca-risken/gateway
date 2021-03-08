@@ -88,6 +88,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/update-project", svc.updateProjectHandler)
 				r.Post("/delete-project", svc.deleteProjectHandler)
+				r.Post("/tag-project", svc.tagProjectHandler)
+				r.Post("/untag-project", svc.untagProjectHandler)
 			})
 		})
 

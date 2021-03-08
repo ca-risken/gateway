@@ -364,7 +364,7 @@ list-project:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/project/list-project/?user_id=1001'
+		'http://localhost:8000/api/v1/project/list-project/'
 
 .PHONY: create-project
 create-project:
@@ -383,7 +383,7 @@ update-project:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1006, "name":"test-pj-x"}' \
+		--data '{"project_id":1002, "name":"project-b2"}' \
 		'http://localhost:8000/api/v1/project/update-project/'
 
 .PHONY: delete-project
@@ -393,8 +393,28 @@ delete-project:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1007}' \
+		--data '{"project_id":1001}' \
 		'http://localhost:8000/api/v1/project/delete-project/'
+
+.PHONY: tag-project
+tag-project:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "tag": "test:true"}' \
+		'http://localhost:8000/api/v1/project/tag-project/'
+
+.PHONY: untag-project
+untag-project:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "tag": "test:true"}' \
+		'http://localhost:8000/api/v1/project/untag-project/'
 
 .PHONY: list-alert
 list-alert:
