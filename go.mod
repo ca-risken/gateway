@@ -5,11 +5,11 @@ go 1.16
 require (
 	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210305103505-8f3e70ee2a07
 	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210220180811-6fb3921fbe40
-	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210308154506-ce27f6a7b93d
-	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210308154506-ce27f6a7b93d
-	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210308154506-ce27f6a7b93d
-	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210308154506-ce27f6a7b93d
-	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210308154506-ce27f6a7b93d
+	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210309013139-4e0ca5fb169e
+	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210309013139-4e0ca5fb169e
+	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210309013139-4e0ca5fb169e
+	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210309013139-4e0ca5fb169e
+	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210309013139-4e0ca5fb169e
 	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210305105818-af69a8cf21c7
 	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210305133137-6131ce723e2f
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20201227224327-9a6fddbeed4c
@@ -26,7 +26,7 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
-	golang.org/x/sys v0.0.0-20210305230114-8fe3ee5dd75b // indirect
+	golang.org/x/sys v0.0.0-20210308170721-88b6017d0656 // indirect
 	golang.org/x/text v0.3.5 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/genproto v0.0.0-20210303154014-9728d6b83eeb // indirect
