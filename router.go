@@ -34,6 +34,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/list-resource-tag", svc.listResourceTagHandler)
 			r.Get("/list-resource-tag-name", svc.listResourceTagNameHandler)
 			r.Get("/get-pend-finding", svc.getPendFindingHandler)
+			r.Get("/list-finding-setting", svc.listFindingSettingHandler)
+			r.Get("/get-finding-setting", svc.getFindingSettingHandler)
 			r.Group(func(r chi.Router) {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-finding", svc.putFindingHandler)
@@ -46,6 +48,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/untag-resource", svc.untagResourceHandler)
 				r.Post("/put-pend-finding", svc.putPendFindingHandler)
 				r.Post("/delete-pend-finding", svc.deletePendFindingHandler)
+				r.Post("/put-finding-setting", svc.putFindingSettingHandler)
+				r.Post("/delete-finding-setting", svc.deleteFindingSettingHandler)
 			})
 		})
 

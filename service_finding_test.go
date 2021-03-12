@@ -1129,6 +1129,249 @@ func TestDeletePendFindingHandler(t *testing.T) {
 	}
 }
 
+func TestListFindingSettingHandler(t *testing.T) {
+	findingMock := &mockFindingClient{}
+	svc := gatewayService{
+		findingClient: findingMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *finding.ListFindingSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK Empty",
+			input:      `project_id=1`,
+			mockResp:   &finding.ListFindingSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:  "OK Response exists",
+			input: `project_id=1`,
+			mockResp: &finding.ListFindingSettingResponse{FindingSetting: []*finding.FindingSetting{
+				{ProjectId: 1, ResourceName: "RN", Setting: `{"key"":"value"}`, Status: finding.FindingSettingStatus_SETTING_ACTIVE},
+			}},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid request",
+			input:      `status=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1&status=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("ListFindingSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/finding/list-finding-setting/?"+c.input, nil)
+			svc.listFindingSettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestGetFindingSettingHandler(t *testing.T) {
+	findingMock := &mockFindingClient{}
+	svc := gatewayService{
+		findingClient: findingMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *finding.GetFindingSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK Empty",
+			input:      `project_id=1&finding_setting_id=1`,
+			mockResp:   &finding.GetFindingSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:  "OK Response exists",
+			input: `project_id=1&finding_setting_id=1`,
+			mockResp: &finding.GetFindingSettingResponse{FindingSetting: &finding.FindingSetting{
+				ProjectId: 1, ResourceName: "RN", Setting: `{"key"":"value"}`, Status: finding.FindingSettingStatus_SETTING_ACTIVE,
+			}},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid request",
+			input:      `project_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1&finding_setting_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("GetFindingSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/finding/get-finding-setting/?"+c.input, nil)
+			svc.getFindingSettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestPutFindingSettingHandler(t *testing.T) {
+	findingMock := &mockFindingClient{}
+	svc := gatewayService{
+		findingClient: findingMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *finding.PutFindingSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:  "OK",
+			input: `{"project_id":1, "finding_setting":{"project_id":1, "resource_name":"RN", "status":1, "setting":"{}"}}`,
+			mockResp: &finding.PutFindingSettingResponse{
+				FindingSetting: &finding.FindingSetting{FindingSettingId: 1, ProjectId: 1, ResourceName: "RN", Status: finding.FindingSettingStatus_SETTING_ACTIVE, Setting: "{}"}},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid request",
+			input:      `{}`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "finding_setting":{"project_id":1, "resource_name":"RN", "status":1, "setting":"{}"}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("PutFindingSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/finding/put-finding-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putFindingSettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestDeleteFindingSettingHandler(t *testing.T) {
+	findingMock := &mockFindingClient{}
+	svc := gatewayService{
+		findingClient: findingMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "finding_setting_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid request",
+			input:      `{}`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "finding_setting_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("DeleteFindingSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/finding/delete-finding-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deleteFindingSettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
 /**
  * Mock Client
 **/
@@ -1209,6 +1452,22 @@ func (m *mockFindingClient) PutPendFinding(context.Context, *finding.PutPendFind
 	return args.Get(0).(*finding.PutPendFindingResponse), args.Error(1)
 }
 func (m *mockFindingClient) DeletePendFinding(context.Context, *finding.DeletePendFindingRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockFindingClient) ListFindingSetting(context.Context, *finding.ListFindingSettingRequest, ...grpc.CallOption) (*finding.ListFindingSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*finding.ListFindingSettingResponse), args.Error(1)
+}
+func (m *mockFindingClient) GetFindingSetting(context.Context, *finding.GetFindingSettingRequest, ...grpc.CallOption) (*finding.GetFindingSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*finding.GetFindingSettingResponse), args.Error(1)
+}
+func (m *mockFindingClient) PutFindingSetting(context.Context, *finding.PutFindingSettingRequest, ...grpc.CallOption) (*finding.PutFindingSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*finding.PutFindingSettingResponse), args.Error(1)
+}
+func (m *mockFindingClient) DeleteFindingSetting(context.Context, *finding.DeleteFindingSettingRequest, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
