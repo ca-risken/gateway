@@ -1121,3 +1121,39 @@ invoke-scan-gcp:
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001, "gcp_id":1001, "google_data_source_id":1001}' \
 		'http://localhost:8000/api/v1/google/invoke-scan-gcp/'
+
+.PHONY: list-finding-setting
+list-finding-setting:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/finding/list-finding-setting/?project_id=1001'
+
+.PHONY: get-finding-setting
+get-finding-setting:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/finding/get-finding-setting/?project_id=1001&finding_setting_id=1001'
+
+.PHONY: put-finding-setting
+put-finding-setting:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "finding_setting":{"project_id":1001, "resource_name":"RN", "status":1, "setting":"{}"}}' \
+		'http://localhost:8000/api/v1/finding/put-finding-setting/'
+
+.PHONY: delete-finding-setting
+delete-finding-setting:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "finding_setting_id":1001}' \
+		'http://localhost:8000/api/v1/finding/delete-finding-setting/'
