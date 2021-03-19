@@ -263,7 +263,7 @@ func TestAttachDataSourceHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1, "attach_data_source":{"aws_id":1, "aws_data_source_id":1, "project_id":1, "assume_role_arn":"arn", "external_id":""}}`,
+			input:      `{"project_id":1, "attach_data_source":{"aws_id":1, "aws_data_source_id":1, "project_id":1, "assume_role_arn":"arn", "external_id":"12345678"}}`,
 			mockResp:   &aws.AttachDataSourceResponse{},
 			wantStatus: http.StatusOK,
 		},
@@ -274,7 +274,7 @@ func TestAttachDataSourceHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1, "attach_data_source":{"aws_id":1, "aws_data_source_id":1, "project_id":1, "assume_role_arn":"arn", "external_id":""}}`,
+			input:      `{"project_id":1, "attach_data_source":{"aws_id":1, "aws_data_source_id":1, "project_id":1, "assume_role_arn":"arn", "external_id":"12345678"}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},

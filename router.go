@@ -156,17 +156,12 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/list-datasource", svc.listDataSourceHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/put-aws", svc.putAWSHandler)
+					r.Post("/delete-aws", svc.deleteAWSHandler)
 					r.Post("/invoke-scan", svc.invokeScanHandler)
 					r.Post("/attach-datasource", svc.attachDataSourceHandler)
 					r.Post("/detach-datasource", svc.detachDataSourceHandler)
 				})
-			})
-			r.Group(func(r chi.Router) {
-				// Admin API
-				r.Use(svc.authzOnlyAdmin)
-				r.Use(middleware.AllowContentType(contenTypeJSON))
-				r.Post("/put-aws", svc.putAWSHandler)
-				r.Post("/delete-aws", svc.deleteAWSHandler)
 			})
 		})
 

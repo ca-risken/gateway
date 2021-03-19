@@ -69,7 +69,7 @@ func (g *gatewayService) listDataSourceHandler(w http.ResponseWriter, r *http.Re
 func (g *gatewayService) attachDataSourceHandler(w http.ResponseWriter, r *http.Request) {
 	req := &aws.AttachDataSourceRequest{}
 	bind(req, r)
-	if err := req.Validate(); err != nil {
+	if err := req.ValidateForUser(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}

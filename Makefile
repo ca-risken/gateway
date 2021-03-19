@@ -1128,7 +1128,7 @@ list-finding-setting:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/finding/list-finding-setting/?project_id=1001'
+		'http://localhost:8000/api/v1/finding/list-finding-setting/?project_id=1001&status=1'
 
 .PHONY: get-finding-setting
 get-finding-setting:
