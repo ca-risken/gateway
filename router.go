@@ -253,17 +253,12 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/get-gcp-datasource", svc.getGCPDataSourceHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/put-gcp", svc.putGCPHandler)
+					r.Post("/delete-gcp", svc.deleteGCPHandler)
 					r.Post("/attach-gcp-datasource", svc.attachGCPDataSourceHandler)
 					r.Post("/detach-gcp-datasource", svc.detachGCPDataSourceHandler)
 					r.Post("/invoke-scan-gcp", svc.invokeScanGCPHandler)
 				})
-			})
-			r.Group(func(r chi.Router) {
-				// Admin API
-				r.Use(svc.authzOnlyAdmin)
-				r.Use(middleware.AllowContentType(contenTypeJSON))
-				r.Post("/put-gcp", svc.putGCPHandler)
-				r.Post("/delete-gcp", svc.deleteGCPHandler)
 			})
 		})
 
