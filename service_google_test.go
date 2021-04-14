@@ -196,7 +196,7 @@ func TestPutGCPHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1, "gcp": {"gcp_id":1, "name":"test", "project_id":1, "gcp_project_id":"my-pj"}}`,
+			input:      `{"project_id":1, "gcp": {"gcp_id":1, "name":"test", "project_id":1, "gcp_project_id":"my-pj", "verification_code":"valid code"}}`,
 			mockResp:   &google.PutGCPResponse{},
 			wantStatus: http.StatusOK,
 		},
@@ -207,7 +207,7 @@ func TestPutGCPHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1, "gcp": {"gcp_id":1, "name":"test", "project_id":1, "gcp_project_id":"my-pj"}}`,
+			input:      `{"project_id":1, "gcp": {"gcp_id":1, "name":"test", "project_id":1, "gcp_project_id":"my-pj", "verification_code":"valid code"}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
