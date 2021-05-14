@@ -218,7 +218,7 @@ list-user:
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/iam/list-user/'
+		'http://localhost:8000/api/v1/iam/list-user/?activated=true'
 
 .PHONY: get-user
 get-user:
