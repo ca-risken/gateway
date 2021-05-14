@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/CyberAgent/mimosa-aws/proto/activity"
 	"github.com/CyberAgent/mimosa-aws/proto/aws"
 )
 
@@ -104,6 +105,51 @@ func (g *gatewayService) invokeScanHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	resp, err := g.awsClient.InvokeScan(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) describeARNHandler(w http.ResponseWriter, r *http.Request) {
+	req := &activity.DescribeARNRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.awsActivityClient.DescribeARN(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) listCloudTrailHandler(w http.ResponseWriter, r *http.Request) {
+	req := &activity.ListCloudTrailRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.awsActivityClient.ListCloudTrail(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) listConfigHistoryHandler(w http.ResponseWriter, r *http.Request) {
+	req := &activity.ListConfigHistoryRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.awsActivityClient.ListConfigHistory(r.Context(), req)
 	if err != nil {
 		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return

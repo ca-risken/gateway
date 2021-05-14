@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/CyberAgent/mimosa-aws/proto/activity"
 	"github.com/CyberAgent/mimosa-aws/proto/aws"
 	"github.com/CyberAgent/mimosa-code/proto/code"
 	"github.com/CyberAgent/mimosa-core/proto/alert"
@@ -27,20 +28,21 @@ const (
 )
 
 type gatewayService struct {
-	port            string
-	uidHeader       string
-	oidcDataHeader  string
-	idpProviderName []string
-	findingClient   finding.FindingServiceClient
-	iamClient       iam.IAMServiceClient
-	projectClient   project.ProjectServiceClient
-	alertClient     alert.AlertServiceClient
-	reportClient    report.ReportServiceClient
-	awsClient       aws.AWSServiceClient
-	osintClient     osint.OsintServiceClient
-	diagnosisClient diagnosis.DiagnosisServiceClient
-	codeClient      code.CodeServiceClient
-	googleClient    google.GoogleServiceClient
+	port              string
+	uidHeader         string
+	oidcDataHeader    string
+	idpProviderName   []string
+	findingClient     finding.FindingServiceClient
+	iamClient         iam.IAMServiceClient
+	projectClient     project.ProjectServiceClient
+	alertClient       alert.AlertServiceClient
+	reportClient      report.ReportServiceClient
+	awsClient         aws.AWSServiceClient
+	awsActivityClient activity.ActivityServiceClient
+	osintClient       osint.OsintServiceClient
+	diagnosisClient   diagnosis.DiagnosisServiceClient
+	codeClient        code.CodeServiceClient
+	googleClient      google.GoogleServiceClient
 }
 
 type gatewayConf struct {
@@ -55,6 +57,7 @@ type gatewayConf struct {
 	AlertSvcAddr       string   `required:"true" split_words:"true"`
 	ReportSvcAddr      string   `required:"true" split_words:"true"`
 	AWSSvcAddr         string   `required:"true" split_words:"true"`
+	AWSActivitySvcAddr string   `required:"true" split_words:"true"`
 	OSINTSvcAddr       string   `required:"true" split_words:"true"`
 	DiagnosisSvcAddr   string   `required:"true" split_words:"true"`
 	CodeSvcAddr        string   `required:"true" split_words:"true"`
@@ -74,20 +77,21 @@ func newGatewayService() (*gatewayService, error) {
 
 	ctx := context.Background()
 	return &gatewayService{
-		port:            conf.Port,
-		uidHeader:       conf.UserIdentityHeader,
-		oidcDataHeader:  conf.OidcDataHeader,
-		idpProviderName: conf.IdpProviderName,
-		findingClient:   finding.NewFindingServiceClient(getGRPCConn(ctx, conf.FindingSvcAddr)),
-		iamClient:       iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
-		projectClient:   project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
-		alertClient:     alert.NewAlertServiceClient(getGRPCConn(ctx, conf.AlertSvcAddr)),
-		reportClient:    report.NewReportServiceClient(getGRPCConn(ctx, conf.ReportSvcAddr)),
-		awsClient:       aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
-		osintClient:     osint.NewOsintServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
-		diagnosisClient: diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
-		codeClient:      code.NewCodeServiceClient(getGRPCConn(ctx, conf.CodeSvcAddr)),
-		googleClient:    google.NewGoogleServiceClient(getGRPCConn(ctx, conf.GoogleSvcAddr)),
+		port:              conf.Port,
+		uidHeader:         conf.UserIdentityHeader,
+		oidcDataHeader:    conf.OidcDataHeader,
+		idpProviderName:   conf.IdpProviderName,
+		findingClient:     finding.NewFindingServiceClient(getGRPCConn(ctx, conf.FindingSvcAddr)),
+		iamClient:         iam.NewIAMServiceClient(getGRPCConn(ctx, conf.IAMSvcAddr)),
+		projectClient:     project.NewProjectServiceClient(getGRPCConn(ctx, conf.ProjectSvcAddr)),
+		alertClient:       alert.NewAlertServiceClient(getGRPCConn(ctx, conf.AlertSvcAddr)),
+		reportClient:      report.NewReportServiceClient(getGRPCConn(ctx, conf.ReportSvcAddr)),
+		awsClient:         aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
+		awsActivityClient: activity.NewActivityServiceClient(getGRPCConn(ctx, conf.AWSActivitySvcAddr)),
+		osintClient:       osint.NewOsintServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
+		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
+		codeClient:        code.NewCodeServiceClient(getGRPCConn(ctx, conf.CodeSvcAddr)),
+		googleClient:      google.NewGoogleServiceClient(getGRPCConn(ctx, conf.GoogleSvcAddr)),
 	}, nil
 }
 
