@@ -9,8 +9,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -27,8 +27,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -45,8 +45,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -63,8 +63,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -81,8 +81,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -99,8 +99,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -117,8 +117,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -135,8 +135,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -153,8 +153,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -171,8 +171,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -188,8 +188,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -205,8 +205,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -222,8 +222,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -239,8 +239,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -256,8 +256,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -273,8 +273,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -290,8 +290,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -307,8 +307,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -324,8 +324,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -341,8 +341,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -358,8 +358,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -375,8 +375,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -392,8 +392,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -409,8 +409,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -426,8 +426,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -443,8 +443,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -461,8 +461,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -479,8 +479,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -497,8 +497,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -515,8 +515,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -533,8 +533,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -551,8 +551,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -569,8 +569,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -583,12 +583,30 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/alert/*/test-notification`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/alert/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/test-notification**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).testNotificationHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/aws/*/attach-datasource`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -605,17 +623,34 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
 	- **/aws/***
 		- **/delete-aws**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).deleteAWSHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/aws/*/describe-arn`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/aws/***
+		- **/describe-arn**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).describeARNHandler-fm]()
 
 </details>
 <details>
@@ -623,8 +658,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -641,8 +676,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -659,8 +694,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -672,12 +707,46 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/aws/*/list-cloudtrail`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/aws/***
+		- **/list-cloudtrail**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).listCloudTrailHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/aws/*/list-config-history`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/aws/***
+		- **/list-config-history**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).listConfigHistoryHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/aws/*/list-datasource`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -693,15 +762,15 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
 	- **/aws/***
 		- **/put-aws**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).putAWSHandler-fm]()
 
@@ -711,8 +780,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -729,8 +798,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -747,8 +816,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -763,8 +832,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -780,8 +849,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -798,8 +867,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -816,8 +885,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -834,15 +903,15 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
 	- **/diagnosis/***
 		- **/delete-wpscan-setting**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).deleteWpscanSettingHandler-fm]()
 
@@ -852,8 +921,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -869,8 +938,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -886,8 +955,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -903,8 +972,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -921,8 +990,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -938,8 +1007,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -955,8 +1024,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -972,8 +1041,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -990,8 +1059,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1008,15 +1077,15 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
 	- **/diagnosis/***
 		- **/put-wpscan-setting**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).putWpscanSettingHandler-fm]()
 
@@ -1026,8 +1095,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1040,12 +1109,30 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/finding/*/delete-finding-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/finding/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/delete-finding-setting**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).deleteFindingSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/finding/*/delete-pend-finding`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1062,8 +1149,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1080,8 +1167,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1093,12 +1180,29 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/finding/*/get-finding-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/finding/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/get-finding-setting**
+			- _GET_
+				- [main.(*gatewayService).getFindingSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/finding/*/get-pend-finding`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1114,8 +1218,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1131,8 +1235,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1144,12 +1248,29 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/finding/*/list-finding-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/finding/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/list-finding-setting**
+			- _GET_
+				- [main.(*gatewayService).listFindingSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/finding/*/list-finding-tag`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1165,8 +1286,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1182,8 +1303,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1199,8 +1320,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1216,8 +1337,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1233,8 +1354,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1247,12 +1368,30 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/finding/*/put-finding-setting`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/finding/***
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/put-finding-setting**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putFindingSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/finding/*/put-pend-finding`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1269,8 +1408,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1287,8 +1426,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1305,8 +1444,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1323,8 +1462,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1341,8 +1480,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1359,8 +1498,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1377,15 +1516,15 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
 	- **/google/***
 		- **/delete-gcp**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).deleteGCPHandler-fm]()
 
@@ -1395,8 +1534,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1413,8 +1552,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1430,8 +1569,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1447,8 +1586,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1465,8 +1604,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1482,8 +1621,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1499,8 +1638,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1515,15 +1654,15 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
 	- **/google/***
 		- **/put-gcp**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).putGCPHandler-fm]()
 
@@ -1533,8 +1672,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1551,8 +1690,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1569,8 +1708,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1587,8 +1726,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1605,8 +1744,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1623,8 +1762,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1641,8 +1780,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1658,8 +1797,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1675,8 +1814,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1691,8 +1830,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1707,8 +1846,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1724,8 +1863,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1741,8 +1880,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1757,8 +1896,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1775,8 +1914,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1793,8 +1932,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1810,8 +1949,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1828,8 +1967,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1846,8 +1985,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1864,8 +2003,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1882,8 +2021,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1899,8 +2038,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1916,8 +2055,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1933,8 +2072,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1950,8 +2089,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1968,8 +2107,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -1985,8 +2124,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2002,8 +2141,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2019,8 +2158,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2036,8 +2175,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2054,8 +2193,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2072,8 +2211,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2090,8 +2229,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2108,8 +2247,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2125,8 +2264,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2143,8 +2282,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2155,12 +2294,48 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/project/*/tag-project`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/project/***
+		- **/tag-project**
+			- _POST_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).tagProjectHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/project/*/untag-project`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/project/***
+		- **/untag-project**
+			- _POST_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).untagProjectHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/project/*/update-project`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2173,12 +2348,46 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/*/report/*/get-report`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/report/***
+		- **/get-report**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).getReportFindingHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/*/report/*/get-report-all`</summary>
+
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- **/api/v1/***
+	- **/report/***
+		- **/get-report-all**
+			- _GET_
+				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).getReportFindingAllHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/*/signin`</summary>
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/api/v1/***
@@ -2192,8 +2401,8 @@ MIMOSA API document by go-chi.
 
 - [RequestID]()
 - [RealIP]()
-- [Recoverer]()
 - [RequestLogger.func1]()
+- [Recoverer]()
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - **/healthz**
@@ -2202,4 +2411,4 @@ MIMOSA API document by go-chi.
 
 </details>
 
-Total # of routes: 126
+Total # of routes: 138
