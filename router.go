@@ -134,6 +134,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-notification", svc.deleteNotificationHandler)
 				r.Post("/delete-condition_notification", svc.deleteAlertCondNotificationHandler)
 				r.Post("/analyze-alert", svc.analyzeAlertHandler)
+				r.Post("/test-notification", svc.testNotificationHandler)
 			})
 		})
 
