@@ -28,9 +28,13 @@ go-mod-update:
 			github.com/CyberAgent/mimosa-code/... \
 			github.com/CyberAgent/mimosa-google/... 
 
-.PHONY: run
+.PHONY: build
+build: go-test network
+	. env.sh && docker-compose build
+
+.PHONY: build
 run: go-test network
-	. env.sh && docker-compose up -d --build
+	. env.sh && docker-compose up -d
 
 .PHONY: doc
 doc: go-test

@@ -3,32 +3,24 @@ module githug.com/CyberAgent/mimosa-gateway
 go 1.16
 
 require (
-	github.com/CyberAgent/mimosa-aws v0.0.0-20210513125830-6ca7eee6d00d
-	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210513125830-6ca7eee6d00d
+	github.com/CyberAgent/mimosa-aws v0.0.0-20210615063442-8f3c00a057b2
+	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210615063442-8f3c00a057b2
 	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210325072626-bd6984e66d5e
-	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210609055806-ca372d798b2d
-	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210430051641-778e594322c3
-	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210430051641-778e594322c3
-	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210430051641-778e594322c3
-	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210430051641-778e594322c3
+	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210615011255-b95cf93d5b9f
+	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210615011255-b95cf93d5b9f
+	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210615011255-b95cf93d5b9f
+	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210615011255-b95cf93d5b9f
+	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210615011255-b95cf93d5b9f
 	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210506082616-477e896d4f93
-	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210423035820-0aac3c53d7d1
-	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20201227224327-9a6fddbeed4c
-	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
-	github.com/envoyproxy/protoc-gen-validate v0.6.1 // indirect
+	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210615093943-975b53400513
+	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20210604070119-0c948d978e11
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/docgen v1.1.0
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/schema v1.2.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
-	github.com/sirupsen/logrus v1.7.0
-	github.com/stretchr/testify v1.6.1
+	github.com/sirupsen/logrus v1.8.1
+	github.com/stretchr/testify v1.7.0
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
-	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
-	golang.org/x/sys v0.0.0-20210608053332-aa57babbf139 // indirect
-	google.golang.org/genproto v0.0.0-20210608205507-b6d2f5bf0d7d // indirect
 	google.golang.org/grpc v1.38.0
-	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200605160147-a5ece683394c // indirect
 )
