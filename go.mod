@@ -3,8 +3,8 @@ module githug.com/CyberAgent/mimosa-gateway
 go 1.16
 
 require (
-	github.com/CyberAgent/mimosa-aws v0.0.0-20210615063442-8f3c00a057b2
-	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210615063442-8f3c00a057b2
+	github.com/CyberAgent/mimosa-aws v0.0.0-20210706052009-c1f53ecf5540
+	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210706052009-c1f53ecf5540
 	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210325072626-bd6984e66d5e
 	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210616024441-fd97b5355aab
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210616024441-fd97b5355aab
@@ -25,7 +25,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
-	golang.org/x/sys v0.0.0-20210616045830-e2b7044e8c71 // indirect
-	google.golang.org/genproto v0.0.0-20210614182748-5b3b54cad159 // indirect
-	google.golang.org/grpc v1.38.0
+	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
+	google.golang.org/genproto v0.0.0-20210701191553-46259e63a0a9 // indirect
+	google.golang.org/grpc v1.39.0
 )
