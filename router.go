@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
@@ -13,6 +14,11 @@ const (
 
 func newRouter(svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
+	// TODO refactor
+	r.Use(
+		func(next http.Handler) http.Handler {
+			return xray.Handler(xray.NewFixedSegmentNamer("gateway"), next)
+		})
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(httpLogger)
