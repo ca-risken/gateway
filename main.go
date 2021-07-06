@@ -2,9 +2,17 @@ package main
 
 import (
 	"net/http"
+
+	"github.com/aws/aws-xray-sdk-go/xray"
 )
 
+func initXRay() {
+	xray.Configure(xray.Config{})
+}
+
 func main() {
+	initXRay()
+
 	svc, err := newGatewayService()
 	if err != nil {
 		appLogger.Fatal(err.Error())

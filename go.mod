@@ -15,6 +15,7 @@ require (
 	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210615093943-975b53400513
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20210604070119-0c948d978e11
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
+	github.com/aws/aws-xray-sdk-go v1.5.0
 	github.com/envoyproxy/protoc-gen-validate v0.6.1 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/docgen v1.1.0
