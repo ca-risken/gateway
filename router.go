@@ -10,14 +10,23 @@ import (
 
 const (
 	contenTypeJSON = "application/json"
+	healthzPath    = "/healthz"
 )
 
 func newRouter(svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
 	// TODO refactor
 	r.Use(
+		// Ignore tracing when health check
 		func(next http.Handler) http.Handler {
-			return xray.Handler(xray.NewFixedSegmentNamer("gateway"), next)
+			xrh := xray.Handler(xray.NewFixedSegmentNamer("gateway"), next)
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.URL.Path != healthzPath {
+					xrh.ServeHTTP(w, r)
+				} else {
+					next.ServeHTTP(w, r)
+				}
+			})
 		})
 	r.Use(
 		func(next http.Handler) http.Handler {
@@ -282,6 +291,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 
 	})
-	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
+	r.Get(healthzPath, func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r
 }
