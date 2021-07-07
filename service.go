@@ -29,6 +29,7 @@ const (
 )
 
 type gatewayService struct {
+	envName           string
 	port              string
 	uidHeader         string
 	oidcDataHeader    string
@@ -47,6 +48,7 @@ type gatewayService struct {
 }
 
 type gatewayConf struct {
+	EnvName            string   `default:"default" split_words:"true"`
 	Port               string   `default:"8000"`
 	Debug              bool     `default:"false"`
 	UserIdentityHeader string   `required:"true" split_words:"true"`
@@ -78,6 +80,7 @@ func newGatewayService() (*gatewayService, error) {
 
 	ctx := context.Background()
 	return &gatewayService{
+		envName:           conf.EnvName,
 		port:              conf.Port,
 		uidHeader:         conf.UserIdentityHeader,
 		oidcDataHeader:    conf.OidcDataHeader,
