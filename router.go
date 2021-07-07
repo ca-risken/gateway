@@ -19,6 +19,15 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		func(next http.Handler) http.Handler {
 			return xray.Handler(xray.NewFixedSegmentNamer("gateway"), next)
 		})
+	r.Use(
+		func(next http.Handler) http.Handler {
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if err := xray.AddAnnotation(r.Context(), "env", svc.envName); err != nil {
+					appLogger.Warnf("failed to annotate environment to x-ray: %+v", err)
+				}
+				next.ServeHTTP(w, r)
+			})
+		})
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(httpLogger)
