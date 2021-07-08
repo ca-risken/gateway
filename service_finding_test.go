@@ -1383,6 +1383,11 @@ func (m *mockFindingClient) ListFinding(context.Context, *finding.ListFindingReq
 	args := m.Called()
 	return args.Get(0).(*finding.ListFindingResponse), args.Error(1)
 }
+
+func (m *mockFindingClient) BatchListFinding(context.Context, *finding.BatchListFindingRequest, ...grpc.CallOption) (*finding.BatchListFindingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*finding.BatchListFindingResponse), args.Error(1)
+}
 func (m *mockFindingClient) GetFinding(context.Context, *finding.GetFindingRequest, ...grpc.CallOption) (*finding.GetFindingResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*finding.GetFindingResponse), args.Error(1)
