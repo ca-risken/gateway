@@ -855,3 +855,35 @@ func (m *mockDiagnosisClient) InvokeScanAll(context.Context, *empty.Empty, ...gr
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
+func (m *mockDiagnosisClient) ListPortscanSetting(context.Context, *diagnosis.ListPortscanSettingRequest, ...grpc.CallOption) (*diagnosis.ListPortscanSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.ListPortscanSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) GetPortscanSetting(context.Context, *diagnosis.GetPortscanSettingRequest, ...grpc.CallOption) (*diagnosis.GetPortscanSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.GetPortscanSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) PutPortscanSetting(context.Context, *diagnosis.PutPortscanSettingRequest, ...grpc.CallOption) (*diagnosis.PutPortscanSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.PutPortscanSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) DeletePortscanSetting(context.Context, *diagnosis.DeletePortscanSettingRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockDiagnosisClient) ListPortscanTarget(context.Context, *diagnosis.ListPortscanTargetRequest, ...grpc.CallOption) (*diagnosis.ListPortscanTargetResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.ListPortscanTargetResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) GetPortscanTarget(context.Context, *diagnosis.GetPortscanTargetRequest, ...grpc.CallOption) (*diagnosis.GetPortscanTargetResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.GetPortscanTargetResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) PutPortscanTarget(context.Context, *diagnosis.PutPortscanTargetRequest, ...grpc.CallOption) (*diagnosis.PutPortscanTargetResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.PutPortscanTargetResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) DeletePortscanTarget(context.Context, *diagnosis.DeletePortscanTargetRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
