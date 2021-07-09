@@ -17,6 +17,7 @@ import (
 	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
 	"github.com/CyberAgent/mimosa-google/proto/google"
 	"github.com/CyberAgent/mimosa-osint/proto/osint"
+	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -28,6 +29,7 @@ const (
 )
 
 type gatewayService struct {
+	envName           string
 	port              string
 	uidHeader         string
 	oidcDataHeader    string
@@ -46,6 +48,7 @@ type gatewayService struct {
 }
 
 type gatewayConf struct {
+	EnvName            string   `default:"default" split_words:"true"`
 	Port               string   `default:"8000"`
 	Debug              bool     `default:"false"`
 	UserIdentityHeader string   `required:"true" split_words:"true"`
@@ -77,6 +80,7 @@ func newGatewayService() (*gatewayService, error) {
 
 	ctx := context.Background()
 	return &gatewayService{
+		envName:           conf.EnvName,
 		port:              conf.Port,
 		uidHeader:         conf.UserIdentityHeader,
 		oidcDataHeader:    conf.OidcDataHeader,
@@ -96,7 +100,9 @@ func newGatewayService() (*gatewayService, error) {
 }
 
 func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
-	conn, err := grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithTimeout(time.Second*3))
+	// TODO refactor for x-ray
+	conn, err := grpc.DialContext(ctx, addr,
+		grpc.WithUnaryInterceptor(xray.UnaryClientInterceptor()), grpc.WithInsecure(), grpc.WithTimeout(time.Second*3))
 	if err != nil {
 		appLogger.Fatalf("Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)
 	}
