@@ -732,6 +732,484 @@ func TestDeleteWpscanSettingHandler(t *testing.T) {
 	}
 }
 
+func TestListPortscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.ListPortscanSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&diagnosis_data_source_id=1`,
+			mockResp:   &diagnosis.ListPortscanSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      ``,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("ListPortscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-portscan-setting/?"+c.input, nil)
+			svc.listPortscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestGetPortscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.GetPortscanSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&portscan_setting_id=1`,
+			mockResp:   &diagnosis.GetPortscanSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `project_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `portscan_setting_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1&portscan_setting_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("GetPortscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-portscan-setting/?"+c.input, nil)
+			svc.getPortscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestPutPortscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.PutPortscanSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "portscan_setting":{"project_id":1,"diagnosis_data_source_id":1,"name":"test_portscan"}}`,
+			mockResp:   &diagnosis.PutPortscanSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "portscan_setting":{"project_id":1,"diagnosis_data_source_id":1,"name":"test_portscan"}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("PutPortscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-portscan-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putPortscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestDeletePortscanSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id": 1, "portscan_setting_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id": 1, "portscan_setting_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("DeletePortscanSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-portscan-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deletePortscanSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestListPortscanTargetHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.ListPortscanTargetResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&portscan_setting_id=1`,
+			mockResp:   &diagnosis.ListPortscanTargetResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      ``,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("ListPortscanTarget").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-portscan-target/?"+c.input, nil)
+			svc.listPortscanTargetHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestGetPortscanTargetHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.GetPortscanTargetResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&portscan_target_id=1`,
+			mockResp:   &diagnosis.GetPortscanTargetResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `project_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `portscan_target_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1&portscan_target_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("GetPortscanTarget").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-portscan-target/?"+c.input, nil)
+			svc.getPortscanTargetHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestPutPortscanTargetHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.PutPortscanTargetResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "portscan_target":{"project_id":1,"portscan_setting_id":1,"target":"test_portscan"}}`,
+			mockResp:   &diagnosis.PutPortscanTargetResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "portscan_target":{"project_id":1,"portscan_setting_id":1,"target":"test_portscan"}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("PutPortscanTarget").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-portscan-target/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putPortscanTargetHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestDeletePortscanTargetHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id": 1, "portscan_target_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id": 1, "portscan_target_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("DeletePortscanTarget").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-portscan-target/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deletePortscanTargetHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
 func TestInvokeDiagnosisScanHandler(t *testing.T) {
 	diagnosisMock := &mockDiagnosisClient{}
 	svc := gatewayService{
