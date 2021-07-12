@@ -2158,3 +2158,7 @@ func (m *mockAlertClient) TestNotification(context.Context, *alert.TestNotificat
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
+func (m *mockAlertClient) AnalyzeAlertAll(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
