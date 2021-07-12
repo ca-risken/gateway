@@ -6,12 +6,12 @@ require (
 	github.com/CyberAgent/mimosa-aws v0.0.0-20210709103057-d5f003c7fb9d
 	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210709103057-d5f003c7fb9d
 	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210709051238-d8a188c58f63
-	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210709073738-c5921e4e243f
-	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210709073738-c5921e4e243f
-	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210709073738-c5921e4e243f
-	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210709073738-c5921e4e243f
-	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210709073738-c5921e4e243f
-	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210709103404-cf4572a6db6e
+	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210712081026-7152ed72951d
+	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210712081026-7152ed72951d
+	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210712081026-7152ed72951d
+	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210712081026-7152ed72951d
+	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210712081026-7152ed72951d
+	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210709182128-8848ab507bb7
 	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210708082205-e7b0fb2cdef2
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20210604070119-0c948d978e11
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
