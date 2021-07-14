@@ -11,7 +11,7 @@ require (
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210712081026-7152ed72951d
 	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210712081026-7152ed72951d
 	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210712081026-7152ed72951d
-	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210709182128-8848ab507bb7
+	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210714042048-32f6643f79bf
 	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210708082205-e7b0fb2cdef2
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20210604070119-0c948d978e11
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
@@ -27,6 +27,6 @@ require (
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
-	google.golang.org/genproto v0.0.0-20210708141623-e76da96a951f // indirect
+	google.golang.org/genproto v0.0.0-20210714021259-044028024a4f // indirect
 	google.golang.org/grpc v1.39.0
 )
