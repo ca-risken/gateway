@@ -6,6 +6,7 @@ require (
 	github.com/CyberAgent/mimosa-aws v0.0.0-20210709103057-d5f003c7fb9d
 	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210709103057-d5f003c7fb9d
 	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210709051238-d8a188c58f63
+	github.com/CyberAgent/mimosa-common/pkg/xray v0.0.0-20210720072141-2b45736a6034
 	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210712081026-7152ed72951d
 	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210712081026-7152ed72951d
 	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210712081026-7152ed72951d
@@ -15,7 +16,7 @@ require (
 	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210708082205-e7b0fb2cdef2
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20210604070119-0c948d978e11
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
-	github.com/aws/aws-xray-sdk-go v1.5.0
+	github.com/aws/aws-xray-sdk-go v1.6.0
 	github.com/envoyproxy/protoc-gen-validate v0.6.1 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/docgen v1.1.0

@@ -3,15 +3,12 @@ package main
 import (
 	"net/http"
 
+	mimosaxray "github.com/CyberAgent/mimosa-common/pkg/xray"
 	"github.com/aws/aws-xray-sdk-go/xray"
 )
 
-func initXRay() {
-	xray.Configure(xray.Config{})
-}
-
 func main() {
-	initXRay()
+	mimosaxray.InitXRay(xray.Config{})
 
 	svc, err := newGatewayService()
 	if err != nil {

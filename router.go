@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/aws/aws-xray-sdk-go/xray"
+	mimosaxray "github.com/CyberAgent/mimosa-common/pkg/xray"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
@@ -15,28 +15,8 @@ const (
 
 func newRouter(svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
-	// TODO refactor
-	r.Use(
-		// Ignore tracing when health check
-		func(next http.Handler) http.Handler {
-			xrh := xray.Handler(xray.NewFixedSegmentNamer("gateway"), next)
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if r.URL.Path != healthzPath {
-					xrh.ServeHTTP(w, r)
-				} else {
-					next.ServeHTTP(w, r)
-				}
-			})
-		})
-	r.Use(
-		func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if err := xray.AddAnnotation(r.Context(), "env", svc.envName); err != nil {
-					appLogger.Warnf("failed to annotate environment to x-ray: %+v", err)
-				}
-				next.ServeHTTP(w, r)
-			})
-		})
+	r.Use(mimosaxray.IgnoreHealthCheckTracingMiddleware("gateway", healthzPath))
+	r.Use(mimosaxray.AnnotateEnvTracingMiddleware(svc.envName))
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(httpLogger)
