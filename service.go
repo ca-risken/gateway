@@ -100,7 +100,6 @@ func newGatewayService() (*gatewayService, error) {
 }
 
 func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
-	// TODO refactor for x-ray
 	conn, err := grpc.DialContext(ctx, addr,
 		grpc.WithUnaryInterceptor(xray.UnaryClientInterceptor()), grpc.WithInsecure(), grpc.WithTimeout(time.Second*3))
 	if err != nil {
