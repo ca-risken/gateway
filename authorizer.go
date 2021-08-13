@@ -22,12 +22,16 @@ const (
 )
 
 type requestUser struct {
+	// human access
 	sub    string
 	userID uint32
+
+	// program access
+	accessTokenID uint32
 }
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
-	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || zero.IsZeroVal(u.userID) {
+	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (zero.IsZeroVal(u.userID) && zero.IsZeroVal(u.accessTokenID)) {
 		return nil, errors.New("User not found")
 	}
 	return r.Context().Value(userKey).(*requestUser), nil
@@ -54,6 +58,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Authentication for human access
 func (g *gatewayService) authn(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		sub := r.Header.Get(g.uidHeader)
@@ -73,7 +78,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 				context.WithValue(r.Context(), userKey, &requestUser{sub: sub, userID: resp.User.UserId})))
 			return
 		}
-		// Try user auto provisioning
+		// Try AUTO PROVISIONING
 		oidcData := r.Header.Get(g.oidcDataHeader) // r.Header.Get("X-Amzn-Oidc-Data")
 		userName, err := g.getUserName(oidcData)
 		if err != nil {
@@ -132,6 +137,46 @@ func (g *gatewayService) getUserName(jwt string) (string, error) {
 	return username, nil
 }
 
+// Authentication for programable API access
+func (g *gatewayService) authnToken(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		bearer := r.Header.Get("Authorization")
+		tokenBody := ""
+		if len(bearer) > 7 && strings.ToUpper(bearer[0:7]) == "BEARER " {
+			tokenBody = strings.TrimSpace(bearer[7:])
+		}
+		if tokenBody == "" {
+			next.ServeHTTP(w, r)
+			return
+		}
+		projectID, accessTokenID, plainTextToken := decodeAccessToken(tokenBody)
+		if zero.IsZeroVal(accessTokenID) || zero.IsZeroVal(plainTextToken) {
+			next.ServeHTTP(w, r)
+			return
+		}
+		resp, err := g.iamClient.AuthenticateAccessToken(r.Context(), &iam.AuthenticateAccessTokenRequest{
+			ProjectId:      projectID,
+			AccessTokenId:  accessTokenID,
+			PlainTextToken: plainTextToken,
+		})
+		if err != nil {
+			appLogger.Errorf("Failed to AuthenticateAccessToken API, err=%+v", err)
+			next.ServeHTTP(w, r)
+			return
+		}
+		if zero.IsZeroVal(resp.AccessToken.AccessTokenId) {
+			appLogger.Error("Failed to get AccessTokenId")
+			next.ServeHTTP(w, r)
+			return
+		}
+		next.ServeHTTP(w, r.WithContext(
+			context.WithValue(r.Context(), userKey, &requestUser{accessTokenID: accessTokenID})))
+
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		buf, err := ioutil.ReadAll(r.Body)
@@ -140,19 +185,31 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
+
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof("Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
-		if !validCSRFToken(r) {
-			http.Error(w, "Invalid token", http.StatusForbidden)
-			return
-		}
-		if !g.authzProject(u, r) {
-			http.Error(w, "Unauthorized xxx", http.StatusForbidden)
-			return
+
+		if !zero.IsZeroVal(u.userID) {
+			// Human Access
+			if !validCSRFToken(r) {
+				http.Error(w, "Invalid token", http.StatusForbidden)
+				return
+			}
+			if !g.authzProject(u, r) {
+				http.Error(w, "Unauthorized the project resource for human access", http.StatusForbidden)
+				return
+			}
+
+		} else if !zero.IsZeroVal(u.accessTokenID) {
+			// Program Access
+			if !g.authzProjectForToken(u, r) {
+				http.Error(w, "Unauthorized the project resource for token access", http.StatusForbidden)
+				return
+			}
 		}
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
 		next.ServeHTTP(w, r)
@@ -222,6 +279,29 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	resp, err := g.iamClient.IsAuthorized(r.Context(), req)
 	if err != nil {
 		appLogger.Errorf("Failed to IsAuthorized requuest, request=%+v, err=%+v", req, err)
+		return false
+	}
+	return resp.Ok
+}
+
+func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) bool {
+	if zero.IsZeroVal(u.accessTokenID) {
+		return false
+	}
+	p := &requestProject{}
+	bind(p, r)
+	if zero.IsZeroVal(p.ProjectID) {
+		return false
+	}
+	req := &iam.IsAuthorizedTokenRequest{
+		AccessTokenId: u.accessTokenID,
+		ProjectId:     p.ProjectID,
+		ActionName:    getActionNameFromURI(r.URL.Path),
+		ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
+	}
+	resp, err := g.iamClient.IsAuthorizedToken(r.Context(), req)
+	if err != nil {
+		appLogger.Errorf("Failed to IsAuthorizedToken requuest, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok

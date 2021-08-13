@@ -362,6 +362,72 @@ detach-policy:
 		--data '{"project_id":1001, "role_id":1001, "policy_id":1005}' \
 		'http://localhost:8000/api/v1/iam/detach-policy/'
 
+.PHONY: list-access-token
+list-access-token:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/iam/list-access-token/?project_id=1001'
+
+.PHONY: generate-access-token
+generate-access-token:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "access_token":{"plain_text_token":"plain_text_token", "project_id":1001, "name":"curl", "description":"test for curl"}}' \
+		'http://localhost:8000/api/v1/iam/generate-access-token/'
+
+.PHONY: update-access-token
+update-access-token:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "access_token":{"access_token_id":1010, "project_id":1001, "name":"curl", "description":"updated"}}' \
+		'http://localhost:8000/api/v1/iam/update-access-token/'
+
+.PHONY: delete-access-token
+delete-access-token:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "access_token_id":1009}' \
+		'http://localhost:8000/api/v1/iam/delete-access-token/'
+
+.PHONY: attach-access-token
+attach-access-token:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "role_id":1001, "access_token_id":1010}' \
+		'http://localhost:8000/api/v1/iam/attach-access-token/'
+
+.PHONY: detach-access-token
+detach-access-token:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "role_id":1001, "access_token_id":1010}' \
+		'http://localhost:8000/api/v1/iam/detach-access-token/'
+
+# access_token_id=1010
+.PHONY: test-token-access
+test-token-access:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: ' \
+		--header 'Authorization: BEARER MTAwMUAxMDEwQHJKNmtpUkVsLWJmaUVlZFRkT0hmRVhtendjTmI2akhOUFJJT19ZRjVVRGZEU1dmZkdzcnRnSm5zVjBMT1RzWkY2T2FsVjBzdnNIZVNvZ2JWOFptbnFn' \
+		'http://localhost:8000/api/v1/iam/list-access-token/?project_id=1001'
+
 .PHONY: list-project
 list-project:
 	curl -is -XGET \

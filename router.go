@@ -23,6 +23,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.StripSlashes)
 	r.Use(svc.authn)
+	r.Use(svc.authnToken)
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/signin", signinHandler)
@@ -71,6 +72,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/get-role", svc.getRoleHandler)
 				r.Get("/list-policy", svc.listPolicyHandler)
 				r.Get("/get-policy", svc.getPolicyHandler)
+				r.Get("/list-access-token", svc.listAccessTokenHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/put-role", svc.putRoleHandler)
@@ -81,6 +83,11 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-policy", svc.deletePolicyHandler)
 					r.Post("/attach-policy", svc.attachPolicyHandler)
 					r.Post("/detach-policy", svc.detachPolicyHandler)
+					r.Post("/generate-access-token", svc.generateAccessTokenHandler)
+					r.Post("/update-access-token", svc.updateAccessTokenHandler)
+					r.Post("/delete-access-token", svc.deleteAccessTokenHandler)
+					r.Post("/attach-access-token", svc.attachAccessTokenRoleHandler)
+					r.Post("/detach-access-token", svc.detachAccessTokenRoleHandler)
 				})
 			})
 		})
@@ -277,7 +284,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				})
 			})
 		})
-
 	})
 	r.Get(healthzPath, func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r

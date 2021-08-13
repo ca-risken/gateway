@@ -3,17 +3,17 @@ module githug.com/CyberAgent/mimosa-gateway
 go 1.16
 
 require (
-	github.com/CyberAgent/mimosa-aws v0.0.0-20210709103057-d5f003c7fb9d
-	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210709103057-d5f003c7fb9d
-	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210805060451-54ca480ed086
+	github.com/CyberAgent/mimosa-aws v0.0.0-20210812025300-d17f54d12b6a
+	github.com/CyberAgent/mimosa-aws/proto/aws v0.0.0-20210812025300-d17f54d12b6a
+	github.com/CyberAgent/mimosa-code/proto/code v0.0.0-20210805103008-7936a4fcf478
 	github.com/CyberAgent/mimosa-common/pkg/xray v0.0.0-20210720072141-2b45736a6034
-	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210712081026-7152ed72951d
-	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210712081026-7152ed72951d
-	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210712081026-7152ed72951d
-	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210712081026-7152ed72951d
-	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210712081026-7152ed72951d
-	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210714042048-32f6643f79bf
-	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210708082205-e7b0fb2cdef2
+	github.com/CyberAgent/mimosa-core/proto/alert v0.0.0-20210813083615-f0d95a4d37e4
+	github.com/CyberAgent/mimosa-core/proto/finding v0.0.0-20210813083615-f0d95a4d37e4
+	github.com/CyberAgent/mimosa-core/proto/iam v0.0.0-20210813083615-f0d95a4d37e4
+	github.com/CyberAgent/mimosa-core/proto/project v0.0.0-20210813083615-f0d95a4d37e4
+	github.com/CyberAgent/mimosa-core/proto/report v0.0.0-20210813083615-f0d95a4d37e4
+	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210812033035-5325a979700a
+	github.com/CyberAgent/mimosa-google/proto/google v0.0.0-20210812033045-03aa14bd39be
 	github.com/CyberAgent/mimosa-osint/proto/osint v0.0.0-20210604070119-0c948d978e11
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/aws/aws-xray-sdk-go v1.6.0
@@ -26,8 +26,9 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
-	golang.org/x/net v0.0.0-20210726213435-c6fcb2dbf985 // indirect
-	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
-	google.golang.org/genproto v0.0.0-20210804223703-f1db76f3300d // indirect
-	google.golang.org/grpc v1.39.0
+	golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d // indirect
+	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
+	golang.org/x/text v0.3.7 // indirect
+	google.golang.org/genproto v0.0.0-20210811021853-ddbe55d93216 // indirect
+	google.golang.org/grpc v1.40.0
 )
