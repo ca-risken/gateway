@@ -273,7 +273,8 @@ func (g *gatewayService) listAccessTokenHandler(w http.ResponseWriter, r *http.R
 }
 
 type generateAccessTokenResponse struct {
-	AccessToken string `json:"access_token"`
+	AccessTokenID uint32 `json:"access_token_id"`
+	AccessToken   string `json:"access_token"`
 }
 
 func (g *gatewayService) generateAccessTokenHandler(w http.ResponseWriter, r *http.Request) {
@@ -312,7 +313,8 @@ func (g *gatewayService) generateAccessTokenHandler(w http.ResponseWriter, r *ht
 		return
 	}
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: &generateAccessTokenResponse{
-		AccessToken: encodeAccessToken(resp.AccessToken.ProjectId, resp.AccessToken.AccessTokenId, req.AccessToken.PlainTextToken),
+		AccessTokenID: resp.AccessToken.AccessTokenId,
+		AccessToken:   encodeAccessToken(resp.AccessToken.ProjectId, resp.AccessToken.AccessTokenId, req.AccessToken.PlainTextToken),
 	}})
 }
 
