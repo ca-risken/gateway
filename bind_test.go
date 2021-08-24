@@ -14,6 +14,11 @@ type param struct {
 	Param4 []uint32  `json:"param4"`
 	Param5 []string  `json:"param5"`
 	Param6 []float32 `json:"param6"`
+	Nest   nestParam `json:"nest"`
+}
+
+type nestParam struct {
+	Param10 bool `json:"param10"`
 }
 
 func TestBindQuery(t *testing.T) {
@@ -69,6 +74,11 @@ func TestBindBodyJSON(t *testing.T) {
 			name:  "OK",
 			input: `{"param1":123, "param2":"aaa", "param3":11.1}`,
 			want:  &param{Param1: 123, Param2: "aaa", Param3: 11.1},
+		},
+		{
+			name:  "OK",
+			input: `{"param1":123, "param2":"aaa", "param3":11.1, "nest": {"param10": true}}`,
+			want:  &param{Param1: 123, Param2: "aaa", Param3: 11.1, Nest: nestParam{Param10: true}},
 		},
 		{
 			name:    "NG parse error",
