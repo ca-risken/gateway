@@ -24,6 +24,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Use(middleware.StripSlashes)
 	r.Use(svc.authn)
 	r.Use(svc.authnToken)
+	r.NotFound(notFoundHandler)
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/signin", signinHandler)

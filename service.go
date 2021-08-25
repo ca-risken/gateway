@@ -108,6 +108,10 @@ func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
 	return conn
 }
 
+func notFoundHandler(w http.ResponseWriter, r *http.Request) {
+	writeResponse(w, http.StatusNotFound, nil)
+}
+
 func writeResponse(w http.ResponseWriter, status int, body map[string]interface{}) {
 	if body == nil {
 		w.WriteHeader(status)
@@ -119,6 +123,7 @@ func writeResponse(w http.ResponseWriter, status int, body map[string]interface{
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	appLogger.Infof("buf %s", buf)
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
 	w.Write(buf)
