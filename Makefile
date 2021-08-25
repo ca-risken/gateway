@@ -424,7 +424,6 @@ detach-access-token:
 .PHONY: test-token-access
 test-token-access:
 	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: ' \
 		--header 'Authorization: BEARER MTAwMUAxMDEwQHJKNmtpUkVsLWJmaUVlZFRkT0hmRVhtendjTmI2akhOUFJJT19ZRjVVRGZEU1dmZkdzcnRnSm5zVjBMT1RzWkY2T2FsVjBzdnNIZVNvZ2JWOFptbnFn' \
 		'http://localhost:8000/api/v1/iam/list-access-token/?project_id=1001'
 
