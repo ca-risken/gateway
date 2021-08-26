@@ -1346,3 +1346,7 @@ func (m *mockIAMClient) IsAdmin(context.Context, *iam.IsAdminRequest, ...grpc.Ca
 	args := m.Called()
 	return args.Get(0).(*iam.IsAdminResponse), args.Error(1)
 }
+func (m *mockIAMClient) AnalyzeTokenExpiration(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
