@@ -1,23 +1,22 @@
-####################################################
-## curl example
-####################################################
+TARGETS = gateway
+BUILD_TARGETS = $(TARGETS:=.build)
+BUILD_CI_TARGETS = $(TARGETS:=.build-ci)
+IMAGE_PUSH_TARGETS = $(TARGETS:=.push-image)
+MANIFEST_CREATE_TARGETS = $(TARGETS:=.create-manifest)
+MANIFEST_PUSH_TARGETS = $(TARGETS:=.push-manifest)
+TEST_TARGETS = $(TARGETS:=.go-test)
+BUILD_OPT=""
+IMAGE_TAG=latest
+MANIFEST_TAG=latest
+IMAGE_PREFIX=gateway
+IMAGE_REGISTRY=local
+
 .PHONY: all
-all: run
+all: build
 
-.PHONY: help
-help:
-	@echo "Usage: make <sub-command>"
-	@echo "\n---------------- sub-command list ----------------"
-	@cat Makefile | grep -e "^.PHONY:" | grep -v "all" | cut -f2 -d' '
-
-# @see https://github.com/CyberAgent/mimosa-common/tree/master/local
-.PHONY: network
-network:
-	@if [ -z "`docker network ls | grep local-shared`" ]; then docker network create local-shared; fi
-
-.PHONY: go-test
-go-test: 
-	go test ./...
+.PHONY: go-mod-tidy
+go-mod-tidy:
+	go mod tidy
 
 .PHONY: go-mod-update
 go-mod-update:
@@ -26,28 +25,45 @@ go-mod-update:
 			github.com/CyberAgent/mimosa-aws/... \
 			github.com/CyberAgent/mimosa-diagnosis/... \
 			github.com/CyberAgent/mimosa-code/... \
-			github.com/CyberAgent/mimosa-google/... 
-
-.PHONY: build
-build: go-test network
-	. env.sh && docker-compose build
-
-.PHONY: build
-run: go-test network
-	. env.sh && docker-compose up -d
+			github.com/CyberAgent/mimosa-google/...
 
 .PHONY: doc
 doc: go-test
 	. env.sh && ls *.go | grep -v '_test.go' | xargs go run
 
-.PHONY: log
-log:
-	. env.sh && docker-compose logs -f
+PHONY: build $(BUILD_TARGETS)
+build: $(BUILD_TARGETS)
+%.build: %.go-test
+	. env.sh && TARGET=$(*) IMAGE_TAG=$(IMAGE_TAG) IMAGE_PREFIX=$(IMAGE_PREFIX) BUILD_OPT="$(BUILD_OPT)" . hack/docker-build.sh
 
-.PHONY: stop
-stop:
-	. env.sh && docker-compose down
+PHONY: build-ci $(BUILD_CI_TARGETS)
+build-ci: $(BUILD_CI_TARGETS)
+%.build-ci:
+	TARGET=$(*) IMAGE_TAG=$(IMAGE_TAG) IMAGE_PREFIX=$(IMAGE_PREFIX) BUILD_OPT="$(BUILD_OPT)" . hack/docker-build.sh
+	docker tag $(IMAGE_PREFIX)/$(*):$(IMAGE_TAG) $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(IMAGE_TAG)
 
+PHONY: push-image $(IMAGE_PUSH_TARGETS)
+push-image: $(IMAGE_PUSH_TARGETS)
+%.push-image:
+	docker push $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(IMAGE_TAG)
+
+PHONY: create-manifest $(MANIFEST_CREATE_TARGETS)
+create-manifest: $(MANIFEST_CREATE_TARGETS)
+%.create-manifest:
+	docker manifest create $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(MANIFEST_TAG) $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(IMAGE_TAG_BASE)_linux_amd64 $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(IMAGE_TAG_BASE)_linux_arm64
+	docker manifest annotate --arch amd64 $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(MANIFEST_TAG) $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(IMAGE_TAG_BASE)_linux_amd64
+	docker manifest annotate --arch arm64 $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(MANIFEST_TAG) $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(IMAGE_TAG_BASE)_linux_arm64
+
+PHONY: push-manifest $(MANIFEST_PUSH_TARGETS)
+push-manifest: $(MANIFEST_PUSH_TARGETS)
+%.push-manifest:
+	docker manifest push $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(MANIFEST_TAG)
+	docker manifest inspect $(IMAGE_REGISTRY)/$(IMAGE_PREFIX)/$(*):$(MANIFEST_TAG)
+
+PHONY: go-test $(TEST_TARGETS)
+go-test: $(TEST_TARGETS)
+%.go-test:
+	go test ./...
 
 .PHONY: health-check
 health-check:
