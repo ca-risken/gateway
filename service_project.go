@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-core/proto/project"
+	"github.com/ca-risken/core/proto/project"
 )
 
 func (g *gatewayService) listProjectHandler(w http.ResponseWriter, r *http.Request) {

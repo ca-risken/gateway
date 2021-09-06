@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-core/proto/alert"
+	"github.com/ca-risken/core/proto/alert"
 )
 
 func (g *gatewayService) listAlertHandler(w http.ResponseWriter, r *http.Request) {

@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/CyberAgent/mimosa-core/proto/iam"
+	"github.com/ca-risken/core/proto/iam"
 )
 
 func TestSigninHandler(t *testing.T) {

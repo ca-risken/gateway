@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-core/proto/report"
+	"github.com/ca-risken/core/proto/report"
 )
 
 func (g *gatewayService) getReportFindingHandler(w http.ResponseWriter, r *http.Request) {

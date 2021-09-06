@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/CyberAgent/mimosa-core/proto/iam"
+	"github.com/ca-risken/core/proto/iam"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"

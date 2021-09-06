@@ -21,7 +21,7 @@ go-mod-tidy:
 .PHONY: go-mod-update
 go-mod-update:
 	go get -u \
-			github.com/CyberAgent/mimosa-core/... \
+			github.com/ca-risken/core/... \
 			github.com/CyberAgent/mimosa-aws/... \
 			github.com/CyberAgent/mimosa-diagnosis/... \
 			github.com/CyberAgent/mimosa-code/... \
