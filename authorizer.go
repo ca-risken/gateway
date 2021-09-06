@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/CyberAgent/mimosa-core/proto/iam"
+	"github.com/ca-risken/core/proto/iam"
 	"github.com/vikyd/zero"
 )
 

@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	mimosaxray "github.com/CyberAgent/mimosa-common/pkg/xray"
+	mimosaxray "github.com/ca-risken/common/pkg/xray"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
