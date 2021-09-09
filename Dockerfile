@@ -1,5 +1,5 @@
 FROM golang:1.16 as builder
-WORKDIR /go/src/github.com/CyberAgent/mimosa-gateway/
+WORKDIR /go/src/github.com/ca-risken/gateway/
 ADD *.go go.* ./
 ENV CGO_ENABLED=0 GOPRIVATE="github.com/CyberAgent/*,github.com/ca-risken/*"
 ARG ENV_INJECTOR_VERSION=v0.0.6
@@ -8,7 +8,7 @@ ARG GITHUB_TOKEN
 RUN echo "machine github.com" > ~/.netrc
 RUN echo "login $GITHUB_USER" >> ~/.netrc
 RUN echo "password $GITHUB_TOKEN" >> ~/.netrc
-RUN go build && cp mimosa-gateway /go/bin/
+RUN go build && cp gateway /go/bin/
 
 WORKDIR /go/src/github.com/gassara-kys
 RUN git clone https://github.com/gassara-kys/env-injector.git -b ${ENV_INJECTOR_VERSION} \
@@ -18,9 +18,9 @@ RUN git clone https://github.com/gassara-kys/env-injector.git -b ${ENV_INJECTOR_
 
 FROM alpine
 RUN apk add --no-cache ca-certificates tzdata \
-  && mkdir -p /usr/local/mimosa-gateway/doc
+  && mkdir -p /usr/local/gateway/doc
 COPY --from=builder /go/bin/env-injector /usr/local/bin/
-COPY --from=builder /go/bin/mimosa-gateway /usr/local/mimosa-gateway/bin/
+COPY --from=builder /go/bin/gateway /usr/local/gateway/bin/
 ENV PORT= \
   DEBUG= \
   USER_IDENTITY_HEADER=x-amzn-oidc-identity \
@@ -38,6 +38,6 @@ ENV PORT= \
   CODE_SVC_ADDR= \
   GOOGLE_SVC_ADDR= \
   TZ=Asia/Tokyo
-WORKDIR /usr/local/mimosa-gateway
+WORKDIR /usr/local/gateway
 ENTRYPOINT ["/usr/local/bin/env-injector"]
-CMD ["bin/mimosa-gateway"]
+CMD ["bin/gateway"]

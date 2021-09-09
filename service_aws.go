@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-aws/proto/activity"
-	"github.com/CyberAgent/mimosa-aws/proto/aws"
+	"github.com/ca-risken/aws/proto/activity"
+	"github.com/ca-risken/aws/proto/aws"
 )
 
 func (g *gatewayService) listAWSHandler(w http.ResponseWriter, r *http.Request) {

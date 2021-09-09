@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-code/proto/code"
+	"github.com/ca-risken/code/proto/code"
 )
 
 func (g *gatewayService) listCodeDataSourceHandler(w http.ResponseWriter, r *http.Request) {

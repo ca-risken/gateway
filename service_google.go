@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-google/proto/google"
+	"github.com/ca-risken/google/proto/google"
 )
 
 func (g *gatewayService) listGoogleDataSourceHandler(w http.ResponseWriter, r *http.Request) {

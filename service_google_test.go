@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/CyberAgent/mimosa-google/proto/google"
+	"github.com/ca-risken/google/proto/google"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
 )

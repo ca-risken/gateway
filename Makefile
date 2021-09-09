@@ -22,10 +22,10 @@ go-mod-tidy:
 go-mod-update:
 	go get -u \
 			github.com/ca-risken/core/... \
-			github.com/CyberAgent/mimosa-aws/... \
+			github.com/ca-risken/aws/... \
 			github.com/CyberAgent/mimosa-diagnosis/... \
-			github.com/CyberAgent/mimosa-code/... \
-			github.com/CyberAgent/mimosa-google/...
+			github.com/ca-risken/code/... \
+			github.com/ca-risken/google/...
 
 .PHONY: doc
 doc: go-test

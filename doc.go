@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/docgen"
 )
 
@@ -13,7 +13,7 @@ func updateDoc(router *chi.Mux) error {
 	if err != nil {
 		return err
 	}
-	doc := genDoc("githug.com/CyberAgent/mimosa-gateway", router)
+	doc := genDoc("githug.com/ca-risken/gateway", router)
 	if err := ioutil.WriteFile(path+"/doc/README.md", []byte(doc), 0666); err != nil {
 		return err
 	}
@@ -26,8 +26,8 @@ func genDoc(pkgName string, router *chi.Mux) string {
 		Intro:       "MIMOSA API document by go-chi.",
 		// ForceRelativeLinks: true,
 		URLMap: map[string]string{
-			"githug.com/CyberAgent/mimosa-gateway": "https://githug.com/CyberAgent/mimosa-gateway/blob/master",
-			"github.com/go-chi/chi":                "https://github.com/go-chi/chi/blob/master/",
+			"githug.com/ca-risken/gateway": "https://githug.com/ca-risken/gateway/blob/master",
+			"github.com/go-chi/chi":        "https://github.com/go-chi/chi/blob/master/",
 		},
 	})
 }

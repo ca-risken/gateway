@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-osint/proto/osint"
+	"github.com/ca-risken/osint/proto/osint"
 )
 
 func (g *gatewayService) listOsintHandler(w http.ResponseWriter, r *http.Request) {
