@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/CyberAgent/mimosa-aws/proto/activity"
-	"github.com/CyberAgent/mimosa-aws/proto/aws"
+	"github.com/ca-risken/aws/proto/activity"
+	"github.com/ca-risken/aws/proto/aws"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"

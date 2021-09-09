@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/CyberAgent/mimosa-osint/proto/osint"
+	"github.com/ca-risken/osint/proto/osint"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
