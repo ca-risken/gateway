@@ -1210,6 +1210,483 @@ func TestDeletePortscanTargetHandler(t *testing.T) {
 	}
 }
 
+func TestListApplicationScanHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.ListApplicationScanResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&diagnosis_data_source_id=1`,
+			mockResp:   &diagnosis.ListApplicationScanResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      ``,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("ListApplicationScan").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-application-scan/?"+c.input, nil)
+			svc.listApplicationScanHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestGetApplicationScanHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.GetApplicationScanResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&application_scan_id=1`,
+			mockResp:   &diagnosis.GetApplicationScanResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `project_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `application_scan_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1&application_scan_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("GetApplicationScan").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-application-scan/?"+c.input, nil)
+			svc.getApplicationScanHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestPutApplicationScanHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.PutApplicationScanResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "application_scan":{"project_id":1,"diagnosis_data_source_id":1,"name":"test_application_scan"}}`,
+			mockResp:   &diagnosis.PutApplicationScanResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "application_scan":{"project_id":1,"diagnosis_data_source_id":1,"name":"test_application_scan"}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("PutApplicationScan").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-application-scan/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putApplicationScanHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestDeleteApplicationScanHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id": 1, "application_scan_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id": 1, "application_scan_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("DeleteApplicationScan").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-application-scan/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deleteApplicationScanHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestListApplicationScanBasicSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.ListApplicationScanBasicSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&application_scan_id=1`,
+			mockResp:   &diagnosis.ListApplicationScanBasicSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      ``,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("ListApplicationScanBasicSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/list-application-scan-basic-setting/?"+c.input, nil)
+			svc.listApplicationScanBasicSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestGetApplicationScanBasicSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.GetApplicationScanBasicSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `project_id=1&application_scan_basic_setting_id=1`,
+			mockResp:   &diagnosis.GetApplicationScanBasicSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `project_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `application_scan_basic_setting_id=1`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `project_id=1&application_scan_basic_setting_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("GetApplicationScanBasicSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/diagnosis/get-application-scan-basic-setting/?"+c.input, nil)
+			svc.getApplicationScanBasicSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestPutApplicationScanBasicSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *diagnosis.PutApplicationScanBasicSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "application_scan_basic_setting":{"project_id":1,"application_scan_id":1,"target":"test_application_scan","max_depth":1,"max_children":1}}`,
+			mockResp:   &diagnosis.PutApplicationScanBasicSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "application_scan_basic_setting":{"project_id":1,"application_scan_id":1,"target":"test_application_scan","max_depth":1,"max_children":1}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("PutApplicationScanBasicSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/put-application-scan-basic-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putApplicationScanBasicSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestDeleteApplicationScanBasicSettingHandler(t *testing.T) {
+	diagnosisMock := &mockDiagnosisClient{}
+	svc := gatewayService{
+		diagnosisClient: diagnosisMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id": 1, "application_scan_basic_setting_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id": 1, "application_scan_basic_setting_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				diagnosisMock.On("DeleteApplicationScanBasicSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			// Invoke HTTP Request
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/diagnosis/delete-application-scan-basic-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deleteApplicationScanBasicSettingHandler(rec, req)
+			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
 func TestInvokeDiagnosisScanHandler(t *testing.T) {
 	diagnosisMock := &mockDiagnosisClient{}
 	svc := gatewayService{
@@ -1362,6 +1839,38 @@ func (m *mockDiagnosisClient) PutPortscanTarget(context.Context, *diagnosis.PutP
 	return args.Get(0).(*diagnosis.PutPortscanTargetResponse), args.Error(1)
 }
 func (m *mockDiagnosisClient) DeletePortscanTarget(context.Context, *diagnosis.DeletePortscanTargetRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockDiagnosisClient) ListApplicationScan(context.Context, *diagnosis.ListApplicationScanRequest, ...grpc.CallOption) (*diagnosis.ListApplicationScanResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.ListApplicationScanResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) GetApplicationScan(context.Context, *diagnosis.GetApplicationScanRequest, ...grpc.CallOption) (*diagnosis.GetApplicationScanResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.GetApplicationScanResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) PutApplicationScan(context.Context, *diagnosis.PutApplicationScanRequest, ...grpc.CallOption) (*diagnosis.PutApplicationScanResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.PutApplicationScanResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) DeleteApplicationScan(context.Context, *diagnosis.DeleteApplicationScanRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockDiagnosisClient) ListApplicationScanBasicSetting(context.Context, *diagnosis.ListApplicationScanBasicSettingRequest, ...grpc.CallOption) (*diagnosis.ListApplicationScanBasicSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.ListApplicationScanBasicSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) GetApplicationScanBasicSetting(context.Context, *diagnosis.GetApplicationScanBasicSettingRequest, ...grpc.CallOption) (*diagnosis.GetApplicationScanBasicSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.GetApplicationScanBasicSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) PutApplicationScanBasicSetting(context.Context, *diagnosis.PutApplicationScanBasicSettingRequest, ...grpc.CallOption) (*diagnosis.PutApplicationScanBasicSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*diagnosis.PutApplicationScanBasicSettingResponse), args.Error(1)
+}
+func (m *mockDiagnosisClient) DeleteApplicationScanBasicSetting(context.Context, *diagnosis.DeleteApplicationScanBasicSettingRequest, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }

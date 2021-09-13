@@ -189,12 +189,18 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/list-wpscan-setting", svc.listWpscanSettingHandler)
 				r.Get("/list-portscan-setting", svc.listPortscanSettingHandler)
 				r.Get("/list-portscan-target", svc.listPortscanTargetHandler)
+				r.Get("/list-application-scan", svc.listApplicationScanHandler)
+				r.Get("/list-application-scan-basic-setting", svc.listApplicationScanBasicSettingHandler)
 				r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/invoke-scan", svc.invokeDiagnosisScanHandler)
 					r.Post("/put-wpscan-setting", svc.putWpscanSettingHandler)
 					r.Post("/delete-wpscan-setting", svc.deleteWpscanSettingHandler)
+					r.Post("/put-application-scan", svc.putApplicationScanHandler)
+					r.Post("/delete-application-scan", svc.deleteApplicationScanHandler)
+					r.Post("/put-application-scan-basic-setting", svc.putApplicationScanBasicSettingHandler)
+					r.Post("/delete-application-scan-basic-setting", svc.deleteApplicationScanBasicSettingHandler)
 				})
 			})
 			r.Group(func(r chi.Router) {
