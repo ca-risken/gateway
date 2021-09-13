@@ -23,7 +23,7 @@ go-mod-update:
 	go get -u \
 			github.com/ca-risken/core/... \
 			github.com/ca-risken/aws/... \
-			github.com/CyberAgent/mimosa-diagnosis/... \
+			github.com/ca-risken/diagnosis/... \
 			github.com/ca-risken/code/... \
 			github.com/ca-risken/google/...
 
