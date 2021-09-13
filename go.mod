@@ -3,7 +3,6 @@ module githug.com/ca-risken/gateway
 go 1.16
 
 require (
-	github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis v0.0.0-20210910062600-71bb62d88360
 	github.com/andybalholm/brotli v1.0.3 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/aws/aws-sdk-go v1.40.41 // indirect
@@ -17,6 +16,7 @@ require (
 	github.com/ca-risken/core/proto/iam v0.0.0-20210909002910-a1a90ba4fe34
 	github.com/ca-risken/core/proto/project v0.0.0-20210909002910-a1a90ba4fe34
 	github.com/ca-risken/core/proto/report v0.0.0-20210909002910-a1a90ba4fe34
+	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20210913070950-105e8f8ca225
 	github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06
 	github.com/ca-risken/osint/proto/osint v0.0.0-20210909141026-cc5c5b5d6de0
 	github.com/go-chi/chi/v5 v5.0.4
