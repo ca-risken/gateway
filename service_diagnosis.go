@@ -306,6 +306,126 @@ func (g *gatewayService) deletePortscanTargetHandler(w http.ResponseWriter, r *h
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listApplicationScanHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.ListApplicationScanRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.ListApplicationScan(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) getApplicationScanHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.GetApplicationScanRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.GetApplicationScan(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) putApplicationScanHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.PutApplicationScanRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.PutApplicationScan(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deleteApplicationScanHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.DeleteApplicationScanRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.DeleteApplicationScan(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) listApplicationScanBasicSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.ListApplicationScanBasicSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.ListApplicationScanBasicSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) getApplicationScanBasicSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.GetApplicationScanBasicSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.GetApplicationScanBasicSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) putApplicationScanBasicSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.PutApplicationScanBasicSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.PutApplicationScanBasicSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deleteApplicationScanBasicSettingHandler(w http.ResponseWriter, r *http.Request) {
+	req := &diagnosis.DeleteApplicationScanBasicSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.diagnosisClient.DeleteApplicationScanBasicSetting(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) invokeDiagnosisScanHandler(w http.ResponseWriter, r *http.Request) {
 	req := &diagnosis.InvokeScanRequest{}
 	bind(req, r)
