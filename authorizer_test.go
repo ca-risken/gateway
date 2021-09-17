@@ -281,17 +281,14 @@ func TestAuthzAdmin(t *testing.T) {
 		inputUser     *requestUser
 		inputProject  string
 		want          bool
-		mockAdminResp *iam.IsAdminResponse
-		mockAdminErr  error
-		mockAuthzResp *iam.IsAuthorizedResponse
+		mockAuthzResp *iam.IsAuthorizedAdminResponse
 		mockAuthzErr  error
 	}{
 		{
 			name:          "OK",
 			inputUser:     &requestUser{sub: "sub", userID: 1},
 			inputProject:  "project_id=1",
-			mockAdminResp: &iam.IsAdminResponse{Ok: true},
-			mockAuthzResp: &iam.IsAuthorizedResponse{Ok: true},
+			mockAuthzResp: &iam.IsAuthorizedAdminResponse{Ok: true},
 			want:          true,
 		},
 		{
@@ -301,39 +298,25 @@ func TestAuthzAdmin(t *testing.T) {
 			want:         false,
 		},
 		{
-			name:         "NG Admin API error",
+			name:         "NG Authz API error",
 			inputUser:    &requestUser{sub: "sub", userID: 1},
 			inputProject: "project_id=1",
 			want:         false,
-			mockAdminErr: errors.New("something error"),
-		},
-		{
-			name:          "NG Authz API error",
-			inputUser:     &requestUser{sub: "sub", userID: 1},
-			inputProject:  "project_id=1",
-			want:          false,
-			mockAdminResp: &iam.IsAdminResponse{Ok: true},
-			mockAuthzErr:  errors.New("something error"),
+			mockAuthzErr: errors.New("something error"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.mockAdminResp != nil || c.mockAdminErr != nil {
-				iamMock.On("IsAdmin").Return(c.mockAdminResp, c.mockAdminErr).Once()
-			}
 			if c.mockAuthzResp != nil || c.mockAuthzErr != nil {
-				iamMock.On("IsAuthorized").Return(c.mockAuthzResp, c.mockAuthzErr).Once()
+				iamMock.On("IsAuthorizedAdmin").Return(c.mockAuthzResp, c.mockAuthzErr).Once()
 			}
 			req, _ := http.NewRequest(http.MethodGet, "/api/v1/admin/api/?"+c.inputProject, nil)
 			got := svc.authzAdmin(c.inputUser, req)
 			if got != c.want {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
 			}
-			c.mockAdminResp = nil
-			c.mockAdminErr = nil
 			c.mockAuthzResp = nil
 			c.mockAuthzErr = nil
-
 		})
 	}
 }

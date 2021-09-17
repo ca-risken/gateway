@@ -337,15 +337,19 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 	if zero.IsZeroVal(u.userID) {
 		return false
 	}
-	req := &iam.IsAdminRequest{UserId: u.userID}
-	resp, err := g.iamClient.IsAdmin(r.Context(), req)
+	req := &iam.IsAuthorizedAdminRequest{
+		UserId:       u.userID,
+		ActionName:   getActionNameFromURI(r.URL.Path),
+		ResourceName: getServiceNameFromURI(r.URL.Path) + "/resource_any",
+	}
+	resp, err := g.iamClient.IsAuthorizedAdmin(r.Context(), req)
 	if err != nil {
-		appLogger.Errorf("Failed to IsAdmin requuest, request=%+v, err=%+v", req, err)
+		appLogger.Errorf("Failed to IsAuthorizedAdmin requuest, request=%+v, err=%+v", req, err)
 		return false
 	}
 	if !resp.Ok {
 		appLogger.Debugf("user=%d is not Admin, request=%+v", u.userID, req)
 		return false
 	}
-	return g.authzProject(u, r)
+	return resp.Ok
 }
