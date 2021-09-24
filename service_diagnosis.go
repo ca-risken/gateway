@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
+	"github.com/ca-risken/diagnosis/proto/diagnosis"
 )
 
 func (g *gatewayService) listDiagnosisDataSourceHandler(w http.ResponseWriter, r *http.Request) {

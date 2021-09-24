@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/CyberAgent/mimosa-diagnosis/proto/diagnosis"
 	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/ca-risken/aws/proto/activity"
 	"github.com/ca-risken/aws/proto/aws"
@@ -16,6 +15,7 @@ import (
 	"github.com/ca-risken/core/proto/iam"
 	"github.com/ca-risken/core/proto/project"
 	"github.com/ca-risken/core/proto/report"
+	"github.com/ca-risken/diagnosis/proto/diagnosis"
 	"github.com/ca-risken/google/proto/google"
 	"github.com/ca-risken/osint/proto/osint"
 	"github.com/kelseyhightower/envconfig"

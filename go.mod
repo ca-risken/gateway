@@ -17,6 +17,7 @@ require (
 	github.com/ca-risken/core/proto/iam v0.0.0-20210909002910-a1a90ba4fe34
 	github.com/ca-risken/core/proto/project v0.0.0-20210909002910-a1a90ba4fe34
 	github.com/ca-risken/core/proto/report v0.0.0-20210909002910-a1a90ba4fe34
+	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20210922082515-066bc04b3d38 // indirect
 	github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06
 	github.com/ca-risken/osint/proto/osint v0.0.0-20210909141026-cc5c5b5d6de0
 	github.com/go-chi/chi/v5 v5.0.4
@@ -29,9 +30,11 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/fasthttp v1.30.0 // indirect
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
-	golang.org/x/net v0.0.0-20210908191846-a5e095526f91 // indirect
-	golang.org/x/sys v0.0.0-20210910150752-751e447fb3d0 // indirect
+	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
+	golang.org/x/net v0.0.0-20210917221730-978cfadd31cf // indirect
+	golang.org/x/sys v0.0.0-20210921065528-437939a70204 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/genproto v0.0.0-20210909211513-a8c4777a87af // indirect
+	golang.org/x/tools v0.1.5 // indirect
+	google.golang.org/genproto v0.0.0-20210921142501-181ce0d877f6 // indirect
 	google.golang.org/grpc v1.40.0
 )

@@ -190,7 +190,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/list-portscan-setting", svc.listPortscanSettingHandler)
 				r.Get("/list-portscan-target", svc.listPortscanTargetHandler)
 				r.Get("/list-application-scan", svc.listApplicationScanHandler)
-				r.Get("/list-application-scan-basic-setting", svc.listApplicationScanBasicSettingHandler)
+				r.Get("/get-application-scan-basic-setting", svc.getApplicationScanBasicSettingHandler)
 				r.Get("/get-datasource", svc.getDiagnosisDataSourceHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
