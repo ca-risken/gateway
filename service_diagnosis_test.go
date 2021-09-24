@@ -1521,7 +1521,7 @@ func TestGetApplicationScanBasicSettingHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `project_id=1&application_scan_basic_setting_id=1`,
+			input:      `project_id=1&application_scan_id=1`,
 			mockResp:   &diagnosis.GetApplicationScanBasicSettingResponse{},
 			wantStatus: http.StatusOK,
 		},
@@ -1532,12 +1532,12 @@ func TestGetApplicationScanBasicSettingHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Invalid parameter",
-			input:      `application_scan_basic_setting_id=1`,
+			input:      `application_scan_id=1`,
 			wantStatus: http.StatusBadRequest,
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `project_id=1&application_scan_basic_setting_id=1`,
+			input:      `project_id=1&application_scan_id=1`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
