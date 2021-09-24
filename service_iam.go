@@ -92,10 +92,40 @@ func (g *gatewayService) listRoleHandler(w http.ResponseWriter, r *http.Request)
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listAdminRoleHandler(w http.ResponseWriter, r *http.Request) {
+	req := &iam.ListRoleRequest{}
+	bind(req, r)
+	if err := req.ValidateForAdmin(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.ListRole(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) getRoleHandler(w http.ResponseWriter, r *http.Request) {
 	req := &iam.GetRoleRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.GetRole(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) getAdminRoleHandler(w http.ResponseWriter, r *http.Request) {
+	req := &iam.GetRoleRequest{}
+	bind(req, r)
+	if err := req.ValidateForAdmin(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
@@ -152,10 +182,40 @@ func (g *gatewayService) attachRoleHandler(w http.ResponseWriter, r *http.Reques
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) attachAdminRoleHandler(w http.ResponseWriter, r *http.Request) {
+	req := &iam.AttachRoleRequest{}
+	bind(req, r)
+	if err := req.ValidateForAdmin(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.AttachRole(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) detachRoleHandler(w http.ResponseWriter, r *http.Request) {
 	req := &iam.DetachRoleRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.DetachRole(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) detachAdminRoleHandler(w http.ResponseWriter, r *http.Request) {
+	req := &iam.DetachRoleRequest{}
+	bind(req, r)
+	if err := req.ValidateForAdmin(); err != nil {
 		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}

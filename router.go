@@ -252,6 +252,20 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				})
 			})
 		})
+
+		r.Route("/admin", func(r chi.Router) {
+			// only admin
+			r.Use(svc.authzOnlyAdmin)
+			r.Group(func(r chi.Router) {
+				r.Get("/list-admin-role", svc.listAdminRoleHandler)
+				r.Get("/get-admin-role", svc.getAdminRoleHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType(contenTypeJSON))
+				r.Post("/attach-admin-role", svc.attachAdminRoleHandler)
+				r.Post("/detach-admin-role", svc.detachAdminRoleHandler)
+			})
+		})
 	})
 	r.Get(healthzPath, func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r

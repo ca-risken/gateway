@@ -282,11 +282,60 @@ func TestListRoleHandler(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
 				iamMock.On("ListRole").Return(c.mockResp, c.mockErr).Once()
 			}
-			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/list-role?"+c.input, nil)
 			svc.listRoleHandler(rec, req)
-			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestListAdminRoleHandler(t *testing.T) {
+	iamMock := &mockIAMClient{}
+	svc := gatewayService{
+		iamClient: iamMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *iam.ListRoleResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      ``,
+			mockResp:   &iam.ListRoleResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      ``,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("ListRole").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/list-admin-role?"+c.input, nil)
+			svc.listAdminRoleHandler(rec, req)
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
 			}
@@ -340,11 +389,65 @@ func TestGetRoleHandler(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
 				iamMock.On("GetRole").Return(c.mockResp, c.mockErr).Once()
 			}
-			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/get-role?"+c.input, nil)
 			svc.getRoleHandler(rec, req)
-			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestGetAdminRoleHandler(t *testing.T) {
+	iamMock := &mockIAMClient{}
+	svc := gatewayService{
+		iamClient: iamMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *iam.GetRoleResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `role_id=1`,
+			mockResp:   &iam.GetRoleResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `no_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `role_id=1`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("GetRole").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/iam/get-admin-role?"+c.input, nil)
+			svc.getAdminRoleHandler(rec, req)
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
 			}
@@ -516,12 +619,67 @@ func TestAttachRoleHandler(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
 				iamMock.On("AttachRole").Return(c.mockResp, c.mockErr).Once()
 			}
-			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/attach-role/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.attachRoleHandler(rec, req)
-			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestAttachAdminRoleHandler(t *testing.T) {
+	iamMock := &mockIAMClient{}
+	svc := gatewayService{
+		iamClient: iamMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *iam.AttachRoleResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"role_id":1, "user_id":1}`,
+			mockResp:   &iam.AttachRoleResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"role_id":1, "user_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("AttachRole").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/attach-admin-role/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.attachAdminRoleHandler(rec, req)
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
 			}
@@ -575,12 +733,67 @@ func TestDetachRoleHandler(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
 				iamMock.On("DetachRole").Return(c.mockResp, c.mockErr).Once()
 			}
-			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/detach-role/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
 			svc.detachRoleHandler(rec, req)
-			// Check Response
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestDetachAdminRoleHandler(t *testing.T) {
+	iamMock := &mockIAMClient{}
+	svc := gatewayService{
+		iamClient: iamMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"role_id":1, "user_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"role_id":1, "user_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				iamMock.On("DetachRole").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/detach-admin-role/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.detachAdminRoleHandler(rec, req)
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
 			}
@@ -1337,6 +1550,10 @@ func (m *mockIAMClient) DetachAccessTokenRole(context.Context, *iam.DetachAccess
 func (m *mockIAMClient) IsAuthorized(context.Context, *iam.IsAuthorizedRequest, ...grpc.CallOption) (*iam.IsAuthorizedResponse, error) {
 	args := m.Called()
 	return args.Get(0).(*iam.IsAuthorizedResponse), args.Error(1)
+}
+func (m *mockIAMClient) IsAuthorizedAdmin(context.Context, *iam.IsAuthorizedAdminRequest, ...grpc.CallOption) (*iam.IsAuthorizedAdminResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*iam.IsAuthorizedAdminResponse), args.Error(1)
 }
 func (m *mockIAMClient) IsAuthorizedToken(context.Context, *iam.IsAuthorizedTokenRequest, ...grpc.CallOption) (*iam.IsAuthorizedTokenResponse, error) {
 	args := m.Called()
