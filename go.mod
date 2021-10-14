@@ -19,21 +19,19 @@ require (
 	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20210922082515-066bc04b3d38
 	github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06
 	github.com/ca-risken/osint/proto/osint v0.0.0-20210909141026-cc5c5b5d6de0
+	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.4
 	github.com/go-chi/docgen v1.2.0
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/schema v1.2.0
-	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/klauspost/compress v1.13.5 // indirect
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/fasthttp v1.30.0 // indirect
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
-	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/net v0.0.0-20210924054057-cf34111cab4d // indirect
 	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	golang.org/x/tools v0.1.5 // indirect
 	google.golang.org/genproto v0.0.0-20210924002016-3dee208752a0 // indirect
 	google.golang.org/grpc v1.40.0
 )

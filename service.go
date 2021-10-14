@@ -18,7 +18,7 @@ import (
 	"github.com/ca-risken/diagnosis/proto/diagnosis"
 	"github.com/ca-risken/google/proto/google"
 	"github.com/ca-risken/osint/proto/osint"
-	"github.com/kelseyhightower/envconfig"
+	"github.com/gassara-kys/envconfig"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
@@ -48,23 +48,25 @@ type gatewayService struct {
 }
 
 type gatewayConf struct {
-	EnvName            string   `default:"default" split_words:"true"`
-	Port               string   `default:"8000"`
-	Debug              bool     `default:"false"`
-	UserIdentityHeader string   `required:"true" split_words:"true"`
-	OidcDataHeader     string   `required:"true" split_words:"true"`
-	IdpProviderName    []string `required:"true" split_words:"true"`
-	FindingSvcAddr     string   `required:"true" split_words:"true"`
-	IAMSvcAddr         string   `required:"true" split_words:"true"`
-	ProjectSvcAddr     string   `required:"true" split_words:"true"`
-	AlertSvcAddr       string   `required:"true" split_words:"true"`
-	ReportSvcAddr      string   `required:"true" split_words:"true"`
-	AWSSvcAddr         string   `required:"true" split_words:"true"`
-	AWSActivitySvcAddr string   `required:"true" split_words:"true"`
-	OSINTSvcAddr       string   `required:"true" split_words:"true"`
-	DiagnosisSvcAddr   string   `required:"true" split_words:"true"`
-	CodeSvcAddr        string   `required:"true" split_words:"true"`
-	GoogleSvcAddr      string   `required:"true" split_words:"true"`
+	EnvName string `default:"local" split_words:"true"`
+	Port    string `default:"8000"`
+	Debug   bool   `default:"false"`
+
+	UserIdentityHeader string   `required:"true" split_words:"true" default:"x-amzn-oidc-identity"`
+	OidcDataHeader     string   `required:"true" split_words:"true" default:"x-amzn-oidc-data"`
+	IdpProviderName    []string `required:"true" split_words:"true" default:"YOUR_IDP1,YOUR_IDP2"`
+
+	FindingSvcAddr     string `required:"true" split_words:"true" default:"finding.core.svc.cluster.local:8001"`
+	IAMSvcAddr         string `required:"true" split_words:"true" default:"iam.core.svc.cluster.local:8002"`
+	ProjectSvcAddr     string `required:"true" split_words:"true" default:"project.core.svc.cluster.local:8003"`
+	AlertSvcAddr       string `required:"true" split_words:"true" default:"alert.core.svc.cluster.local:8004"`
+	ReportSvcAddr      string `required:"true" split_words:"true" default:"report.core.svc.cluster.local:8005"`
+	AWSSvcAddr         string `required:"true" split_words:"true" default:"aws.aws.svc.cluster.local:9001"`
+	AWSActivitySvcAddr string `required:"true" split_words:"true" default:"activity.aws.svc.cluster.local:9007"`
+	OSINTSvcAddr       string `required:"true" split_words:"true" default:"osint.osint.svc.cluster.local:18081"`
+	DiagnosisSvcAddr   string `required:"true" split_words:"true" default:"diagnosis.diagnosis.svc.cluster.local:19001"`
+	CodeSvcAddr        string `required:"true" split_words:"true" default:"code.code.svc.cluster.local:10001"`
+	GoogleSvcAddr      string `required:"true" split_words:"true" default:"google.google.svc.cluster.local:11001"`
 }
 
 func newGatewayService() (*gatewayService, error) {
