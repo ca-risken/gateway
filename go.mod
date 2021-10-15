@@ -16,7 +16,7 @@ require (
 	github.com/ca-risken/core/proto/iam v0.0.0-20210917123127-86fbc1daa83f
 	github.com/ca-risken/core/proto/project v0.0.0-20210917123127-86fbc1daa83f
 	github.com/ca-risken/core/proto/report v0.0.0-20210917123127-86fbc1daa83f
-	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20210922082515-066bc04b3d38
+	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20211015052841-3e9c68166866
 	github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06
 	github.com/ca-risken/osint/proto/osint v0.0.0-20210909141026-cc5c5b5d6de0
 	github.com/gassara-kys/envconfig v1.4.4
@@ -29,9 +29,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/fasthttp v1.30.0 // indirect
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
-	golang.org/x/net v0.0.0-20210924054057-cf34111cab4d // indirect
-	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
+	golang.org/x/net v0.0.0-20211014222326-fd004c51d1d6 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/genproto v0.0.0-20210924002016-3dee208752a0 // indirect
-	google.golang.org/grpc v1.40.0
+	google.golang.org/grpc v1.41.0
 )
