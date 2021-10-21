@@ -37,6 +37,13 @@ func getRequestUser(r *http.Request) (*requestUser, error) {
 	return r.Context().Value(userKey).(*requestUser), nil
 }
 
+func getRequestUserSub(r *http.Request) (*requestUser, error) {
+	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || zero.IsZeroVal(u.sub) {
+		return nil, errors.New("User not found")
+	}
+	return r.Context().Value(userKey).(*requestUser), nil
+}
+
 // signinHandler: OIDC proxy backend signin process.
 func signinHandler(w http.ResponseWriter, r *http.Request) {
 	signinUser, err := getRequestUser(r)
@@ -83,7 +90,8 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 		userName, err := g.getUserName(oidcData)
 		if err != nil {
 			appLogger.Warnf("Failed to get username from oidc data, err=%+v", err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(r.Context(), userKey, &requestUser{sub: sub})))
 			return
 		}
 		putResp, err := g.iamClient.PutUser(r.Context(), &iam.PutUserRequest{

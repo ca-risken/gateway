@@ -55,7 +55,7 @@ func (g *gatewayService) isAdminHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) {
-	user, err := getRequestUser(r)
+	user, err := getRequestUserSub(r)
 	if err != nil {
 		writeResponse(w, http.StatusUnauthorized, map[string]interface{}{errorJSONKey: errors.New("InvalidUser")})
 	}
