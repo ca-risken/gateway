@@ -88,7 +88,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 		// Try AUTO PROVISIONING
 		oidcData := r.Header.Get(g.oidcDataHeader) // r.Header.Get("X-Amzn-Oidc-Data")
 		userName, err := g.getUserName(oidcData)
-		if err != nil {
+		if err != nil || zero.IsZeroVal(userName) {
 			appLogger.Warnf("Failed to get username from oidc data, err=%+v", err)
 			next.ServeHTTP(w, r.WithContext(
 				context.WithValue(r.Context(), userKey, &requestUser{sub: sub})))
