@@ -15,9 +15,9 @@ IMAGE_REGISTRY=local
 .PHONY: all
 all: build
 
-PHONY: lint $(LINT_TARGETS)
+.PHONY: lint
 lint: $(LINT_TARGETS)
-%.lint:
+%.lint: FAKE
 	sh hack/golinter.sh .
 
 .PHONY: go-mod-tidy
@@ -1273,3 +1273,5 @@ delete-finding-setting:
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001, "finding_setting_id":1001}' \
 		'http://localhost:8000/api/v1/finding/delete-finding-setting/'
+
+FAKE:
