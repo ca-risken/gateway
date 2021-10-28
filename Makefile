@@ -5,6 +5,7 @@ IMAGE_PUSH_TARGETS = $(TARGETS:=.push-image)
 MANIFEST_CREATE_TARGETS = $(TARGETS:=.create-manifest)
 MANIFEST_PUSH_TARGETS = $(TARGETS:=.push-manifest)
 TEST_TARGETS = $(TARGETS:=.go-test)
+LINT_TARGETS = $(TARGETS:=.lint)
 BUILD_OPT=""
 IMAGE_TAG=latest
 MANIFEST_TAG=latest
@@ -13,6 +14,11 @@ IMAGE_REGISTRY=local
 
 .PHONY: all
 all: build
+
+PHONY: lint $(LINT_TARGETS)
+lint: $(LINT_TARGETS)
+%.lint:
+	sh hack/golinter.sh .
 
 .PHONY: go-mod-tidy
 go-mod-tidy:
