@@ -201,6 +201,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-application-scan", svc.deleteApplicationScanHandler)
 					r.Post("/put-application-scan-basic-setting", svc.putApplicationScanBasicSettingHandler)
 					r.Post("/delete-application-scan-basic-setting", svc.deleteApplicationScanBasicSettingHandler)
+					r.Post("/put-portscan-setting", svc.putPortscanSettingHandler)
+					r.Post("/put-portscan-target", svc.putPortscanTargetHandler)
+					r.Post("/delete-portscan-setting", svc.deletePortscanSettingHandler)
+					r.Post("/delete-portscan-target", svc.deletePortscanTargetHandler)
 				})
 			})
 			r.Group(func(r chi.Router) {
@@ -209,10 +213,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-jira-setting", svc.putJiraSettingHandler)
 				r.Post("/delete-jira-setting", svc.deleteJiraSettingHandler)
-				r.Post("/put-portscan-setting", svc.putPortscanSettingHandler)
-				r.Post("/put-portscan-target", svc.putPortscanTargetHandler)
-				r.Post("/delete-portscan-setting", svc.deletePortscanSettingHandler)
-				r.Post("/delete-portscan-target", svc.deletePortscanTargetHandler)
 			})
 		})
 
