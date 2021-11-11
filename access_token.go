@@ -11,7 +11,7 @@ import (
 // generateAccessToken return random accessToken text
 func generateAccessToken() string {
 	buf := make([]byte, 64)
-	rand.Read(buf)
+	_, _ = rand.Read(buf)
 	return base64.RawURLEncoding.EncodeToString(buf)
 }
 

@@ -4,7 +4,6 @@ go 1.16
 
 require (
 	github.com/andybalholm/brotli v1.0.3 // indirect
-	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/aws/aws-sdk-go v1.40.41 // indirect
 	github.com/aws/aws-xray-sdk-go v1.6.0
 	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
@@ -30,6 +29,5 @@ require (
 	github.com/valyala/fasthttp v1.30.0 // indirect
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	golang.org/x/net v0.0.0-20211014222326-fd004c51d1d6 // indirect
-	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/grpc v1.41.0
 )

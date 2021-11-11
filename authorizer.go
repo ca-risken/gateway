@@ -53,7 +53,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	token := make([]byte, 24)
-	rand.Read(token)
+	_, _ = rand.Read(token)
 	http.SetCookie(w, &http.Cookie{
 		Name:   "XSRF-TOKEN",
 		Value:  base64.RawURLEncoding.EncodeToString(token),

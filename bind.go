@@ -40,7 +40,6 @@ func bind(out interface{}, r *http.Request) {
 	default:
 		appLogger.Warnf("Unexpected HTTP Method, method=%s", r.Method)
 	}
-	return
 }
 
 // bindQuery bindding query parameter

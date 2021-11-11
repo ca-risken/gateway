@@ -102,8 +102,10 @@ func newGatewayService() (*gatewayService, error) {
 }
 
 func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
+	ctx, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
 	conn, err := grpc.DialContext(ctx, addr,
-		grpc.WithUnaryInterceptor(xray.UnaryClientInterceptor()), grpc.WithInsecure(), grpc.WithTimeout(time.Second*3))
+		grpc.WithUnaryInterceptor(xray.UnaryClientInterceptor()), grpc.WithInsecure())
 	if err != nil {
 		appLogger.Fatalf("Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)
 	}
@@ -128,5 +130,5 @@ func writeResponse(w http.ResponseWriter, status int, body map[string]interface{
 	appLogger.Infof("buf %s", buf)
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
-	w.Write(buf)
+	_, _ = w.Write(buf)
 }
