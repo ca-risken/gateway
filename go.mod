@@ -4,12 +4,11 @@ go 1.16
 
 require (
 	github.com/andybalholm/brotli v1.0.3 // indirect
-	github.com/aws/aws-sdk-go v1.40.41 // indirect
 	github.com/aws/aws-xray-sdk-go v1.6.0
 	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/aws/proto/aws v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/code/proto/code v0.0.0-20210910090912-21759a7829ac
-	github.com/ca-risken/common/pkg/xray v0.0.0-20210909002919-5b59032ccfe8
+	github.com/ca-risken/common/pkg/xray v0.0.0-20211118071101-9855266b50a1
 	github.com/ca-risken/core/proto/alert v0.0.0-20210917123127-86fbc1daa83f
 	github.com/ca-risken/core/proto/finding v0.0.0-20210917123127-86fbc1daa83f
 	github.com/ca-risken/core/proto/iam v0.0.0-20210917123127-86fbc1daa83f
