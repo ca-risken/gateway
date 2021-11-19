@@ -5,6 +5,88 @@ MIMOSA API document by go-chi.
 ## Routes
 
 <details>
+<summary>`/api/v1/admin/attach-admin-role`</summary>
+
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- **/api/v1**
+	- **/admin**
+		- [main.(*gatewayService).authzOnlyAdmin-fm]()
+		- **/attach-admin-role**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).attachAdminRoleHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/admin/detach-admin-role`</summary>
+
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- **/api/v1**
+	- **/admin**
+		- [main.(*gatewayService).authzOnlyAdmin-fm]()
+		- **/detach-admin-role**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).detachAdminRoleHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/admin/get-admin-role`</summary>
+
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- **/api/v1**
+	- **/admin**
+		- [main.(*gatewayService).authzOnlyAdmin-fm]()
+		- **/get-admin-role**
+			- _GET_
+				- [main.(*gatewayService).getAdminRoleHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/admin/list-admin-role`</summary>
+
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- **/api/v1**
+	- **/admin**
+		- [main.(*gatewayService).authzOnlyAdmin-fm]()
+		- **/list-admin-role**
+			- _GET_
+				- [main.(*gatewayService).listAdminRoleHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/alert/analyze-alert`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -23,27 +105,6 @@ MIMOSA API document by go-chi.
 			- _POST_
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).analyzeAlertHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/delete-alert`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/delete-alert**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).deleteAlertHandler-fm]()
 
 </details>
 <details>
@@ -110,27 +171,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/alert/delete-history`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/delete-history**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).deleteAlertHistoryHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/alert/delete-notification`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -152,27 +192,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/alert/delete-rel_alert_finding`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/delete-rel_alert_finding**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).deleteRelAlertFindingHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/alert/delete-rule`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -191,166 +210,6 @@ MIMOSA API document by go-chi.
 			- _POST_
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).deleteAlertRuleHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-alert`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-alert**
-			- _GET_
-				- [main.(*gatewayService).getAlertHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-condition`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-condition**
-			- _GET_
-				- [main.(*gatewayService).getAlertConditionHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-condition_notification`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-condition_notification**
-			- _GET_
-				- [main.(*gatewayService).getAlertCondNotificationHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-condition_rule`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-condition_rule**
-			- _GET_
-				- [main.(*gatewayService).getAlertCondRuleHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-history`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-history**
-			- _GET_
-				- [main.(*gatewayService).getAlertHistoryHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-notification`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-notification**
-			- _GET_
-				- [main.(*gatewayService).getNotificationHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-rel_alert_finding`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-rel_alert_finding**
-			- _GET_
-				- [main.(*gatewayService).getRelAlertFindingHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/get-rule`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-rule**
-			- _GET_
-				- [main.(*gatewayService).getAlertRuleHandler-fm]()
 
 </details>
 <details>
@@ -598,27 +457,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/alert/put-history`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/put-history**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).putAlertHistoryHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/alert/put-notification`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -637,27 +475,6 @@ MIMOSA API document by go-chi.
 			- _POST_
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).putNotificationHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/alert/put-rel_alert_finding`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/alert**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/put-rel_alert_finding**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).putRelAlertFindingHandler-fm]()
 
 </details>
 <details>
@@ -1010,7 +827,7 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/diagnosis/delete-datasource`</summary>
+<summary>`/api/v1/diagnosis/delete-application-scan`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
@@ -1023,11 +840,32 @@ MIMOSA API document by go-chi.
 - [main.(*gatewayService).authnToken-fm]()
 - **/api/v1**
 	- **/diagnosis**
-		- **/delete-datasource**
+		- **/delete-application-scan**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
-				- [main.(*gatewayService).deleteDiagnosisDataSourceHandler-fm]()
+				- [main.(*gatewayService).deleteApplicationScanHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/diagnosis/delete-application-scan-basic-setting`</summary>
+
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- **/api/v1**
+	- **/diagnosis**
+		- **/delete-application-scan-basic-setting**
+			- _POST_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).deleteApplicationScanBasicSettingHandler-fm]()
 
 </details>
 <details>
@@ -1067,7 +905,7 @@ MIMOSA API document by go-chi.
 	- **/diagnosis**
 		- **/delete-portscan-setting**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).deletePortscanSettingHandler-fm]()
 
@@ -1088,7 +926,7 @@ MIMOSA API document by go-chi.
 	- **/diagnosis**
 		- **/delete-portscan-target**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).deletePortscanTargetHandler-fm]()
 
@@ -1115,6 +953,26 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
+<summary>`/api/v1/diagnosis/get-application-scan-basic-setting`</summary>
+
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- **/api/v1**
+	- **/diagnosis**
+		- **/get-application-scan-basic-setting**
+			- _GET_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [main.(*gatewayService).getApplicationScanBasicSettingHandler-fm]()
+
+</details>
+<details>
 <summary>`/api/v1/diagnosis/get-datasource`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -1132,86 +990,6 @@ MIMOSA API document by go-chi.
 			- _GET_
 				- [main.(*gatewayService).authzWithProject-fm]()
 				- [main.(*gatewayService).getDiagnosisDataSourceHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/diagnosis/get-jira-setting`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/diagnosis**
-		- **/get-jira-setting**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getJiraSettingHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/diagnosis/get-portscan-setting`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/diagnosis**
-		- **/get-portscan-setting**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getPortscanSettingHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/diagnosis/get-portscan-target`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/diagnosis**
-		- **/get-portscan-target**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getPortscanTargetHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/diagnosis/get-wpscan-setting`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/diagnosis**
-		- **/get-wpscan-setting**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getWpscanSettingHandler-fm]()
 
 </details>
 <details>
@@ -1236,7 +1014,7 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/diagnosis/list-datasource`</summary>
+<summary>`/api/v1/diagnosis/list-application-scan`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
@@ -1249,10 +1027,10 @@ MIMOSA API document by go-chi.
 - [main.(*gatewayService).authnToken-fm]()
 - **/api/v1**
 	- **/diagnosis**
-		- **/list-datasource**
+		- **/list-application-scan**
 			- _GET_
 				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).listDiagnosisDataSourceHandler-fm]()
+				- [main.(*gatewayService).listApplicationScanHandler-fm]()
 
 </details>
 <details>
@@ -1336,7 +1114,7 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/diagnosis/put-datasource`</summary>
+<summary>`/api/v1/diagnosis/put-application-scan`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
@@ -1349,11 +1127,32 @@ MIMOSA API document by go-chi.
 - [main.(*gatewayService).authnToken-fm]()
 - **/api/v1**
 	- **/diagnosis**
-		- **/put-datasource**
+		- **/put-application-scan**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
-				- [main.(*gatewayService).putDiagnosisDataSourceHandler-fm]()
+				- [main.(*gatewayService).putApplicationScanHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/diagnosis/put-application-scan-basic-setting`</summary>
+
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- **/api/v1**
+	- **/diagnosis**
+		- **/put-application-scan-basic-setting**
+			- _POST_
+				- [main.(*gatewayService).authzWithProject-fm]()
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putApplicationScanBasicSettingHandler-fm]()
 
 </details>
 <details>
@@ -1393,7 +1192,7 @@ MIMOSA API document by go-chi.
 	- **/diagnosis**
 		- **/put-portscan-setting**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).putPortscanSettingHandler-fm]()
 
@@ -1414,7 +1213,7 @@ MIMOSA API document by go-chi.
 	- **/diagnosis**
 		- **/put-portscan-target**
 			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
+				- [main.(*gatewayService).authzWithProject-fm]()
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).putPortscanTargetHandler-fm]()
 
@@ -1542,26 +1341,6 @@ MIMOSA API document by go-chi.
 		- **/get-finding**
 			- _GET_
 				- [main.(*gatewayService).getFindingHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/finding/get-finding-setting`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/finding**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/get-finding-setting**
-			- _GET_
-				- [main.(*gatewayService).getFindingSettingHandler-fm]()
 
 </details>
 <details>
@@ -1705,67 +1484,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/finding/list-resource-tag`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/finding**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/list-resource-tag**
-			- _GET_
-				- [main.(*gatewayService).listResourceTagHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/finding/list-resource-tag-name`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/finding**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/list-resource-tag-name**
-			- _GET_
-				- [main.(*gatewayService).listResourceTagNameHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/finding/put-finding`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/finding**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/put-finding**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).putFindingHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/finding/put-finding-setting`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -1808,27 +1526,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/finding/put-resource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/finding**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/put-resource**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).putResourceHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/finding/tag-finding`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -1850,27 +1547,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/finding/tag-resource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/finding**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/tag-resource**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).tagResourceHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/finding/untag-finding`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -1889,27 +1565,6 @@ MIMOSA API document by go-chi.
 			- _POST_
 				- [AllowContentType.func1]()
 				- [main.(*gatewayService).untagFindingHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/finding/untag-resource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/finding**
-		- [main.(*gatewayService).authzWithProject-fm]()
-		- **/untag-resource**
-			- _POST_
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).untagResourceHandler-fm]()
 
 </details>
 <details>
@@ -1976,26 +1631,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/google/get-gcp`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/google**
-		- **/get-gcp**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getGCPHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/google/get-gcp-datasource`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -2054,26 +1689,6 @@ MIMOSA API document by go-chi.
 			- _GET_
 				- [main.(*gatewayService).authzWithProject-fm]()
 				- [main.(*gatewayService).listGCPHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/google/list-gcp-datasource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/google**
-		- **/list-gcp-datasource**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).listGCPDataSourceHandler-fm]()
 
 </details>
 <details>
@@ -2567,27 +2182,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/osint/delete-datasource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/osint**
-		- **/delete-datasource**
-			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).deleteOsintDataSourceHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/osint/delete-osint`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -2651,26 +2245,6 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/osint/get-datasource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/osint**
-		- **/get-datasource**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getOsintDataSourceHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/osint/get-osint`</summary>
 
 - [IgnoreHealthCheckTracingMiddleware.func1]()
@@ -2688,46 +2262,6 @@ MIMOSA API document by go-chi.
 			- _GET_
 				- [main.(*gatewayService).authzWithProject-fm]()
 				- [main.(*gatewayService).getOsintHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/osint/get-rel-datasource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/osint**
-		- **/get-rel-datasource**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getRelOsintDataSourceHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/osint/get-word`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/osint**
-		- **/get-word**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).getOsintDetectWordHandler-fm]()
 
 </details>
 <details>
@@ -2829,27 +2363,6 @@ MIMOSA API document by go-chi.
 			- _GET_
 				- [main.(*gatewayService).authzWithProject-fm]()
 				- [main.(*gatewayService).listOsintDetectWordHandler-fm]()
-
-</details>
-<details>
-<summary>`/api/v1/osint/put-datasource`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/osint**
-		- **/put-datasource**
-			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).putOsintDataSourceHandler-fm]()
 
 </details>
 <details>
@@ -3114,4 +2627,4 @@ MIMOSA API document by go-chi.
 
 </details>
 
-Total # of routes: 152
+Total # of routes: 128
