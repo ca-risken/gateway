@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
-	mimosaxray.InitXRay(xray.Config{})
+	err := mimosaxray.InitXRay(xray.Config{})
+	if err != nil {
+		appLogger.Fatal(err.Error())
+	}
 
 	svc, err := newGatewayService()
 	if err != nil {
