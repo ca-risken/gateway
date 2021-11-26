@@ -386,3 +386,18 @@ func (g *gatewayService) deleteFindingSettingHandler(w http.ResponseWriter, r *h
 	}
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
+
+func (g *gatewayService) getRecommendHandler(w http.ResponseWriter, r *http.Request) {
+	req := &finding.GetRecommendRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.findingClient.GetRecommend(r.Context(), req)
+	if err != nil {
+		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
