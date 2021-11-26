@@ -1436,6 +1436,69 @@ func TestGetRecommendHandler(t *testing.T) {
 	}
 }
 
+func TestPutRecommendHandler(t *testing.T) {
+	findingMock := &mockFindingClient{}
+	svc := gatewayService{
+		findingClient: findingMock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *finding.PutRecommendResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:  "OK",
+			input: `{"project_id":1, "finding_id":1, "data_source":"ds", "type":"A", "risk":"risk", "recommendation":"comment"}`,
+			mockResp: &finding.PutRecommendResponse{Recommend: &finding.Recommend{
+				FindingId:      1,
+				DataSource:     "ds",
+				Type:           "A",
+				Risk:           "risk",
+				Recommendation: "comment",
+			}},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid request",
+			input:      `{}`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "finding_id":1, "data_source":"ds", "type":"A", "risk":"risk", "recommendation":"comment"}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				findingMock.On("PutRecommend").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/finding/put-recommend/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putRecommendHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
 /**
  * Mock Client
 **/
