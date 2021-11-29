@@ -239,6 +239,24 @@ untag-resource:
 		--data '{"project_id":1001, "resource_tag_id":1004}' \
 		'http://localhost:8000/api/v1/finding/untag-resource/'
 
+.PHONY: get-recommend
+get-recommend:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/finding/get-recommend/?project_id=1001&finding_id=1001'
+
+.PHONY: put-recommend
+put-recommend:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1, "finding_id":1, "data_source":"ds", "type":"A", "risk":"risk", "recommendation":"comment"}' \
+		'http://localhost:8000/api/v1/finding/put-recommend/'
+
 .PHONY: list-user
 list-user:
 	curl -is -XGET \
