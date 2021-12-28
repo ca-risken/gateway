@@ -36,6 +36,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/list-finding-tag", svc.listFindingTagHandler)
 			r.Get("/list-finding-tag-name", svc.listFindingTagNameHandler)
 			r.Get("/list-resource", svc.listResourceHandler)
+			r.Get("/list-resource-tag", svc.listResourceTagHandler)
+			r.Get("/list-resource-tag-name", svc.listResourceTagNameHandler)
 			r.Get("/get-resource", svc.getResourceHandler)
 			r.Get("/get-pend-finding", svc.getPendFindingHandler)
 			r.Get("/list-finding-setting", svc.listFindingSettingHandler)
