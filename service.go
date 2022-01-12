@@ -10,6 +10,7 @@ import (
 	"github.com/ca-risken/aws/proto/activity"
 	"github.com/ca-risken/aws/proto/aws"
 	"github.com/ca-risken/code/proto/code"
+	"github.com/ca-risken/common/pkg/logging"
 	"github.com/ca-risken/core/proto/alert"
 	"github.com/ca-risken/core/proto/finding"
 	"github.com/ca-risken/core/proto/iam"
@@ -19,7 +20,6 @@ import (
 	"github.com/ca-risken/google/proto/google"
 	"github.com/ca-risken/osint/proto/osint"
 	"github.com/gassara-kys/envconfig"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
@@ -77,7 +77,7 @@ func newGatewayService() (*gatewayService, error) {
 	}
 
 	if conf.Debug {
-		appLogger.SetLevel(logrus.DebugLevel)
+		appLogger.SetLevel(logging.DebugLevel)
 	}
 
 	ctx := context.Background()
@@ -127,7 +127,7 @@ func writeResponse(w http.ResponseWriter, status int, body map[string]interface{
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	appLogger.Infof("buf %s", buf)
+	// appLogger.Debugf("buf %s", buf)
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_, _ = w.Write(buf)
