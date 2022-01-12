@@ -5,20 +5,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ca-risken/common/pkg/logging"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/sirupsen/logrus"
 )
 
 var (
-	appLogger  = newAppLogger()
+	appLogger  = logging.NewLogger()
 	httpLogger = newAccessLogger()
 )
-
-func newAppLogger() *logrus.Logger {
-	logger := logrus.New()
-	logger.Formatter = &logrus.JSONFormatter{}
-	return logger
-}
 
 func newAccessLogger() func(next http.Handler) http.Handler {
 	logger := logrus.New()

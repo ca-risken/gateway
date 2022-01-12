@@ -8,6 +8,7 @@ require (
 	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/aws/proto/aws v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/code/proto/code v0.0.0-20210910090912-21759a7829ac
+	github.com/ca-risken/common/pkg/logging v0.0.0-20220112083229-da961170dec3
 	github.com/ca-risken/common/pkg/xray v0.0.0-20211118071101-9855266b50a1
 	github.com/ca-risken/core/proto/alert v0.0.0-20211124103540-8199b00d6465
 	github.com/ca-risken/core/proto/finding v0.0.0-20211124103540-8199b00d6465
@@ -21,6 +22,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.4
 	github.com/go-chi/docgen v1.2.0
 	github.com/golang/protobuf v1.5.2
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/schema v1.2.0
 	github.com/klauspost/compress v1.13.5 // indirect
 	github.com/sirupsen/logrus v1.8.1
@@ -28,5 +30,6 @@ require (
 	github.com/valyala/fasthttp v1.30.0 // indirect
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	golang.org/x/net v0.0.0-20211014222326-fd004c51d1d6 // indirect
-	google.golang.org/grpc v1.41.0
+	golang.org/x/sys v0.0.0-20220111092808-5a964db01320 // indirect
+	google.golang.org/grpc v1.42.0
 )
