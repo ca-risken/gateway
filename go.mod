@@ -8,7 +8,8 @@ require (
 	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/aws/proto/aws v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/code/proto/code v0.0.0-20210910090912-21759a7829ac
-	github.com/ca-risken/common/pkg/logging v0.0.0-20220112083229-da961170dec3
+	github.com/ca-risken/common/pkg/logging v0.0.0-20220113015330-0e8462d52b5b
+	github.com/ca-risken/common/pkg/sqs v0.0.0-20220113015330-0e8462d52b5b // indirect
 	github.com/ca-risken/common/pkg/xray v0.0.0-20211118071101-9855266b50a1
 	github.com/ca-risken/core/proto/alert v0.0.0-20211124103540-8199b00d6465
 	github.com/ca-risken/core/proto/finding v0.0.0-20211124103540-8199b00d6465

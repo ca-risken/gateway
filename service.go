@@ -77,7 +77,7 @@ func newGatewayService() (*gatewayService, error) {
 	}
 
 	if conf.Debug {
-		appLogger.SetLevel(logging.DebugLevel)
+		appLogger.Level(logging.DebugLevel)
 	}
 
 	ctx := context.Background()
