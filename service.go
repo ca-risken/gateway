@@ -19,8 +19,10 @@ import (
 	"github.com/ca-risken/diagnosis/proto/diagnosis"
 	"github.com/ca-risken/google/proto/google"
 	"github.com/ca-risken/osint/proto/osint"
-	"github.com/gassara-kys/envconfig"
+	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 const (
@@ -47,35 +49,7 @@ type gatewayService struct {
 	googleClient      google.GoogleServiceClient
 }
 
-type gatewayConf struct {
-	EnvName string `default:"local" split_words:"true"`
-	Port    string `default:"8000"`
-	Debug   bool   `default:"false"`
-
-	UserIdentityHeader string   `required:"true" split_words:"true" default:"x-amzn-oidc-identity"`
-	OidcDataHeader     string   `required:"true" split_words:"true" default:"x-amzn-oidc-data"`
-	IdpProviderName    []string `required:"true" split_words:"true" default:"YOUR_IDP1,YOUR_IDP2"`
-
-	FindingSvcAddr     string `required:"true" split_words:"true" default:"finding.core.svc.cluster.local:8001"`
-	IAMSvcAddr         string `required:"true" split_words:"true" default:"iam.core.svc.cluster.local:8002"`
-	ProjectSvcAddr     string `required:"true" split_words:"true" default:"project.core.svc.cluster.local:8003"`
-	AlertSvcAddr       string `required:"true" split_words:"true" default:"alert.core.svc.cluster.local:8004"`
-	ReportSvcAddr      string `required:"true" split_words:"true" default:"report.core.svc.cluster.local:8005"`
-	AWSSvcAddr         string `required:"true" split_words:"true" default:"aws.aws.svc.cluster.local:9001"`
-	AWSActivitySvcAddr string `required:"true" split_words:"true" default:"activity.aws.svc.cluster.local:9007"`
-	OSINTSvcAddr       string `required:"true" split_words:"true" default:"osint.osint.svc.cluster.local:18081"`
-	DiagnosisSvcAddr   string `required:"true" split_words:"true" default:"diagnosis.diagnosis.svc.cluster.local:19001"`
-	CodeSvcAddr        string `required:"true" split_words:"true" default:"code.code.svc.cluster.local:10001"`
-	GoogleSvcAddr      string `required:"true" split_words:"true" default:"google.google.svc.cluster.local:11001"`
-}
-
-func newGatewayService() (*gatewayService, error) {
-	var conf gatewayConf
-	err := envconfig.Process("", &conf)
-	if err != nil {
-		return nil, err
-	}
-
+func newGatewayService(conf *AppConfig) (*gatewayService, error) {
 	if conf.Debug {
 		appLogger.Level(logging.DebugLevel)
 	}
@@ -105,7 +79,11 @@ func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
 	ctx, cancel := context.WithTimeout(ctx, time.Second*3)
 	defer cancel()
 	conn, err := grpc.DialContext(ctx, addr,
-		grpc.WithUnaryInterceptor(xray.UnaryClientInterceptor()), grpc.WithInsecure())
+		grpc.WithUnaryInterceptor(
+			grpcmiddleware.ChainUnaryClient(
+				xray.UnaryClientInterceptor(),
+				otelgrpc.UnaryClientInterceptor())),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		appLogger.Fatalf("Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)
 	}
