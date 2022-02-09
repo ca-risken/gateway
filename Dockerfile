@@ -17,6 +17,7 @@ ENV PORT= \
   USER_IDENTITY_HEADER=x-amzn-oidc-identity \
   OIDC_DATA_HEADER=x-amzn-oidc-data \
   IDP_PROVIDER_NAME= \
+  TRACE_EXPORTER= \
   FINDING_SVC_ADDR= \
   IAM_SVC_ADDR= \
   PROJECT_SVC_ADDR= \

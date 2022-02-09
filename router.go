@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/ca-risken/common/pkg/trace"
 	mimosaxray "github.com/ca-risken/common/pkg/xray"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -13,10 +14,11 @@ const (
 	healthzPath    = "/healthz"
 )
 
-func newRouter(svc *gatewayService) *chi.Mux {
+func newRouter(serverName string, svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(mimosaxray.IgnoreHealthCheckTracingMiddleware("gateway", healthzPath))
 	r.Use(mimosaxray.AnnotateEnvTracingMiddleware(svc.envName))
+	r.Use(trace.OtelChiMiddleware(serverName, healthzPath))
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(httpLogger)
