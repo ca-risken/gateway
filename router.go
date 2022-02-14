@@ -16,6 +16,7 @@ const (
 
 func newRouter(serverName string, svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
+	r.Use(commonHeader)
 	r.Use(mimosaxray.IgnoreHealthCheckTracingMiddleware("gateway", healthzPath))
 	r.Use(mimosaxray.AnnotateEnvTracingMiddleware(svc.envName))
 	r.Use(trace.OtelChiMiddleware(serverName, healthzPath))
