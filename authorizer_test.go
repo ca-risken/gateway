@@ -320,3 +320,87 @@ func TestAuthzAdmin(t *testing.T) {
 		})
 	}
 }
+
+func TestIsHumanAccess(t *testing.T) {
+	cases := []struct {
+		name  string
+		input *requestUser
+		want  bool
+	}{
+		{
+			name:  "Human",
+			input: &requestUser{sub: "sub", userID: 1},
+			want:  true,
+		},
+		{
+			name:  "Not human 1",
+			input: &requestUser{sub: "sub", accessTokenID: 1},
+			want:  false,
+		},
+		{
+			name:  "Not human 2",
+			input: &requestUser{sub: "sub", accessTokenID: 1, userID: 1},
+			want:  false,
+		},
+		{
+			name:  "Nil",
+			input: nil,
+			want:  false,
+		},
+		{
+			name:  "No userID",
+			input: &requestUser{sub: "sub"},
+			want:  false,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			got := isHumanAccess(c.input)
+			if got != c.want {
+				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
+			}
+		})
+	}
+}
+
+func TestShouldVerifyCSRFTokenURI(t *testing.T) {
+	cases := []struct {
+		name  string
+		input string
+		want  bool
+	}{
+		{
+			name:  "should verify 1",
+			input: "/api/v1/uri",
+			want:  true,
+		},
+		{
+			name:  "ignore URI 1",
+			input: "/healthz",
+			want:  false,
+		},
+		{
+			name:  "ignore URI 2",
+			input: "/api/v1/signin",
+			want:  false,
+		},
+		{
+			name:  "slash suffix 1",
+			input: "/api/v1/uri/",
+			want:  true,
+		},
+		{
+			name:  "slash suffix 2",
+			input: "/api/v1/signin/",
+			want:  false,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			got := shouldVerifyCSRFTokenURI(c.input)
+			if got != c.want {
+				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
+			}
+		})
+	}
+}

@@ -27,6 +27,7 @@ func newRouter(serverName string, svc *gatewayService) *chi.Mux {
 	r.Use(middleware.StripSlashes)
 	r.Use(svc.authn)
 	r.Use(svc.authnToken)
+	r.Use(svc.verifyCSRF)
 	r.NotFound(notFoundHandler)
 
 	r.Route("/api/v1", func(r chi.Router) {
