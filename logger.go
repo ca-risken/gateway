@@ -42,6 +42,7 @@ func (l *accessLogger) NewLogEntry(r *http.Request) middleware.LogEntry {
 	logFields["xff"] = r.Header.Get("X-Forwarded-For")
 	logFields["user_agent"] = r.UserAgent()
 	logFields["uri"] = fmt.Sprintf("%s://%s%s", scheme, r.Host, r.RequestURI)
+	logFields["path"] = r.URL.Path
 	entry.Logger = entry.Logger.WithFields(logFields)
 	return entry
 }
