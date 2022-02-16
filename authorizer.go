@@ -201,18 +201,13 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 			return
 		}
 
-		if !zero.IsZeroVal(u.userID) {
+		if isHumanAccess(u) {
 			// Human Access
-			if !validCSRFToken(r) {
-				http.Error(w, "Invalid token", http.StatusForbidden)
-				return
-			}
 			if !g.authzProject(u, r) {
 				http.Error(w, "Unauthorized the project resource for human access", http.StatusForbidden)
 				return
 			}
-
-		} else if !zero.IsZeroVal(u.accessTokenID) {
+		} else {
 			// Program Access
 			if !g.authzProjectForToken(u, r) {
 				http.Error(w, "Unauthorized the project resource for token access", http.StatusForbidden)
@@ -239,10 +234,6 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
-		if !validCSRFToken(r) {
-			http.Error(w, "Invalid token", http.StatusForbidden)
-			return
-		}
 		if !g.authzAdmin(u, r) {
 			http.Error(w, "Unauthorized admin API", http.StatusForbidden)
 			return
@@ -251,6 +242,46 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
+}
+
+func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		u, _ := getRequestUser(r)
+		if isHumanAccess(u) &&
+			shouldVerifyCSRFTokenURI(r.URL.Path) &&
+			!validCSRFToken(r) {
+			appLogger.Debugf("Invalid CSRF token: request_user=%+v, uri=%s", u, r.RequestURI)
+			writeResponse(w, http.StatusForbidden, map[string]interface{}{errorJSONKey: "Invalid token"})
+			return
+		}
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
+func isHumanAccess(u *requestUser) bool {
+	if u == nil || zero.IsZeroVal(u.userID) {
+		return false
+	}
+	if !zero.IsZeroVal(u.accessTokenID) {
+		return false
+	}
+	return true
+}
+
+var ignoreURI4CSRF = []string{
+	"/healthz",
+	"/api/v1/signin",
+}
+
+func shouldVerifyCSRFTokenURI(uri string) bool {
+	trimedURI := strings.TrimSuffix(uri, "/")
+	for _, ignoreURI := range ignoreURI4CSRF {
+		if trimedURI == ignoreURI {
+			return false
+		}
+	}
+	return true
 }
 
 func validCSRFToken(r *http.Request) bool {

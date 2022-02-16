@@ -94,6 +94,16 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	writeResponse(w, http.StatusNotFound, nil)
 }
 
+func commonHeader(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Cache-control", "no-store")
+		w.Header().Add("Pragma", "no-cache")
+		w.Header().Add("X-Frame-Options", "SAMEORIGIN")
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
 func writeResponse(w http.ResponseWriter, status int, body map[string]interface{}) {
 	if body == nil {
 		w.WriteHeader(status)
