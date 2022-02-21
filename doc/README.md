@@ -7,8 +7,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/admin/attach-admin-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -16,6 +18,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/admin**
 		- [main.(*gatewayService).authzOnlyAdmin-fm]()
@@ -28,8 +31,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/admin/detach-admin-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -37,6 +42,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/admin**
 		- [main.(*gatewayService).authzOnlyAdmin-fm]()
@@ -49,8 +55,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/admin/get-admin-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -58,6 +66,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/admin**
 		- [main.(*gatewayService).authzOnlyAdmin-fm]()
@@ -69,8 +78,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/admin/list-admin-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -78,6 +89,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/admin**
 		- [main.(*gatewayService).authzOnlyAdmin-fm]()
@@ -89,8 +101,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/analyze-alert`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -98,6 +112,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -110,8 +125,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/delete-condition`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -119,6 +136,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -131,8 +149,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/delete-condition_notification`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -140,6 +160,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -152,8 +173,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/delete-condition_rule`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -161,6 +184,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -173,8 +197,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/delete-notification`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -182,6 +208,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -194,8 +221,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/delete-rule`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -203,6 +232,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -215,8 +245,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-alert`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -224,6 +256,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -235,8 +268,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-condition`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -244,6 +279,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -255,8 +291,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-condition_notification`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -264,6 +302,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -275,8 +314,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-condition_rule`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -284,6 +325,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -295,8 +337,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-history`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -304,6 +348,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -315,8 +360,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-notification`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -324,6 +371,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -335,8 +383,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-rel_alert_finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -344,6 +394,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -355,8 +406,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/list-rule`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -364,6 +417,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -375,8 +429,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/put-alert`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -384,6 +440,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -396,8 +453,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/put-condition`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -405,6 +464,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -417,8 +477,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/put-condition_notification`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -426,6 +488,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -438,8 +501,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/put-condition_rule`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -447,6 +512,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -459,8 +525,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/put-notification`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -468,6 +536,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -480,8 +549,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/put-rule`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -489,6 +560,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -501,8 +573,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/alert/test-notification`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -510,6 +584,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/alert**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -522,8 +597,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/attach-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -531,6 +608,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/attach-datasource**
@@ -543,8 +621,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/delete-aws`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -552,6 +632,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/delete-aws**
@@ -564,8 +645,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/describe-arn`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -573,6 +656,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/describe-arn**
@@ -584,8 +668,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/detach-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -593,6 +679,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/detach-datasource**
@@ -605,8 +692,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/invoke-scan`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -614,6 +703,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/invoke-scan**
@@ -626,8 +716,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/list-aws`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -635,6 +727,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/list-aws**
@@ -646,8 +739,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/list-cloudtrail`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -655,6 +750,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/list-cloudtrail**
@@ -666,8 +762,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/list-config-history`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -675,6 +773,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/list-config-history**
@@ -686,8 +785,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/list-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -695,6 +796,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/list-datasource**
@@ -706,8 +808,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/aws/put-aws`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -715,6 +819,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/aws**
 		- **/put-aws**
@@ -727,8 +832,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/code/delete-gitleaks`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -736,6 +843,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/code**
 		- **/delete-gitleaks**
@@ -748,8 +856,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/code/invoke-scan-gitleaks`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -757,6 +867,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/code**
 		- **/invoke-scan-gitleaks**
@@ -769,8 +880,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/code/list-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -778,6 +891,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/code**
 		- **/list-datasource**
@@ -788,8 +902,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/code/list-gitleaks`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -797,6 +913,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/code**
 		- **/list-gitleaks**
@@ -808,8 +925,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/code/put-gitleaks`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -817,6 +936,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/code**
 		- **/put-gitleaks**
@@ -829,8 +949,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/delete-application-scan`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -838,6 +960,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/delete-application-scan**
@@ -850,8 +973,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/delete-application-scan-basic-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -859,6 +984,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/delete-application-scan-basic-setting**
@@ -869,31 +995,12 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/diagnosis/delete-jira-setting`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/diagnosis**
-		- **/delete-jira-setting**
-			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).deleteJiraSettingHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/diagnosis/delete-portscan-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -901,6 +1008,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/delete-portscan-setting**
@@ -913,8 +1021,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/delete-portscan-target`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -922,6 +1032,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/delete-portscan-target**
@@ -934,8 +1045,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/delete-wpscan-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -943,6 +1056,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/delete-wpscan-setting**
@@ -955,8 +1069,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/get-application-scan-basic-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -964,6 +1080,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/get-application-scan-basic-setting**
@@ -975,8 +1092,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/get-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -984,6 +1103,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/get-datasource**
@@ -995,8 +1115,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/invoke-scan`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1004,6 +1126,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/invoke-scan**
@@ -1016,8 +1139,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/list-application-scan`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1025,6 +1150,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/list-application-scan**
@@ -1034,30 +1160,12 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/diagnosis/list-jira-setting`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/diagnosis**
-		- **/list-jira-setting**
-			- _GET_
-				- [main.(*gatewayService).authzWithProject-fm]()
-				- [main.(*gatewayService).listJiraSettingHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/diagnosis/list-portscan-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1065,6 +1173,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/list-portscan-setting**
@@ -1076,8 +1185,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/list-portscan-target`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1085,6 +1196,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/list-portscan-target**
@@ -1096,8 +1208,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/list-wpscan-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1105,6 +1219,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/list-wpscan-setting**
@@ -1116,8 +1231,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/put-application-scan`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1125,6 +1242,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/put-application-scan**
@@ -1137,8 +1255,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/put-application-scan-basic-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1146,6 +1266,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/put-application-scan-basic-setting**
@@ -1156,31 +1277,12 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/diagnosis/put-jira-setting`</summary>
-
-- [IgnoreHealthCheckTracingMiddleware.func1]()
-- [AnnotateEnvTracingMiddleware.func1]()
-- [RequestID]()
-- [RealIP]()
-- [RequestLogger.func1]()
-- [Recoverer]()
-- [StripSlashes]()
-- [main.(*gatewayService).authn-fm]()
-- [main.(*gatewayService).authnToken-fm]()
-- **/api/v1**
-	- **/diagnosis**
-		- **/put-jira-setting**
-			- _POST_
-				- [main.(*gatewayService).authzOnlyAdmin-fm]()
-				- [AllowContentType.func1]()
-				- [main.(*gatewayService).putJiraSettingHandler-fm]()
-
-</details>
-<details>
 <summary>`/api/v1/diagnosis/put-portscan-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1188,6 +1290,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/put-portscan-setting**
@@ -1200,8 +1303,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/put-portscan-target`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1209,6 +1314,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/put-portscan-target**
@@ -1221,8 +1327,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/diagnosis/put-wpscan-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1230,6 +1338,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/diagnosis**
 		- **/put-wpscan-setting**
@@ -1242,8 +1351,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/delete-finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1251,6 +1362,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1263,8 +1375,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/delete-finding-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1272,6 +1386,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1284,8 +1399,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/delete-pend-finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1293,6 +1410,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1305,8 +1423,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/delete-resource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1314,6 +1434,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1326,8 +1447,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/get-finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1335,6 +1458,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1346,8 +1470,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/get-pend-finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1355,6 +1481,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1364,10 +1491,12 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/finding/get-resource`</summary>
+<summary>`/api/v1/finding/get-recommend`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1375,6 +1504,30 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
+- **/api/v1**
+	- **/finding**
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/get-recommend**
+			- _GET_
+				- [main.(*gatewayService).getRecommendHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/finding/get-resource`</summary>
+
+- [main.commonHeader]()
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1386,8 +1539,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/list-finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1395,6 +1550,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1406,8 +1562,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/list-finding-setting`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1415,6 +1573,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1426,8 +1585,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/list-finding-tag`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1435,6 +1596,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1446,8 +1608,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/list-finding-tag-name`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1455,6 +1619,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1466,8 +1631,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/list-resource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1475,6 +1642,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1484,10 +1652,12 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/finding/put-finding-setting`</summary>
+<summary>`/api/v1/finding/list-resource-tag`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1495,6 +1665,77 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
+- **/api/v1**
+	- **/finding**
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/list-resource-tag**
+			- _GET_
+				- [main.(*gatewayService).listResourceTagHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/finding/list-resource-tag-name`</summary>
+
+- [main.commonHeader]()
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
+- **/api/v1**
+	- **/finding**
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/list-resource-tag-name**
+			- _GET_
+				- [main.(*gatewayService).listResourceTagNameHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/finding/put-finding`</summary>
+
+- [main.commonHeader]()
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
+- **/api/v1**
+	- **/finding**
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/put-finding**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putFindingHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/finding/put-finding-setting`</summary>
+
+- [main.commonHeader]()
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1507,8 +1748,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/put-pend-finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1516,6 +1759,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1526,10 +1770,12 @@ MIMOSA API document by go-chi.
 
 </details>
 <details>
-<summary>`/api/v1/finding/tag-finding`</summary>
+<summary>`/api/v1/finding/put-recommend`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1537,6 +1783,55 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
+- **/api/v1**
+	- **/finding**
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/put-recommend**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putRecommendHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/finding/put-resource`</summary>
+
+- [main.commonHeader]()
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
+- **/api/v1**
+	- **/finding**
+		- [main.(*gatewayService).authzWithProject-fm]()
+		- **/put-resource**
+			- _POST_
+				- [AllowContentType.func1]()
+				- [main.(*gatewayService).putResourceHandler-fm]()
+
+</details>
+<details>
+<summary>`/api/v1/finding/tag-finding`</summary>
+
+- [main.commonHeader]()
+- [IgnoreHealthCheckTracingMiddleware.func1]()
+- [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
+- [RequestID]()
+- [RealIP]()
+- [RequestLogger.func1]()
+- [Recoverer]()
+- [StripSlashes]()
+- [main.(*gatewayService).authn-fm]()
+- [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1549,8 +1844,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/finding/untag-finding`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1558,6 +1855,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/finding**
 		- [main.(*gatewayService).authzWithProject-fm]()
@@ -1570,8 +1868,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/attach-gcp-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1579,6 +1879,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/attach-gcp-datasource**
@@ -1591,8 +1892,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/delete-gcp`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1600,6 +1903,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/delete-gcp**
@@ -1612,8 +1916,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/detach-gcp-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1621,6 +1927,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/detach-gcp-datasource**
@@ -1633,8 +1940,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/get-gcp-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1642,6 +1951,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/get-gcp-datasource**
@@ -1653,8 +1963,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/invoke-scan-gcp`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1662,6 +1974,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/invoke-scan-gcp**
@@ -1674,8 +1987,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/list-gcp`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1683,6 +1998,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/list-gcp**
@@ -1694,8 +2010,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/list-google-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1703,6 +2021,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/list-google-datasource**
@@ -1713,8 +2032,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/google/put-gcp`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1722,6 +2043,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/google**
 		- **/put-gcp**
@@ -1734,8 +2056,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/attach-access-token`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1743,6 +2067,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/attach-access-token**
@@ -1755,8 +2080,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/attach-policy`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1764,6 +2091,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/attach-policy**
@@ -1776,8 +2104,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/attach-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1785,6 +2115,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/attach-role**
@@ -1797,8 +2128,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/delete-access-token`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1806,6 +2139,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/delete-access-token**
@@ -1818,8 +2152,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/delete-policy`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1827,6 +2163,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/delete-policy**
@@ -1839,8 +2176,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/delete-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1848,6 +2187,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/delete-role**
@@ -1860,8 +2200,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/detach-access-token`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1869,6 +2211,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/detach-access-token**
@@ -1881,8 +2224,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/detach-policy`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1890,6 +2235,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/detach-policy**
@@ -1902,8 +2248,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/detach-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1911,6 +2259,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/detach-role**
@@ -1923,8 +2272,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/generate-access-token`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1932,6 +2283,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/generate-access-token**
@@ -1944,8 +2296,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/get-policy`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1953,6 +2307,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/get-policy**
@@ -1964,8 +2319,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/get-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1973,6 +2330,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/get-role**
@@ -1984,8 +2342,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/get-user`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -1993,6 +2353,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/get-user**
@@ -2003,8 +2364,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/is-admin`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2012,6 +2375,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/is-admin**
@@ -2022,8 +2386,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/list-access-token`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2031,6 +2397,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/list-access-token**
@@ -2042,8 +2409,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/list-policy`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2051,6 +2420,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/list-policy**
@@ -2062,8 +2432,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/list-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2071,6 +2443,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/list-role**
@@ -2082,8 +2455,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/list-user`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2091,6 +2466,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/list-user**
@@ -2101,8 +2477,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/put-policy`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2110,6 +2488,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/put-policy**
@@ -2122,8 +2501,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/put-role`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2131,6 +2512,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/put-role**
@@ -2143,8 +2525,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/put-user`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2152,6 +2536,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/put-user**
@@ -2163,8 +2548,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/iam/update-access-token`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2172,6 +2559,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/iam**
 		- **/update-access-token**
@@ -2184,8 +2572,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/delete-osint`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2193,6 +2583,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/delete-osint**
@@ -2205,8 +2596,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/delete-rel-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2214,6 +2607,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/delete-rel-datasource**
@@ -2226,8 +2620,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/delete-word`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2235,6 +2631,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/delete-word**
@@ -2247,8 +2644,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/get-osint`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2256,6 +2655,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/get-osint**
@@ -2267,8 +2667,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/invoke-scan`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2276,6 +2678,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/invoke-scan**
@@ -2288,8 +2691,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/list-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2297,6 +2702,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/list-datasource**
@@ -2308,8 +2714,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/list-osint`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2317,6 +2725,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/list-osint**
@@ -2328,8 +2737,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/list-rel-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2337,6 +2748,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/list-rel-datasource**
@@ -2348,8 +2760,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/list-word`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2357,6 +2771,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/list-word**
@@ -2368,8 +2783,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/put-osint`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2377,6 +2794,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/put-osint**
@@ -2389,8 +2807,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/put-rel-datasource`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2398,6 +2818,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/put-rel-datasource**
@@ -2410,8 +2831,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/osint/put-word`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2419,6 +2842,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/osint**
 		- **/put-word**
@@ -2431,8 +2855,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/project/create-project`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2440,6 +2866,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/project**
 		- **/create-project**
@@ -2451,8 +2878,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/project/delete-project`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2460,6 +2889,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/project**
 		- **/delete-project**
@@ -2472,8 +2902,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/project/list-project`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2481,6 +2913,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/project**
 		- **/list-project**
@@ -2491,8 +2924,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/project/tag-project`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2500,6 +2935,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/project**
 		- **/tag-project**
@@ -2512,8 +2948,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/project/untag-project`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2521,6 +2959,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/project**
 		- **/untag-project**
@@ -2533,8 +2972,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/project/update-project`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2542,6 +2983,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/project**
 		- **/update-project**
@@ -2554,8 +2996,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/report/get-report`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2563,6 +3007,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/report**
 		- **/get-report**
@@ -2574,8 +3019,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/report/get-report-all`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2583,6 +3030,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/report**
 		- **/get-report-all**
@@ -2594,8 +3042,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/api/v1/signin`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2603,6 +3053,7 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/api/v1**
 	- **/signin**
 		- _GET_
@@ -2612,8 +3063,10 @@ MIMOSA API document by go-chi.
 <details>
 <summary>`/healthz`</summary>
 
+- [main.commonHeader]()
 - [IgnoreHealthCheckTracingMiddleware.func1]()
 - [AnnotateEnvTracingMiddleware.func1]()
+- [OtelChiMiddleware.func1]()
 - [RequestID]()
 - [RealIP]()
 - [RequestLogger.func1]()
@@ -2621,10 +3074,11 @@ MIMOSA API document by go-chi.
 - [StripSlashes]()
 - [main.(*gatewayService).authn-fm]()
 - [main.(*gatewayService).authnToken-fm]()
+- [main.(*gatewayService).verifyCSRF-fm]()
 - **/healthz**
 	- _GET_
 		- [main.newRouter.func2]()
 
 </details>
 
-Total # of routes: 128
+Total # of routes: 131
