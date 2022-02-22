@@ -195,7 +195,6 @@ func newRouter(serverName string, svc *gatewayService) *chi.Mux {
 		r.Route("/diagnosis", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
-				r.Get("/list-jira-setting", svc.listJiraSettingHandler)
 				r.Get("/list-wpscan-setting", svc.listWpscanSettingHandler)
 				r.Get("/list-portscan-setting", svc.listPortscanSettingHandler)
 				r.Get("/list-portscan-target", svc.listPortscanTargetHandler)
@@ -216,13 +215,6 @@ func newRouter(serverName string, svc *gatewayService) *chi.Mux {
 					r.Post("/delete-portscan-setting", svc.deletePortscanSettingHandler)
 					r.Post("/delete-portscan-target", svc.deletePortscanTargetHandler)
 				})
-			})
-			r.Group(func(r chi.Router) {
-				// Admin API
-				r.Use(svc.authzOnlyAdmin)
-				r.Use(middleware.AllowContentType(contenTypeJSON))
-				r.Post("/put-jira-setting", svc.putJiraSettingHandler)
-				r.Post("/delete-jira-setting", svc.deleteJiraSettingHandler)
 			})
 		})
 

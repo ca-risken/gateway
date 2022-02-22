@@ -66,66 +66,6 @@ func (g *gatewayService) deleteDiagnosisDataSourceHandler(w http.ResponseWriter,
 	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) listJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.ListJiraSettingRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.ListJiraSetting(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) getJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.GetJiraSettingRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.GetJiraSetting(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) putJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.PutJiraSettingRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.PutJiraSetting(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) deleteJiraSettingHandler(w http.ResponseWriter, r *http.Request) {
-	req := &diagnosis.DeleteJiraSettingRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.diagnosisClient.DeleteJiraSetting(r.Context(), req)
-	if err != nil {
-		writeResponse(w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) listWpscanSettingHandler(w http.ResponseWriter, r *http.Request) {
 	req := &diagnosis.ListWpscanSettingRequest{}
 	bind(req, r)

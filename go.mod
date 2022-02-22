@@ -15,7 +15,7 @@ require (
 	github.com/ca-risken/core/proto/iam v0.0.0-20211124103540-8199b00d6465
 	github.com/ca-risken/core/proto/project v0.0.0-20211124103540-8199b00d6465
 	github.com/ca-risken/core/proto/report v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20211015052841-3e9c68166866
+	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20220221070251-d51f9add7f73
 	github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06
 	github.com/ca-risken/osint/proto/osint v0.0.0-20210909141026-cc5c5b5d6de0
 	github.com/gassara-kys/envconfig v1.4.4

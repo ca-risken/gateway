@@ -54,6 +54,8 @@ github.com/ca-risken/core/proto/report v0.0.0-20211124103540-8199b00d6465 h1:xCE
 github.com/ca-risken/core/proto/report v0.0.0-20211124103540-8199b00d6465/go.mod h1:KLiokQYEL8xED/BGYp7wQHLLXz8c9t7h1Nv//pc0eO0=
 github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20211015052841-3e9c68166866 h1:G72eZqnZIan8WGo7TLNNvnznxK2Rz4TH0PkEqd8SXfQ=
 github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20211015052841-3e9c68166866/go.mod h1:m7KABDQK3Xk81BwJO4tG4xPl4FzC9umB2jC2SVIcZFY=
+github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20220221070251-d51f9add7f73 h1:Qf7SiofG7UcVmXQDB+d6LsxRbRz70MVtnK0iL6PPvZg=
+github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20220221070251-d51f9add7f73/go.mod h1:5z+3xNa4lt9HDrmEj9O0Y/XLuCc3dApFdA4yqy0mSWw=
 github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06 h1:MGDeeJTtQeXp/PTJDjH2DPFc/ocQgZYWI5L7NabkrXQ=
 github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06/go.mod h1:/fC4mr7tpa6h4DzudDdDQnXst/ETw/rDj2jwj+SIP2M=
 github.com/ca-risken/osint/proto/osint v0.0.0-20210909141026-cc5c5b5d6de0 h1:VtbZ7Mjik1OBax6qqLXYxyzJDXbesn67PqCbMWQZJAk=

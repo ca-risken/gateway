@@ -1122,42 +1122,6 @@ delete-diagnosis_data_source:
 		--data '{"project_id":1001, "diagnosis_data_source_id":1001}' \
 		'http://localhost:8000/api/v1/diagnosis/delete-datasource/'
 
-.PHONY: list-jira_setting
-list-jira_setting:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/diagnosis/list-jira-setting/?project_id=1001'
-
-.PHONY: get-jira_setting
-get-jira_setting:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/diagnosis/get-jira-setting/?project_id=1001&jira_setting_id=1001'
-
-.PHONY: put-jira_setting
-put-jira_setting:
-	curl -is -XPOST \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "jira_setting":{"name":"name", "project_id":1001,"diagnosis_data_source_id":1001, "identity_field":"diagnosis_identity_field", "identity_value":"diagnosis_identity_value", "jira_id":"diagnosis_jira_id", "jira_key":"diagnosis_jira_key"}}' \
-		'http://localhost:8000/api/v1/diagnosis/put-jira-setting/'
-
-.PHONY: delete-jira_setting
-delete-jira_setting:
-	curl -is -XPOST \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "jira_setting_id":1003}' \
-		'http://localhost:8000/api/v1/diagnosis/delete-jira-setting/'
-
 .PHONY: invoke-diagnosis-scan
 invoke-diagnosis-scan:
 	curl -is -XPOST \
@@ -1165,7 +1129,7 @@ invoke-diagnosis-scan:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "jira_setting_id":1001}' \
+		--data '{"project_id":1001, "wpscan_setting_id":1001}' \
 		'http://localhost:8000/api/v1/diagnosis/invoke-scan/'
 
 .PHONY: list-code-datasource
