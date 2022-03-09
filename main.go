@@ -2,9 +2,11 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/aws/aws-xray-sdk-go/xray"
+	"github.com/ca-risken/common/pkg/profiler"
 	"github.com/ca-risken/common/pkg/trace"
 	mimosaxray "github.com/ca-risken/common/pkg/xray"
 	"github.com/gassara-kys/envconfig"
@@ -15,9 +17,15 @@ const (
 	serviceName = "gateway"
 )
 
+func getFullServiceName() string {
+	return fmt.Sprintf("%s.%s", namespace, serviceName)
+}
+
 type AppConfig struct {
-	Port  string `default:"8000"`
-	Debug bool   `default:"false"`
+	Port            string   `default:"8000"`
+	Debug           bool     `default:"false"`
+	ProfileExporter string   `split_words:"true" default:"nop"`
+	ProfileTypes    []string `split_words:"true"`
 
 	EnvName       string `split_words:"true" default:"local"`
 	TraceExporter string `split_words:"true" default:"nop"`
@@ -50,6 +58,26 @@ func main() {
 	if err != nil {
 		appLogger.Fatal(err.Error())
 	}
+
+	pTypes, err := profiler.ConvertProfileTypeFrom(appConfig.ProfileTypes)
+	if err != nil {
+		appLogger.Fatal(err.Error())
+	}
+	pExporter, err := profiler.ConvertExporterTypeFrom(appConfig.ProfileExporter)
+	if err != nil {
+		appLogger.Fatal(err.Error())
+	}
+	pc := profiler.Config{
+		ServiceName:  getFullServiceName(),
+		EnvName:      appConfig.EnvName,
+		ProfileTypes: pTypes,
+		ExporterType: pExporter,
+	}
+	err = pc.Start()
+	if err != nil {
+		appLogger.Fatal(err.Error())
+	}
+	defer pc.Stop()
 
 	traceConfig := &trace.Config{
 		Namespace:    namespace,

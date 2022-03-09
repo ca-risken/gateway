@@ -13,6 +13,8 @@ FROM public.ecr.aws/risken/base/risken-base:v0.0.1
 RUN mkdir -p /usr/local/gateway/doc
 COPY --from=builder /go/bin/gateway /usr/local/gateway/bin/
 ENV PORT= \
+  PROFILE_EXPORTER= \
+  PROFILE_TYPES= \
   DEBUG= \
   USER_IDENTITY_HEADER=x-amzn-oidc-identity \
   OIDC_DATA_HEADER=x-amzn-oidc-data \
