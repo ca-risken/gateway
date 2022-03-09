@@ -56,6 +56,7 @@ func (l *accessLoggerEntry) Write(status, bytes int, header http.Header, elapsed
 		"resp_status":       status,
 		"resp_bytes_length": bytes,
 		"resp_elapsed_ms":   float64(elapsed.Nanoseconds()) / 1000000.0,
+		"resp_elapsed_sec":  elapsed.Seconds(),
 	})
 	l.Logger.Infoln("request complete")
 }
