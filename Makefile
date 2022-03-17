@@ -28,8 +28,7 @@ go-mod-tidy:
 
 .PHONY: go-mod-update
 go-mod-update:
-	source env.sh &&
-		go get -u \
+	go get -u \
 			github.com/ca-risken/core/... \
 			github.com/ca-risken/aws/... \
 			github.com/ca-risken/diagnosis/... \
@@ -38,12 +37,12 @@ go-mod-update:
 
 .PHONY: doc
 doc: go-test
-	. env.sh && ls *.go | grep -v '_test.go' | xargs go run
+	ls *.go | grep -v '_test.go' | xargs go run
 
 PHONY: build $(BUILD_TARGETS)
 build: $(BUILD_TARGETS)
 %.build: %.go-test
-	. env.sh && TARGET=$(*) IMAGE_TAG=$(IMAGE_TAG) IMAGE_PREFIX=$(IMAGE_PREFIX) BUILD_OPT="$(BUILD_OPT)" . hack/docker-build.sh
+	TARGET=$(*) IMAGE_TAG=$(IMAGE_TAG) IMAGE_PREFIX=$(IMAGE_PREFIX) BUILD_OPT="$(BUILD_OPT)" . hack/docker-build.sh
 
 PHONY: build-ci $(BUILD_CI_TARGETS)
 build-ci: $(BUILD_CI_TARGETS)
