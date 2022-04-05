@@ -1,15 +1,13 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
-	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/ca-risken/common/pkg/profiler"
 	"github.com/ca-risken/common/pkg/trace"
-	mimosaxray "github.com/ca-risken/common/pkg/xray"
 	"github.com/gassara-kys/envconfig"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
 const (
@@ -29,6 +27,7 @@ type AppConfig struct {
 
 	EnvName       string `split_words:"true" default:"local"`
 	TraceExporter string `split_words:"true" default:"nop"`
+	TraceDebug    bool   `split_words:"true" default:"false"`
 
 	UserIdentityHeader string   `required:"true" split_words:"true" default:"x-amzn-oidc-identity"`
 	OidcDataHeader     string   `required:"true" split_words:"true" default:"x-amzn-oidc-data"`
@@ -50,11 +49,6 @@ type AppConfig struct {
 func main() {
 	var appConfig AppConfig
 	err := envconfig.Process("", &appConfig)
-	if err != nil {
-		appLogger.Fatal(err.Error())
-	}
-
-	err = mimosaxray.InitXRay(xray.Config{})
 	if err != nil {
 		appLogger.Fatal(err.Error())
 	}
@@ -85,22 +79,20 @@ func main() {
 		Environment:  appConfig.EnvName,
 		ExporterType: trace.GetExporterType(appConfig.TraceExporter),
 	}
-	ctx := context.Background()
-	tp, err := trace.Init(ctx, traceConfig)
-	if err != nil {
-		appLogger.Fatal(err.Error())
+	// TODO move common repository
+	tracerOpts := []tracer.StartOption{
+		tracer.WithEnv(traceConfig.Environment),
+		tracer.WithService(traceConfig.GetFullServiceName()),
+		tracer.WithDebugMode(appConfig.TraceDebug),
 	}
-	defer func() {
-		if err := tp.Shutdown(ctx); err != nil {
-			appLogger.Fatal(err.Error())
-		}
-	}()
+	tracer.Start(tracerOpts...)
+	defer tracer.Stop()
 
 	svc, err := newGatewayService(&appConfig)
 	if err != nil {
 		appLogger.Fatal(err.Error())
 	}
-	router := newRouter(traceConfig.GetFullServiceName(), svc)
+	router := newRouter(svc)
 	appLogger.Infof("starting http server at :%s", svc.port)
 	err = http.ListenAndServe(":"+svc.port, router)
 	if err != nil {
