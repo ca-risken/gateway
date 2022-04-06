@@ -35,10 +35,6 @@ go-mod-update:
 			github.com/ca-risken/code/... \
 			github.com/ca-risken/google/...
 
-.PHONY: doc
-doc: go-test
-	ls *.go | grep -v '_test.go' | xargs go run
-
 PHONY: build $(BUILD_TARGETS)
 build: $(BUILD_TARGETS)
 %.build: %.go-test
