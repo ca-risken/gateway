@@ -400,3 +400,7 @@ func (m *mockProjectClient) UntagProject(context.Context, *project.UntagProjectR
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
+func (m *mockProjectClient) IsActive(context.Context, *project.IsActiveRequest, ...grpc.CallOption) (*project.IsActiveResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*project.IsActiveResponse), args.Error(1)
+}
