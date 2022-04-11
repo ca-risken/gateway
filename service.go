@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/ca-risken/aws/proto/activity"
 	"github.com/ca-risken/aws/proto/aws"
 	"github.com/ca-risken/code/proto/code"
@@ -20,9 +19,9 @@ import (
 	"github.com/ca-risken/google/proto/google"
 	"github.com/ca-risken/osint/proto/osint"
 	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	grpctrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/google.golang.org/grpc"
 )
 
 const (
@@ -81,8 +80,7 @@ func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
 	conn, err := grpc.DialContext(ctx, addr,
 		grpc.WithUnaryInterceptor(
 			grpcmiddleware.ChainUnaryClient(
-				xray.UnaryClientInterceptor(),
-				otelgrpc.UnaryClientInterceptor())),
+				grpctrace.UnaryClientInterceptor())),
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		appLogger.Fatalf("Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)

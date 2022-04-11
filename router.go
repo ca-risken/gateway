@@ -3,10 +3,9 @@ package main
 import (
 	"net/http"
 
-	"github.com/ca-risken/common/pkg/trace"
-	mimosaxray "github.com/ca-risken/common/pkg/xray"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	chitrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/go-chi/chi.v5"
 )
 
 const (
@@ -14,12 +13,10 @@ const (
 	healthzPath    = "/healthz"
 )
 
-func newRouter(serverName string, svc *gatewayService) *chi.Mux {
+func newRouter(svc *gatewayService) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(commonHeader)
-	r.Use(mimosaxray.IgnoreHealthCheckTracingMiddleware("gateway", healthzPath))
-	r.Use(mimosaxray.AnnotateEnvTracingMiddleware(svc.envName))
-	r.Use(trace.OtelChiMiddleware(serverName, healthzPath))
+	r.Use(chitrace.Middleware(chitrace.WithIgnoreRequest(isTraceSkip)))
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(httpLogger)
@@ -271,4 +268,12 @@ func newRouter(serverName string, svc *gatewayService) *chi.Mux {
 	})
 	r.Get(healthzPath, func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
 	return r
+}
+
+// TODO move common repository
+func isTraceSkip(r *http.Request) bool {
+	if r == nil || r.URL == nil {
+		return true
+	}
+	return r.URL.Path == healthzPath
 }
