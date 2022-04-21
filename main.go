@@ -5,9 +5,8 @@ import (
 	"net/http"
 
 	"github.com/ca-risken/common/pkg/profiler"
-	"github.com/ca-risken/common/pkg/trace"
+	"github.com/ca-risken/common/pkg/tracer"
 	"github.com/gassara-kys/envconfig"
-	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
 const (
@@ -25,9 +24,8 @@ type AppConfig struct {
 	ProfileExporter string   `split_words:"true" default:"nop"`
 	ProfileTypes    []string `split_words:"true"`
 
-	EnvName       string `split_words:"true" default:"local"`
-	TraceExporter string `split_words:"true" default:"nop"`
-	TraceDebug    bool   `split_words:"true" default:"false"`
+	EnvName    string `split_words:"true" default:"local"`
+	TraceDebug bool   `split_words:"true" default:"false"`
 
 	UserIdentityHeader string   `required:"true" split_words:"true" default:"x-amzn-oidc-identity"`
 	OidcDataHeader     string   `required:"true" split_words:"true" default:"x-amzn-oidc-data"`
@@ -73,19 +71,12 @@ func main() {
 	}
 	defer pc.Stop()
 
-	traceConfig := &trace.Config{
-		Namespace:    namespace,
-		ServiceName:  serviceName,
-		Environment:  appConfig.EnvName,
-		ExporterType: trace.GetExporterType(appConfig.TraceExporter),
+	tc := &tracer.Config{
+		ServiceName: getFullServiceName(),
+		Environment: appConfig.EnvName,
+		Debug:       appConfig.TraceDebug,
 	}
-	// TODO move common repository
-	tracerOpts := []tracer.StartOption{
-		tracer.WithEnv(traceConfig.Environment),
-		tracer.WithService(traceConfig.GetFullServiceName()),
-		tracer.WithDebugMode(appConfig.TraceDebug),
-	}
-	tracer.Start(tracerOpts...)
+	tracer.Start(tc)
 	defer tracer.Stop()
 
 	svc, err := newGatewayService(&appConfig)
