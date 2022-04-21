@@ -270,7 +270,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	return r
 }
 
-// TODO move common repository
 func isTraceSkip(r *http.Request) bool {
 	if r == nil || r.URL == nil {
 		return true
