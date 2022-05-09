@@ -31,7 +31,7 @@ type AppConfig struct {
 	OidcDataHeader     string   `required:"true" split_words:"true" default:"x-amzn-oidc-data"`
 	IdpProviderName    []string `required:"true" split_words:"true" default:"YOUR_IDP1,YOUR_IDP2"`
 
-	CoreAddr     string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8001"`
+	CoreAddr     string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8080"`
 	AWSSvcAddr         string `required:"true" split_words:"true" default:"aws.aws.svc.cluster.local:9001"`
 	AWSActivitySvcAddr string `required:"true" split_words:"true" default:"activity.aws.svc.cluster.local:9007"`
 	OSINTSvcAddr       string `required:"true" split_words:"true" default:"osint.osint.svc.cluster.local:18081"`
