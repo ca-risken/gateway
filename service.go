@@ -83,13 +83,14 @@ func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
 				grpctrace.UnaryClientInterceptor())),
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		appLogger.Fatalf("Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)
+		appLogger.Fatalf(ctx, "Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)
 	}
 	return conn
 }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-	writeResponse(w, http.StatusNotFound, nil)
+	ctx := r.Context()
+	writeResponse(ctx, w, http.StatusNotFound, nil)
 }
 
 func commonHeader(next http.Handler) http.Handler {
@@ -102,18 +103,17 @@ func commonHeader(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func writeResponse(w http.ResponseWriter, status int, body map[string]interface{}) {
+func writeResponse(ctx context.Context, w http.ResponseWriter, status int, body map[string]interface{}) {
 	if body == nil {
 		w.WriteHeader(status)
 		return
 	}
 	buf, err := json.Marshal(body)
 	if err != nil {
-		appLogger.Errorf("Response body JSON marshal error: %v", err)
+		appLogger.Errorf(ctx, "Response body JSON marshal error: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	// appLogger.Debugf("buf %s", buf)
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_, _ = w.Write(buf)

@@ -26,19 +26,20 @@ func newDecoder() *schema.Decoder {
 
 // bind bindding request parameter
 func bind(out interface{}, r *http.Request) {
+	ctx := r.Context()
 	switch r.Method {
 	case http.MethodGet:
 		if err := bindQuery(out, r); err != nil {
-			appLogger.Warnf("Could not `bindQuery`, url=%s, err=%+v", r.URL.RequestURI(), err)
+			appLogger.Warnf(ctx, "Could not `bindQuery`, url=%s, err=%+v", r.URL.RequestURI(), err)
 		}
 		return
 	case http.MethodPost, http.MethodPut, http.MethodDelete:
 		if err := bindBodyJSON(out, r); err != nil {
-			appLogger.Warnf("Could not `bindBodyJSON`, url=%s, err=%+v", r.URL.RequestURI(), err)
+			appLogger.Warnf(ctx, "Could not `bindBodyJSON`, url=%s, err=%+v", r.URL.RequestURI(), err)
 		}
 		return
 	default:
-		appLogger.Warnf("Unexpected HTTP Method, method=%s", r.Method)
+		appLogger.Warnf(ctx, "Unexpected HTTP Method, method=%s", r.Method)
 	}
 }
 

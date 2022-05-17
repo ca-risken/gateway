@@ -46,9 +46,10 @@ func getRequestUserSub(r *http.Request) (*requestUser, error) {
 
 // signinHandler: OIDC proxy backend signin process.
 func signinHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	signinUser, err := getRequestUser(r)
 	if err != nil {
-		appLogger.Infof("Unauthenticated: %+v", err)
+		appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 		http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 		return
 	}
@@ -60,7 +61,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		Path:   "/",
 		Secure: r.Header.Get("X-Forwarded-Proto") == "https",
 	})
-	writeResponse(w, http.StatusOK, map[string]interface{}{
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{
 		"user_id": signinUser.userID,
 	})
 }
@@ -68,33 +69,34 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 // Authentication for human access
 func (g *gatewayService) authn(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
 		sub := r.Header.Get(g.uidHeader)
 		if sub == "" {
 			next.ServeHTTP(w, r)
 			return
 		}
-		appLogger.Debugf("sub: %s", sub)
-		resp, err := g.iamClient.GetUser(r.Context(), &iam.GetUserRequest{Sub: sub})
+		appLogger.Debugf(ctx, "sub: %s", sub)
+		resp, err := g.iamClient.GetUser(ctx, &iam.GetUserRequest{Sub: sub})
 		if err != nil {
-			appLogger.Warnf("Failed to GetUser request, err=%+v", err)
+			appLogger.Warnf(ctx, "Failed to GetUser request, err=%+v", err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 		if resp != nil && resp.User != nil {
 			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(r.Context(), userKey, &requestUser{sub: sub, userID: resp.User.UserId})))
+				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: resp.User.UserId})))
 			return
 		}
 		// Try AUTO PROVISIONING
 		oidcData := r.Header.Get(g.oidcDataHeader) // r.Header.Get("X-Amzn-Oidc-Data")
 		userName, err := g.getUserName(oidcData)
 		if err != nil || zero.IsZeroVal(userName) {
-			appLogger.Warnf("Failed to get username from oidc data, err=%+v", err)
+			appLogger.Warnf(ctx, "Failed to get username from oidc data, err=%+v", err)
 			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(r.Context(), userKey, &requestUser{sub: sub})))
+				context.WithValue(ctx, userKey, &requestUser{sub: sub})))
 			return
 		}
-		putResp, err := g.iamClient.PutUser(r.Context(), &iam.PutUserRequest{
+		putResp, err := g.iamClient.PutUser(ctx, &iam.PutUserRequest{
 			User: &iam.UserForUpsert{
 				Sub:       sub,
 				Name:      userName,
@@ -102,13 +104,13 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 			},
 		})
 		if err != nil {
-			appLogger.Warnf("Failed to PutUser request, err=%+v", err)
+			appLogger.Warnf(ctx, "Failed to PutUser request, err=%+v", err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 		if putResp != nil && putResp.User != nil {
 			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(r.Context(), userKey, &requestUser{sub: sub, userID: putResp.User.UserId})))
+				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: putResp.User.UserId})))
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -148,6 +150,7 @@ func (g *gatewayService) getUserName(jwt string) (string, error) {
 // Authentication for programable API access
 func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
 		bearer := r.Header.Get("Authorization")
 		tokenBody := ""
 		if len(bearer) > 7 && strings.ToUpper(bearer[0:7]) == "BEARER " {
@@ -157,28 +160,28 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		projectID, accessTokenID, plainTextToken := decodeAccessToken(tokenBody)
+		projectID, accessTokenID, plainTextToken := decodeAccessToken(ctx, tokenBody)
 		if zero.IsZeroVal(accessTokenID) || zero.IsZeroVal(plainTextToken) {
 			next.ServeHTTP(w, r)
 			return
 		}
-		resp, err := g.iamClient.AuthenticateAccessToken(r.Context(), &iam.AuthenticateAccessTokenRequest{
+		resp, err := g.iamClient.AuthenticateAccessToken(ctx, &iam.AuthenticateAccessTokenRequest{
 			ProjectId:      projectID,
 			AccessTokenId:  accessTokenID,
 			PlainTextToken: plainTextToken,
 		})
 		if err != nil {
-			appLogger.Errorf("Failed to AuthenticateAccessToken API, err=%+v", err)
+			appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
 			next.ServeHTTP(w, r)
 			return
 		}
 		if zero.IsZeroVal(resp.AccessToken.AccessTokenId) {
-			appLogger.Error("Failed to get AccessTokenId")
+			appLogger.Error(ctx, "Failed to get AccessTokenId")
 			next.ServeHTTP(w, r)
 			return
 		}
 		next.ServeHTTP(w, r.WithContext(
-			context.WithValue(r.Context(), userKey, &requestUser{accessTokenID: accessTokenID})))
+			context.WithValue(ctx, userKey, &requestUser{accessTokenID: accessTokenID})))
 
 		next.ServeHTTP(w, r)
 	}
@@ -187,6 +190,7 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
 		buf, err := ioutil.ReadAll(r.Body)
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
 		if err != nil {
@@ -196,7 +200,7 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 
 		u, err := getRequestUser(r)
 		if err != nil {
-			appLogger.Infof("Unauthenticated: %+v", err)
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
@@ -222,6 +226,7 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 
 func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
 		buf, err := ioutil.ReadAll(r.Body)
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
 		if err != nil {
@@ -230,7 +235,7 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 		}
 		u, err := getRequestUser(r)
 		if err != nil {
-			appLogger.Infof("Unauthenticated: %+v", err)
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
@@ -246,12 +251,13 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 
 func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
 		u, _ := getRequestUser(r)
 		if isHumanAccess(u) &&
 			shouldVerifyCSRFTokenURI(r.URL.Path) &&
 			!validCSRFToken(r) {
-			appLogger.Debugf("Invalid CSRF token: request_user=%+v, uri=%s", u, r.RequestURI)
-			writeResponse(w, http.StatusForbidden, map[string]interface{}{errorJSONKey: "Invalid token"})
+			appLogger.Debugf(ctx, "Invalid CSRF token: request_user=%+v, uri=%s", u, r.RequestURI)
+			writeResponse(ctx, w, http.StatusForbidden, map[string]interface{}{errorJSONKey: "Invalid token"})
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -301,6 +307,7 @@ type requestProject struct {
 }
 
 func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
+	ctx := r.Context()
 	if zero.IsZeroVal(u.userID) {
 		return false
 	}
@@ -315,15 +322,16 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 		ActionName:   getActionNameFromURI(r.URL.Path),
 		ResourceName: getServiceNameFromURI(r.URL.Path) + "/resource_any",
 	}
-	resp, err := g.iamClient.IsAuthorized(r.Context(), req)
+	resp, err := g.iamClient.IsAuthorized(ctx, req)
 	if err != nil {
-		appLogger.Errorf("Failed to IsAuthorized requuest, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorized requuest, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok
 }
 
 func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) bool {
+	ctx := r.Context()
 	if zero.IsZeroVal(u.accessTokenID) {
 		return false
 	}
@@ -338,9 +346,9 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 		ActionName:    getActionNameFromURI(r.URL.Path),
 		ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
 	}
-	resp, err := g.iamClient.IsAuthorizedToken(r.Context(), req)
+	resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
 	if err != nil {
-		appLogger.Errorf("Failed to IsAuthorizedToken requuest, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedToken requuest, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok
@@ -373,6 +381,7 @@ func getServiceNameFromURI(uri string) string {
 }
 
 func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
+	ctx := r.Context()
 	if zero.IsZeroVal(u.userID) {
 		return false
 	}
@@ -381,13 +390,13 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 		ActionName:   getActionNameFromURI(r.URL.Path),
 		ResourceName: getServiceNameFromURI(r.URL.Path) + "/resource_any",
 	}
-	resp, err := g.iamClient.IsAuthorizedAdmin(r.Context(), req)
+	resp, err := g.iamClient.IsAuthorizedAdmin(ctx, req)
 	if err != nil {
-		appLogger.Errorf("Failed to IsAuthorizedAdmin requuest, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedAdmin requuest, request=%+v, err=%+v", req, err)
 		return false
 	}
 	if !resp.Ok {
-		appLogger.Debugf("user=%d is not Admin, request=%+v", u.userID, req)
+		appLogger.Debugf(ctx, "user=%d is not Admin, request=%+v", u.userID, req)
 		return false
 	}
 	return resp.Ok
