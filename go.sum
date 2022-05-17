@@ -105,6 +105,8 @@ github.com/ca-risken/code/proto/code v0.0.0-20210910090912-21759a7829ac h1:YMEKo
 github.com/ca-risken/code/proto/code v0.0.0-20210910090912-21759a7829ac/go.mod h1:ftX5dqEDPy1AyS5gAP0KbXU6EBTNkQVNjMYp4vdtnyk=
 github.com/ca-risken/common/pkg/logging v0.0.0-20220502113147-30e51b8fe763 h1:YSE4i7Xlg26It8eZejn+OJYAGitas1Xw2R9pplTSufI=
 github.com/ca-risken/common/pkg/logging v0.0.0-20220502113147-30e51b8fe763/go.mod h1:iqLbvDuf708TWjF8RO5qw6Nx1e3R0/UEHZ8tE/VEPjA=
+github.com/ca-risken/common/pkg/logging v0.0.0-20220517105456-de734080357a h1:/aNauhgVJiYMZKvOFRoOMZMQJh4VnMtbN6zujuEaUlc=
+github.com/ca-risken/common/pkg/logging v0.0.0-20220517105456-de734080357a/go.mod h1:iqLbvDuf708TWjF8RO5qw6Nx1e3R0/UEHZ8tE/VEPjA=
 github.com/ca-risken/common/pkg/profiler v0.0.0-20220304031727-c94e2c463b27 h1:NV95obXJwovUBvxWPW5boJcMAwkUIrsqhH3uwhTfTNY=
 github.com/ca-risken/common/pkg/profiler v0.0.0-20220304031727-c94e2c463b27/go.mod h1:xldq3VZ7qomkI5vfpw8Y9qCVEFl8BrSvDr+sxbz32H4=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20220421051518-d57cbf184097 h1:kz1mALLbChWS0inQct+rQUpTgCEM5+XL5bzIjmMguF8=

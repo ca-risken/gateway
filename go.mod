@@ -6,7 +6,7 @@ require (
 	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/aws/proto/aws v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/code/proto/code v0.0.0-20210910090912-21759a7829ac
-	github.com/ca-risken/common/pkg/logging v0.0.0-20220502113147-30e51b8fe763
+	github.com/ca-risken/common/pkg/logging v0.0.0-20220517105456-de734080357a
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220304031727-c94e2c463b27
 	github.com/ca-risken/common/pkg/tracer v0.0.0-20220421051518-d57cbf184097
 	github.com/ca-risken/core/proto/alert v0.0.0-20211124103540-8199b00d6465

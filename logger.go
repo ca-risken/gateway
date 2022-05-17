@@ -8,6 +8,7 @@ import (
 	"github.com/ca-risken/common/pkg/logging"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
 var (
@@ -26,9 +27,10 @@ type accessLogger struct {
 }
 
 func (l *accessLogger) NewLogEntry(r *http.Request) middleware.LogEntry {
+	ctx := r.Context()
 	entry := &accessLoggerEntry{Logger: logrus.NewEntry(l.Logger)}
 	logFields := logrus.Fields{}
-	if reqID := middleware.GetReqID(r.Context()); reqID != "" {
+	if reqID := middleware.GetReqID(ctx); reqID != "" {
 		logFields["req_id"] = reqID
 	}
 	scheme := "http"
@@ -43,6 +45,13 @@ func (l *accessLogger) NewLogEntry(r *http.Request) middleware.LogEntry {
 	logFields["user_agent"] = r.UserAgent()
 	logFields["uri"] = fmt.Sprintf("%s://%s%s", scheme, r.Host, r.RequestURI)
 	logFields["path"] = r.URL.Path
+
+	span, ok := tracer.SpanFromContext(ctx)
+	if ok {
+		logFields[logging.FieldKeyTraceID] = span.Context().TraceID()
+		logFields[logging.FieldKeySpanID] = span.Context().SpanID()
+	}
+
 	entry.Logger = entry.Logger.WithFields(logFields)
 	return entry
 }
