@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/base64"
 	"testing"
 )
@@ -74,7 +75,8 @@ func TestDecodeAccessToken(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			gotProjectID, gotAccessTokenID, gotPlainText := decodeAccessToken(c.input)
+			ctx := context.Background()
+			gotProjectID, gotAccessTokenID, gotPlainText := decodeAccessToken(ctx, c.input)
 			if gotProjectID != c.wantProjectID {
 				t.Fatalf("Unexpected ProjectID. want=%d, got=%d", c.wantProjectID, gotProjectID)
 			}

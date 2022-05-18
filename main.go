@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
@@ -31,7 +32,7 @@ type AppConfig struct {
 	OidcDataHeader     string   `required:"true" split_words:"true" default:"x-amzn-oidc-data"`
 	IdpProviderName    []string `required:"true" split_words:"true" default:"YOUR_IDP1,YOUR_IDP2"`
 
-	CoreAddr     string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8080"`
+	CoreAddr           string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8080"`
 	AWSSvcAddr         string `required:"true" split_words:"true" default:"aws.aws.svc.cluster.local:9001"`
 	AWSActivitySvcAddr string `required:"true" split_words:"true" default:"activity.aws.svc.cluster.local:9007"`
 	OSINTSvcAddr       string `required:"true" split_words:"true" default:"osint.osint.svc.cluster.local:18081"`
@@ -41,19 +42,20 @@ type AppConfig struct {
 }
 
 func main() {
+	ctx := context.Background()
 	var appConfig AppConfig
 	err := envconfig.Process("", &appConfig)
 	if err != nil {
-		appLogger.Fatal(err.Error())
+		appLogger.Fatal(ctx, err.Error())
 	}
 
 	pTypes, err := profiler.ConvertProfileTypeFrom(appConfig.ProfileTypes)
 	if err != nil {
-		appLogger.Fatal(err.Error())
+		appLogger.Fatal(ctx, err.Error())
 	}
 	pExporter, err := profiler.ConvertExporterTypeFrom(appConfig.ProfileExporter)
 	if err != nil {
-		appLogger.Fatal(err.Error())
+		appLogger.Fatal(ctx, err.Error())
 	}
 	pc := profiler.Config{
 		ServiceName:  getFullServiceName(),
@@ -63,7 +65,7 @@ func main() {
 	}
 	err = pc.Start()
 	if err != nil {
-		appLogger.Fatal(err.Error())
+		appLogger.Fatal(ctx, err.Error())
 	}
 	defer pc.Stop()
 
@@ -77,12 +79,12 @@ func main() {
 
 	svc, err := newGatewayService(&appConfig)
 	if err != nil {
-		appLogger.Fatal(err.Error())
+		appLogger.Fatal(ctx, err.Error())
 	}
 	router := newRouter(svc)
-	appLogger.Infof("starting http server at :%s", svc.port)
+	appLogger.Infof(ctx, "starting http server at :%s", svc.port)
 	err = http.ListenAndServe(":"+svc.port, router)
 	if err != nil {
-		appLogger.Fatal(err.Error())
+		appLogger.Fatal(ctx, err.Error())
 	}
 }
