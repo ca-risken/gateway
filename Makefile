@@ -77,7 +77,7 @@ push-manifest: $(MANIFEST_PUSH_TARGETS)
 PHONY: go-test $(TEST_TARGETS)
 go-test: $(TEST_TARGETS)
 %.go-test:
-	go test ./...
+	GO111MODULE=on go test ./...
 
 .PHONY: health-check
 health-check:
