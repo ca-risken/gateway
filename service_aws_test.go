@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/ca-risken/aws/proto/activity"
-	"github.com/ca-risken/aws/proto/aws"
+	"github.com/ca-risken/datasource-api/proto/aws"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
@@ -632,7 +632,7 @@ func (m *mockAWSClient) InvokeScan(context.Context, *aws.InvokeScanRequest, ...g
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
-func (m *mockAWSClient) InvokeScanAll(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
+func (m *mockAWSClient) InvokeScanAll(context.Context, *aws.InvokeScanAllRequest, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }

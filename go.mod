@@ -4,29 +4,25 @@ go 1.17
 
 require (
 	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
-	github.com/ca-risken/aws/proto/aws v0.0.0-20210909100807-3b4b7805f6fa
-	github.com/ca-risken/code/proto/code v0.0.0-20210910090912-21759a7829ac
-	github.com/ca-risken/common/pkg/logging v0.0.0-20220517105456-de734080357a
-	github.com/ca-risken/common/pkg/profiler v0.0.0-20220304031727-c94e2c463b27
-	github.com/ca-risken/common/pkg/tracer v0.0.0-20220421051518-d57cbf184097
+	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b
+	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
+	github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/core/proto/alert v0.0.0-20211124103540-8199b00d6465
 	github.com/ca-risken/core/proto/finding v0.0.0-20211124103540-8199b00d6465
 	github.com/ca-risken/core/proto/iam v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/core/proto/project v0.0.0-20220317065728-a1d0959e3170
+	github.com/ca-risken/core/proto/project v0.0.0-20220428031553-0579e204c316
 	github.com/ca-risken/core/proto/report v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/diagnosis/proto/diagnosis v0.0.0-20220221070251-d51f9add7f73
-	github.com/ca-risken/google/proto/google v0.0.0-20210909140724-ed07f4a6bd06
-	github.com/ca-risken/osint/proto/osint v0.0.0-20210909141026-cc5c5b5d6de0
+	github.com/ca-risken/datasource-api v0.0.0-20220615043958-794d01b2e367
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/schema v1.2.0
-	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/sirupsen/logrus v1.8.1
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.1
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
-	google.golang.org/grpc v1.45.0
-	gopkg.in/DataDog/dd-trace-go.v1 v1.37.1
+	google.golang.org/grpc v1.47.0
+	gopkg.in/DataDog/dd-trace-go.v1 v1.38.1
 )
 
 require (

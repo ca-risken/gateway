@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ca-risken/osint/proto/osint"
+	"github.com/ca-risken/datasource-api/proto/osint"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
@@ -1105,7 +1105,7 @@ func (m *mockOsintClient) DeleteOsintDetectWord(context.Context, *osint.DeleteOs
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
-func (m *mockOsintClient) InvokeScanAll(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
+func (m *mockOsintClient) InvokeScanAll(context.Context, *osint.InvokeScanAllRequest, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }

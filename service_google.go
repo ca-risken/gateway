@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/ca-risken/google/proto/google"
+	"github.com/ca-risken/datasource-api/proto/google"
 )
 
 func (g *gatewayService) listGoogleDataSourceHandler(w http.ResponseWriter, r *http.Request) {

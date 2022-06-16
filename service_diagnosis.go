@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/ca-risken/diagnosis/proto/diagnosis"
+	"github.com/ca-risken/datasource-api/proto/diagnosis"
 )
 
 func (g *gatewayService) listDiagnosisDataSourceHandler(w http.ResponseWriter, r *http.Request) {

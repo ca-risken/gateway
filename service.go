@@ -7,17 +7,17 @@ import (
 	"time"
 
 	"github.com/ca-risken/aws/proto/activity"
-	"github.com/ca-risken/aws/proto/aws"
-	"github.com/ca-risken/code/proto/code"
 	"github.com/ca-risken/common/pkg/logging"
 	"github.com/ca-risken/core/proto/alert"
 	"github.com/ca-risken/core/proto/finding"
 	"github.com/ca-risken/core/proto/iam"
 	"github.com/ca-risken/core/proto/project"
 	"github.com/ca-risken/core/proto/report"
-	"github.com/ca-risken/diagnosis/proto/diagnosis"
-	"github.com/ca-risken/google/proto/google"
-	"github.com/ca-risken/osint/proto/osint"
+	"github.com/ca-risken/datasource-api/proto/aws"
+	"github.com/ca-risken/datasource-api/proto/code"
+	"github.com/ca-risken/datasource-api/proto/diagnosis"
+	"github.com/ca-risken/datasource-api/proto/google"
+	"github.com/ca-risken/datasource-api/proto/osint"
 	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -65,12 +65,12 @@ func newGatewayService(conf *AppConfig) (*gatewayService, error) {
 		projectClient:     project.NewProjectServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
 		alertClient:       alert.NewAlertServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
 		reportClient:      report.NewReportServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
-		awsClient:         aws.NewAWSServiceClient(getGRPCConn(ctx, conf.AWSSvcAddr)),
+		awsClient:         aws.NewAWSServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
 		awsActivityClient: activity.NewActivityServiceClient(getGRPCConn(ctx, conf.AWSActivitySvcAddr)),
-		osintClient:       osint.NewOsintServiceClient(getGRPCConn(ctx, conf.OSINTSvcAddr)),
-		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DiagnosisSvcAddr)),
-		codeClient:        code.NewCodeServiceClient(getGRPCConn(ctx, conf.CodeSvcAddr)),
-		googleClient:      google.NewGoogleServiceClient(getGRPCConn(ctx, conf.GoogleSvcAddr)),
+		osintClient:       osint.NewOsintServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
+		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
+		codeClient:        code.NewCodeServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
+		googleClient:      google.NewGoogleServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
 	}, nil
 }
 
