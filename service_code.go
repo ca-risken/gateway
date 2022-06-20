@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/ca-risken/code/proto/code"
+	"github.com/ca-risken/datasource-api/proto/code"
 )
 
 func (g *gatewayService) listCodeDataSourceHandler(w http.ResponseWriter, r *http.Request) {

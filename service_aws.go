@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/ca-risken/aws/proto/activity"
-	"github.com/ca-risken/aws/proto/aws"
+	"github.com/ca-risken/datasource-api/proto/aws"
 )
 
 func (g *gatewayService) listAWSHandler(w http.ResponseWriter, r *http.Request) {

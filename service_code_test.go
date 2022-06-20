@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ca-risken/code/proto/code"
+	"github.com/ca-risken/datasource-api/proto/code"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"

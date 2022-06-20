@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ca-risken/google/proto/google"
+	"github.com/ca-risken/datasource-api/proto/google"
 	"github.com/stretchr/testify/mock"
 	"google.golang.org/grpc"
 )
@@ -626,7 +626,7 @@ func (m *mockGoogleClient) InvokeScanGCP(context.Context, *google.InvokeScanGCPR
 	args := m.Called()
 	return args.Get(0).(*google.Empty), args.Error(1)
 }
-func (m *mockGoogleClient) InvokeScanAll(context.Context, *google.Empty, ...grpc.CallOption) (*google.Empty, error) {
+func (m *mockGoogleClient) InvokeScanAll(context.Context, *google.InvokeScanAllRequest, ...grpc.CallOption) (*google.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*google.Empty), args.Error(1)
 }
