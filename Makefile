@@ -1132,33 +1132,53 @@ list-code-datasource:
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		'http://localhost:8000/api/v1/code/list-datasource/?project_id=1001'
 
-.PHONY: list-gitleaks
-list-gitleaks:
+.PHONY: list-github-setting
+list-github-setting:
 	curl -is -XGET \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/code/list-gitleaks/?project_id=1001'
+		'http://localhost:8000/api/v1/code/list-github-setting/?project_id=1001'
 
-.PHONY: put-gitleaks
-put-gitleaks:
+.PHONY: put-github-setting
+put-github-setting:
 	curl -is -XPOST \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "gitleaks": {"gitleaks_id":1001, "code_data_source_id":1001, "name":"test-gitleaks", "project_id":1001, "type":2, "target_resource":"gitleakstest"}}' \
-		'http://localhost:8000/api/v1/code/put-gitleaks/'
+		--data '{"project_id":1001, "github_setting": {"name":"test-github-setting", "project_id":1001, "type":2, "target_resource":"githubsettingtest"}}' \
+		'http://localhost:8000/api/v1/code/put-github-setting/'
 
-.PHONY: delete-gitleaks
-delete-gitleaks:
+.PHONY: delete-github-setting
+delete-github-setting:
 	curl -is -XPOST \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "gitleaks_id":1001}' \
-		'http://localhost:8000/api/v1/code/delete-gitleaks/'
+		--data '{"project_id":1001, "github_setting_id":1001}' \
+		'http://localhost:8000/api/v1/code/delete-github-setting/'
+
+.PHONY: put-gitleaks-setting
+put-gitleaks-setting:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "gitleaks_setting": {"github_setting_id":1001,"code_data_source_id":1001, "project_id":1001}}' \
+		'http://localhost:8000/api/v1/code/put-gitleaks-setting/'
+
+.PHONY: delete-gitleaks-setting
+delete-gitleaks-setting:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "github_setting_id":1001}' \
+		'http://localhost:8000/api/v1/code/delete-gitleaks-setting/'
 
 .PHONY: invoke-scan-gitleaks
 invoke-scan-gitleaks:
@@ -1167,7 +1187,7 @@ invoke-scan-gitleaks:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "gitleaks_id":1001}' \
+		--data '{"project_id":1001, "github_setting_id":1001}' \
 		'http://localhost:8000/api/v1/code/invoke-scan-gitleaks/'
 
 .PHONY: list-google-datasource

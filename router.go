@@ -222,11 +222,13 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
-				r.Get("/list-gitleaks", svc.listGitleaksHandler)
+				r.Get("/list-github-setting", svc.listGitHubSettingHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
-					r.Post("/put-gitleaks", svc.putGitleaksHandler)
-					r.Post("/delete-gitleaks", svc.deleteGitleaksHandler)
+					r.Post("/put-github-setting", svc.putGitHubSettingHandler)
+					r.Post("/delete-github-setting", svc.deleteGitHubSettingHandler)
+					r.Post("/put-gitleaks-setting", svc.putGitleaksSettingHandler)
+					r.Post("/delete-gitleaks-setting", svc.deleteGitleaksSettingHandler)
 					r.Post("/invoke-scan-gitleaks", svc.invokeScanGitleaksHandler)
 				})
 			})

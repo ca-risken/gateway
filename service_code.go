@@ -22,15 +22,15 @@ func (g *gatewayService) listCodeDataSourceHandler(w http.ResponseWriter, r *htt
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) listGitleaksHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) listGitHubSettingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &code.ListGitleaksRequest{}
+	req := &code.ListGitHubSettingRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.codeClient.ListGitleaks(ctx, req)
+	resp, err := g.codeClient.ListGitHubSetting(ctx, req)
 	if err != nil {
 		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -38,15 +38,15 @@ func (g *gatewayService) listGitleaksHandler(w http.ResponseWriter, r *http.Requ
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putGitleaksHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) putGitHubSettingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &code.PutGitleaksRequest{}
+	req := &code.PutGitHubSettingRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.codeClient.PutGitleaks(ctx, req)
+	resp, err := g.codeClient.PutGitHubSetting(ctx, req)
 	if err != nil {
 		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -54,15 +54,47 @@ func (g *gatewayService) putGitleaksHandler(w http.ResponseWriter, r *http.Reque
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) deleteGitleaksHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) deleteGitHubSettingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &code.DeleteGitleaksRequest{}
+	req := &code.DeleteGitHubSettingRequest{}
 	bind(req, r)
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.codeClient.DeleteGitleaks(ctx, req)
+	resp, err := g.codeClient.DeleteGitHubSetting(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) putGitleaksSettingHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.PutGitleaksSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.PutGitleaksSetting(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deleteGitleaksSettingHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.DeleteGitleaksSettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.DeleteGitleaksSetting(ctx, req)
 	if err != nil {
 		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return

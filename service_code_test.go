@@ -75,7 +75,7 @@ func TestListCodeDataSourceHandler(t *testing.T) {
 	}
 }
 
-func TestListGitleaksHandler(t *testing.T) {
+func TestListGitHubSettingHandler(t *testing.T) {
 	mock := &mockCodeClient{}
 	svc := gatewayService{
 		codeClient: mock,
@@ -83,14 +83,14 @@ func TestListGitleaksHandler(t *testing.T) {
 	cases := []struct {
 		name       string
 		input      string
-		mockResp   *code.ListGitleaksResponse
+		mockResp   *code.ListGitHubSettingResponse
 		mockErr    error
 		wantStatus int
 	}{
 		{
 			name:       "OK",
 			input:      `project_id=1`,
-			mockResp:   &code.ListGitleaksResponse{},
+			mockResp:   &code.ListGitHubSettingResponse{},
 			wantStatus: http.StatusOK,
 		},
 		{
@@ -108,11 +108,11 @@ func TestListGitleaksHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				mock.On("ListGitleaks").Return(c.mockResp, c.mockErr).Once()
+				mock.On("ListGitHubSetting").Return(c.mockResp, c.mockErr).Once()
 			}
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/api/v1/code/list-gitleaks/?"+c.input, nil)
-			svc.listGitleaksHandler(rec, req)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/code/list-github-setting/?"+c.input, nil)
+			svc.listGitHubSettingHandler(rec, req)
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
 			}
@@ -131,7 +131,7 @@ func TestListGitleaksHandler(t *testing.T) {
 	}
 }
 
-func TestPutGitleaksHandler(t *testing.T) {
+func TestPutGitHubSettingHandler(t *testing.T) {
 	mock := &mockCodeClient{}
 	svc := gatewayService{
 		codeClient: mock,
@@ -139,14 +139,14 @@ func TestPutGitleaksHandler(t *testing.T) {
 	cases := []struct {
 		name       string
 		input      string
-		mockResp   *code.PutGitleaksResponse
+		mockResp   *code.PutGitHubSettingResponse
 		mockErr    error
 		wantStatus int
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1, "gitleaks": {"gitleaks_id":1, "code_data_source_id":1, "name":"test", "project_id":1, "type":1, "target_resource":"gitleakstest"}}`,
-			mockResp:   &code.PutGitleaksResponse{},
+			input:      `{"project_id":1, "github_setting": {"github_setting_id":1, "name":"test", "project_id":1, "type":1, "target_resource":"githubsetting"}}`,
+			mockResp:   &code.PutGitHubSettingResponse{},
 			wantStatus: http.StatusOK,
 		},
 		{
@@ -156,7 +156,7 @@ func TestPutGitleaksHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1, "gitleaks": {"gitleaks_id":1, "code_data_source_id":1, "name":"test", "project_id":1, "type":1, "target_resource":"gitleakstest"}}`,
+			input:      `{"project_id":1, "github_setting": {"github_setting_id":1, "name":"test", "project_id":1, "type":1, "target_resource":"githubsetting"}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
@@ -164,12 +164,12 @@ func TestPutGitleaksHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				mock.On("PutGitleaks").Return(c.mockResp, c.mockErr).Once()
+				mock.On("PutGitHubSetting").Return(c.mockResp, c.mockErr).Once()
 			}
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/put-gitleaks/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/put-github-setting/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
-			svc.putGitleaksHandler(rec, req)
+			svc.putGitHubSettingHandler(rec, req)
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
 			}
@@ -187,7 +187,7 @@ func TestPutGitleaksHandler(t *testing.T) {
 		})
 	}
 }
-func TestDeleteGitleaksHandler(t *testing.T) {
+func TestDeleteGitHubSettingHandler(t *testing.T) {
 	mock := &mockCodeClient{}
 	svc := gatewayService{
 		codeClient: mock,
@@ -201,7 +201,7 @@ func TestDeleteGitleaksHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1, "gitleaks_id":1}`,
+			input:      `{"project_id":1, "github_setting_id":1}`,
 			mockResp:   &empty.Empty{},
 			wantStatus: http.StatusOK,
 		},
@@ -212,7 +212,7 @@ func TestDeleteGitleaksHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1, "gitleaks_id":1}`,
+			input:      `{"project_id":1, "github_setting_id":1}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
@@ -220,12 +220,125 @@ func TestDeleteGitleaksHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				mock.On("DeleteGitleaks").Return(c.mockResp, c.mockErr).Once()
+				mock.On("DeleteGitHubSetting").Return(c.mockResp, c.mockErr).Once()
 			}
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/delete-gitleaks/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/delete-github-setting/", strings.NewReader(c.input))
 			req.Header.Add("Content-Type", "application/json")
-			svc.deleteGitleaksHandler(rec, req)
+			svc.deleteGitHubSettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+
+func TestPutGitleaksSettingHandler(t *testing.T) {
+	mock := &mockCodeClient{}
+	svc := gatewayService{
+		codeClient: mock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *code.PutGitleaksSettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "gitleaks_setting": {"github_setting_id":1, "code_data_source_id":1, "project_id":1, "type":1}}`,
+			mockResp:   &code.PutGitleaksSettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "gitleaks_setting": {"github_setting_id":1, "code_data_source_id":1, "project_id":1, "type":1}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				mock.On("PutGitleaksSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/put-gitleaks-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putGitleaksSettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+func TestDeleteGitleaksSettingHandler(t *testing.T) {
+	mock := &mockCodeClient{}
+	svc := gatewayService{
+		codeClient: mock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "github_setting_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "github_setting_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				mock.On("DeleteGitleaksSetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/delete-gitleaks-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deleteGitleaksSettingHandler(rec, req)
 			if c.wantStatus != rec.Code {
 				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
 			}
@@ -257,7 +370,7 @@ func TestInvokeScanGitleaksHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"project_id":1, "gitleaks_id":1}`,
+			input:      `{"project_id":1, "github_setting_id":1}`,
 			mockResp:   &empty.Empty{},
 			wantStatus: http.StatusOK,
 		},
@@ -268,7 +381,7 @@ func TestInvokeScanGitleaksHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"project_id":1, "gitleaks_id":1}`,
+			input:      `{"project_id":1, "github_setting_id":1}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
@@ -311,19 +424,27 @@ func (m *mockCodeClient) ListDataSource(context.Context, *code.ListDataSourceReq
 	args := m.Called()
 	return args.Get(0).(*code.ListDataSourceResponse), args.Error(1)
 }
-func (m *mockCodeClient) ListGitleaks(context.Context, *code.ListGitleaksRequest, ...grpc.CallOption) (*code.ListGitleaksResponse, error) {
+func (m *mockCodeClient) ListGitHubSetting(context.Context, *code.ListGitHubSettingRequest, ...grpc.CallOption) (*code.ListGitHubSettingResponse, error) {
 	args := m.Called()
-	return args.Get(0).(*code.ListGitleaksResponse), args.Error(1)
+	return args.Get(0).(*code.ListGitHubSettingResponse), args.Error(1)
 }
-func (m *mockCodeClient) GetGitleaks(context.Context, *code.GetGitleaksRequest, ...grpc.CallOption) (*code.GetGitleaksResponse, error) {
+func (m *mockCodeClient) GetGitHubSetting(context.Context, *code.GetGitHubSettingRequest, ...grpc.CallOption) (*code.GetGitHubSettingResponse, error) {
 	args := m.Called()
-	return args.Get(0).(*code.GetGitleaksResponse), args.Error(1)
+	return args.Get(0).(*code.GetGitHubSettingResponse), args.Error(1)
 }
-func (m *mockCodeClient) PutGitleaks(context.Context, *code.PutGitleaksRequest, ...grpc.CallOption) (*code.PutGitleaksResponse, error) {
+func (m *mockCodeClient) PutGitHubSetting(context.Context, *code.PutGitHubSettingRequest, ...grpc.CallOption) (*code.PutGitHubSettingResponse, error) {
 	args := m.Called()
-	return args.Get(0).(*code.PutGitleaksResponse), args.Error(1)
+	return args.Get(0).(*code.PutGitHubSettingResponse), args.Error(1)
 }
-func (m *mockCodeClient) DeleteGitleaks(context.Context, *code.DeleteGitleaksRequest, ...grpc.CallOption) (*empty.Empty, error) {
+func (m *mockCodeClient) DeleteGitHubSetting(context.Context, *code.DeleteGitHubSettingRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockCodeClient) PutGitleaksSetting(context.Context, *code.PutGitleaksSettingRequest, ...grpc.CallOption) (*code.PutGitleaksSettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*code.PutGitleaksSettingResponse), args.Error(1)
+}
+func (m *mockCodeClient) DeleteGitleaksSetting(context.Context, *code.DeleteGitleaksSettingRequest, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
@@ -335,15 +456,15 @@ func (m *mockCodeClient) InvokeScanAllGitleaks(context.Context, *empty.Empty, ..
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
-func (m *mockCodeClient) ListEnterpriseOrg(ctx context.Context, in *code.ListEnterpriseOrgRequest, opts ...grpc.CallOption) (*code.ListEnterpriseOrgResponse, error) {
+func (m *mockCodeClient) ListGitHubEnterpriseOrg(ctx context.Context, in *code.ListGitHubEnterpriseOrgRequest, opts ...grpc.CallOption) (*code.ListGitHubEnterpriseOrgResponse, error) {
 	args := m.Called()
-	return args.Get(0).(*code.ListEnterpriseOrgResponse), args.Error(1)
+	return args.Get(0).(*code.ListGitHubEnterpriseOrgResponse), args.Error(1)
 }
-func (m *mockCodeClient) PutEnterpriseOrg(ctx context.Context, in *code.PutEnterpriseOrgRequest, opts ...grpc.CallOption) (*code.PutEnterpriseOrgResponse, error) {
+func (m *mockCodeClient) PutGitHubEnterpriseOrg(ctx context.Context, in *code.PutGitHubEnterpriseOrgRequest, opts ...grpc.CallOption) (*code.PutGitHubEnterpriseOrgResponse, error) {
 	args := m.Called()
-	return args.Get(0).(*code.PutEnterpriseOrgResponse), args.Error(1)
+	return args.Get(0).(*code.PutGitHubEnterpriseOrgResponse), args.Error(1)
 }
-func (m *mockCodeClient) DeleteEnterpriseOrg(ctx context.Context, in *code.DeleteEnterpriseOrgRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+func (m *mockCodeClient) DeleteGitHubEnterpriseOrg(ctx context.Context, in *code.DeleteGitHubEnterpriseOrgRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
