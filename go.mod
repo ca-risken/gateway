@@ -12,7 +12,7 @@ require (
 	github.com/ca-risken/core/proto/iam v0.0.0-20211124103540-8199b00d6465
 	github.com/ca-risken/core/proto/project v0.0.0-20220428031553-0579e204c316
 	github.com/ca-risken/core/proto/report v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/datasource-api v0.3.1-0.20220726113919-8de3b67fe6e5
+	github.com/ca-risken/datasource-api v0.3.1-0.20220808084643-57ce84096352
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/golang/protobuf v1.5.2
