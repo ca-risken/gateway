@@ -102,6 +102,38 @@ func (g *gatewayService) deleteGitleaksSettingHandler(w http.ResponseWriter, r *
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) putDependencySettingHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.PutDependencySettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.PutDependencySetting(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deleteDependencySettingHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.DeleteDependencySettingRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.DeleteDependencySetting(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) invokeScanGitleaksHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.InvokeScanGitleaksRequest{}
@@ -111,6 +143,22 @@ func (g *gatewayService) invokeScanGitleaksHandler(w http.ResponseWriter, r *htt
 		return
 	}
 	resp, err := g.codeClient.InvokeScanGitleaks(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) invokeScanDependencyHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.InvokeScanDependencyRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.InvokeScanDependency(ctx, req)
 	if err != nil {
 		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return

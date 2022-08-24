@@ -356,6 +356,118 @@ func TestDeleteGitleaksSettingHandler(t *testing.T) {
 		})
 	}
 }
+func TestPutDependencySettingHandler(t *testing.T) {
+	mock := &mockCodeClient{}
+	svc := gatewayService{
+		codeClient: mock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *code.PutDependencySettingResponse
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "dependency_setting": {"github_setting_id":1, "code_data_source_id":1, "project_id":1, "type":1}}`,
+			mockResp:   &code.PutDependencySettingResponse{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "dependency_setting": {"github_setting_id":1, "code_data_source_id":1, "project_id":1, "type":1}}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				mock.On("PutDependencySetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/put-dependency-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.putDependencySettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
+func TestDeleteDependencySettingHandler(t *testing.T) {
+	mock := &mockCodeClient{}
+	svc := gatewayService{
+		codeClient: mock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "github_setting_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "github_setting_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				mock.On("DeleteDependencySetting").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/delete-gitleaks-setting/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.deleteDependencySettingHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
 func TestInvokeScanGitleaksHandler(t *testing.T) {
 	mock := &mockCodeClient{}
 	svc := gatewayService{
@@ -412,6 +524,62 @@ func TestInvokeScanGitleaksHandler(t *testing.T) {
 		})
 	}
 }
+func TestInvokeScanDependencyHandler(t *testing.T) {
+	mock := &mockCodeClient{}
+	svc := gatewayService{
+		codeClient: mock,
+	}
+	cases := []struct {
+		name       string
+		input      string
+		mockResp   *empty.Empty
+		mockErr    error
+		wantStatus int
+	}{
+		{
+			name:       "OK",
+			input:      `{"project_id":1, "github_setting_id":1}`,
+			mockResp:   &empty.Empty{},
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "NG Invalid parameter",
+			input:      `invalid_param`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG Backend service error",
+			input:      `{"project_id":1, "github_setting_id":1}`,
+			wantStatus: http.StatusInternalServerError,
+			mockErr:    errors.New("something wrong"),
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				mock.On("InvokeScanDependency").Return(c.mockResp, c.mockErr).Once()
+			}
+			rec := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/code/invoke-scan-dependency/", strings.NewReader(c.input))
+			req.Header.Add("Content-Type", "application/json")
+			svc.invokeScanDependencyHandler(rec, req)
+			if c.wantStatus != rec.Code {
+				t.Fatalf("Unexpected HTTP status code: want=%+v, got=%+v", c.wantStatus, rec.Code)
+			}
+			resp := map[string]interface{}{}
+			if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+				t.Fatalf("Unexpected json decode error to response body: err=%+v", err)
+			}
+			jsonKey := successJSONKey
+			if c.wantStatus != http.StatusOK {
+				jsonKey = errorJSONKey
+			}
+			if _, ok := resp[jsonKey]; !ok {
+				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+		})
+	}
+}
 
 /**
  * Mock Client
@@ -448,11 +616,23 @@ func (m *mockCodeClient) DeleteGitleaksSetting(context.Context, *code.DeleteGitl
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
+func (m *mockCodeClient) PutDependencySetting(context.Context, *code.PutDependencySettingRequest, ...grpc.CallOption) (*code.PutDependencySettingResponse, error) {
+	args := m.Called()
+	return args.Get(0).(*code.PutDependencySettingResponse), args.Error(1)
+}
+func (m *mockCodeClient) DeleteDependencySetting(context.Context, *code.DeleteDependencySettingRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
 func (m *mockCodeClient) InvokeScanGitleaks(context.Context, *code.InvokeScanGitleaksRequest, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }
-func (m *mockCodeClient) InvokeScanAllGitleaks(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
+func (m *mockCodeClient) InvokeScanDependency(context.Context, *code.InvokeScanDependencyRequest, ...grpc.CallOption) (*empty.Empty, error) {
+	args := m.Called()
+	return args.Get(0).(*empty.Empty), args.Error(1)
+}
+func (m *mockCodeClient) InvokeScanAll(context.Context, *empty.Empty, ...grpc.CallOption) (*empty.Empty, error) {
 	args := m.Called()
 	return args.Get(0).(*empty.Empty), args.Error(1)
 }

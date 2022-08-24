@@ -129,6 +129,8 @@ github.com/ca-risken/datasource-api v0.3.0 h1:XIIPoFoQaGiEJhBVLUkxWgBLE6p/FZNcjG
 github.com/ca-risken/datasource-api v0.3.0/go.mod h1:b46r0U7p/fiwwWJ0tXEcspNN3/uDRaqG3539Fu+qSpw=
 github.com/ca-risken/datasource-api v0.3.1-0.20220726113919-8de3b67fe6e5 h1:47nUOwIvIHnHxkTuczvpcPkKJqYU1CUtInGLhc4lHck=
 github.com/ca-risken/datasource-api v0.3.1-0.20220726113919-8de3b67fe6e5/go.mod h1:yLvRvp6cs4qZyCFfonD4Us1ZM1EeGHPnUXJami37zCw=
+github.com/ca-risken/datasource-api v0.3.1-0.20220808084643-57ce84096352 h1:TCnrowln0+pLjjhT2nv5yYl0tMCfDSdYpVnzMSj+KTM=
+github.com/ca-risken/datasource-api v0.3.1-0.20220808084643-57ce84096352/go.mod h1:yLvRvp6cs4qZyCFfonD4Us1ZM1EeGHPnUXJami37zCw=
 github.com/cenkalti/backoff/v3 v3.0.0/go.mod h1:cIeZDE3IrqwwJl6VUwCN6trj1oXrTS4rc0ij+ULvLYs=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash v1.1.0 h1:a6HrQnmkObjyL+Gs60czilIUGqrzKutQD6XZog3p+ko=
