@@ -43,7 +43,7 @@ func bind(out interface{}, r *http.Request) {
 	}
 }
 
-// bindQuery bindding query parameter
+// bindQuery binding query parameter
 func bindQuery(out interface{}, r *http.Request) error {
 	return decoder.Decode(out, r.URL.Query())
 }

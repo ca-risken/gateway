@@ -32,14 +32,14 @@ type requestUser struct {
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
 	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (zero.IsZeroVal(u.userID) && zero.IsZeroVal(u.accessTokenID)) {
-		return nil, errors.New("User not found")
+		return nil, errors.New("user not found")
 	}
 	return r.Context().Value(userKey).(*requestUser), nil
 }
 
 func getRequestUserSub(r *http.Request) (*requestUser, error) {
 	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || zero.IsZeroVal(u.sub) {
-		return nil, errors.New("User not found")
+		return nil, errors.New("user not found")
 	}
 	return r.Context().Value(userKey).(*requestUser), nil
 }
@@ -324,7 +324,7 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	}
 	resp, err := g.iamClient.IsAuthorized(ctx, req)
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to IsAuthorized requuest, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorized request, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok
@@ -348,7 +348,7 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 	}
 	resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to IsAuthorizedToken requuest, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedToken request, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok
@@ -392,7 +392,7 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 	}
 	resp, err := g.iamClient.IsAuthorizedAdmin(ctx, req)
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to IsAuthorizedAdmin requuest, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedAdmin request, request=%+v, err=%+v", req, err)
 		return false
 	}
 	if !resp.Ok {
