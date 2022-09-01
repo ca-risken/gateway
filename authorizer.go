@@ -172,6 +172,7 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			PlainTextToken: plainTextToken,
 		})
 		if err != nil {
+			// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
 			appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
 			next.ServeHTTP(w, r)
 			return
