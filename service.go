@@ -54,27 +54,39 @@ func newGatewayService(conf *AppConfig) (*gatewayService, error) {
 	}
 
 	ctx := context.Background()
+	coreConn, err := getGRPCConn(ctx, conf.CoreAddr)
+	if err != nil {
+		appLogger.Fatalf(ctx, "failed to get grpc connection to core service, err=%+v", err)
+	}
+	datasourceConn, err := getGRPCConn(ctx, conf.DataSourceAPISvcAddr)
+	if err != nil {
+		appLogger.Fatalf(ctx, "failed to get grpc connection to datasource api service, err=%+v", err)
+	}
+	awsActivityConn, err := getGRPCConn(ctx, conf.AWSActivitySvcAddr)
+	if err != nil {
+		appLogger.Fatalf(ctx, "failed to get grpc connection to aws activity service, err=%+v", err)
+	}
 	return &gatewayService{
 		envName:           conf.EnvName,
 		port:              conf.Port,
 		uidHeader:         conf.UserIdentityHeader,
 		oidcDataHeader:    conf.OidcDataHeader,
 		idpProviderName:   conf.IdpProviderName,
-		findingClient:     finding.NewFindingServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
-		iamClient:         iam.NewIAMServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
-		projectClient:     project.NewProjectServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
-		alertClient:       alert.NewAlertServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
-		reportClient:      report.NewReportServiceClient(getGRPCConn(ctx, conf.CoreAddr)),
-		awsClient:         aws.NewAWSServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
-		awsActivityClient: activity.NewActivityServiceClient(getGRPCConn(ctx, conf.AWSActivitySvcAddr)),
-		osintClient:       osint.NewOsintServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
-		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
-		codeClient:        code.NewCodeServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
-		googleClient:      google.NewGoogleServiceClient(getGRPCConn(ctx, conf.DataSourceAPISvcAddr)),
+		findingClient:     finding.NewFindingServiceClient(coreConn),
+		iamClient:         iam.NewIAMServiceClient(coreConn),
+		projectClient:     project.NewProjectServiceClient(coreConn),
+		alertClient:       alert.NewAlertServiceClient(coreConn),
+		reportClient:      report.NewReportServiceClient(coreConn),
+		awsClient:         aws.NewAWSServiceClient(datasourceConn),
+		awsActivityClient: activity.NewActivityServiceClient(awsActivityConn),
+		osintClient:       osint.NewOsintServiceClient(datasourceConn),
+		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(datasourceConn),
+		codeClient:        code.NewCodeServiceClient(datasourceConn),
+		googleClient:      google.NewGoogleServiceClient(datasourceConn),
 	}, nil
 }
 
-func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
+func getGRPCConn(ctx context.Context, addr string) (*grpc.ClientConn, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Second*3)
 	defer cancel()
 	conn, err := grpc.DialContext(ctx, addr,
@@ -83,9 +95,9 @@ func getGRPCConn(ctx context.Context, addr string) *grpc.ClientConn {
 				grpctrace.UnaryClientInterceptor())),
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		appLogger.Fatalf(ctx, "Failed to connect backend gRPC server, addr=%s, err=%+v", addr, err)
+		return nil, err
 	}
-	return conn
+	return conn, nil
 }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
