@@ -116,5 +116,8 @@ func writeResponse(ctx context.Context, w http.ResponseWriter, status int, body 
 	}
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
-	_, _ = w.Write(buf)
+	_, err = w.Write(buf)
+	if err != nil {
+		appLogger.Errorf(ctx, "failed to write response, err=%+v", err)
+	}
 }
