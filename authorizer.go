@@ -160,8 +160,9 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		projectID, accessTokenID, plainTextToken := decodeAccessToken(ctx, tokenBody)
-		if zero.IsZeroVal(accessTokenID) || zero.IsZeroVal(plainTextToken) {
+		projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
+		if err != nil {
+			// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
 			next.ServeHTTP(w, r)
 			return
 		}
