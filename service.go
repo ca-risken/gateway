@@ -48,23 +48,25 @@ type gatewayService struct {
 	googleClient      google.GoogleServiceClient
 }
 
-func newGatewayService(conf *AppConfig) (*gatewayService, error) {
+func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
 	if conf.Debug {
 		appLogger.Level(logging.DebugLevel)
 	}
 
-	ctx := context.Background()
 	coreConn, err := getGRPCConn(ctx, conf.CoreAddr)
 	if err != nil {
-		appLogger.Fatalf(ctx, "failed to get grpc connection to core service, err=%+v", err)
+		appLogger.Errorf(ctx, "Failed to get grpc connection to core service, err=%+v", err)
+		return nil, err
 	}
 	datasourceConn, err := getGRPCConn(ctx, conf.DataSourceAPISvcAddr)
 	if err != nil {
-		appLogger.Fatalf(ctx, "failed to get grpc connection to datasource api service, err=%+v", err)
+		appLogger.Errorf(ctx, "Failed to get grpc connection to datasource api service, err=%+v", err)
+		return nil, err
 	}
 	awsActivityConn, err := getGRPCConn(ctx, conf.AWSActivitySvcAddr)
 	if err != nil {
-		appLogger.Fatalf(ctx, "failed to get grpc connection to aws activity service, err=%+v", err)
+		appLogger.Errorf(ctx, "Failed to get grpc connection to aws activity service, err=%+v", err)
+		return nil, err
 	}
 	return &gatewayService{
 		envName:           conf.EnvName,

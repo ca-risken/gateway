@@ -73,7 +73,7 @@ func main() {
 	tracer.Start(tc)
 	defer tracer.Stop()
 
-	svc, err := newGatewayService(&appConfig)
+	svc, err := newGatewayService(ctx, &appConfig)
 	if err != nil {
 		appLogger.Fatal(ctx, err.Error())
 	}
