@@ -180,12 +180,8 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		appLogger.Debugf(ctx, "1st authnToken")
 		next.ServeHTTP(w, r.WithContext(
 			context.WithValue(ctx, userKey, &requestUser{accessTokenID: accessTokenID})))
-
-		appLogger.Debugf(ctx, "2nd authnToken")
-		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
 }
