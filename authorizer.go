@@ -193,7 +193,7 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 		ctx := r.Context()
 		buf, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			appLogger.Errorf(ctx, "failed to read body, err=%+v", err)
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
@@ -230,7 +230,7 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 		ctx := r.Context()
 		buf, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			appLogger.Errorf(ctx, "failed to read body, err=%+v", err)
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
