@@ -175,7 +175,7 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		if zero.IsZeroVal(resp.AccessToken.AccessTokenId) {
+		if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
 			appLogger.Error(ctx, "Failed to get AccessTokenId")
 			next.ServeHTTP(w, r)
 			return
