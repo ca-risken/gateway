@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/base64"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEncodeAccessToken(t *testing.T) {
@@ -39,6 +41,7 @@ func TestDecodeAccessToken(t *testing.T) {
 		wantProjectID     uint32
 		wantAccessTokenID uint32
 		wantPlainText     string
+		wantErr           bool
 	}{
 		{
 			name:              "OK 1",
@@ -55,28 +58,28 @@ func TestDecodeAccessToken(t *testing.T) {
 			wantPlainText:     "333@plain_text",
 		},
 		{
-			name:              "Blank",
-			input:             "",
-			wantAccessTokenID: 0,
-			wantPlainText:     "",
+			name:    "Blank",
+			input:   "",
+			wantErr: true,
 		},
 		{
-			name:              "Invalid token",
-			input:             "xxx",
-			wantAccessTokenID: 0,
-			wantPlainText:     "",
+			name:    "Invalid token",
+			input:   "xxx",
+			wantErr: true,
 		},
 		{
-			name:              "Invalid format",
-			input:             base64.RawURLEncoding.EncodeToString([]byte("1001/plain_text")), // `/` char is invalid
-			wantAccessTokenID: 0,
-			wantPlainText:     "",
+			name:    "Invalid format",
+			input:   base64.RawURLEncoding.EncodeToString([]byte("1001/plain_text")), // `/` char is invalid
+			wantErr: true,
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			ctx := context.Background()
-			gotProjectID, gotAccessTokenID, gotPlainText := decodeAccessToken(ctx, c.input)
+			gotProjectID, gotAccessTokenID, gotPlainText, err := decodeAccessToken(ctx, c.input)
+			if c.wantErr {
+				assert.Error(t, err)
+			}
 			if gotProjectID != c.wantProjectID {
 				t.Fatalf("Unexpected ProjectID. want=%d, got=%d", c.wantProjectID, gotProjectID)
 			}

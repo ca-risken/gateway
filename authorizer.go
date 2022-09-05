@@ -160,8 +160,9 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		projectID, accessTokenID, plainTextToken := decodeAccessToken(ctx, tokenBody)
-		if zero.IsZeroVal(accessTokenID) || zero.IsZeroVal(plainTextToken) {
+		projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
+		if err != nil {
+			// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
 			next.ServeHTTP(w, r)
 			return
 		}
@@ -171,6 +172,7 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			PlainTextToken: plainTextToken,
 		})
 		if err != nil {
+			// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
 			appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
 			next.ServeHTTP(w, r)
 			return
@@ -190,11 +192,12 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		buf, err := ioutil.ReadAll(r.Body)
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
 		if err != nil {
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
+		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
 
 		u, err := getRequestUser(r)
 		if err != nil {
@@ -226,11 +229,13 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		buf, err := ioutil.ReadAll(r.Body)
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
 		if err != nil {
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
+		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
