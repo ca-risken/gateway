@@ -454,6 +454,22 @@ func (g *gatewayService) deleteNotificationHandler(w http.ResponseWriter, r *htt
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) testNotificationHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &alert.TestNotificationRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.alertClient.TestNotification(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) listAlertCondNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListAlertCondNotificationRequest{}
@@ -527,22 +543,6 @@ func (g *gatewayService) analyzeAlertHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	resp, err := g.alertClient.AnalyzeAlert(ctx, req)
-	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) testNotificationHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &alert.TestNotificationRequest{}
-	bind(req, r)
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.alertClient.TestNotification(ctx, req)
 	if err != nil {
 		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
 		return
