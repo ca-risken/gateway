@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package datasource.code;
+option go_package = "github.com/ca-risken/datasource-api/proto/code";
+
+service CodeService {
+  // Code DataSource
+  rpc ListDataSource(ListDataSourceRequest) returns (ListDataSourceResponse);
+  rpc ListGitHubSetting(ListGitHubSettingRequest)
+      returns (ListGitHubSettingResponse);
+}
+
+message ListDataSourceRequest {
+  uint32 id = 1;
+}
+
+message ListDataSourceResponse {repeated CodeDataSource code_data_source = 1;}
+
+message CodeDataSource {
+  uint32 id = 1;
+}
+
+message ListGitHubSettingRequest {
+  uint32 id = 1;
+}
+
+message ListGitHubSettingResponse {repeated GitHubSetting github_setting = 1;}
+
+message GitHubSetting {
+  uint32 id = 1;
+}
