@@ -37,7 +37,10 @@ import (
 func (g *gatewayService) {{ .method_first_lower }}{{ .package_capital }}Handler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &{{ .package }}.{{ .input_type }}{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

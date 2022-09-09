@@ -12,7 +12,10 @@ import (
 func (g *gatewayService) listDataSourceCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.ListDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

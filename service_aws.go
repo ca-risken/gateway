@@ -9,7 +9,10 @@ import (
 func (g *gatewayService) attachDataSourceHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &aws.AttachDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.ValidateForUser(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
