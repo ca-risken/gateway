@@ -12,7 +12,10 @@ import (
 func (g *gatewayService) listUserIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.ListUserRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +31,10 @@ func (g *gatewayService) listUserIamHandler(w http.ResponseWriter, r *http.Reque
 func (g *gatewayService) getUserIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.GetUserRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +50,10 @@ func (g *gatewayService) getUserIamHandler(w http.ResponseWriter, r *http.Reques
 func (g *gatewayService) listRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.ListRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -60,7 +69,10 @@ func (g *gatewayService) listRoleIamHandler(w http.ResponseWriter, r *http.Reque
 func (g *gatewayService) getRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.GetRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -76,7 +88,10 @@ func (g *gatewayService) getRoleIamHandler(w http.ResponseWriter, r *http.Reques
 func (g *gatewayService) putRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.PutRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -92,7 +107,10 @@ func (g *gatewayService) putRoleIamHandler(w http.ResponseWriter, r *http.Reques
 func (g *gatewayService) deleteRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.DeleteRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -108,7 +126,10 @@ func (g *gatewayService) deleteRoleIamHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) attachRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.AttachRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -124,7 +145,10 @@ func (g *gatewayService) attachRoleIamHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) detachRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.DetachRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -140,7 +164,10 @@ func (g *gatewayService) detachRoleIamHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) listPolicyIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.ListPolicyRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -156,7 +183,10 @@ func (g *gatewayService) listPolicyIamHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) getPolicyIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.GetPolicyRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -172,7 +202,10 @@ func (g *gatewayService) getPolicyIamHandler(w http.ResponseWriter, r *http.Requ
 func (g *gatewayService) putPolicyIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.PutPolicyRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -188,7 +221,10 @@ func (g *gatewayService) putPolicyIamHandler(w http.ResponseWriter, r *http.Requ
 func (g *gatewayService) deletePolicyIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.DeletePolicyRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -204,7 +240,10 @@ func (g *gatewayService) deletePolicyIamHandler(w http.ResponseWriter, r *http.R
 func (g *gatewayService) attachPolicyIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.AttachPolicyRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -220,7 +259,10 @@ func (g *gatewayService) attachPolicyIamHandler(w http.ResponseWriter, r *http.R
 func (g *gatewayService) detachPolicyIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.DetachPolicyRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -236,7 +278,10 @@ func (g *gatewayService) detachPolicyIamHandler(w http.ResponseWriter, r *http.R
 func (g *gatewayService) listAccessTokenIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.ListAccessTokenRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -252,7 +297,10 @@ func (g *gatewayService) listAccessTokenIamHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) deleteAccessTokenIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.DeleteAccessTokenRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -268,7 +316,10 @@ func (g *gatewayService) deleteAccessTokenIamHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) attachAccessTokenRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.AttachAccessTokenRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -284,7 +335,10 @@ func (g *gatewayService) attachAccessTokenRoleIamHandler(w http.ResponseWriter, 
 func (g *gatewayService) detachAccessTokenRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.DetachAccessTokenRoleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -300,7 +354,10 @@ func (g *gatewayService) detachAccessTokenRoleIamHandler(w http.ResponseWriter, 
 func (g *gatewayService) isAdminIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.IsAdminRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

@@ -12,7 +12,10 @@ import (
 func (g *gatewayService) listDataSourceCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.ListDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +31,10 @@ func (g *gatewayService) listDataSourceCodeHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) listGitHubSettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.ListGitHubSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +50,10 @@ func (g *gatewayService) listGitHubSettingCodeHandler(w http.ResponseWriter, r *
 func (g *gatewayService) putGitHubSettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.PutGitHubSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -60,7 +69,10 @@ func (g *gatewayService) putGitHubSettingCodeHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) deleteGitHubSettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.DeleteGitHubSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -76,7 +88,10 @@ func (g *gatewayService) deleteGitHubSettingCodeHandler(w http.ResponseWriter, r
 func (g *gatewayService) putGitleaksSettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.PutGitleaksSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -92,7 +107,10 @@ func (g *gatewayService) putGitleaksSettingCodeHandler(w http.ResponseWriter, r 
 func (g *gatewayService) deleteGitleaksSettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.DeleteGitleaksSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -108,7 +126,10 @@ func (g *gatewayService) deleteGitleaksSettingCodeHandler(w http.ResponseWriter,
 func (g *gatewayService) putDependencySettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.PutDependencySettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -124,7 +145,10 @@ func (g *gatewayService) putDependencySettingCodeHandler(w http.ResponseWriter, 
 func (g *gatewayService) deleteDependencySettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.DeleteDependencySettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -140,7 +164,10 @@ func (g *gatewayService) deleteDependencySettingCodeHandler(w http.ResponseWrite
 func (g *gatewayService) invokeScanGitleaksCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.InvokeScanGitleaksRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -156,7 +183,10 @@ func (g *gatewayService) invokeScanGitleaksCodeHandler(w http.ResponseWriter, r 
 func (g *gatewayService) invokeScanDependencyCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.InvokeScanDependencyRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

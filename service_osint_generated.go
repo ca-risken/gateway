@@ -12,7 +12,10 @@ import (
 func (g *gatewayService) listOsintOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.ListOsintRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +31,10 @@ func (g *gatewayService) listOsintOsintHandler(w http.ResponseWriter, r *http.Re
 func (g *gatewayService) getOsintOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.GetOsintRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +50,10 @@ func (g *gatewayService) getOsintOsintHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) putOsintOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.PutOsintRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -60,7 +69,10 @@ func (g *gatewayService) putOsintOsintHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) deleteOsintOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.DeleteOsintRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -76,7 +88,10 @@ func (g *gatewayService) deleteOsintOsintHandler(w http.ResponseWriter, r *http.
 func (g *gatewayService) listRelOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.ListRelOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -92,7 +107,10 @@ func (g *gatewayService) listRelOsintDataSourceOsintHandler(w http.ResponseWrite
 func (g *gatewayService) getRelOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.GetRelOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -108,7 +126,10 @@ func (g *gatewayService) getRelOsintDataSourceOsintHandler(w http.ResponseWriter
 func (g *gatewayService) putRelOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.PutRelOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -124,7 +145,10 @@ func (g *gatewayService) putRelOsintDataSourceOsintHandler(w http.ResponseWriter
 func (g *gatewayService) deleteRelOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.DeleteRelOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -140,7 +164,10 @@ func (g *gatewayService) deleteRelOsintDataSourceOsintHandler(w http.ResponseWri
 func (g *gatewayService) listOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.ListOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -156,7 +183,10 @@ func (g *gatewayService) listOsintDataSourceOsintHandler(w http.ResponseWriter, 
 func (g *gatewayService) getOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.GetOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -172,7 +202,10 @@ func (g *gatewayService) getOsintDataSourceOsintHandler(w http.ResponseWriter, r
 func (g *gatewayService) putOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.PutOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -188,7 +221,10 @@ func (g *gatewayService) putOsintDataSourceOsintHandler(w http.ResponseWriter, r
 func (g *gatewayService) deleteOsintDataSourceOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.DeleteOsintDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -204,7 +240,10 @@ func (g *gatewayService) deleteOsintDataSourceOsintHandler(w http.ResponseWriter
 func (g *gatewayService) listOsintDetectWordOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.ListOsintDetectWordRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -220,7 +259,10 @@ func (g *gatewayService) listOsintDetectWordOsintHandler(w http.ResponseWriter, 
 func (g *gatewayService) getOsintDetectWordOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.GetOsintDetectWordRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -236,7 +278,10 @@ func (g *gatewayService) getOsintDetectWordOsintHandler(w http.ResponseWriter, r
 func (g *gatewayService) putOsintDetectWordOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.PutOsintDetectWordRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -252,7 +297,10 @@ func (g *gatewayService) putOsintDetectWordOsintHandler(w http.ResponseWriter, r
 func (g *gatewayService) deleteOsintDetectWordOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.DeleteOsintDetectWordRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -268,7 +316,10 @@ func (g *gatewayService) deleteOsintDetectWordOsintHandler(w http.ResponseWriter
 func (g *gatewayService) invokeScanOsintHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &osint.InvokeScanRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

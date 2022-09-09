@@ -12,7 +12,10 @@ import (
 func (g *gatewayService) describeARNActivityHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &activity.DescribeARNRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +31,10 @@ func (g *gatewayService) describeARNActivityHandler(w http.ResponseWriter, r *ht
 func (g *gatewayService) listCloudTrailActivityHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &activity.ListCloudTrailRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +50,10 @@ func (g *gatewayService) listCloudTrailActivityHandler(w http.ResponseWriter, r 
 func (g *gatewayService) listConfigHistoryActivityHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &activity.ListConfigHistoryRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

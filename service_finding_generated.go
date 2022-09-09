@@ -12,7 +12,10 @@ import (
 func (g *gatewayService) listFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.ListFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +31,10 @@ func (g *gatewayService) listFindingFindingHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) getFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.GetFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +50,10 @@ func (g *gatewayService) getFindingFindingHandler(w http.ResponseWriter, r *http
 func (g *gatewayService) putFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.PutFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -60,7 +69,10 @@ func (g *gatewayService) putFindingFindingHandler(w http.ResponseWriter, r *http
 func (g *gatewayService) deleteFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.DeleteFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -76,7 +88,10 @@ func (g *gatewayService) deleteFindingFindingHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) listFindingTagFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.ListFindingTagRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -92,7 +107,10 @@ func (g *gatewayService) listFindingTagFindingHandler(w http.ResponseWriter, r *
 func (g *gatewayService) listFindingTagNameFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.ListFindingTagNameRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -108,7 +126,10 @@ func (g *gatewayService) listFindingTagNameFindingHandler(w http.ResponseWriter,
 func (g *gatewayService) tagFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.TagFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -124,7 +145,10 @@ func (g *gatewayService) tagFindingFindingHandler(w http.ResponseWriter, r *http
 func (g *gatewayService) untagFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.UntagFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -140,7 +164,10 @@ func (g *gatewayService) untagFindingFindingHandler(w http.ResponseWriter, r *ht
 func (g *gatewayService) listResourceFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.ListResourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -156,7 +183,10 @@ func (g *gatewayService) listResourceFindingHandler(w http.ResponseWriter, r *ht
 func (g *gatewayService) getResourceFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.GetResourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -172,7 +202,10 @@ func (g *gatewayService) getResourceFindingHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) putResourceFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.PutResourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -188,7 +221,10 @@ func (g *gatewayService) putResourceFindingHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) deleteResourceFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.DeleteResourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -204,7 +240,10 @@ func (g *gatewayService) deleteResourceFindingHandler(w http.ResponseWriter, r *
 func (g *gatewayService) listResourceTagFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.ListResourceTagRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -220,7 +259,10 @@ func (g *gatewayService) listResourceTagFindingHandler(w http.ResponseWriter, r 
 func (g *gatewayService) listResourceTagNameFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.ListResourceTagNameRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -236,7 +278,10 @@ func (g *gatewayService) listResourceTagNameFindingHandler(w http.ResponseWriter
 func (g *gatewayService) tagResourceFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.TagResourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -252,7 +297,10 @@ func (g *gatewayService) tagResourceFindingHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) untagResourceFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.UntagResourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -268,7 +316,10 @@ func (g *gatewayService) untagResourceFindingHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) getPendFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.GetPendFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -284,7 +335,10 @@ func (g *gatewayService) getPendFindingFindingHandler(w http.ResponseWriter, r *
 func (g *gatewayService) putPendFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.PutPendFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -300,7 +354,10 @@ func (g *gatewayService) putPendFindingFindingHandler(w http.ResponseWriter, r *
 func (g *gatewayService) deletePendFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.DeletePendFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -316,7 +373,10 @@ func (g *gatewayService) deletePendFindingFindingHandler(w http.ResponseWriter, 
 func (g *gatewayService) listFindingSettingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.ListFindingSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -332,7 +392,10 @@ func (g *gatewayService) listFindingSettingFindingHandler(w http.ResponseWriter,
 func (g *gatewayService) getFindingSettingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.GetFindingSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -348,7 +411,10 @@ func (g *gatewayService) getFindingSettingFindingHandler(w http.ResponseWriter, 
 func (g *gatewayService) putFindingSettingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.PutFindingSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -364,7 +430,10 @@ func (g *gatewayService) putFindingSettingFindingHandler(w http.ResponseWriter, 
 func (g *gatewayService) deleteFindingSettingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.DeleteFindingSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -380,7 +449,10 @@ func (g *gatewayService) deleteFindingSettingFindingHandler(w http.ResponseWrite
 func (g *gatewayService) getRecommendFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.GetRecommendRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -396,7 +468,10 @@ func (g *gatewayService) getRecommendFindingHandler(w http.ResponseWriter, r *ht
 func (g *gatewayService) putRecommendFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.PutRecommendRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
