@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 	"text/template"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
