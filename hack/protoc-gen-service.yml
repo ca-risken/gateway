@@ -1,0 +1,30 @@
+excludes:
+  # Ignore for not proxy
+  ## core
+  - AlertService.AnalyzeAlertAll
+  - FindingService.BatchListFinding
+  - FindingService.PutFindingBatch
+  - FindingService.PutResourceBatch
+  - FindingService.ClearScore
+  - IAMService.AnalyzeTokenExpiration
+  - IAMService.IsAuthorized
+  - IAMService.IsAuthorizedAdmin
+  - IAMService.IsAuthorizedToken
+  - ProjectService.IsActive
+  - ReportService.CollectReportFinding
+  ## datasource-api
+  - AWSService.InvokeScanAll
+  - CodeService.GetGitHubSetting
+  - CodeService.ListGitHubEnterpriseOrg
+  - CodeService.PutGitHubEnterpriseOrg
+  - CodeService.DeleteGitHubEnterpriseOrg
+  - CodeService.InvokeScanAll
+  - DiagnosisService.InvokeScanAll
+  - GoogleService.InvokeScanAll
+  - OsintService.InvokeScanAll
+  # Ignore for customized proxy
+  - IAMService.PutUser
+  - IAMService.AuthenticateAccessToken
+  - IAMService.PutAccessToken
+  - ProjectService.CreateProject
+  - AWSService.AttachDataSource
