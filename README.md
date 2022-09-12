@@ -46,6 +46,44 @@ Deploy the pre-built containers to the Kubernetes environment on your local mach
 | ------- | ----------------------------------- | ---------------------------------------------- | ---------------------------------------- |
 | gateway | spec.template.spec.containers.image | `public.ecr.aws/risken/gateway/gateway:latest` | `gateway/gateway:latest`                 |
 
+## Implements services
+
+After change proto files in other repository, you must apply it to this repository. And you can do most of these easily.
+
+### Case: only proxy HTTP to gRPC
+
+Generate boilerplate code from proto files
+
+```shell
+make generate-service
+```
+
+Add routing code to router.go
+
+```go
+func newRouter(svc *gatewayService) *chi.Mux {
+// ... 
+r.Get("<routing path>", svc.<generated method>) // append
+// ...
+}
+```
+
+### Case: others, need most complex process
+
+Add exclude configuration to hack/protoc-gen-service.yml
+
+```yaml
+excludes:
+  # Ignore
+  ## core
+  - AlertService.AnalyzeAlertAll
+  - FindingService.BatchListFinding
+  - FindingService.PutFindingBatch
+  - <ServiceName>.<MethodName> # append
+```
+
+Implements request handler and add it to router
+
 ## Community
 
 Info on reporting bugs, getting help, finding roadmaps,
