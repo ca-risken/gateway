@@ -30,7 +30,9 @@ func (g *gatewayService) listAlertAlertHandler(w http.ResponseWriter, r *http.Re
 func (g *gatewayService) getAlertAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetAlertRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -46,7 +48,9 @@ func (g *gatewayService) getAlertAlertHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) putAlertAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutAlertRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -62,7 +66,9 @@ func (g *gatewayService) putAlertAlertHandler(w http.ResponseWriter, r *http.Req
 func (g *gatewayService) deleteAlertAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteAlertRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -78,7 +84,9 @@ func (g *gatewayService) deleteAlertAlertHandler(w http.ResponseWriter, r *http.
 func (g *gatewayService) listAlertHistoryAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListAlertHistoryRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -94,7 +102,9 @@ func (g *gatewayService) listAlertHistoryAlertHandler(w http.ResponseWriter, r *
 func (g *gatewayService) getAlertHistoryAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetAlertHistoryRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -110,7 +120,9 @@ func (g *gatewayService) getAlertHistoryAlertHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) putAlertHistoryAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutAlertHistoryRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -126,7 +138,9 @@ func (g *gatewayService) putAlertHistoryAlertHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) deleteAlertHistoryAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteAlertHistoryRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -142,7 +156,9 @@ func (g *gatewayService) deleteAlertHistoryAlertHandler(w http.ResponseWriter, r
 func (g *gatewayService) listRelAlertFindingAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListRelAlertFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -158,7 +174,9 @@ func (g *gatewayService) listRelAlertFindingAlertHandler(w http.ResponseWriter, 
 func (g *gatewayService) getRelAlertFindingAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetRelAlertFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -174,7 +192,9 @@ func (g *gatewayService) getRelAlertFindingAlertHandler(w http.ResponseWriter, r
 func (g *gatewayService) putRelAlertFindingAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutRelAlertFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -190,7 +210,9 @@ func (g *gatewayService) putRelAlertFindingAlertHandler(w http.ResponseWriter, r
 func (g *gatewayService) deleteRelAlertFindingAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteRelAlertFindingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -206,7 +228,9 @@ func (g *gatewayService) deleteRelAlertFindingAlertHandler(w http.ResponseWriter
 func (g *gatewayService) listAlertConditionAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListAlertConditionRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -222,7 +246,9 @@ func (g *gatewayService) listAlertConditionAlertHandler(w http.ResponseWriter, r
 func (g *gatewayService) getAlertConditionAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetAlertConditionRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -238,7 +264,9 @@ func (g *gatewayService) getAlertConditionAlertHandler(w http.ResponseWriter, r 
 func (g *gatewayService) putAlertConditionAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutAlertConditionRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -254,7 +282,9 @@ func (g *gatewayService) putAlertConditionAlertHandler(w http.ResponseWriter, r 
 func (g *gatewayService) deleteAlertConditionAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteAlertConditionRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -270,7 +300,9 @@ func (g *gatewayService) deleteAlertConditionAlertHandler(w http.ResponseWriter,
 func (g *gatewayService) listAlertRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListAlertRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -286,7 +318,9 @@ func (g *gatewayService) listAlertRuleAlertHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) getAlertRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetAlertRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -302,7 +336,9 @@ func (g *gatewayService) getAlertRuleAlertHandler(w http.ResponseWriter, r *http
 func (g *gatewayService) putAlertRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutAlertRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -318,7 +354,9 @@ func (g *gatewayService) putAlertRuleAlertHandler(w http.ResponseWriter, r *http
 func (g *gatewayService) deleteAlertRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteAlertRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -334,7 +372,9 @@ func (g *gatewayService) deleteAlertRuleAlertHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) listAlertCondRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListAlertCondRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -350,7 +390,9 @@ func (g *gatewayService) listAlertCondRuleAlertHandler(w http.ResponseWriter, r 
 func (g *gatewayService) getAlertCondRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetAlertCondRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -366,7 +408,9 @@ func (g *gatewayService) getAlertCondRuleAlertHandler(w http.ResponseWriter, r *
 func (g *gatewayService) putAlertCondRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutAlertCondRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -382,7 +426,9 @@ func (g *gatewayService) putAlertCondRuleAlertHandler(w http.ResponseWriter, r *
 func (g *gatewayService) deleteAlertCondRuleAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteAlertCondRuleRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -398,7 +444,9 @@ func (g *gatewayService) deleteAlertCondRuleAlertHandler(w http.ResponseWriter, 
 func (g *gatewayService) listNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -414,7 +462,9 @@ func (g *gatewayService) listNotificationAlertHandler(w http.ResponseWriter, r *
 func (g *gatewayService) getNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -430,7 +480,9 @@ func (g *gatewayService) getNotificationAlertHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) putNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -446,7 +498,9 @@ func (g *gatewayService) putNotificationAlertHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) deleteNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -462,7 +516,9 @@ func (g *gatewayService) deleteNotificationAlertHandler(w http.ResponseWriter, r
 func (g *gatewayService) testNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.TestNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -478,7 +534,9 @@ func (g *gatewayService) testNotificationAlertHandler(w http.ResponseWriter, r *
 func (g *gatewayService) listAlertCondNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.ListAlertCondNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -494,7 +552,9 @@ func (g *gatewayService) listAlertCondNotificationAlertHandler(w http.ResponseWr
 func (g *gatewayService) getAlertCondNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.GetAlertCondNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -510,7 +570,9 @@ func (g *gatewayService) getAlertCondNotificationAlertHandler(w http.ResponseWri
 func (g *gatewayService) putAlertCondNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.PutAlertCondNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -526,7 +588,9 @@ func (g *gatewayService) putAlertCondNotificationAlertHandler(w http.ResponseWri
 func (g *gatewayService) deleteAlertCondNotificationAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.DeleteAlertCondNotificationRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -542,7 +606,9 @@ func (g *gatewayService) deleteAlertCondNotificationAlertHandler(w http.Response
 func (g *gatewayService) analyzeAlertAlertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &alert.AnalyzeAlertRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

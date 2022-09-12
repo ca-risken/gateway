@@ -30,7 +30,9 @@ func (g *gatewayService) getReportFindingReportHandler(w http.ResponseWriter, r 
 func (g *gatewayService) getReportFindingAllReportHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &report.GetReportFindingAllRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
