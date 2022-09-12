@@ -29,7 +29,7 @@ func TestPutUserHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK",
-			input:      `{"user": {"sub":"xxx", "name":"nm", "activated":"true"}}`,
+			input:      `{"user": {"sub":"xxx", "name":"nm", "activated":true}}`,
 			mockResp:   &iam.PutUserResponse{},
 			wantStatus: http.StatusOK,
 		},
@@ -40,7 +40,7 @@ func TestPutUserHandler(t *testing.T) {
 		},
 		{
 			name:       "NG Backend service error",
-			input:      `{"user": {"sub":"xxx", "name":"nm", "activated":"true"}}`,
+			input:      `{"user": {"sub":"xxx", "name":"nm", "activated":true}}`,
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
