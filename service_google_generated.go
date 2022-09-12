@@ -13,8 +13,7 @@ func (g *gatewayService) listGoogleDataSourceGoogleHandler(w http.ResponseWriter
 	ctx := r.Context()
 	req := &google.ListGoogleDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -32,8 +31,7 @@ func (g *gatewayService) listGCPGoogleHandler(w http.ResponseWriter, r *http.Req
 	ctx := r.Context()
 	req := &google.ListGCPRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -51,8 +49,7 @@ func (g *gatewayService) getGCPGoogleHandler(w http.ResponseWriter, r *http.Requ
 	ctx := r.Context()
 	req := &google.GetGCPRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -70,8 +67,7 @@ func (g *gatewayService) putGCPGoogleHandler(w http.ResponseWriter, r *http.Requ
 	ctx := r.Context()
 	req := &google.PutGCPRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -89,8 +85,7 @@ func (g *gatewayService) deleteGCPGoogleHandler(w http.ResponseWriter, r *http.R
 	ctx := r.Context()
 	req := &google.DeleteGCPRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -108,8 +103,7 @@ func (g *gatewayService) listGCPDataSourceGoogleHandler(w http.ResponseWriter, r
 	ctx := r.Context()
 	req := &google.ListGCPDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -127,8 +121,7 @@ func (g *gatewayService) getGCPDataSourceGoogleHandler(w http.ResponseWriter, r 
 	ctx := r.Context()
 	req := &google.GetGCPDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -146,8 +139,7 @@ func (g *gatewayService) attachGCPDataSourceGoogleHandler(w http.ResponseWriter,
 	ctx := r.Context()
 	req := &google.AttachGCPDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -165,8 +157,7 @@ func (g *gatewayService) detachGCPDataSourceGoogleHandler(w http.ResponseWriter,
 	ctx := r.Context()
 	req := &google.DetachGCPDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -184,8 +175,7 @@ func (g *gatewayService) invokeScanGCPGoogleHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &google.InvokeScanGCPRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

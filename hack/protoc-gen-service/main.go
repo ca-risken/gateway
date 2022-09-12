@@ -38,8 +38,7 @@ func (g *gatewayService) {{ .method_first_lower }}{{ .package_capital }}Handler(
 	ctx := r.Context()
 	req := &{{ .package }}.{{ .input_type }}{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

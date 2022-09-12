@@ -13,8 +13,7 @@ func (g *gatewayService) listAWSAwsHandler(w http.ResponseWriter, r *http.Reques
 	ctx := r.Context()
 	req := &aws.ListAWSRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -32,8 +31,7 @@ func (g *gatewayService) putAWSAwsHandler(w http.ResponseWriter, r *http.Request
 	ctx := r.Context()
 	req := &aws.PutAWSRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -51,8 +49,7 @@ func (g *gatewayService) deleteAWSAwsHandler(w http.ResponseWriter, r *http.Requ
 	ctx := r.Context()
 	req := &aws.DeleteAWSRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -70,8 +67,7 @@ func (g *gatewayService) listDataSourceAwsHandler(w http.ResponseWriter, r *http
 	ctx := r.Context()
 	req := &aws.ListDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -89,8 +85,7 @@ func (g *gatewayService) detachDataSourceAwsHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &aws.DetachDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -108,8 +103,7 @@ func (g *gatewayService) invokeScanAwsHandler(w http.ResponseWriter, r *http.Req
 	ctx := r.Context()
 	req := &aws.InvokeScanRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

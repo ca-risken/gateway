@@ -20,8 +20,7 @@ func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) 
 	}
 	req.User.Sub = user.sub // force update sub
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		appLogger.Debugf(ctx, "debug: %v", err)
@@ -40,8 +39,7 @@ func (g *gatewayService) listAdminRoleHandler(w http.ResponseWriter, r *http.Req
 	ctx := r.Context()
 	req := &iam.ListRoleRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.ValidateForAdmin(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -59,8 +57,7 @@ func (g *gatewayService) getAdminRoleHandler(w http.ResponseWriter, r *http.Requ
 	ctx := r.Context()
 	req := &iam.GetRoleRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.ValidateForAdmin(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -78,8 +75,7 @@ func (g *gatewayService) attachAdminRoleHandler(w http.ResponseWriter, r *http.R
 	ctx := r.Context()
 	req := &iam.AttachRoleRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.ValidateForAdmin(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -97,8 +93,7 @@ func (g *gatewayService) detachAdminRoleHandler(w http.ResponseWriter, r *http.R
 	ctx := r.Context()
 	req := &iam.DetachRoleRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.ValidateForAdmin(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -121,8 +116,7 @@ func (g *gatewayService) generateAccessTokenHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &iam.PutAccessTokenRequest{AccessToken: &iam.AccessTokenForUpsert{}}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	u, err := getRequestUser(r)
 	if err != nil || zero.IsZeroVal(u.userID) {
@@ -166,8 +160,7 @@ func (g *gatewayService) updateAccessTokenHandler(w http.ResponseWriter, r *http
 	ctx := r.Context()
 	req := &iam.PutAccessTokenRequest{AccessToken: &iam.AccessTokenForUpsert{}}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	u, err := getRequestUser(r)
 	if err != nil || zero.IsZeroVal(u.userID) {

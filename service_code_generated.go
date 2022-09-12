@@ -13,8 +13,7 @@ func (g *gatewayService) listDataSourceCodeHandler(w http.ResponseWriter, r *htt
 	ctx := r.Context()
 	req := &code.ListDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -32,8 +31,7 @@ func (g *gatewayService) listGitHubSettingCodeHandler(w http.ResponseWriter, r *
 	ctx := r.Context()
 	req := &code.ListGitHubSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -51,8 +49,7 @@ func (g *gatewayService) putGitHubSettingCodeHandler(w http.ResponseWriter, r *h
 	ctx := r.Context()
 	req := &code.PutGitHubSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -70,8 +67,7 @@ func (g *gatewayService) deleteGitHubSettingCodeHandler(w http.ResponseWriter, r
 	ctx := r.Context()
 	req := &code.DeleteGitHubSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -89,8 +85,7 @@ func (g *gatewayService) putGitleaksSettingCodeHandler(w http.ResponseWriter, r 
 	ctx := r.Context()
 	req := &code.PutGitleaksSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -108,8 +103,7 @@ func (g *gatewayService) deleteGitleaksSettingCodeHandler(w http.ResponseWriter,
 	ctx := r.Context()
 	req := &code.DeleteGitleaksSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -127,8 +121,7 @@ func (g *gatewayService) putDependencySettingCodeHandler(w http.ResponseWriter, 
 	ctx := r.Context()
 	req := &code.PutDependencySettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -146,8 +139,7 @@ func (g *gatewayService) deleteDependencySettingCodeHandler(w http.ResponseWrite
 	ctx := r.Context()
 	req := &code.DeleteDependencySettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -165,8 +157,7 @@ func (g *gatewayService) invokeScanGitleaksCodeHandler(w http.ResponseWriter, r 
 	ctx := r.Context()
 	req := &code.InvokeScanGitleaksRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -184,8 +175,7 @@ func (g *gatewayService) invokeScanDependencyCodeHandler(w http.ResponseWriter, 
 	ctx := r.Context()
 	req := &code.InvokeScanDependencyRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

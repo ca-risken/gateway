@@ -13,8 +13,7 @@ func (g *gatewayService) listFindingFindingHandler(w http.ResponseWriter, r *htt
 	ctx := r.Context()
 	req := &finding.ListFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -32,8 +31,7 @@ func (g *gatewayService) getFindingFindingHandler(w http.ResponseWriter, r *http
 	ctx := r.Context()
 	req := &finding.GetFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -51,8 +49,7 @@ func (g *gatewayService) putFindingFindingHandler(w http.ResponseWriter, r *http
 	ctx := r.Context()
 	req := &finding.PutFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -70,8 +67,7 @@ func (g *gatewayService) deleteFindingFindingHandler(w http.ResponseWriter, r *h
 	ctx := r.Context()
 	req := &finding.DeleteFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -89,8 +85,7 @@ func (g *gatewayService) listFindingTagFindingHandler(w http.ResponseWriter, r *
 	ctx := r.Context()
 	req := &finding.ListFindingTagRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -108,8 +103,7 @@ func (g *gatewayService) listFindingTagNameFindingHandler(w http.ResponseWriter,
 	ctx := r.Context()
 	req := &finding.ListFindingTagNameRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -127,8 +121,7 @@ func (g *gatewayService) tagFindingFindingHandler(w http.ResponseWriter, r *http
 	ctx := r.Context()
 	req := &finding.TagFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -146,8 +139,7 @@ func (g *gatewayService) untagFindingFindingHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &finding.UntagFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -165,8 +157,7 @@ func (g *gatewayService) listResourceFindingHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &finding.ListResourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -184,8 +175,7 @@ func (g *gatewayService) getResourceFindingHandler(w http.ResponseWriter, r *htt
 	ctx := r.Context()
 	req := &finding.GetResourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -203,8 +193,7 @@ func (g *gatewayService) putResourceFindingHandler(w http.ResponseWriter, r *htt
 	ctx := r.Context()
 	req := &finding.PutResourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -222,8 +211,7 @@ func (g *gatewayService) deleteResourceFindingHandler(w http.ResponseWriter, r *
 	ctx := r.Context()
 	req := &finding.DeleteResourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -241,8 +229,7 @@ func (g *gatewayService) listResourceTagFindingHandler(w http.ResponseWriter, r 
 	ctx := r.Context()
 	req := &finding.ListResourceTagRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -260,8 +247,7 @@ func (g *gatewayService) listResourceTagNameFindingHandler(w http.ResponseWriter
 	ctx := r.Context()
 	req := &finding.ListResourceTagNameRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -279,8 +265,7 @@ func (g *gatewayService) tagResourceFindingHandler(w http.ResponseWriter, r *htt
 	ctx := r.Context()
 	req := &finding.TagResourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -298,8 +283,7 @@ func (g *gatewayService) untagResourceFindingHandler(w http.ResponseWriter, r *h
 	ctx := r.Context()
 	req := &finding.UntagResourceRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -317,8 +301,7 @@ func (g *gatewayService) getPendFindingFindingHandler(w http.ResponseWriter, r *
 	ctx := r.Context()
 	req := &finding.GetPendFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -336,8 +319,7 @@ func (g *gatewayService) putPendFindingFindingHandler(w http.ResponseWriter, r *
 	ctx := r.Context()
 	req := &finding.PutPendFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -355,8 +337,7 @@ func (g *gatewayService) deletePendFindingFindingHandler(w http.ResponseWriter, 
 	ctx := r.Context()
 	req := &finding.DeletePendFindingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -374,8 +355,7 @@ func (g *gatewayService) listFindingSettingFindingHandler(w http.ResponseWriter,
 	ctx := r.Context()
 	req := &finding.ListFindingSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -393,8 +373,7 @@ func (g *gatewayService) getFindingSettingFindingHandler(w http.ResponseWriter, 
 	ctx := r.Context()
 	req := &finding.GetFindingSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -412,8 +391,7 @@ func (g *gatewayService) putFindingSettingFindingHandler(w http.ResponseWriter, 
 	ctx := r.Context()
 	req := &finding.PutFindingSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -431,8 +409,7 @@ func (g *gatewayService) deleteFindingSettingFindingHandler(w http.ResponseWrite
 	ctx := r.Context()
 	req := &finding.DeleteFindingSettingRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -450,8 +427,7 @@ func (g *gatewayService) getRecommendFindingHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &finding.GetRecommendRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -469,8 +445,7 @@ func (g *gatewayService) putRecommendFindingHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &finding.PutRecommendRequest{}
 	if err := bind(req, r); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
+		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
