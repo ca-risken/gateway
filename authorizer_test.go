@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/ca-risken/core/proto/iam"
+	iammocks "github.com/ca-risken/core/proto/iam/mocks"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestSigninHandler(t *testing.T) {
@@ -87,7 +89,7 @@ func TestValidCSRFToken(t *testing.T) {
 }
 
 func TestAuthzProject(t *testing.T) {
-	iamMock := &mockIAMClient{}
+	iamMock := iammocks.NewIAMServiceClient(t)
 	svc := gatewayService{
 		iamClient: iamMock,
 	}
@@ -128,7 +130,7 @@ func TestAuthzProject(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				iamMock.On("IsAuthorized").Return(c.mockResp, c.mockErr).Once()
+				iamMock.On("IsAuthorized", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
 			}
 			req, _ := http.NewRequest(http.MethodGet, "/api/v1/service/action?"+c.inputProject, nil)
 			got := svc.authzProject(c.inputUser, req)
@@ -140,7 +142,7 @@ func TestAuthzProject(t *testing.T) {
 }
 
 func TestAuthzProjectForToken(t *testing.T) {
-	iamMock := &mockIAMClient{}
+	iamMock := iammocks.NewIAMServiceClient(t)
 	svc := gatewayService{
 		iamClient: iamMock,
 	}
@@ -181,7 +183,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				iamMock.On("IsAuthorizedToken").Return(c.mockResp, c.mockErr).Once()
+				iamMock.On("IsAuthorizedToken", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
 			}
 			req, _ := http.NewRequest(http.MethodGet, "/api/v1/service/action?"+c.inputProject, nil)
 			got := svc.authzProjectForToken(c.inputUser, req)
@@ -272,7 +274,7 @@ func TestGetServiceNameFromURI(t *testing.T) {
 }
 
 func TestAuthzAdmin(t *testing.T) {
-	iamMock := &mockIAMClient{}
+	iamMock := iammocks.NewIAMServiceClient(t)
 	svc := gatewayService{
 		iamClient: iamMock,
 	}
@@ -308,7 +310,7 @@ func TestAuthzAdmin(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockAuthzResp != nil || c.mockAuthzErr != nil {
-				iamMock.On("IsAuthorizedAdmin").Return(c.mockAuthzResp, c.mockAuthzErr).Once()
+				iamMock.On("IsAuthorizedAdmin", mock.Anything, mock.Anything).Return(c.mockAuthzResp, c.mockAuthzErr).Once()
 			}
 			req, _ := http.NewRequest(http.MethodGet, "/api/v1/admin/api/?"+c.inputProject, nil)
 			got := svc.authzAdmin(c.inputUser, req)
