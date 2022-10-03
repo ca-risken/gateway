@@ -8,13 +8,15 @@ import (
 	"testing"
 
 	"github.com/ca-risken/datasource-api/proto/aws"
+	awsmocks "github.com/ca-risken/datasource-api/proto/aws/mocks"
+	"github.com/stretchr/testify/mock"
 )
 
 // 生成されたコードに対するテスト
 // テスト観点はどのメソッドに対しても同じなので、1メソッドだけを対象にしています
 
 func TestListAWSAwsHandler(t *testing.T) {
-	awsMock := &mockAWSClient{}
+	awsMock := awsmocks.NewAWSServiceClient(t)
 	svc := gatewayService{
 		awsClient: awsMock,
 	}
@@ -46,7 +48,7 @@ func TestListAWSAwsHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				awsMock.On("ListAWS").Return(c.mockResp, c.mockErr).Once()
+				awsMock.On("ListAWS", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
