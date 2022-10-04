@@ -10,13 +10,12 @@ import (
 	"testing"
 
 	"github.com/ca-risken/core/proto/project"
-	"github.com/golang/protobuf/ptypes/empty"
+	projectmocks "github.com/ca-risken/core/proto/project/mocks"
 	"github.com/stretchr/testify/mock"
-	"google.golang.org/grpc"
 )
 
 func TestCreateProjectHandler(t *testing.T) {
-	pjMock := &mockProjectClient{}
+	pjMock := projectmocks.NewProjectServiceClient(t)
 	svc := gatewayService{
 		projectClient: pjMock,
 	}
@@ -48,7 +47,7 @@ func TestCreateProjectHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				pjMock.On("CreateProject").Return(c.mockResp, c.mockErr).Once()
+				pjMock.On("CreateProject", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -73,40 +72,4 @@ func TestCreateProjectHandler(t *testing.T) {
 			}
 		})
 	}
-}
-
-/**
- * Mock Client
-**/
-type mockProjectClient struct {
-	mock.Mock
-}
-
-func (m *mockProjectClient) ListProject(context.Context, *project.ListProjectRequest, ...grpc.CallOption) (*project.ListProjectResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*project.ListProjectResponse), args.Error(1)
-}
-func (m *mockProjectClient) CreateProject(context.Context, *project.CreateProjectRequest, ...grpc.CallOption) (*project.CreateProjectResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*project.CreateProjectResponse), args.Error(1)
-}
-func (m *mockProjectClient) UpdateProject(context.Context, *project.UpdateProjectRequest, ...grpc.CallOption) (*project.UpdateProjectResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*project.UpdateProjectResponse), args.Error(1)
-}
-func (m *mockProjectClient) DeleteProject(context.Context, *project.DeleteProjectRequest, ...grpc.CallOption) (*empty.Empty, error) {
-	args := m.Called()
-	return args.Get(0).(*empty.Empty), args.Error(1)
-}
-func (m *mockProjectClient) TagProject(context.Context, *project.TagProjectRequest, ...grpc.CallOption) (*project.TagProjectResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*project.TagProjectResponse), args.Error(1)
-}
-func (m *mockProjectClient) UntagProject(context.Context, *project.UntagProjectRequest, ...grpc.CallOption) (*empty.Empty, error) {
-	args := m.Called()
-	return args.Get(0).(*empty.Empty), args.Error(1)
-}
-func (m *mockProjectClient) IsActive(context.Context, *project.IsActiveRequest, ...grpc.CallOption) (*project.IsActiveResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*project.IsActiveResponse), args.Error(1)
 }

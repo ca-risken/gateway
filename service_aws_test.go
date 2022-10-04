@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -10,13 +9,12 @@ import (
 	"testing"
 
 	"github.com/ca-risken/datasource-api/proto/aws"
-	"github.com/golang/protobuf/ptypes/empty"
+	awsmocks "github.com/ca-risken/datasource-api/proto/aws/mocks"
 	"github.com/stretchr/testify/mock"
-	"google.golang.org/grpc"
 )
 
 func TestAttachDataSourceHandler(t *testing.T) {
-	awsMock := &mockAWSClient{}
+	awsMock := awsmocks.NewAWSServiceClient(t)
 	svc := gatewayService{
 		awsClient: awsMock,
 	}
@@ -48,7 +46,7 @@ func TestAttachDataSourceHandler(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
-				awsMock.On("AttachDataSource").Return(c.mockResp, c.mockErr).Once()
+				awsMock.On("AttachDataSource", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
@@ -72,44 +70,4 @@ func TestAttachDataSourceHandler(t *testing.T) {
 			}
 		})
 	}
-}
-
-/**
- * Mock Client
-**/
-type mockAWSClient struct {
-	mock.Mock
-}
-
-func (m *mockAWSClient) ListAWS(context.Context, *aws.ListAWSRequest, ...grpc.CallOption) (*aws.ListAWSResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*aws.ListAWSResponse), args.Error(1)
-}
-func (m *mockAWSClient) PutAWS(context.Context, *aws.PutAWSRequest, ...grpc.CallOption) (*aws.PutAWSResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*aws.PutAWSResponse), args.Error(1)
-}
-func (m *mockAWSClient) DeleteAWS(context.Context, *aws.DeleteAWSRequest, ...grpc.CallOption) (*empty.Empty, error) {
-	args := m.Called()
-	return args.Get(0).(*empty.Empty), args.Error(1)
-}
-func (m *mockAWSClient) ListDataSource(context.Context, *aws.ListDataSourceRequest, ...grpc.CallOption) (*aws.ListDataSourceResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*aws.ListDataSourceResponse), args.Error(1)
-}
-func (m *mockAWSClient) AttachDataSource(context.Context, *aws.AttachDataSourceRequest, ...grpc.CallOption) (*aws.AttachDataSourceResponse, error) {
-	args := m.Called()
-	return args.Get(0).(*aws.AttachDataSourceResponse), args.Error(1)
-}
-func (m *mockAWSClient) DetachDataSource(context.Context, *aws.DetachDataSourceRequest, ...grpc.CallOption) (*empty.Empty, error) {
-	args := m.Called()
-	return args.Get(0).(*empty.Empty), args.Error(1)
-}
-func (m *mockAWSClient) InvokeScan(context.Context, *aws.InvokeScanRequest, ...grpc.CallOption) (*empty.Empty, error) {
-	args := m.Called()
-	return args.Get(0).(*empty.Empty), args.Error(1)
-}
-func (m *mockAWSClient) InvokeScanAll(context.Context, *aws.InvokeScanAllRequest, ...grpc.CallOption) (*empty.Empty, error) {
-	args := m.Called()
-	return args.Get(0).(*empty.Empty), args.Error(1)
 }

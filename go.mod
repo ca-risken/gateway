@@ -7,12 +7,8 @@ require (
 	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b
-	github.com/ca-risken/core/proto/alert v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/core/proto/finding v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/core/proto/iam v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/core/proto/project v0.0.0-20220428031553-0579e204c316
-	github.com/ca-risken/core/proto/report v0.0.0-20211124103540-8199b00d6465
-	github.com/ca-risken/datasource-api v0.3.1-0.20220808084643-57ce84096352
+	github.com/ca-risken/core v0.3.1-0.20220725072737-99d976980d0f
+	github.com/ca-risken/datasource-api v0.3.1-0.20221003100626-a60232ef6960
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/golang/protobuf v1.5.2
@@ -47,14 +43,14 @@ require (
 	github.com/philhofer/fwd v1.1.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/stretchr/objx v0.2.0 // indirect
+	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/tinylib/msgp v1.1.2 // indirect
-	golang.org/x/net v0.0.0-20220403103023-749bd193bc2b // indirect
+	golang.org/x/net v0.0.0-20220418201149-a630d4f3e7a2 // indirect
 	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20211116232009-f0f3c7e86c11 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	google.golang.org/genproto v0.0.0-20220405205423-9d709892a2bf // indirect
+	google.golang.org/genproto v0.0.0-20220414192740-2d67ff6cf2b4 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
