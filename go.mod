@@ -1,6 +1,6 @@
 module githug.com/ca-risken/gateway
 
-go 1.17
+go 1.18
 
 require (
 	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
