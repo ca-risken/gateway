@@ -76,6 +76,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 			return
 		}
 		appLogger.Debugf(ctx, "sub: %s", sub)
+		appLogger.Debugf(ctx, "oidcData: %+v", r.Header.Get(g.oidcDataHeader))
 		resp, err := g.iamClient.GetUser(ctx, &iam.GetUserRequest{Sub: sub})
 		if err != nil {
 			appLogger.Warnf(ctx, "Failed to GetUser request, err=%+v", err)
