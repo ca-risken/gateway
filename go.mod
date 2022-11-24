@@ -1,4 +1,4 @@
-module githug.com/ca-risken/gateway
+module github.com/ca-risken/gateway
 
 go 1.18
 
@@ -11,6 +11,7 @@ require (
 	github.com/ca-risken/datasource-api v0.4.2-0.20221121055843-3dc9a448cda2
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
+	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/schema v1.2.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
@@ -38,6 +39,7 @@ require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
 	github.com/google/pprof v0.0.0-20210423192551-a2663126120b // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/jarcoal/httpmock v1.2.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/philhofer/fwd v1.1.1 // indirect

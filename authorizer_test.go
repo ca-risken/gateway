@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/ecdsa"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/ca-risken/core/proto/iam"
 	iammocks "github.com/ca-risken/core/proto/iam/mocks"
+	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -402,6 +404,131 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 			got := shouldVerifyCSRFTokenURI(c.input)
 			if got != c.want {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
+			}
+		})
+	}
+}
+
+func TestVerifyTokenForALB(t *testing.T) {
+	cases := []struct {
+		name         string
+		tokenString  string
+		keyURL       string
+		mockStatus   int
+		mockResponse string
+		mockErr      error
+		wantErr      bool
+	}{
+		{
+			name:        "NG alg is not ES256",
+			tokenString: "YWxnOmludmFsaWQgdHlwOkpXVAo.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
+			wantErr:     true,
+		},
+		{
+			name:        "NG kid doesn't exist in JWT header",
+			tokenString: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
+			wantErr:     true,
+		},
+		{
+			name:        "NG fetch Public key error",
+			tokenString: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhvZ2UifQo.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
+			keyURL:      "https://public-keys.auth.elb.ap-northeast-1.amazonaws.com/hoge",
+			mockErr:     errors.New("something error"),
+			wantErr:     true,
+		},
+		{
+			name:        "NG verify Error",
+			tokenString: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhvZ2UifQo.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
+			keyURL:      "https://public-keys.auth.elb.ap-northeast-1.amazonaws.com/hoge",
+			mockStatus:  200,
+			mockResponse: `-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYD54V/vp+54P9DXarYqx4MPcm+HK
+RIQzNasYSoRQHQ/6S6Ps8tpMcT+KvIIC8W/e9k0W7Cm72M1P9jU7SLf/vg==
+-----END PUBLIC KEY-----
+`,
+			wantErr: true,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.keyURL != "" {
+				httpmock.Activate()
+				defer httpmock.DeactivateAndReset()
+				if c.mockErr == nil {
+					httpmock.RegisterResponder("GET", c.keyURL,
+						httpmock.NewStringResponder(c.mockStatus, c.mockResponse))
+				} else {
+					httpmock.RegisterResponder("GET", c.keyURL,
+						func(req *http.Request) (*http.Response, error) {
+							return nil, c.mockErr
+						})
+				}
+			}
+			g := gatewayService{
+				Region: "ap-northeast-1",
+			}
+			err := g.verifyTokenForALB(c.tokenString)
+			if (c.wantErr && err == nil) || (!c.wantErr && err != nil) {
+				t.Fatalf("Unexpected error: wantErr=%t, err=%+v", c.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestFetchPublicKey(t *testing.T) {
+	cases := []struct {
+		name         string
+		keyURL       string
+		mockStatus   int
+		mockResponse string
+		mockErr      error
+		want         *ecdsa.PublicKey
+		wantErr      bool
+	}{
+		{
+			name:       "OK",
+			keyURL:     "http://example.com/valid",
+			mockStatus: 200,
+			mockResponse: `-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYD54V/vp+54P9DXarYqx4MPcm+HK
+RIQzNasYSoRQHQ/6S6Ps8tpMcT+KvIIC8W/e9k0W7Cm72M1P9jU7SLf/vg==
+-----END PUBLIC KEY-----
+`,
+			wantErr: false,
+		},
+		{
+			name:         "NG Parse Error",
+			keyURL:       "http://example.com/invalid",
+			mockStatus:   200,
+			mockResponse: `Invalid Key`,
+			wantErr:      true,
+		},
+		{
+			name:    "NG HTTP Error",
+			keyURL:  "http://example.com/error",
+			mockErr: errors.New("something error"),
+			wantErr: true,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			httpmock.Activate()
+			defer httpmock.DeactivateAndReset()
+			if c.mockErr == nil {
+				httpmock.RegisterResponder("GET", c.keyURL,
+					httpmock.NewStringResponder(c.mockStatus, c.mockResponse))
+			} else {
+				httpmock.RegisterResponder("GET", c.keyURL,
+					func(req *http.Request) (*http.Response, error) {
+						return nil, c.mockErr
+					})
+			}
+			g := gatewayService{
+				Region: "ap-northeast-1",
+			}
+			_, err := g.fetchALBPublicKey(c.keyURL)
+			if (c.wantErr && err == nil) || (!c.wantErr && err != nil) {
+				t.Fatalf("Unexpected error: wantErr=%t, err=%+v", c.wantErr, err)
 			}
 		})
 	}
