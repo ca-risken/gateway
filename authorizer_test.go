@@ -467,7 +467,7 @@ RIQzNasYSoRQHQ/6S6Ps8tpMcT+KvIIC8W/e9k0W7Cm72M1P9jU7SLf/vg==
 			g := gatewayService{
 				Region: "ap-northeast-1",
 			}
-			err := g.verifyTokenForALB(c.tokenString)
+			err := g.verifyTokenForALB(context.Background(), c.tokenString)
 			if (c.wantErr && err == nil) || (!c.wantErr && err != nil) {
 				t.Fatalf("Unexpected error: wantErr=%t, err=%+v", c.wantErr, err)
 			}
@@ -526,7 +526,7 @@ RIQzNasYSoRQHQ/6S6Ps8tpMcT+KvIIC8W/e9k0W7Cm72M1P9jU7SLf/vg==
 			g := gatewayService{
 				Region: "ap-northeast-1",
 			}
-			_, err := g.fetchALBPublicKey(c.keyURL)
+			_, err := g.fetchALBPublicKey(context.Background(), c.keyURL)
 			if (c.wantErr && err == nil) || (!c.wantErr && err != nil) {
 				t.Fatalf("Unexpected error: wantErr=%t, err=%+v", c.wantErr, err)
 			}

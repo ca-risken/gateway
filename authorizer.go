@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -37,7 +38,6 @@ func getRequestUser(r *http.Request) (*requestUser, error) {
 	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (zero.IsZeroVal(u.userID) && zero.IsZeroVal(u.accessTokenID)) {
 		return nil, errors.New("user not found")
 	}
-	appLogger.Infof(context.Background(), "requestUser: %+v", r.Context().Value(userKey).(*requestUser))
 	return r.Context().Value(userKey).(*requestUser), nil
 }
 
@@ -95,7 +95,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 		// Try AUTO PROVISIONING
 		oidcData := r.Header.Get(g.oidcDataHeader) // r.Header.Get("X-Amzn-Oidc-Data")
 		if g.VerifyIDToken {
-			err = g.verifyTokenForALB(oidcData)
+			err = g.verifyTokenForALB(ctx, oidcData)
 			if err != nil {
 				appLogger.Warnf(ctx, "Failed to validate id token, err=%+v", err)
 				http.Error(w, "Internal server error", http.StatusForbidden)
@@ -282,10 +282,10 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 }
 
 const (
-	PublicKeyURL = "https://public-keys.auth.elb.%s.amazonaws.com/%s"
+	PublicKeyURLTemplate = "https://public-keys.auth.elb.%s.amazonaws.com/%s"
 )
 
-func (g *gatewayService) verifyTokenForALB(tokenString string) error {
+func (g *gatewayService) verifyTokenForALB(ctx context.Context, tokenString string) error {
 	jwt.DecodePaddingAllowed = true
 	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
@@ -295,8 +295,8 @@ func (g *gatewayService) verifyTokenForALB(tokenString string) error {
 		if !ok {
 			return nil, errors.New("kid is not found in jwt header")
 		}
-		keyURL := fmt.Sprintf(PublicKeyURL, g.Region, kid)
-		key, err := g.fetchALBPublicKey(keyURL)
+		keyURL := fmt.Sprintf(PublicKeyURLTemplate, g.Region, kid)
+		key, err := g.fetchALBPublicKey(ctx, keyURL)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get public key, err: %w", err)
 		}
@@ -308,8 +308,7 @@ func (g *gatewayService) verifyTokenForALB(tokenString string) error {
 	return nil
 }
 
-func (g *gatewayService) fetchALBPublicKey(keyURL string) (*ecdsa.PublicKey, error) {
-	ctx := context.Background()
+func (g *gatewayService) fetchALBPublicKey(ctx context.Context, keyURL string) (*ecdsa.PublicKey, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, keyURL, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to new GET request for %s, err: %w", keyURL, err)
@@ -320,9 +319,9 @@ func (g *gatewayService) fetchALBPublicKey(keyURL string) (*ecdsa.PublicKey, err
 		return nil, fmt.Errorf("failed to get public key from %s, err: %w", keyURL, err)
 	}
 	defer resp.Body.Close()
-	pem, err := ioutil.ReadAll(resp.Body)
+	pem, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get public key from %s, err: %w", keyURL, err)
+		return nil, fmt.Errorf("failed to read response body from %s, err: %w", keyURL, err)
 	}
 	publicKey, err := jwt.ParseECPublicKeyFromPEM(pem)
 	if err != nil {
