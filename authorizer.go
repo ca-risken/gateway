@@ -3,15 +3,19 @@ package main
 import (
 	"bytes"
 	"context"
+	"crypto/ecdsa"
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
 
 	"github.com/ca-risken/core/proto/iam"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/vikyd/zero"
 )
 
@@ -90,6 +94,14 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 		}
 		// Try AUTO PROVISIONING
 		oidcData := r.Header.Get(g.oidcDataHeader) // r.Header.Get("X-Amzn-Oidc-Data")
+		if g.VerifyIDToken {
+			err = g.verifyTokenForALB(ctx, oidcData)
+			if err != nil {
+				appLogger.Warnf(ctx, "Failed to validate id token, err=%+v", err)
+				http.Error(w, "Internal server error", http.StatusForbidden)
+				return
+			}
+		}
 		userName, err := g.getUserName(oidcData)
 		if err != nil || zero.IsZeroVal(userName) {
 			appLogger.Warnf(ctx, "Failed to get username from oidc data, err=%+v", err)
@@ -267,6 +279,56 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
+}
+
+const (
+	PublicKeyURLTemplate = "https://public-keys.auth.elb.%s.amazonaws.com/%s"
+)
+
+func (g *gatewayService) verifyTokenForALB(ctx context.Context, tokenString string) error {
+	jwt.DecodePaddingAllowed = true
+	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		kid, ok := token.Header["kid"].(string)
+		if !ok {
+			return nil, errors.New("kid is not found in jwt header")
+		}
+		keyURL := fmt.Sprintf(PublicKeyURLTemplate, g.Region, kid)
+		key, err := g.fetchALBPublicKey(ctx, keyURL)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get public key, err: %w", err)
+		}
+		return key, nil
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *gatewayService) fetchALBPublicKey(ctx context.Context, keyURL string) (*ecdsa.PublicKey, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, keyURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to new GET request for %s, err: %w", keyURL, err)
+	}
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get public key from %s, err: %w", keyURL, err)
+	}
+	defer resp.Body.Close()
+	pem, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body from %s, err: %w", keyURL, err)
+	}
+	publicKey, err := jwt.ParseECPublicKeyFromPEM(pem)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse public key from %s, err: %w", keyURL, err)
+	}
+
+	return publicKey, nil
 }
 
 func isHumanAccess(u *requestUser) bool {
