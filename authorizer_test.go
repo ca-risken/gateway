@@ -1,8 +1,8 @@
 package main
 
 import (
+	"bytes"
 	"context"
-	"crypto/ecdsa"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -10,7 +10,7 @@ import (
 
 	"github.com/ca-risken/core/proto/iam"
 	iammocks "github.com/ca-risken/core/proto/iam/mocks"
-	"github.com/jarcoal/httpmock"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -409,126 +409,165 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 	}
 }
 
-func TestVerifyTokenForALB(t *testing.T) {
-	cases := []struct {
-		name         string
-		tokenString  string
-		keyURL       string
-		mockStatus   int
-		mockResponse string
-		mockErr      error
-		wantErr      bool
-	}{
-		{
-			name:        "NG alg is not ES256",
-			tokenString: "YWxnOmludmFsaWQgdHlwOkpXVAo.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
-			wantErr:     true,
-		},
-		{
-			name:        "NG kid doesn't exist in JWT header",
-			tokenString: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
-			wantErr:     true,
-		},
-		{
-			name:        "NG fetch Public key error",
-			tokenString: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhvZ2UifQo.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
-			keyURL:      "https://public-keys.auth.elb.ap-northeast-1.amazonaws.com/hoge",
-			mockErr:     errors.New("something error"),
-			wantErr:     true,
-		},
-		{
-			name:        "NG verify Error",
-			tokenString: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhvZ2UifQo.eyJmb28iOiJiYXIifQ.MEQCIHoSJnmGlPaVQDqacx_2XlXEhhqtWceVopjomc2PJLtdAiAUTeGPoNYxZw0z8mgOnnIcjoxRuNDVZvybRZF3wR1l8W",
-			keyURL:      "https://public-keys.auth.elb.ap-northeast-1.amazonaws.com/hoge",
-			mockStatus:  200,
-			mockResponse: `-----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYD54V/vp+54P9DXarYqx4MPcm+HK
-RIQzNasYSoRQHQ/6S6Ps8tpMcT+KvIIC8W/e9k0W7Cm72M1P9jU7SLf/vg==
------END PUBLIC KEY-----
-`,
-			wantErr: true,
-		},
+func GetTestHandler() http.HandlerFunc {
+	fn := func(rw http.ResponseWriter, req *http.Request) {
+		rw.Write([]byte("OK"))
 	}
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if c.keyURL != "" {
-				httpmock.Activate()
-				defer httpmock.DeactivateAndReset()
-				if c.mockErr == nil {
-					httpmock.RegisterResponder("GET", c.keyURL,
-						httpmock.NewStringResponder(c.mockStatus, c.mockResponse))
-				} else {
-					httpmock.RegisterResponder("GET", c.keyURL,
-						func(req *http.Request) (*http.Response, error) {
-							return nil, c.mockErr
-						})
-				}
-			}
-			g := gatewayService{
-				Region: "ap-northeast-1",
-			}
-			err := g.verifyTokenForALB(context.Background(), c.tokenString)
-			if (c.wantErr && err == nil) || (!c.wantErr && err != nil) {
-				t.Fatalf("Unexpected error: wantErr=%t, err=%+v", c.wantErr, err)
-			}
-		})
+	return http.HandlerFunc(fn)
+}
+
+type mockClaimsClient struct {
+	claims     *jwt.MapClaims
+	userName   string
+	userIdpKey string
+	err        error
+}
+
+func (c *mockClaimsClient) getClaims(ctx context.Context, tokenString string) (*jwt.MapClaims, error) {
+	return c.claims, c.err
+}
+
+func (c *mockClaimsClient) getUserName(claims *jwt.MapClaims) string {
+	return c.userName
+}
+
+func (c *mockClaimsClient) getUserIdpKey(claims *jwt.MapClaims) string {
+	return c.userIdpKey
+}
+
+func newMockClaimsClient(claims *jwt.MapClaims, userName, userIdpKey string, err error) *mockClaimsClient {
+	return &mockClaimsClient{
+		claims:     claims,
+		userName:   userName,
+		userIdpKey: userIdpKey,
+		err:        err,
 	}
 }
 
-func TestFetchPublicKey(t *testing.T) {
+func TestProvisioning(t *testing.T) {
+	iamMock := iammocks.NewIAMServiceClient(t)
+	g := gatewayService{
+		iamClient:      iamMock,
+		uidHeader:      "uid",
+		oidcDataHeader: "oidc",
+	}
+	ts := httptest.NewServer(g.Provisioning(GetTestHandler()))
+	defer ts.Close()
+
+	var u bytes.Buffer
+	u.WriteString(string(ts.URL))
+	u.WriteString("/api/v1/signin")
+
 	cases := []struct {
-		name         string
-		keyURL       string
-		mockStatus   int
-		mockResponse string
-		mockErr      error
-		want         *ecdsa.PublicKey
-		wantErr      bool
+		name            string
+		userID          string
+		oidcData        string
+		claims          *jwt.MapClaims
+		userName        string
+		userIdpKey      string
+		mockClaimsErr   error
+		mockResponse    string
+		mockErr         error
+		mockGetUserResp *iam.GetUserResponse
+		mockGetUserErr  error
+		mockPutUserResp *iam.PutUserResponse
+		mockPutUserErr  error
+		wantStatusCode  int
+		wantErr         bool
 	}{
 		{
-			name:       "OK",
-			keyURL:     "http://example.com/valid",
-			mockStatus: 200,
-			mockResponse: `-----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYD54V/vp+54P9DXarYqx4MPcm+HK
-RIQzNasYSoRQHQ/6S6Ps8tpMcT+KvIIC8W/e9k0W7Cm72M1P9jU7SLf/vg==
------END PUBLIC KEY-----
-`,
-			wantErr: false,
+			name:     "OK Create",
+			userID:   "sub",
+			oidcData: "",
+			claims: &jwt.MapClaims{
+				"username":     "username",
+				"user_idp_key": "uid",
+			},
+			mockGetUserResp: &iam.GetUserResponse{},
+			mockPutUserResp: &iam.PutUserResponse{},
+			userName:        "username",
+			userIdpKey:      "uid",
+			wantStatusCode:  http.StatusOK,
 		},
 		{
-			name:         "NG Parse Error",
-			keyURL:       "http://example.com/invalid",
-			mockStatus:   200,
-			mockResponse: `Invalid Key`,
-			wantErr:      true,
+			name:     "OK Update",
+			userID:   "sub",
+			oidcData: "",
+			claims: &jwt.MapClaims{
+				"username":     "username",
+				"user_idp_key": "uid",
+			},
+			mockGetUserResp: &iam.GetUserResponse{
+				User: &iam.User{Name: "saved_name"},
+			},
+			mockPutUserResp: &iam.PutUserResponse{},
+			userName:        "username",
+			userIdpKey:      "uid",
+			wantStatusCode:  http.StatusOK,
 		},
 		{
-			name:    "NG HTTP Error",
-			keyURL:  "http://example.com/error",
-			mockErr: errors.New("something error"),
-			wantErr: true,
+			name:           "OK userID is not set",
+			userID:         "",
+			wantStatusCode: http.StatusOK,
+		},
+		{
+			name:           "NG get claims error",
+			userID:         "sub",
+			mockClaimsErr:  errors.New("something error"),
+			wantStatusCode: http.StatusForbidden,
+		},
+		{
+			name:   "NG userIdpKey is empty",
+			userID: "sub",
+			claims: &jwt.MapClaims{
+				"username":     "username",
+				"user_idp_key": "",
+			},
+			wantStatusCode: http.StatusForbidden,
+		},
+		{
+			name:       "NG GetUserError",
+			userID:     "sub",
+			userIdpKey: "uid",
+			claims: &jwt.MapClaims{
+				"username":     "username",
+				"user_idp_key": "uid",
+			},
+			mockGetUserErr: errors.New("something error"),
+			wantStatusCode: http.StatusInternalServerError,
+		},
+		{
+			name:       "NG PutUserError",
+			userID:     "sub",
+			userIdpKey: "uid",
+			claims: &jwt.MapClaims{
+				"username":     "username",
+				"user_idp_key": "uid",
+			},
+			mockGetUserResp: &iam.GetUserResponse{},
+			mockPutUserErr:  errors.New("something error"),
+			wantStatusCode:  http.StatusInternalServerError,
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			httpmock.Activate()
-			defer httpmock.DeactivateAndReset()
-			if c.mockErr == nil {
-				httpmock.RegisterResponder("GET", c.keyURL,
-					httpmock.NewStringResponder(c.mockStatus, c.mockResponse))
-			} else {
-				httpmock.RegisterResponder("GET", c.keyURL,
-					func(req *http.Request) (*http.Response, error) {
-						return nil, c.mockErr
-					})
+			if c.mockGetUserResp != nil || c.mockGetUserErr != nil {
+				iamMock.On("GetUser", mock.Anything, mock.Anything).Return(c.mockGetUserResp, c.mockGetUserErr).Once()
 			}
-			g := gatewayService{
-				Region: "ap-northeast-1",
+			if c.mockPutUserResp != nil || c.mockPutUserErr != nil {
+				iamMock.On("PutUser", mock.Anything, mock.Anything).Return(c.mockPutUserResp, c.mockPutUserErr).Once()
 			}
-			_, err := g.fetchALBPublicKey(context.Background(), c.keyURL)
+			client := http.Client{}
+			req, _ := http.NewRequest("GET", u.String(), nil)
+			req.Header.Set("uid", c.userID)
+			req.Header.Set("oidc", c.oidcData)
+			g.claimsClient = newMockClaimsClient(c.claims, c.userName, c.userIdpKey, c.mockClaimsErr)
+			res, err := client.Do(req)
 			if (c.wantErr && err == nil) || (!c.wantErr && err != nil) {
 				t.Fatalf("Unexpected error: wantErr=%t, err=%+v", c.wantErr, err)
+			}
+			if c.wantStatusCode != res.StatusCode {
+				t.Fatalf("Unexpected statusCode: want=%+v, got=%+v", c.wantStatusCode, res.StatusCode)
 			}
 		})
 	}

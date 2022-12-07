@@ -34,9 +34,6 @@ type gatewayService struct {
 	port            string
 	uidHeader       string
 	oidcDataHeader  string
-	idpProviderName []string
-	VerifyIDToken   bool
-	Region          string
 	findingClient   finding.FindingServiceClient
 	iamClient       iam.IAMServiceClient
 	projectClient   project.ProjectServiceClient
@@ -48,6 +45,7 @@ type gatewayService struct {
 	diagnosisClient diagnosis.DiagnosisServiceClient
 	codeClient      code.CodeServiceClient
 	googleClient    google.GoogleServiceClient
+	claimsClient    claimsInterface
 }
 
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
@@ -75,9 +73,6 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		port:            conf.Port,
 		uidHeader:       conf.UserIdentityHeader,
 		oidcDataHeader:  conf.OidcDataHeader,
-		idpProviderName: conf.IdpProviderName,
-		VerifyIDToken:   conf.VerifyIDToken,
-		Region:          conf.Region,
 		findingClient:   finding.NewFindingServiceClient(coreConn),
 		iamClient:       iam.NewIAMServiceClient(coreConn),
 		projectClient:   project.NewProjectServiceClient(coreConn),
@@ -89,6 +84,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		diagnosisClient: diagnosis.NewDiagnosisServiceClient(datasourceConn),
 		codeClient:      code.NewCodeServiceClient(datasourceConn),
 		googleClient:    google.NewGoogleServiceClient(datasourceConn),
+		claimsClient:    newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
 	}, nil
 }
 
