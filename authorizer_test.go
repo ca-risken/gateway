@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -411,7 +412,10 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 
 func GetTestHandler() http.HandlerFunc {
 	fn := func(rw http.ResponseWriter, req *http.Request) {
-		rw.Write([]byte("OK"))
+		_, err := rw.Write([]byte("OK"))
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
 	}
 	return http.HandlerFunc(fn)
 }
