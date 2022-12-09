@@ -24,6 +24,7 @@ type requestUser struct {
 	// human access
 	sub    string
 	userID uint32
+	Name   string
 
 	// program access
 	accessTokenID uint32
@@ -65,7 +66,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (g *gatewayService) Provisioning(next http.Handler) http.Handler {
+func (g *gatewayService) UpdateUserFromIdp(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		sub := r.Header.Get(g.uidHeader)
@@ -99,17 +100,15 @@ func (g *gatewayService) Provisioning(next http.Handler) http.Handler {
 				Activated:  true,
 			},
 		}
-		// 既存のユーザーであれば、手動でNameを変更している可能性があるので、保存されているユーザー名を使用する
-		getResp, err := g.iamClient.GetUser(ctx, &iam.GetUserRequest{
-			Sub: sub,
-		})
+		// 既存のユーザーであれば、手動でNameを変更している可能性があるので、contextのユーザー名を使用する
+		u, err := getRequestUser(r)
 		if err != nil {
-			appLogger.Warnf(ctx, "Failed to GetUser request, err=%+v", err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
+			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
-		if getResp != nil && getResp.User != nil {
-			putUserRequest.User.Name = getResp.User.Name
+		if u.Name != "" {
+			putUserRequest.User.Name = u.Name
 		}
 		putResp, err := g.iamClient.PutUser(ctx, putUserRequest)
 		if err != nil {
@@ -145,7 +144,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 		}
 		if resp != nil && resp.User != nil {
 			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: resp.User.UserId})))
+				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: resp.User.UserId, Name: resp.User.Name})))
 			return
 		}
 		next.ServeHTTP(w, r)
