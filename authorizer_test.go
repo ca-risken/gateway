@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"github.com/ca-risken/core/proto/iam"
@@ -411,11 +413,26 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 }
 
 func GetTestHandler() http.HandlerFunc {
-	fn := func(rw http.ResponseWriter, req *http.Request) {
-		_, err := rw.Write([]byte("OK"))
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		_, err := w.Write([]byte("OK"))
 		if err != nil {
 			log.Fatalf(err.Error())
 		}
+	}
+	return http.HandlerFunc(fn)
+}
+
+func setContextValue(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		name := r.Header.Get("test-requestUser-userName")
+		strUserID := r.Header.Get("test-requestUser-userID")
+		userID, _ := strconv.Atoi(strUserID)
+		requestUser := &requestUser{
+			userID: uint32(userID),
+			Name:   name,
+		}
+		r = r.WithContext(context.WithValue(r.Context(), userKey, requestUser))
+		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
 }
@@ -448,14 +465,14 @@ func newMockClaimsClient(claims *jwt.MapClaims, userName, userIdpKey string, err
 	}
 }
 
-func TestProvisioning(t *testing.T) {
+func TestUpdateUserFromIdp(t *testing.T) {
 	iamMock := iammocks.NewIAMServiceClient(t)
 	g := gatewayService{
 		iamClient:      iamMock,
 		uidHeader:      "uid",
 		oidcDataHeader: "oidc",
 	}
-	ts := httptest.NewServer(g.Provisioning(GetTestHandler()))
+	ts := httptest.NewServer(setContextValue(g.UpdateUserFromIdp(GetTestHandler())))
 	defer ts.Close()
 
 	var u bytes.Buffer
@@ -472,27 +489,12 @@ func TestProvisioning(t *testing.T) {
 		mockClaimsErr   error
 		mockResponse    string
 		mockErr         error
-		mockGetUserResp *iam.GetUserResponse
-		mockGetUserErr  error
+		requestUser     *requestUser
 		mockPutUserResp *iam.PutUserResponse
 		mockPutUserErr  error
 		wantStatusCode  int
 		wantErr         bool
 	}{
-		{
-			name:     "OK Create",
-			userID:   "sub",
-			oidcData: "",
-			claims: &jwt.MapClaims{
-				"username":     "username",
-				"user_idp_key": "uid",
-			},
-			mockGetUserResp: &iam.GetUserResponse{},
-			mockPutUserResp: &iam.PutUserResponse{},
-			userName:        "username",
-			userIdpKey:      "uid",
-			wantStatusCode:  http.StatusOK,
-		},
 		{
 			name:     "OK Update",
 			userID:   "sub",
@@ -501,8 +503,10 @@ func TestProvisioning(t *testing.T) {
 				"username":     "username",
 				"user_idp_key": "uid",
 			},
-			mockGetUserResp: &iam.GetUserResponse{
-				User: &iam.User{Name: "saved_name"},
+			requestUser: &requestUser{
+				sub:    "sub",
+				userID: 1,
+				Name:   "name",
 			},
 			mockPutUserResp: &iam.PutUserResponse{},
 			userName:        "username",
@@ -530,15 +534,15 @@ func TestProvisioning(t *testing.T) {
 			wantStatusCode: http.StatusForbidden,
 		},
 		{
-			name:       "NG GetUserError",
+			name:       "NG getRequestUser error",
 			userID:     "sub",
 			userIdpKey: "uid",
 			claims: &jwt.MapClaims{
 				"username":     "username",
 				"user_idp_key": "uid",
 			},
-			mockGetUserErr: errors.New("something error"),
-			wantStatusCode: http.StatusInternalServerError,
+			requestUser:    nil,
+			wantStatusCode: http.StatusUnauthorized,
 		},
 		{
 			name:       "NG PutUserError",
@@ -548,23 +552,30 @@ func TestProvisioning(t *testing.T) {
 				"username":     "username",
 				"user_idp_key": "uid",
 			},
-			mockGetUserResp: &iam.GetUserResponse{},
-			mockPutUserErr:  errors.New("something error"),
-			wantStatusCode:  http.StatusInternalServerError,
+			requestUser: &requestUser{
+				sub:    "sub",
+				userID: 1,
+				Name:   "name",
+			},
+			mockPutUserErr: errors.New("something error"),
+			wantStatusCode: http.StatusInternalServerError,
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.mockGetUserResp != nil || c.mockGetUserErr != nil {
-				iamMock.On("GetUser", mock.Anything, mock.Anything).Return(c.mockGetUserResp, c.mockGetUserErr).Once()
-			}
 			if c.mockPutUserResp != nil || c.mockPutUserErr != nil {
 				iamMock.On("PutUser", mock.Anything, mock.Anything).Return(c.mockPutUserResp, c.mockPutUserErr).Once()
 			}
 			client := http.Client{}
-			req, _ := http.NewRequest("GET", u.String(), nil)
+			req, _ := http.NewRequest(http.MethodGet, u.String(), nil)
 			req.Header.Set("uid", c.userID)
 			req.Header.Set("oidc", c.oidcData)
+			// テスト時にrequestにcontextを注入しても反映されないため、
+			// テスト用に作成したmiddlewareでヘッダに挿入した値をcontextに注入します
+			if c.requestUser != nil {
+				req.Header.Set("test-requestUser-userID", fmt.Sprint(c.requestUser.userID))
+				req.Header.Set("test-requestUser-userName", c.requestUser.Name)
+			}
 			g.claimsClient = newMockClaimsClient(c.claims, c.userName, c.userIdpKey, c.mockClaimsErr)
 			res, err := client.Do(req)
 			if (c.wantErr && err == nil) || (!c.wantErr && err != nil) {

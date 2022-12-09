@@ -29,7 +29,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Route("/signin", func(r chi.Router) {
-			r.Use(svc.Provisioning)
+			r.Use(svc.UpdateUserFromIdp)
 			r.Get("/", signinHandler)
 		})
 
