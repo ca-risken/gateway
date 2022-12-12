@@ -24,7 +24,7 @@ type requestUser struct {
 	// human access
 	sub    string
 	userID uint32
-	Name   string
+	name   string
 
 	// program access
 	accessTokenID uint32
@@ -107,8 +107,8 @@ func (g *gatewayService) UpdateUserFromIdp(next http.Handler) http.Handler {
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
 			return
 		}
-		if u.Name != "" {
-			putUserRequest.User.Name = u.Name
+		if u.name != "" {
+			putUserRequest.User.Name = u.name
 		}
 		putResp, err := g.iamClient.PutUser(ctx, putUserRequest)
 		if err != nil {
@@ -144,7 +144,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 		}
 		if resp != nil && resp.User != nil {
 			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: resp.User.UserId, Name: resp.User.Name})))
+				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: resp.User.UserId, name: resp.User.Name})))
 			return
 		}
 		next.ServeHTTP(w, r)
