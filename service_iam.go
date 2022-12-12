@@ -20,6 +20,18 @@ func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) 
 	}
 	req.User.Sub = user.sub // force update sub
 	bind(req, r)
+	oidcData := r.Header.Get(g.oidcDataHeader)
+	claims, err := g.claimsClient.getClaims(ctx, oidcData)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusForbidden, map[string]interface{}{errorJSONKey: errors.New("invalid token")})
+		return
+	}
+	userIdpKey := g.claimsClient.getUserIdpKey(claims)
+	if userIdpKey == "" {
+		writeResponse(ctx, w, http.StatusForbidden, map[string]interface{}{errorJSONKey: errors.New("userIdpKey is not found in token")})
+		return
+	}
+	req.User.UserIdpKey = userIdpKey
 	if err := req.Validate(); err != nil {
 		appLogger.Debugf(ctx, "debug: %v", err)
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

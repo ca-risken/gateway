@@ -3,19 +3,14 @@ package main
 import (
 	"bytes"
 	"context"
-	"crypto/ecdsa"
 	"crypto/rand"
 	"encoding/base64"
-	"encoding/json"
 	"errors"
-	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
 
 	"github.com/ca-risken/core/proto/iam"
-	"github.com/golang-jwt/jwt/v4"
 	"github.com/vikyd/zero"
 )
 
@@ -29,6 +24,7 @@ type requestUser struct {
 	// human access
 	sub    string
 	userID uint32
+	name   string
 
 	// program access
 	accessTokenID uint32
@@ -70,8 +66,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// Authentication for human access
-func (g *gatewayService) authn(next http.Handler) http.Handler {
+func (g *gatewayService) UpdateUserFromIdp(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		sub := r.Header.Get(g.uidHeader)
@@ -79,43 +74,43 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		appLogger.Debugf(ctx, "sub: %s", sub)
-		appLogger.Debugf(ctx, "oidcData: %+v", r.Header.Get(g.oidcDataHeader))
-		resp, err := g.iamClient.GetUser(ctx, &iam.GetUserRequest{Sub: sub})
-		if err != nil {
-			appLogger.Warnf(ctx, "Failed to GetUser request, err=%+v", err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-		if resp != nil && resp.User != nil {
-			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: resp.User.UserId})))
-			return
-		}
-		// Try AUTO PROVISIONING
 		oidcData := r.Header.Get(g.oidcDataHeader) // r.Header.Get("X-Amzn-Oidc-Data")
-		if g.VerifyIDToken {
-			err = g.verifyTokenForALB(ctx, oidcData)
-			if err != nil {
-				appLogger.Warnf(ctx, "Failed to validate id token, err=%+v", err)
-				http.Error(w, "Internal server error", http.StatusForbidden)
-				return
-			}
-		}
-		userName, err := g.getUserName(oidcData)
-		if err != nil || zero.IsZeroVal(userName) {
-			appLogger.Warnf(ctx, "Failed to get username from oidc data, err=%+v", err)
-			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(ctx, userKey, &requestUser{sub: sub})))
+		claims, err := g.claimsClient.getClaims(ctx, oidcData)
+		appLogger.Debugf(ctx, "claims: %+v", claims)
+		if err != nil {
+			appLogger.Warnf(ctx, "Failed to validate id token, err=%+v", err)
+			http.Error(w, "Failed to validate id token", http.StatusForbidden)
 			return
 		}
-		putResp, err := g.iamClient.PutUser(ctx, &iam.PutUserRequest{
+		userIdpKey := g.claimsClient.getUserIdpKey(claims)
+		if userIdpKey == "" {
+			appLogger.Warnf(ctx, "UserIdpKey is not found in token, err=%+v", err)
+			http.Error(w, "UserIdpKey is not found in token", http.StatusForbidden)
+			return
+		}
+		userName := g.claimsClient.getUserName(claims)
+		if userName == "" {
+			userName = userIdpKey
+		}
+		putUserRequest := &iam.PutUserRequest{
 			User: &iam.UserForUpsert{
-				Sub:       sub,
-				Name:      userName,
-				Activated: true,
+				Sub:        sub,
+				Name:       userName,
+				UserIdpKey: userIdpKey,
+				Activated:  true,
 			},
-		})
+		}
+		// 既存のユーザーであれば、手動でNameを変更している可能性があるので、contextのユーザー名を使用する
+		u, err := getRequestUser(r)
+		if err != nil {
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
+			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		if u.name != "" {
+			putUserRequest.User.Name = u.name
+		}
+		putResp, err := g.iamClient.PutUser(ctx, putUserRequest)
 		if err != nil {
 			appLogger.Warnf(ctx, "Failed to PutUser request, err=%+v", err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -131,33 +126,30 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-type userCalim struct {
-	Sub      string `json:"sub"`
-	Username string `json:"username"`
-}
-
-func (g *gatewayService) getUserName(jwt string) (string, error) {
-	parts := strings.Split(jwt, ".")
-	if len(parts) != 3 {
-		return "", errors.New("Invalid JWT string pattern")
-	}
-	// Decode JWT
-	claimBytes, err := base64.StdEncoding.DecodeString(parts[1])
-	if err != nil {
-		return "", err
-	}
-	var user userCalim
-	if err := json.NewDecoder(bytes.NewBuffer(claimBytes)).Decode(&user); err != nil {
-		return "", err
-	}
-	username := user.Username
-	for _, idp := range g.idpProviderName {
-		if strings.HasPrefix(strings.ToLower(username), strings.ToLower(idp)+"_") {
-			username = strings.Replace(username, idp+"_", "", 1)
-			break
+// Authentication for human access
+func (g *gatewayService) authn(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		sub := r.Header.Get(g.uidHeader)
+		if sub == "" {
+			next.ServeHTTP(w, r)
+			return
 		}
+		appLogger.Debugf(ctx, "sub: %s", sub)
+		resp, err := g.iamClient.GetUser(ctx, &iam.GetUserRequest{Sub: sub})
+		if err != nil {
+			appLogger.Warnf(ctx, "Failed to GetUser request, err=%+v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		if resp != nil && resp.User != nil {
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(ctx, userKey, &requestUser{sub: sub, userID: resp.User.UserId, name: resp.User.Name})))
+			return
+		}
+		next.ServeHTTP(w, r)
 	}
-	return username, nil
+	return http.HandlerFunc(fn)
 }
 
 // Authentication for programable API access
@@ -279,56 +271,6 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
-}
-
-const (
-	PublicKeyURLTemplate = "https://public-keys.auth.elb.%s.amazonaws.com/%s"
-)
-
-func (g *gatewayService) verifyTokenForALB(ctx context.Context, tokenString string) error {
-	jwt.DecodePaddingAllowed = true
-	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		kid, ok := token.Header["kid"].(string)
-		if !ok {
-			return nil, errors.New("kid is not found in jwt header")
-		}
-		keyURL := fmt.Sprintf(PublicKeyURLTemplate, g.Region, kid)
-		key, err := g.fetchALBPublicKey(ctx, keyURL)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get public key, err: %w", err)
-		}
-		return key, nil
-	})
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (g *gatewayService) fetchALBPublicKey(ctx context.Context, keyURL string) (*ecdsa.PublicKey, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, keyURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to new GET request for %s, err: %w", keyURL, err)
-	}
-	client := http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get public key from %s, err: %w", keyURL, err)
-	}
-	defer resp.Body.Close()
-	pem, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body from %s, err: %w", keyURL, err)
-	}
-	publicKey, err := jwt.ParseECPublicKeyFromPEM(pem)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse public key from %s, err: %w", keyURL, err)
-	}
-
-	return publicKey, nil
 }
 
 func isHumanAccess(u *requestUser) bool {

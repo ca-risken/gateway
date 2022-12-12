@@ -11,6 +11,7 @@ import (
 
 	"github.com/ca-risken/core/proto/iam"
 	iammocks "github.com/ca-risken/core/proto/iam/mocks"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/stretchr/testify/mock"
 )
@@ -23,30 +24,59 @@ func TestPutUserHandler(t *testing.T) {
 	cases := []struct {
 		name       string
 		input      string
+		claims     *jwt.MapClaims
+		userIdpKey string
+		claimsErr  error
 		mockResp   *iam.PutUserResponse
 		mockErr    error
 		wantStatus int
 	}{
 		{
-			name:       "OK",
-			input:      `{"user": {"sub":"xxx", "name":"nm", "activated":"true"}}`,
+			name:  "OK",
+			input: `{"user": {"sub":"xxx", "name":"nm1", "activated":true}}`,
+			claims: &jwt.MapClaims{
+				"user_idp_key": "uik",
+			},
+			userIdpKey: "uik",
 			mockResp:   &iam.PutUserResponse{},
 			wantStatus: http.StatusOK,
 		},
 		{
-			name:       "NG Invalid parameter",
-			input:      `invalid_param`,
+			name:  "NG Invalid parameter",
+			input: `invalid_param`,
+			claims: &jwt.MapClaims{
+				"user_idp_key": "uik",
+			},
+			userIdpKey: "uik",
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:       "NG Backend service error",
-			input:      `{"user": {"sub":"xxx", "name":"nm", "activated":"true"}}`,
+			name:       "NG verifying token error",
+			input:      `{"user": {"sub":"xxx", "name":"nm2", "activated":true}}`,
+			claimsErr:  errors.New("something error"),
+			wantStatus: http.StatusForbidden,
+		},
+		{
+			name:       "NG userIdpKey is empty",
+			input:      `{"user": {"sub":"xxx", "name":"nm3", "activated":true}}`,
+			claims:     &jwt.MapClaims{},
+			userIdpKey: "",
+			wantStatus: http.StatusForbidden,
+		},
+		{
+			name:  "NG Backend service error",
+			input: `{"user": {"sub":"xxx", "name":"nm4", "activated":true}}`,
+			claims: &jwt.MapClaims{
+				"user_idp_key": "uik",
+			},
+			userIdpKey: "uik",
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			svc.claimsClient = newMockClaimsClient(c.claims, "", c.userIdpKey, c.claimsErr)
 			if c.mockResp != nil || c.mockErr != nil {
 				iamMock.On("PutUser", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
 			}

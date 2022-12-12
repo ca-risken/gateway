@@ -7,7 +7,7 @@ require (
 	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b
-	github.com/ca-risken/core v0.4.2-0.20221114035311-c4b88fcc3162
+	github.com/ca-risken/core v0.4.2-0.20221201035140-276336d351a5
 	github.com/ca-risken/datasource-api v0.4.2-0.20221121055843-3dc9a448cda2
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
@@ -15,6 +15,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/schema v1.2.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
+	github.com/jarcoal/httpmock v1.2.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.1
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
@@ -39,7 +40,6 @@ require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
 	github.com/google/pprof v0.0.0-20210423192551-a2663126120b // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/jarcoal/httpmock v1.2.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/philhofer/fwd v1.1.1 // indirect

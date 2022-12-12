@@ -28,7 +28,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.NotFound(notFoundHandler)
 
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Get("/signin", signinHandler)
+		r.Route("/signin", func(r chi.Router) {
+			r.Use(svc.UpdateUserFromIdp)
+			r.Get("/", signinHandler)
+		})
 
 		r.Route("/finding", func(r chi.Router) {
 			r.Use(svc.authzWithProject)

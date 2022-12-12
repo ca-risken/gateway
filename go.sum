@@ -93,8 +93,8 @@ github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b h1:S
 github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b/go.mod h1:xldq3VZ7qomkI5vfpw8Y9qCVEFl8BrSvDr+sxbz32H4=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b h1:qt68fmotTZgAFvjnP0DnAdusZwWdOTAlqErQEfgbyCg=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b/go.mod h1:PIXjETIPseBEB/OXp5Rxn8FFuRwfQjFZe1VN+0Skh2E=
-github.com/ca-risken/core v0.4.2-0.20221114035311-c4b88fcc3162 h1:suceXZrT0FaTVnFBYPc/2hpsfPZFRWp1Aoil8q5EYGo=
-github.com/ca-risken/core v0.4.2-0.20221114035311-c4b88fcc3162/go.mod h1:bbn0h9PJ2aQW9hGeRNja98Tx3vQQ5hDFWrCVkKgaR2w=
+github.com/ca-risken/core v0.4.2-0.20221201035140-276336d351a5 h1:ABBTjaCviqs4HecDeLkh1cG8bJ8T2+BozgYzE6pp2dE=
+github.com/ca-risken/core v0.4.2-0.20221201035140-276336d351a5/go.mod h1:imJ7Eut2LDOaG6i9VnbfxZdILA3bJorSQ/OGgt0VQJM=
 github.com/ca-risken/datasource-api v0.4.2-0.20221121055843-3dc9a448cda2 h1:oAPXtAYeRdYsAJkaeuuUN5dLCOWlV6rPXPGo1czQZRc=
 github.com/ca-risken/datasource-api v0.4.2-0.20221121055843-3dc9a448cda2/go.mod h1:XAUaKNB8N0+1DED5mVuq2ldzT4pZlLzIwCbTlr1QBwg=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
@@ -506,6 +506,7 @@ github.com/mattn/go-isatty v0.0.14/go.mod h1:7GGIvUiUoEMVVmxf/4nioHXj79iQHKdU27k
 github.com/mattn/go-sqlite3 v1.9.0/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsOqkbpncsNc=
 github.com/mattn/go-sqlite3 v1.14.12/go.mod h1:NyWgC/yNuGj7Q9rpYnZvas74GogHl5/Z4A/KQRfk6bU=
 github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5Ld7szi9bcBfOoFv/3dc6xSMkL2PC0=
+github.com/maxatome/go-testdeep v1.11.0 h1:Tgh5efyCYyJFGUYiT0qxBSIDeXw0F5zSoatlou685kk=
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
 github.com/miekg/dns v1.1.25/go.mod h1:bPDLeHnStXmXAq1m/Ch/hvfNHr14JKNPMBo3VZKjuso=
 github.com/mitchellh/cli v1.0.0/go.mod h1:hNIlj7HEI86fIcpObd7a0FcrxTWetlwJDGcceTlRvqc=
