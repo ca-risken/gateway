@@ -429,7 +429,7 @@ func setContextValue(next http.Handler) http.Handler {
 		userID, _ := strconv.Atoi(strUserID)
 		requestUser := &requestUser{
 			userID: uint32(userID),
-			Name:   name,
+			name:   name,
 		}
 		r = r.WithContext(context.WithValue(r.Context(), userKey, requestUser))
 		next.ServeHTTP(w, r)
@@ -506,7 +506,7 @@ func TestUpdateUserFromIdp(t *testing.T) {
 			requestUser: &requestUser{
 				sub:    "sub",
 				userID: 1,
-				Name:   "name",
+				name:   "name",
 			},
 			mockPutUserResp: &iam.PutUserResponse{},
 			userName:        "username",
@@ -555,7 +555,7 @@ func TestUpdateUserFromIdp(t *testing.T) {
 			requestUser: &requestUser{
 				sub:    "sub",
 				userID: 1,
-				Name:   "name",
+				name:   "name",
 			},
 			mockPutUserErr: errors.New("something error"),
 			wantStatusCode: http.StatusInternalServerError,
@@ -574,7 +574,7 @@ func TestUpdateUserFromIdp(t *testing.T) {
 			// テスト用に作成したmiddlewareでヘッダに挿入した値をcontextに注入します
 			if c.requestUser != nil {
 				req.Header.Set("test-requestUser-userID", fmt.Sprint(c.requestUser.userID))
-				req.Header.Set("test-requestUser-userName", c.requestUser.Name)
+				req.Header.Set("test-requestUser-userName", c.requestUser.name)
 			}
 			g.claimsClient = newMockClaimsClient(c.claims, c.userName, c.userIdpKey, c.mockClaimsErr)
 			res, err := client.Do(req)
