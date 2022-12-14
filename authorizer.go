@@ -102,12 +102,7 @@ func (g *gatewayService) UpdateUserFromIdp(next http.Handler) http.Handler {
 		}
 		// 既存のユーザーであれば、手動でNameを変更している可能性があるので、contextのユーザー名を使用する
 		u, err := getRequestUser(r)
-		if err != nil {
-			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
-			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
-			return
-		}
-		if u.name != "" {
+		if err == nil && u != nil && u.name != "" {
 			putUserRequest.User.Name = u.name
 		}
 		putResp, err := g.iamClient.PutUser(ctx, putUserRequest)

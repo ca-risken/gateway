@@ -534,15 +534,16 @@ func TestUpdateUserFromIdp(t *testing.T) {
 			wantStatusCode: http.StatusForbidden,
 		},
 		{
-			name:       "NG getRequestUser error",
+			name:       "OK getRequestUser error",
 			userID:     "sub",
 			userIdpKey: "uid",
 			claims: &jwt.MapClaims{
 				"username":     "username",
 				"user_idp_key": "uid",
 			},
-			requestUser:    nil,
-			wantStatusCode: http.StatusUnauthorized,
+			mockPutUserResp: &iam.PutUserResponse{},
+			requestUser:     nil,
+			wantStatusCode:  http.StatusOK,
 		},
 		{
 			name:       "NG PutUserError",
