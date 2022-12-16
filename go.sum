@@ -93,10 +93,10 @@ github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b h1:S
 github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b/go.mod h1:xldq3VZ7qomkI5vfpw8Y9qCVEFl8BrSvDr+sxbz32H4=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b h1:qt68fmotTZgAFvjnP0DnAdusZwWdOTAlqErQEfgbyCg=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b/go.mod h1:PIXjETIPseBEB/OXp5Rxn8FFuRwfQjFZe1VN+0Skh2E=
-github.com/ca-risken/core v0.4.2-0.20221201035140-276336d351a5 h1:ABBTjaCviqs4HecDeLkh1cG8bJ8T2+BozgYzE6pp2dE=
-github.com/ca-risken/core v0.4.2-0.20221201035140-276336d351a5/go.mod h1:imJ7Eut2LDOaG6i9VnbfxZdILA3bJorSQ/OGgt0VQJM=
-github.com/ca-risken/datasource-api v0.4.2-0.20221121055843-3dc9a448cda2 h1:oAPXtAYeRdYsAJkaeuuUN5dLCOWlV6rPXPGo1czQZRc=
-github.com/ca-risken/datasource-api v0.4.2-0.20221121055843-3dc9a448cda2/go.mod h1:XAUaKNB8N0+1DED5mVuq2ldzT4pZlLzIwCbTlr1QBwg=
+github.com/ca-risken/core v0.4.2-0.20221216022448-03371eba5eb4 h1:YkwS599HX+HVY63+WJk+vwv9UaOx8XdWDD1ofyuz5qA=
+github.com/ca-risken/core v0.4.2-0.20221216022448-03371eba5eb4/go.mod h1:imJ7Eut2LDOaG6i9VnbfxZdILA3bJorSQ/OGgt0VQJM=
+github.com/ca-risken/datasource-api v0.4.2-0.20221215091113-c6e727315ba7 h1:gjds7d/QMtzfVU1+3KoQu+Mg3Sc/blC/QOqncZ8WBgo=
+github.com/ca-risken/datasource-api v0.4.2-0.20221215091113-c6e727315ba7/go.mod h1:cCsoQDX58kDJWpsmszG1HbjmwWyQtvIvDCrKUuDdu5Y=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
@@ -290,8 +290,9 @@ github.com/google/go-cmp v0.5.2/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-cmp v0.5.4/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.6/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
-github.com/google/go-cmp v0.5.7 h1:81/ik6ipDQS2aGcBfIN5dHDB36BwrStyeAQquSYCV4o=
 github.com/google/go-cmp v0.5.7/go.mod h1:n+brtR0CgQNWTVd5ZUFpTBC8YFBDLK/h/bpaJ8/DtOE=
+github.com/google/go-cmp v0.5.8 h1:e6P7q2lk1O+qJJb4BtCQXlK8vWEO8V1ZeuEdJNOqZyg=
+github.com/google/go-cmp v0.5.8/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/google/gofuzz v0.0.0-20161122191042-44d81051d367/go.mod h1:HP5RmnzzSNb993RKQDq4+1A4ia9nllfqcQFTQJedwGI=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/google/gofuzz v1.2.0 h1:xRy4A+RhZaiKjJ1bPfwQ8sedCA+YS2YcCHW6ec7JMi0=
