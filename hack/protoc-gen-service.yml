@@ -12,6 +12,7 @@ excludes:
   - IAMService.IsAuthorizedToken
   - ProjectService.IsActive
   - ReportService.CollectReportFinding
+  - ProjectService.CleanProject
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
@@ -22,6 +23,9 @@ excludes:
   - DiagnosisService.InvokeScanAll
   - GoogleService.InvokeScanAll
   - OsintService.InvokeScanAll
+  - DataSourceService.CleanDataSource
+  - CodeService.GetGitleaksCache
+  - CodeService.PutGitleaksCache
   # Ignore for customized proxy
   - IAMService.PutUser
   - IAMService.AuthenticateAccessToken

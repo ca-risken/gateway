@@ -77,6 +77,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/list-policy", svc.listPolicyIamHandler)
 				r.Get("/get-policy", svc.getPolicyIamHandler)
 				r.Get("/list-access-token", svc.listAccessTokenIamHandler)
+				r.Get("/list-user-reserved", svc.listUserReservedIamHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/put-role", svc.putRoleIamHandler)
@@ -92,6 +93,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-access-token", svc.deleteAccessTokenIamHandler)
 					r.Post("/attach-access-token", svc.attachAccessTokenRoleIamHandler)
 					r.Post("/detach-access-token", svc.detachAccessTokenRoleIamHandler)
+					r.Post("/put-user-reserved", svc.putUserReservedIamHandler)
+					r.Post("/delete-user-reserved", svc.deleteUserReservedIamHandler)
 				})
 			})
 		})
