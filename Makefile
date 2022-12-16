@@ -482,6 +482,34 @@ test-token-access:
 		--header 'Authorization: BEARER MTAwMUAxMDEwQHJKNmtpUkVsLWJmaUVlZFRkT0hmRVhtendjTmI2akhOUFJJT19ZRjVVRGZEU1dmZkdzcnRnSm5zVjBMT1RzWkY2T2FsVjBzdnNIZVNvZ2JWOFptbnFn' \
 		'http://localhost:8000/api/v1/iam/list-access-token/?project_id=1001'
 
+.PHONY: list-user-reserved
+list-user-reserved:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/iam/list-user-reserved/?project_id=1001'
+
+.PHONY: put-user-reserved
+put-user-reserved:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "user_reserved": {"role_id":1001, "user_idp_key": "reserved_user"}}' \
+		'http://localhost:8000/api/v1/iam/put-user-reserved/'
+
+.PHONY: delete-user-reserved
+delete-user-reserved:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "reserved_id":1001}' \
+		'http://localhost:8000/api/v1/iam/delete-user-reserved/'
+
 .PHONY: list-project
 list-project:
 	curl -is -XGET \

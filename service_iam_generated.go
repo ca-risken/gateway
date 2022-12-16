@@ -297,6 +297,54 @@ func (g *gatewayService) detachAccessTokenRoleIamHandler(w http.ResponseWriter, 
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listUserReservedIamHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &iam.ListUserReservedRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.ListUserReserved(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) putUserReservedIamHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &iam.PutUserReservedRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.PutUserReserved(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deleteUserReservedIamHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &iam.DeleteUserReservedRequest{}
+	bind(req, r)
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.DeleteUserReserved(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) isAdminIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.IsAdminRequest{}
