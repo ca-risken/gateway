@@ -160,9 +160,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(svc.authzWithProject)
 				r.Get("/list-aws", svc.listAWSAwsHandler)
 				r.Get("/list-datasource", svc.listDataSourceAwsHandler)
-				r.Get("/describe-arn", svc.describeARNActivityHandler)
-				r.Get("/list-cloudtrail", svc.listCloudTrailActivityHandler)
-				r.Get("/list-config-history", svc.listConfigHistoryActivityHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/put-aws", svc.putAWSAwsHandler)
