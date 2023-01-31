@@ -23,8 +23,8 @@ install-protoc-gen-service:
 
 .PHONY: generate-service
 generate-service: install-protoc-gen-service
-    protoc --plugin=hack/protoc-gen-service/protoc-gen-service --service_out=configPath=hack/protoc-gen-service.yml:. --proto_path=../datasource-api/proto -I ${GOPATH}/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.6.7 ../datasource-api/proto/**/service*.proto && \
-    protoc --plugin=hack/protoc-gen-service/protoc-gen-service --service_out=configPath=hack/protoc-gen-service.yml:. --proto_path=../core/proto -I ${GOPATH}/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.6.7 ../core/proto/**/service*.proto
+	protoc --plugin=hack/protoc-gen-service/protoc-gen-service --service_out=configPath=hack/protoc-gen-service.yml:. --proto_path=../datasource-api/proto -I ${GOPATH}/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.6.7 ../datasource-api/proto/**/service*.proto
+	protoc --plugin=hack/protoc-gen-service/protoc-gen-service --service_out=configPath=hack/protoc-gen-service.yml:. --proto_path=../core/proto -I ${GOPATH}/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.6.7 ../core/proto/**/service*.proto
 
 .PHONY: lint
 lint: $(LINT_TARGETS)
