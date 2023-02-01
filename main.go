@@ -37,7 +37,6 @@ type AppConfig struct {
 
 	CoreAddr             string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8080"`
 	DataSourceAPISvcAddr string `required:"true" split_words:"true" default:"datasource-api.core.svc.cluster.local:8081"`
-	AWSActivitySvcAddr   string `required:"true" split_words:"true" default:"activity.aws.svc.cluster.local:9007"`
 }
 
 func main() {
