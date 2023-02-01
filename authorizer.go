@@ -6,7 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -191,13 +191,13 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := ioutil.ReadAll(r.Body)
+		buf, err := io.ReadAll(r.Body)
 		if err != nil {
 			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
 
 		u, err := getRequestUser(r)
 		if err != nil {
@@ -219,7 +219,7 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 				return
 			}
 		}
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
+		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
@@ -228,13 +228,13 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := ioutil.ReadAll(r.Body)
+		buf, err := io.ReadAll(r.Body)
 		if err != nil {
 			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
 			http.Error(w, "Could not read body", http.StatusInternalServerError)
 			return
 		}
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
 
 		u, err := getRequestUser(r)
 		if err != nil {
@@ -246,7 +246,7 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 			http.Error(w, "Unauthorized admin API", http.StatusForbidden)
 			return
 		}
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
+		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
