@@ -936,30 +936,6 @@ invoke-scan:
 		--data '{"project_id":1001, "aws_id":1003, "aws_data_source_id":1001}' \
 		'http://localhost:8000/api/v1/aws/invoke-scan/'
 
-.PHONY: describe-arn
-describe-arn:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/aws/describe-arn/?arn=arn:aws:s3:::bucket_name'
-
-.PHONY: list-cloudtrail
-list-cloudtrail:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/aws/list-cloudtrail/?project_id=1001&aws_id=1002&region=ap-northeast-1&resource_type=AWS::S3::Bucket&resource_name=risken-public-test.security-hub.jp'
-
-.PHONY: list-config-history
-list-config-history:
-	curl -is -XGET \
-		--header 'x-amzn-oidc-identity: alice' \
-		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
-		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/aws/list-config-history/?project_id=1001&aws_id=1002&region=ap-northeast-1&resource_type=AWS::S3::Bucket&resource_name=risken-public-test.security-hub.jp'
-
 .PHONY: list-osint
 list-osint:
 	curl -is -XGET \

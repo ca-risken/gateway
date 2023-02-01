@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ca-risken/aws/proto/activity"
 	"github.com/ca-risken/common/pkg/logging"
 	"github.com/ca-risken/core/proto/alert"
 	"github.com/ca-risken/core/proto/finding"
@@ -40,7 +39,6 @@ type gatewayService struct {
 	alertClient     alert.AlertServiceClient
 	reportClient    report.ReportServiceClient
 	awsClient       aws.AWSServiceClient
-	activityClient  activity.ActivityServiceClient
 	osintClient     osint.OsintServiceClient
 	diagnosisClient diagnosis.DiagnosisServiceClient
 	codeClient      code.CodeServiceClient
@@ -63,11 +61,6 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		appLogger.Errorf(ctx, "Failed to get grpc connection to datasource api service, err=%+v", err)
 		return nil, err
 	}
-	awsActivityConn, err := getGRPCConn(ctx, conf.AWSActivitySvcAddr)
-	if err != nil {
-		appLogger.Errorf(ctx, "Failed to get grpc connection to aws activity service, err=%+v", err)
-		return nil, err
-	}
 	return &gatewayService{
 		envName:         conf.EnvName,
 		port:            conf.Port,
@@ -79,7 +72,6 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		alertClient:     alert.NewAlertServiceClient(coreConn),
 		reportClient:    report.NewReportServiceClient(coreConn),
 		awsClient:       aws.NewAWSServiceClient(datasourceConn),
-		activityClient:  activity.NewActivityServiceClient(awsActivityConn),
 		osintClient:     osint.NewOsintServiceClient(datasourceConn),
 		diagnosisClient: diagnosis.NewDiagnosisServiceClient(datasourceConn),
 		codeClient:      code.NewCodeServiceClient(datasourceConn),

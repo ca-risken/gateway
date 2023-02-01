@@ -3,7 +3,6 @@ module github.com/ca-risken/gateway
 go 1.18
 
 require (
-	github.com/ca-risken/aws/proto/activity v0.0.0-20210909100807-3b4b7805f6fa
 	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b
