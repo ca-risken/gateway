@@ -51,8 +51,25 @@ func TestPutUserHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
-			name:       "NG Backend service error",
-			input:      `{"user": {"sub":"xxx", "name":"nm", "activated":"true"}}`,
+			name:       "NG verifying token error",
+			input:      `{"user": {"sub":"xxx", "name":"nm2", "activated":true}}`,
+			claimsErr:  errors.New("something error"),
+			wantStatus: http.StatusForbidden,
+		},
+		{
+			name:       "NG userIdpKey is empty",
+			input:      `{"user": {"sub":"xxx", "name":"nm3", "activated":true}}`,
+			claims:     &jwt.MapClaims{},
+			userIdpKey: "",
+			wantStatus: http.StatusForbidden,
+		},
+		{
+			name:  "NG Backend service error",
+			input: `{"user": {"sub":"xxx", "name":"nm4", "activated":true}}`,
+			claims: &jwt.MapClaims{
+				"user_idp_key": "uik",
+			},
+			userIdpKey: "uik",
 			wantStatus: http.StatusInternalServerError,
 			mockErr:    errors.New("something wrong"),
 		},
