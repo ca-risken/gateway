@@ -317,7 +317,7 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	p := &requestProject{}
 	err := bind(p, r)
 	if err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if zero.IsZeroVal(p.ProjectID) {
 		return false
@@ -344,7 +344,7 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 	p := &requestProject{}
 	err := bind(p, r)
 	if err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if zero.IsZeroVal(p.ProjectID) {
 		return false
