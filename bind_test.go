@@ -5,6 +5,9 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type param struct {
@@ -19,6 +22,83 @@ type param struct {
 
 type nestParam struct {
 	Param10 bool `json:"param10"`
+}
+
+func TestBind(t *testing.T) {
+	cases := []struct {
+		name    string
+		method  string
+		input   string
+		want    *param
+		wantErr bool
+	}{
+		{
+			name:   "OK by GET method",
+			method: http.MethodGet,
+			input:  "param1=1",
+			want:   &param{Param1: 1},
+		},
+		{
+			name:    "NG cannot bind in GET method",
+			method:  http.MethodGet,
+			input:   "param1=string",
+			want:    &param{},
+			wantErr: true,
+		},
+		{
+			name:   "OK by POST method",
+			method: http.MethodPost,
+			input:  `{"param1":2}`,
+			want:   &param{Param1: 2},
+		},
+		{
+			name:   "OK by PUT method",
+			method: http.MethodPut,
+			input:  `{"param1":3}`,
+			want:   &param{Param1: 3},
+		},
+		{
+			name:   "OK by DELETE method",
+			method: http.MethodDelete,
+			input:  `{"param1":4}`,
+			want:   &param{Param1: 4},
+		},
+		{
+			name:    "NG cannot bind in not GET method",
+			method:  http.MethodPost,
+			input:   `{"param1":string}`,
+			want:    &param{},
+			wantErr: true,
+		},
+		{
+			name:    "NG not supported method",
+			method:  http.MethodHead,
+			input:   `{"param1":1}`,
+			want:    &param{},
+			wantErr: true,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			var req *http.Request
+			var err error
+			if c.method == http.MethodGet {
+				req, err = http.NewRequest(c.method, "/test?"+c.input, nil)
+			} else {
+				req, err = http.NewRequest(c.method, "/test", strings.NewReader(c.input))
+			}
+			require.NoError(t, err)
+			actual := &param{}
+			err = bind(actual, req)
+			if c.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+			assert.Equal(t, c.want, actual)
+		})
+	}
+
 }
 
 func TestBindQuery(t *testing.T) {

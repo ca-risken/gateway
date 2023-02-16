@@ -12,7 +12,9 @@ import (
 func (g *gatewayService) listProjectProjectHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &project.ListProjectRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListProjectRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +30,9 @@ func (g *gatewayService) listProjectProjectHandler(w http.ResponseWriter, r *htt
 func (g *gatewayService) updateProjectProjectHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &project.UpdateProjectRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateProjectRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +48,9 @@ func (g *gatewayService) updateProjectProjectHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) deleteProjectProjectHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &project.DeleteProjectRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteProjectRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -60,7 +66,9 @@ func (g *gatewayService) deleteProjectProjectHandler(w http.ResponseWriter, r *h
 func (g *gatewayService) tagProjectProjectHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &project.TagProjectRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "TagProjectRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -76,7 +84,9 @@ func (g *gatewayService) tagProjectProjectHandler(w http.ResponseWriter, r *http
 func (g *gatewayService) untagProjectProjectHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &project.UntagProjectRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UntagProjectRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 	"text/template"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
@@ -37,7 +38,9 @@ import (
 func (g *gatewayService) {{ .method_first_lower }}{{ .package_capital }}Handler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &{{ .package }}.{{ .input_type }}{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "{{ .input_type }}", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -113,6 +116,7 @@ func processReq(req *plugin.CodeGeneratorRequest) (*plugin.CodeGeneratorResponse
 			return nil, err
 		}
 		content := header.String()
+		contentCnt := 0
 
 		for _, s := range f.GetService() {
 			for _, m := range s.GetMethod() {
@@ -142,7 +146,11 @@ func processReq(req *plugin.CodeGeneratorRequest) (*plugin.CodeGeneratorResponse
 					return nil, err
 				}
 				content += b.String()
+				contentCnt++
 			}
+		}
+		if contentCnt == 0 {
+			continue
 		}
 		src, err := format.Source([]byte(content))
 		if err != nil {

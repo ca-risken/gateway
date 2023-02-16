@@ -12,7 +12,9 @@ import (
 func (g *gatewayService) listDiagnosisDataSourceDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.ListDiagnosisDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListDiagnosisDataSourceRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +30,9 @@ func (g *gatewayService) listDiagnosisDataSourceDiagnosisHandler(w http.Response
 func (g *gatewayService) getDiagnosisDataSourceDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.GetDiagnosisDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetDiagnosisDataSourceRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +48,9 @@ func (g *gatewayService) getDiagnosisDataSourceDiagnosisHandler(w http.ResponseW
 func (g *gatewayService) putDiagnosisDataSourceDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.PutDiagnosisDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutDiagnosisDataSourceRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -60,7 +66,9 @@ func (g *gatewayService) putDiagnosisDataSourceDiagnosisHandler(w http.ResponseW
 func (g *gatewayService) deleteDiagnosisDataSourceDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.DeleteDiagnosisDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteDiagnosisDataSourceRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -76,7 +84,9 @@ func (g *gatewayService) deleteDiagnosisDataSourceDiagnosisHandler(w http.Respon
 func (g *gatewayService) listWpscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.ListWpscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListWpscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -92,7 +102,9 @@ func (g *gatewayService) listWpscanSettingDiagnosisHandler(w http.ResponseWriter
 func (g *gatewayService) getWpscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.GetWpscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetWpscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -108,7 +120,9 @@ func (g *gatewayService) getWpscanSettingDiagnosisHandler(w http.ResponseWriter,
 func (g *gatewayService) putWpscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.PutWpscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutWpscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -124,7 +138,9 @@ func (g *gatewayService) putWpscanSettingDiagnosisHandler(w http.ResponseWriter,
 func (g *gatewayService) deleteWpscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.DeleteWpscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteWpscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -140,7 +156,9 @@ func (g *gatewayService) deleteWpscanSettingDiagnosisHandler(w http.ResponseWrit
 func (g *gatewayService) listPortscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.ListPortscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListPortscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -156,7 +174,9 @@ func (g *gatewayService) listPortscanSettingDiagnosisHandler(w http.ResponseWrit
 func (g *gatewayService) getPortscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.GetPortscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetPortscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -172,7 +192,9 @@ func (g *gatewayService) getPortscanSettingDiagnosisHandler(w http.ResponseWrite
 func (g *gatewayService) putPortscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.PutPortscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutPortscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -188,7 +210,9 @@ func (g *gatewayService) putPortscanSettingDiagnosisHandler(w http.ResponseWrite
 func (g *gatewayService) deletePortscanSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.DeletePortscanSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeletePortscanSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -204,7 +228,9 @@ func (g *gatewayService) deletePortscanSettingDiagnosisHandler(w http.ResponseWr
 func (g *gatewayService) listPortscanTargetDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.ListPortscanTargetRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListPortscanTargetRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -220,7 +246,9 @@ func (g *gatewayService) listPortscanTargetDiagnosisHandler(w http.ResponseWrite
 func (g *gatewayService) getPortscanTargetDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.GetPortscanTargetRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetPortscanTargetRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -236,7 +264,9 @@ func (g *gatewayService) getPortscanTargetDiagnosisHandler(w http.ResponseWriter
 func (g *gatewayService) putPortscanTargetDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.PutPortscanTargetRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutPortscanTargetRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -252,7 +282,9 @@ func (g *gatewayService) putPortscanTargetDiagnosisHandler(w http.ResponseWriter
 func (g *gatewayService) deletePortscanTargetDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.DeletePortscanTargetRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeletePortscanTargetRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -268,7 +300,9 @@ func (g *gatewayService) deletePortscanTargetDiagnosisHandler(w http.ResponseWri
 func (g *gatewayService) listApplicationScanDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.ListApplicationScanRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListApplicationScanRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -284,7 +318,9 @@ func (g *gatewayService) listApplicationScanDiagnosisHandler(w http.ResponseWrit
 func (g *gatewayService) getApplicationScanDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.GetApplicationScanRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetApplicationScanRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -300,7 +336,9 @@ func (g *gatewayService) getApplicationScanDiagnosisHandler(w http.ResponseWrite
 func (g *gatewayService) putApplicationScanDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.PutApplicationScanRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutApplicationScanRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -316,7 +354,9 @@ func (g *gatewayService) putApplicationScanDiagnosisHandler(w http.ResponseWrite
 func (g *gatewayService) deleteApplicationScanDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.DeleteApplicationScanRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteApplicationScanRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -332,7 +372,9 @@ func (g *gatewayService) deleteApplicationScanDiagnosisHandler(w http.ResponseWr
 func (g *gatewayService) listApplicationScanBasicSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.ListApplicationScanBasicSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListApplicationScanBasicSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -348,7 +390,9 @@ func (g *gatewayService) listApplicationScanBasicSettingDiagnosisHandler(w http.
 func (g *gatewayService) getApplicationScanBasicSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.GetApplicationScanBasicSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetApplicationScanBasicSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -364,7 +408,9 @@ func (g *gatewayService) getApplicationScanBasicSettingDiagnosisHandler(w http.R
 func (g *gatewayService) putApplicationScanBasicSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.PutApplicationScanBasicSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutApplicationScanBasicSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -380,7 +426,9 @@ func (g *gatewayService) putApplicationScanBasicSettingDiagnosisHandler(w http.R
 func (g *gatewayService) deleteApplicationScanBasicSettingDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.DeleteApplicationScanBasicSettingRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteApplicationScanBasicSettingRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -396,7 +444,9 @@ func (g *gatewayService) deleteApplicationScanBasicSettingDiagnosisHandler(w htt
 func (g *gatewayService) invokeScanDiagnosisHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &diagnosis.InvokeScanRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "InvokeScanRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

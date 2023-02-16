@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"reflect"
 	"strings"
@@ -25,22 +26,24 @@ func newDecoder() *schema.Decoder {
 }
 
 // bind bindding request parameter
-func bind(out interface{}, r *http.Request) {
+func bind(out interface{}, r *http.Request) error {
 	ctx := r.Context()
 	switch r.Method {
 	case http.MethodGet:
 		if err := bindQuery(out, r); err != nil {
 			appLogger.Warnf(ctx, "Could not `bindQuery`, url=%s, err=%+v", r.URL.RequestURI(), err)
+			return err
 		}
-		return
 	case http.MethodPost, http.MethodPut, http.MethodDelete:
 		if err := bindBodyJSON(out, r); err != nil {
 			appLogger.Warnf(ctx, "Could not `bindBodyJSON`, url=%s, err=%+v", r.URL.RequestURI(), err)
+			return err
 		}
-		return
 	default:
 		appLogger.Warnf(ctx, "Unexpected HTTP Method, method=%s", r.Method)
+		return fmt.Errorf("unexpected HTTP Method, method=%s", r.Method)
 	}
+	return nil
 }
 
 // bindQuery binding query parameter

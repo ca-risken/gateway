@@ -15,7 +15,9 @@ func (g *gatewayService) createProjectHandler(w http.ResponseWriter, r *http.Req
 	}
 	req := &project.CreateProjectRequest{}
 	req.UserId = user.userID // force update by own userID
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "CreateProjectRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

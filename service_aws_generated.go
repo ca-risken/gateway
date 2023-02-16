@@ -12,7 +12,9 @@ import (
 func (g *gatewayService) listAWSAwsHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &aws.ListAWSRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListAWSRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -28,7 +30,9 @@ func (g *gatewayService) listAWSAwsHandler(w http.ResponseWriter, r *http.Reques
 func (g *gatewayService) putAWSAwsHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &aws.PutAWSRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutAWSRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -44,7 +48,9 @@ func (g *gatewayService) putAWSAwsHandler(w http.ResponseWriter, r *http.Request
 func (g *gatewayService) deleteAWSAwsHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &aws.DeleteAWSRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteAWSRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -60,7 +66,9 @@ func (g *gatewayService) deleteAWSAwsHandler(w http.ResponseWriter, r *http.Requ
 func (g *gatewayService) listDataSourceAwsHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &aws.ListDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListDataSourceRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -76,7 +84,9 @@ func (g *gatewayService) listDataSourceAwsHandler(w http.ResponseWriter, r *http
 func (g *gatewayService) detachDataSourceAwsHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &aws.DetachDataSourceRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DetachDataSourceRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -92,7 +102,9 @@ func (g *gatewayService) detachDataSourceAwsHandler(w http.ResponseWriter, r *ht
 func (g *gatewayService) invokeScanAwsHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &aws.InvokeScanRequest{}
-	bind(req, r)
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "InvokeScanRequest", err)
+	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
