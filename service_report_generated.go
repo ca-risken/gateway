@@ -13,7 +13,7 @@ func (g *gatewayService) getReportFindingReportHandler(w http.ResponseWriter, r 
 	ctx := r.Context()
 	req := &report.GetReportFindingRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetReportFindingRequest", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -31,7 +31,7 @@ func (g *gatewayService) getReportFindingAllReportHandler(w http.ResponseWriter,
 	ctx := r.Context()
 	req := &report.GetReportFindingAllRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetReportFindingAllRequest", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

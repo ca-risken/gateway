@@ -10,7 +10,7 @@ func (g *gatewayService) attachDataSourceHandler(w http.ResponseWriter, r *http.
 	ctx := r.Context()
 	req := &aws.AttachDataSourceRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Infof(ctx, "Failed to bind request, req=%s, err=%+v", "AttachDataSourceRequest", err)
 	}
 	if err := req.ValidateForUser(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

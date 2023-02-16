@@ -13,7 +13,7 @@ func (g *gatewayService) listProjectProjectHandler(w http.ResponseWriter, r *htt
 	ctx := r.Context()
 	req := &project.ListProjectRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListProjectRequest", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -31,7 +31,7 @@ func (g *gatewayService) updateProjectProjectHandler(w http.ResponseWriter, r *h
 	ctx := r.Context()
 	req := &project.UpdateProjectRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateProjectRequest", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -49,7 +49,7 @@ func (g *gatewayService) deleteProjectProjectHandler(w http.ResponseWriter, r *h
 	ctx := r.Context()
 	req := &project.DeleteProjectRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteProjectRequest", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -67,7 +67,7 @@ func (g *gatewayService) tagProjectProjectHandler(w http.ResponseWriter, r *http
 	ctx := r.Context()
 	req := &project.TagProjectRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "TagProjectRequest", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -85,7 +85,7 @@ func (g *gatewayService) untagProjectProjectHandler(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	req := &project.UntagProjectRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UntagProjectRequest", err)
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
