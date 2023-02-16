@@ -317,12 +317,8 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	p := &requestProject{}
 	err := bind(p, r)
 	if err != nil {
-		// TODO ログレベルの見直し
-		// 通常あり得るケースであれば、ログレベルを下げる。そうでなければ、適切なレベルに上げる。
 		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
-		return false
 	}
-	// TODO エラーケースだけをカバーする条件であれば、if句は削除する
 	if zero.IsZeroVal(p.ProjectID) {
 		return false
 	}
@@ -348,12 +344,8 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 	p := &requestProject{}
 	err := bind(p, r)
 	if err != nil {
-		// TODO ログレベルの見直し
-		// 通常あり得るケースであれば、ログレベルを下げる。そうでなければ、適切なレベルに上げる。
 		appLogger.Infof(ctx, "Failed to bind request, err=%+v", err)
-		return false
 	}
-	// TODO エラーケースだけをカバーする条件であれば、if句は削除する
 	if zero.IsZeroVal(p.ProjectID) {
 		return false
 	}
