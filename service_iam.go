@@ -41,7 +41,7 @@ func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) 
 	}
 	resp, err := g.iamClient.PutUser(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -59,7 +59,7 @@ func (g *gatewayService) listAdminRoleHandler(w http.ResponseWriter, r *http.Req
 	}
 	resp, err := g.iamClient.ListRole(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -77,7 +77,7 @@ func (g *gatewayService) getAdminRoleHandler(w http.ResponseWriter, r *http.Requ
 	}
 	resp, err := g.iamClient.GetRole(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -95,7 +95,7 @@ func (g *gatewayService) attachAdminRoleHandler(w http.ResponseWriter, r *http.R
 	}
 	resp, err := g.iamClient.AttachRole(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -113,7 +113,7 @@ func (g *gatewayService) detachAdminRoleHandler(w http.ResponseWriter, r *http.R
 	}
 	resp, err := g.iamClient.DetachRole(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -148,7 +148,7 @@ func (g *gatewayService) generateAccessTokenHandler(w http.ResponseWriter, r *ht
 		Name:      req.AccessToken.Name,
 	})
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	if len(list.AccessToken) > 0 {
@@ -159,7 +159,7 @@ func (g *gatewayService) generateAccessTokenHandler(w http.ResponseWriter, r *ht
 	// Call API
 	resp, err := g.iamClient.PutAccessToken(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: &generateAccessTokenResponse{
@@ -194,7 +194,7 @@ func (g *gatewayService) updateAccessTokenHandler(w http.ResponseWriter, r *http
 	// Call API
 	resp, err := g.iamClient.PutAccessToken(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})

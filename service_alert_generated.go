@@ -21,7 +21,7 @@ func (g *gatewayService) listAlertAlertHandler(w http.ResponseWriter, r *http.Re
 	}
 	resp, err := g.alertClient.ListAlert(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -39,7 +39,7 @@ func (g *gatewayService) getAlertAlertHandler(w http.ResponseWriter, r *http.Req
 	}
 	resp, err := g.alertClient.GetAlert(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -57,7 +57,7 @@ func (g *gatewayService) putAlertAlertHandler(w http.ResponseWriter, r *http.Req
 	}
 	resp, err := g.alertClient.PutAlert(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -75,7 +75,7 @@ func (g *gatewayService) deleteAlertAlertHandler(w http.ResponseWriter, r *http.
 	}
 	resp, err := g.alertClient.DeleteAlert(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -93,7 +93,7 @@ func (g *gatewayService) listAlertHistoryAlertHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.alertClient.ListAlertHistory(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -111,7 +111,7 @@ func (g *gatewayService) getAlertHistoryAlertHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.alertClient.GetAlertHistory(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -129,7 +129,7 @@ func (g *gatewayService) putAlertHistoryAlertHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.alertClient.PutAlertHistory(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -147,7 +147,7 @@ func (g *gatewayService) deleteAlertHistoryAlertHandler(w http.ResponseWriter, r
 	}
 	resp, err := g.alertClient.DeleteAlertHistory(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -165,7 +165,7 @@ func (g *gatewayService) listRelAlertFindingAlertHandler(w http.ResponseWriter, 
 	}
 	resp, err := g.alertClient.ListRelAlertFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -183,7 +183,7 @@ func (g *gatewayService) getRelAlertFindingAlertHandler(w http.ResponseWriter, r
 	}
 	resp, err := g.alertClient.GetRelAlertFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -201,7 +201,7 @@ func (g *gatewayService) putRelAlertFindingAlertHandler(w http.ResponseWriter, r
 	}
 	resp, err := g.alertClient.PutRelAlertFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -219,7 +219,7 @@ func (g *gatewayService) deleteRelAlertFindingAlertHandler(w http.ResponseWriter
 	}
 	resp, err := g.alertClient.DeleteRelAlertFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -237,7 +237,7 @@ func (g *gatewayService) listAlertConditionAlertHandler(w http.ResponseWriter, r
 	}
 	resp, err := g.alertClient.ListAlertCondition(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -255,7 +255,7 @@ func (g *gatewayService) getAlertConditionAlertHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.alertClient.GetAlertCondition(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -273,7 +273,7 @@ func (g *gatewayService) putAlertConditionAlertHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.alertClient.PutAlertCondition(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -291,7 +291,7 @@ func (g *gatewayService) deleteAlertConditionAlertHandler(w http.ResponseWriter,
 	}
 	resp, err := g.alertClient.DeleteAlertCondition(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -309,7 +309,7 @@ func (g *gatewayService) listAlertRuleAlertHandler(w http.ResponseWriter, r *htt
 	}
 	resp, err := g.alertClient.ListAlertRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -327,7 +327,7 @@ func (g *gatewayService) getAlertRuleAlertHandler(w http.ResponseWriter, r *http
 	}
 	resp, err := g.alertClient.GetAlertRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -345,7 +345,7 @@ func (g *gatewayService) putAlertRuleAlertHandler(w http.ResponseWriter, r *http
 	}
 	resp, err := g.alertClient.PutAlertRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -363,7 +363,7 @@ func (g *gatewayService) deleteAlertRuleAlertHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.alertClient.DeleteAlertRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -381,7 +381,7 @@ func (g *gatewayService) listAlertCondRuleAlertHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.alertClient.ListAlertCondRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -399,7 +399,7 @@ func (g *gatewayService) getAlertCondRuleAlertHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.alertClient.GetAlertCondRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -417,7 +417,7 @@ func (g *gatewayService) putAlertCondRuleAlertHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.alertClient.PutAlertCondRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -435,7 +435,7 @@ func (g *gatewayService) deleteAlertCondRuleAlertHandler(w http.ResponseWriter, 
 	}
 	resp, err := g.alertClient.DeleteAlertCondRule(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -453,7 +453,7 @@ func (g *gatewayService) listNotificationAlertHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.alertClient.ListNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -471,7 +471,7 @@ func (g *gatewayService) getNotificationAlertHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.alertClient.GetNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -489,7 +489,7 @@ func (g *gatewayService) putNotificationAlertHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.alertClient.PutNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -507,7 +507,7 @@ func (g *gatewayService) deleteNotificationAlertHandler(w http.ResponseWriter, r
 	}
 	resp, err := g.alertClient.DeleteNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -525,7 +525,7 @@ func (g *gatewayService) testNotificationAlertHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.alertClient.TestNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -543,7 +543,7 @@ func (g *gatewayService) listAlertCondNotificationAlertHandler(w http.ResponseWr
 	}
 	resp, err := g.alertClient.ListAlertCondNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -561,7 +561,7 @@ func (g *gatewayService) getAlertCondNotificationAlertHandler(w http.ResponseWri
 	}
 	resp, err := g.alertClient.GetAlertCondNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -579,7 +579,7 @@ func (g *gatewayService) putAlertCondNotificationAlertHandler(w http.ResponseWri
 	}
 	resp, err := g.alertClient.PutAlertCondNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -597,7 +597,7 @@ func (g *gatewayService) deleteAlertCondNotificationAlertHandler(w http.Response
 	}
 	resp, err := g.alertClient.DeleteAlertCondNotification(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -615,7 +615,7 @@ func (g *gatewayService) analyzeAlertAlertHandler(w http.ResponseWriter, r *http
 	}
 	resp, err := g.alertClient.AnalyzeAlert(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
