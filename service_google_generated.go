@@ -21,7 +21,7 @@ func (g *gatewayService) listGoogleDataSourceGoogleHandler(w http.ResponseWriter
 	}
 	resp, err := g.googleClient.ListGoogleDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -39,7 +39,7 @@ func (g *gatewayService) listGCPGoogleHandler(w http.ResponseWriter, r *http.Req
 	}
 	resp, err := g.googleClient.ListGCP(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -57,7 +57,7 @@ func (g *gatewayService) getGCPGoogleHandler(w http.ResponseWriter, r *http.Requ
 	}
 	resp, err := g.googleClient.GetGCP(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -75,7 +75,7 @@ func (g *gatewayService) putGCPGoogleHandler(w http.ResponseWriter, r *http.Requ
 	}
 	resp, err := g.googleClient.PutGCP(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -93,7 +93,7 @@ func (g *gatewayService) deleteGCPGoogleHandler(w http.ResponseWriter, r *http.R
 	}
 	resp, err := g.googleClient.DeleteGCP(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -111,7 +111,7 @@ func (g *gatewayService) listGCPDataSourceGoogleHandler(w http.ResponseWriter, r
 	}
 	resp, err := g.googleClient.ListGCPDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -129,7 +129,7 @@ func (g *gatewayService) getGCPDataSourceGoogleHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.googleClient.GetGCPDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -147,7 +147,7 @@ func (g *gatewayService) attachGCPDataSourceGoogleHandler(w http.ResponseWriter,
 	}
 	resp, err := g.googleClient.AttachGCPDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -165,7 +165,7 @@ func (g *gatewayService) detachGCPDataSourceGoogleHandler(w http.ResponseWriter,
 	}
 	resp, err := g.googleClient.DetachGCPDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -183,7 +183,7 @@ func (g *gatewayService) invokeScanGCPGoogleHandler(w http.ResponseWriter, r *ht
 	}
 	resp, err := g.googleClient.InvokeScanGCP(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})

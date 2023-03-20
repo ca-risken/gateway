@@ -47,7 +47,7 @@ func (g *gatewayService) {{ .method_first_lower }}{{ .package_capital }}Handler(
 	}
 	resp, err := g.{{ .package }}Client.{{ .method }}(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})

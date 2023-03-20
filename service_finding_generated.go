@@ -21,7 +21,7 @@ func (g *gatewayService) listFindingFindingHandler(w http.ResponseWriter, r *htt
 	}
 	resp, err := g.findingClient.ListFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -39,7 +39,7 @@ func (g *gatewayService) getFindingFindingHandler(w http.ResponseWriter, r *http
 	}
 	resp, err := g.findingClient.GetFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -57,7 +57,7 @@ func (g *gatewayService) putFindingFindingHandler(w http.ResponseWriter, r *http
 	}
 	resp, err := g.findingClient.PutFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -75,7 +75,7 @@ func (g *gatewayService) deleteFindingFindingHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.findingClient.DeleteFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -93,7 +93,7 @@ func (g *gatewayService) listFindingTagFindingHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.findingClient.ListFindingTag(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -111,7 +111,7 @@ func (g *gatewayService) listFindingTagNameFindingHandler(w http.ResponseWriter,
 	}
 	resp, err := g.findingClient.ListFindingTagName(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -129,7 +129,7 @@ func (g *gatewayService) tagFindingFindingHandler(w http.ResponseWriter, r *http
 	}
 	resp, err := g.findingClient.TagFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -147,7 +147,7 @@ func (g *gatewayService) untagFindingFindingHandler(w http.ResponseWriter, r *ht
 	}
 	resp, err := g.findingClient.UntagFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -165,7 +165,7 @@ func (g *gatewayService) listResourceFindingHandler(w http.ResponseWriter, r *ht
 	}
 	resp, err := g.findingClient.ListResource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -183,7 +183,7 @@ func (g *gatewayService) getResourceFindingHandler(w http.ResponseWriter, r *htt
 	}
 	resp, err := g.findingClient.GetResource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -201,7 +201,7 @@ func (g *gatewayService) putResourceFindingHandler(w http.ResponseWriter, r *htt
 	}
 	resp, err := g.findingClient.PutResource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -219,7 +219,7 @@ func (g *gatewayService) deleteResourceFindingHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.findingClient.DeleteResource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -237,7 +237,7 @@ func (g *gatewayService) listResourceTagFindingHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.findingClient.ListResourceTag(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -255,7 +255,7 @@ func (g *gatewayService) listResourceTagNameFindingHandler(w http.ResponseWriter
 	}
 	resp, err := g.findingClient.ListResourceTagName(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -273,7 +273,7 @@ func (g *gatewayService) tagResourceFindingHandler(w http.ResponseWriter, r *htt
 	}
 	resp, err := g.findingClient.TagResource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -291,7 +291,7 @@ func (g *gatewayService) untagResourceFindingHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.findingClient.UntagResource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -309,7 +309,7 @@ func (g *gatewayService) getPendFindingFindingHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.findingClient.GetPendFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -327,7 +327,7 @@ func (g *gatewayService) putPendFindingFindingHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.findingClient.PutPendFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -345,7 +345,7 @@ func (g *gatewayService) deletePendFindingFindingHandler(w http.ResponseWriter, 
 	}
 	resp, err := g.findingClient.DeletePendFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -363,7 +363,7 @@ func (g *gatewayService) listFindingSettingFindingHandler(w http.ResponseWriter,
 	}
 	resp, err := g.findingClient.ListFindingSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -381,7 +381,7 @@ func (g *gatewayService) getFindingSettingFindingHandler(w http.ResponseWriter, 
 	}
 	resp, err := g.findingClient.GetFindingSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -399,7 +399,7 @@ func (g *gatewayService) putFindingSettingFindingHandler(w http.ResponseWriter, 
 	}
 	resp, err := g.findingClient.PutFindingSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -417,7 +417,7 @@ func (g *gatewayService) deleteFindingSettingFindingHandler(w http.ResponseWrite
 	}
 	resp, err := g.findingClient.DeleteFindingSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -435,7 +435,7 @@ func (g *gatewayService) getRecommendFindingHandler(w http.ResponseWriter, r *ht
 	}
 	resp, err := g.findingClient.GetRecommend(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -453,7 +453,7 @@ func (g *gatewayService) putRecommendFindingHandler(w http.ResponseWriter, r *ht
 	}
 	resp, err := g.findingClient.PutRecommend(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})

@@ -21,7 +21,7 @@ func (g *gatewayService) getReportFindingReportHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.reportClient.GetReportFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -39,7 +39,7 @@ func (g *gatewayService) getReportFindingAllReportHandler(w http.ResponseWriter,
 	}
 	resp, err := g.reportClient.GetReportFindingAll(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
