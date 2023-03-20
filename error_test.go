@@ -18,11 +18,11 @@ func TestHandleGrpcError(t *testing.T) {
 	}{
 		{
 			name:  "gRPC error",
-			input: status.Error(codes.Internal, "intternal server error"),
+			input: status.Error(codes.Internal, "internal server error"),
 			want: map[string]interface{}{
 				errorJSONKey: grpcError{
 					Code:    codes.Internal.String(),
-					Message: "intternal server error",
+					Message: "internal server error",
 				},
 			},
 		},
