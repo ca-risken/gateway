@@ -6,7 +6,7 @@ require (
 	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/tracer v0.0.0-20220601065422-5b97bd6efc9b
-	github.com/ca-risken/core v0.5.1-0.20230313091958-c3c88bb75262
+	github.com/ca-risken/core v0.5.1-0.20230405080833-24b1e26260ed
 	github.com/ca-risken/datasource-api v0.5.1-0.20230317093856-4d9fbbe1735a
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
