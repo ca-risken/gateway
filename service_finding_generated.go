@@ -458,3 +458,21 @@ func (g *gatewayService) putRecommendFindingHandler(w http.ResponseWriter, r *ht
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
+
+func (g *gatewayService) getAISummaryFindingHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &finding.GetAISummaryRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetAISummaryRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.findingClient.GetAISummary(ctx, req)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
