@@ -24,7 +24,10 @@ func (g *gatewayService) createProjectHandler(w http.ResponseWriter, r *http.Req
 	}
 	resp, err := g.projectClient.CreateProject(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})

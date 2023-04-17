@@ -1,8 +1,6 @@
 package main
 
 import (
-	"context"
-	"errors"
 	"reflect"
 	"testing"
 
@@ -10,15 +8,15 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func TestHandleGrpcError(t *testing.T) {
+func TestGRPCErrorMessage(t *testing.T) {
 	cases := []struct {
 		name  string
-		input error
+		input *status.Status
 		want  map[string]interface{}
 	}{
 		{
 			name:  "gRPC error",
-			input: status.Error(codes.Internal, "internal server error"),
+			input: status.New(codes.Internal, "internal server error"),
 			want: map[string]interface{}{
 				errorJSONKey: grpcError{
 					Code:    codes.Internal.String(),
@@ -27,14 +25,19 @@ func TestHandleGrpcError(t *testing.T) {
 			},
 		},
 		{
-			name:  "other error",
-			input: errors.New("something wrong"),
-			want:  map[string]interface{}{errorJSONKey: "something wrong"},
+			name:  "status nil",
+			input: nil,
+			want: map[string]interface{}{
+				errorJSONKey: grpcError{
+					Code:    codes.Unknown.String(),
+					Message: "gRPC status is nil",
+				},
+			},
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			got := grpcErrorMessage(context.TODO(), c.input)
+			got := grpcErrorMessage(c.input)
 			if !reflect.DeepEqual(got, c.want) {
 				t.Fatalf("Unexpected response: want=%+v, got=%+v", c.want, got)
 			}

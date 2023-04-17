@@ -21,7 +21,10 @@ func (g *gatewayService) getReportFindingReportHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.reportClient.GetReportFinding(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -39,7 +42,10 @@ func (g *gatewayService) getReportFindingAllReportHandler(w http.ResponseWriter,
 	}
 	resp, err := g.reportClient.GetReportFindingAll(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
