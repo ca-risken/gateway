@@ -21,7 +21,10 @@ func (g *gatewayService) listDataSourceCodeHandler(w http.ResponseWriter, r *htt
 	}
 	resp, err := g.codeClient.ListDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -39,7 +42,10 @@ func (g *gatewayService) listGitHubSettingCodeHandler(w http.ResponseWriter, r *
 	}
 	resp, err := g.codeClient.ListGitHubSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -57,7 +63,10 @@ func (g *gatewayService) putGitHubSettingCodeHandler(w http.ResponseWriter, r *h
 	}
 	resp, err := g.codeClient.PutGitHubSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -75,7 +84,10 @@ func (g *gatewayService) deleteGitHubSettingCodeHandler(w http.ResponseWriter, r
 	}
 	resp, err := g.codeClient.DeleteGitHubSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -93,7 +105,10 @@ func (g *gatewayService) putGitleaksSettingCodeHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.codeClient.PutGitleaksSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -111,7 +126,10 @@ func (g *gatewayService) deleteGitleaksSettingCodeHandler(w http.ResponseWriter,
 	}
 	resp, err := g.codeClient.DeleteGitleaksSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -129,7 +147,10 @@ func (g *gatewayService) putDependencySettingCodeHandler(w http.ResponseWriter, 
 	}
 	resp, err := g.codeClient.PutDependencySetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -147,7 +168,10 @@ func (g *gatewayService) deleteDependencySettingCodeHandler(w http.ResponseWrite
 	}
 	resp, err := g.codeClient.DeleteDependencySetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -165,7 +189,10 @@ func (g *gatewayService) invokeScanGitleaksCodeHandler(w http.ResponseWriter, r 
 	}
 	resp, err := g.codeClient.InvokeScanGitleaks(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -183,7 +210,10 @@ func (g *gatewayService) invokeScanDependencyCodeHandler(w http.ResponseWriter, 
 	}
 	resp, err := g.codeClient.InvokeScanDependency(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})

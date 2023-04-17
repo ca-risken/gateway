@@ -18,7 +18,10 @@ func (g *gatewayService) attachDataSourceHandler(w http.ResponseWriter, r *http.
 	}
 	resp, err := g.awsClient.AttachDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})

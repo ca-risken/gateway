@@ -21,7 +21,10 @@ func (g *gatewayService) listDiagnosisDataSourceDiagnosisHandler(w http.Response
 	}
 	resp, err := g.diagnosisClient.ListDiagnosisDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -39,7 +42,10 @@ func (g *gatewayService) getDiagnosisDataSourceDiagnosisHandler(w http.ResponseW
 	}
 	resp, err := g.diagnosisClient.GetDiagnosisDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -57,7 +63,10 @@ func (g *gatewayService) putDiagnosisDataSourceDiagnosisHandler(w http.ResponseW
 	}
 	resp, err := g.diagnosisClient.PutDiagnosisDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -75,7 +84,10 @@ func (g *gatewayService) deleteDiagnosisDataSourceDiagnosisHandler(w http.Respon
 	}
 	resp, err := g.diagnosisClient.DeleteDiagnosisDataSource(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -93,7 +105,10 @@ func (g *gatewayService) listWpscanSettingDiagnosisHandler(w http.ResponseWriter
 	}
 	resp, err := g.diagnosisClient.ListWpscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -111,7 +126,10 @@ func (g *gatewayService) getWpscanSettingDiagnosisHandler(w http.ResponseWriter,
 	}
 	resp, err := g.diagnosisClient.GetWpscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -129,7 +147,10 @@ func (g *gatewayService) putWpscanSettingDiagnosisHandler(w http.ResponseWriter,
 	}
 	resp, err := g.diagnosisClient.PutWpscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -147,7 +168,10 @@ func (g *gatewayService) deleteWpscanSettingDiagnosisHandler(w http.ResponseWrit
 	}
 	resp, err := g.diagnosisClient.DeleteWpscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -165,7 +189,10 @@ func (g *gatewayService) listPortscanSettingDiagnosisHandler(w http.ResponseWrit
 	}
 	resp, err := g.diagnosisClient.ListPortscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -183,7 +210,10 @@ func (g *gatewayService) getPortscanSettingDiagnosisHandler(w http.ResponseWrite
 	}
 	resp, err := g.diagnosisClient.GetPortscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -201,7 +231,10 @@ func (g *gatewayService) putPortscanSettingDiagnosisHandler(w http.ResponseWrite
 	}
 	resp, err := g.diagnosisClient.PutPortscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -219,7 +252,10 @@ func (g *gatewayService) deletePortscanSettingDiagnosisHandler(w http.ResponseWr
 	}
 	resp, err := g.diagnosisClient.DeletePortscanSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -237,7 +273,10 @@ func (g *gatewayService) listPortscanTargetDiagnosisHandler(w http.ResponseWrite
 	}
 	resp, err := g.diagnosisClient.ListPortscanTarget(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -255,7 +294,10 @@ func (g *gatewayService) getPortscanTargetDiagnosisHandler(w http.ResponseWriter
 	}
 	resp, err := g.diagnosisClient.GetPortscanTarget(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -273,7 +315,10 @@ func (g *gatewayService) putPortscanTargetDiagnosisHandler(w http.ResponseWriter
 	}
 	resp, err := g.diagnosisClient.PutPortscanTarget(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -291,7 +336,10 @@ func (g *gatewayService) deletePortscanTargetDiagnosisHandler(w http.ResponseWri
 	}
 	resp, err := g.diagnosisClient.DeletePortscanTarget(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -309,7 +357,10 @@ func (g *gatewayService) listApplicationScanDiagnosisHandler(w http.ResponseWrit
 	}
 	resp, err := g.diagnosisClient.ListApplicationScan(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -327,7 +378,10 @@ func (g *gatewayService) getApplicationScanDiagnosisHandler(w http.ResponseWrite
 	}
 	resp, err := g.diagnosisClient.GetApplicationScan(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -345,7 +399,10 @@ func (g *gatewayService) putApplicationScanDiagnosisHandler(w http.ResponseWrite
 	}
 	resp, err := g.diagnosisClient.PutApplicationScan(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -363,7 +420,10 @@ func (g *gatewayService) deleteApplicationScanDiagnosisHandler(w http.ResponseWr
 	}
 	resp, err := g.diagnosisClient.DeleteApplicationScan(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -381,7 +441,10 @@ func (g *gatewayService) listApplicationScanBasicSettingDiagnosisHandler(w http.
 	}
 	resp, err := g.diagnosisClient.ListApplicationScanBasicSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -399,7 +462,10 @@ func (g *gatewayService) getApplicationScanBasicSettingDiagnosisHandler(w http.R
 	}
 	resp, err := g.diagnosisClient.GetApplicationScanBasicSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -417,7 +483,10 @@ func (g *gatewayService) putApplicationScanBasicSettingDiagnosisHandler(w http.R
 	}
 	resp, err := g.diagnosisClient.PutApplicationScanBasicSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -435,7 +504,10 @@ func (g *gatewayService) deleteApplicationScanBasicSettingDiagnosisHandler(w htt
 	}
 	resp, err := g.diagnosisClient.DeleteApplicationScanBasicSetting(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
@@ -453,7 +525,10 @@ func (g *gatewayService) invokeScanDiagnosisHandler(w http.ResponseWriter, r *ht
 	}
 	resp, err := g.diagnosisClient.InvokeScan(ctx, req)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, grpcErrorMessage(ctx, err))
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
