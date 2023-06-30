@@ -261,6 +261,13 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 		})
 
+		r.Route("/datasource", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/get-attack-flow-analysis", svc.analyzeAttackFlowDatasourceHandler)
+			})
+		})
+
 		r.Route("/admin", func(r chi.Router) {
 			// only admin
 			r.Use(svc.authzOnlyAdmin)

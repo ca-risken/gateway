@@ -12,6 +12,7 @@ excludes:
   - IAMService.IsAuthorizedToken
   - ProjectService.IsActive
   - ReportService.CollectReportFinding
+  - ReportService.PurgeReportFinding
   - ProjectService.CleanProject
   ## datasource-api
   - AWSService.InvokeScanAll
