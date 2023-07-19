@@ -135,6 +135,27 @@ func (g *gatewayService) deleteGitleaksSettingCodeHandler(w http.ResponseWriter,
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listGitleaksCacheCodeHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.ListGitleaksCacheRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListGitleaksCacheRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.ListGitleaksCache(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) putDependencySettingCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.PutDependencySettingRequest{}

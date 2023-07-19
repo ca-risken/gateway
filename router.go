@@ -227,6 +227,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
 				r.Get("/list-github-setting", svc.listGitHubSettingCodeHandler)
+				r.Get("/list-gitleaks-cache", svc.listGitleaksCacheCodeHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/put-github-setting", svc.putGitHubSettingCodeHandler)
