@@ -15,6 +15,10 @@ const (
 	serviceName = "gateway"
 )
 
+var (
+	samplingRate float64 = 0.3000
+)
+
 func getFullServiceName() string {
 	return fmt.Sprintf("%s.%s", namespace, serviceName)
 }
@@ -68,9 +72,10 @@ func main() {
 	defer pc.Stop()
 
 	tc := &tracer.Config{
-		ServiceName: getFullServiceName(),
-		Environment: appConfig.EnvName,
-		Debug:       appConfig.TraceDebug,
+		ServiceName:  getFullServiceName(),
+		Environment:  appConfig.EnvName,
+		Debug:        appConfig.TraceDebug,
+		SamplingRate: &samplingRate,
 	}
 	tracer.Start(tc)
 	defer tracer.Stop()
