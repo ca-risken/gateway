@@ -2,10 +2,13 @@ excludes:
   # Ignore for not proxy
   ## core
   - AlertService.AnalyzeAlertAll
+  - AlertService.ListNotificationForInternal
   - FindingService.BatchListFinding
   - FindingService.PutFindingBatch
   - FindingService.PutResourceBatch
   - FindingService.ClearScore
+  - FindingService.UntagByResourceName
+  - FindingService.CleanOldResource
   - IAMService.AnalyzeTokenExpiration
   - IAMService.IsAuthorized
   - IAMService.IsAuthorizedAdmin
@@ -25,6 +28,7 @@ excludes:
   - GoogleService.InvokeScanAll
   - OsintService.InvokeScanAll
   - DataSourceService.CleanDataSource
+  - DataSourceService.NotifyScanError
   - CodeService.GetGitleaksCache
   - CodeService.PutGitleaksCache
   # Ignore for customized proxy

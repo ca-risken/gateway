@@ -593,6 +593,16 @@ upsert-alert:
 		--data '{"project_id":1001,"alert":{"alert_condition_id":1001,"description":"test_desc","severity":"high","project_id":1001,"activated":true}}' \
 		'http://localhost:8000/api/v1/alert/put-alert/'
 
+.PHONY: update-alert-first-viewed
+update-alert-first-viewed:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"alert_id":1001}' \
+		'http://localhost:8000/api/v1/alert/put-alert-first-viewed-at/'
+
 .PHONY: delete-alert
 delete-alert:
 	curl -is -XPOST \
