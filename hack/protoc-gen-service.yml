@@ -9,6 +9,7 @@ excludes:
   - FindingService.ClearScore
   - FindingService.UntagByResourceName
   - FindingService.CleanOldResource
+  - FindingService.GetAISummaryStream
   - IAMService.AnalyzeTokenExpiration
   - IAMService.IsAuthorized
   - IAMService.IsAuthorizedAdmin

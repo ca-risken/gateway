@@ -47,6 +47,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Get("/list-finding-setting", svc.listFindingSettingFindingHandler)
 			r.Get("/get-recommend", svc.getRecommendFindingHandler)
 			r.Get("/get-ai-summary", svc.getAISummaryFindingHandler)
+			r.Get("/get-ai-summary-stream", svc.getAISummaryStreamHandler)
 			r.Group(func(r chi.Router) {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/put-finding", svc.putFindingFindingHandler)
