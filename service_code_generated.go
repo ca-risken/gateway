@@ -198,6 +198,48 @@ func (g *gatewayService) deleteDependencySettingCodeHandler(w http.ResponseWrite
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) putCodeScanSettingCodeHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.PutCodeScanSettingRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutCodeScanSettingRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.PutCodeScanSetting(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) deleteCodeScanSettingCodeHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.DeleteCodeScanSettingRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "DeleteCodeScanSettingRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.DeleteCodeScanSetting(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) invokeScanGitleaksCodeHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &code.InvokeScanGitleaksRequest{}
@@ -230,6 +272,27 @@ func (g *gatewayService) invokeScanDependencyCodeHandler(w http.ResponseWriter, 
 		return
 	}
 	resp, err := g.codeClient.InvokeScanDependency(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) invokeScanCodeScanCodeHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &code.InvokeScanCodeScanRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "InvokeScanCodeScanRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.codeClient.InvokeScanCodeScan(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
