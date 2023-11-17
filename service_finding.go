@@ -56,3 +56,30 @@ func (g *gatewayService) getAISummaryStreamHandler(w http.ResponseWriter, r *htt
 		time.Sleep(1 * time.Millisecond)
 	}
 }
+
+func (g *gatewayService) putPendFindingHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &finding.PutPendFindingRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutPendFindingRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	user, err := getRequestUser(r)
+	if err != nil {
+		writeResponse(ctx, w, http.StatusUnauthorized, map[string]interface{}{errorJSONKey: errors.New("InvalidUser")})
+		return
+	}
+	req.PendFinding.PendUserId = user.userID
+	resp, err := g.findingClient.PutPendFinding(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}

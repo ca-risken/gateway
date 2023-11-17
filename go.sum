@@ -29,8 +29,8 @@ github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b h1:S
 github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b/go.mod h1:xldq3VZ7qomkI5vfpw8Y9qCVEFl8BrSvDr+sxbz32H4=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20230727031236-b35703d5c59d h1:d+QWOmwmL2YjVWmTlbabmhdCSTnDuiJWxSf8siQbSrM=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20230727031236-b35703d5c59d/go.mod h1:c6ENRTqNN5hOCB85fZHvEjMhDWt87dpN20Wz6j91InU=
-github.com/ca-risken/core v0.10.1-0.20231109134204-ad34e61f8734 h1:WMffkx1VySGu4B9YhDgi1/+b69R+rxhjYsw9t9cW2hg=
-github.com/ca-risken/core v0.10.1-0.20231109134204-ad34e61f8734/go.mod h1:6OB1QgAz4vMn5lzzRn1F8YWqQwZPrL8inD2mnr9Bvo4=
+github.com/ca-risken/core v0.10.1-0.20231116105507-76ffb0438f50 h1:9gpWaBV7tuefdoFYszCEwFUDwrYvtZCkjzqukBw+lgQ=
+github.com/ca-risken/core v0.10.1-0.20231116105507-76ffb0438f50/go.mod h1:6OB1QgAz4vMn5lzzRn1F8YWqQwZPrL8inD2mnr9Bvo4=
 github.com/ca-risken/datasource-api v0.10.1-0.20231109134221-c315b6c7f406 h1:2d+DF1AoON+7lKbeEX1rnfcNdV5cMoiNFUY2HbLMs3o=
 github.com/ca-risken/datasource-api v0.10.1-0.20231109134221-c315b6c7f406/go.mod h1:IU0g7OxF4FLaPIskQNx7SPwCMRaWskD+D5kVP9lZjPM=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

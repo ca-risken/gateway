@@ -366,27 +366,6 @@ func (g *gatewayService) getPendFindingFindingHandler(w http.ResponseWriter, r *
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putPendFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &finding.PutPendFindingRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutPendFindingRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.findingClient.PutPendFinding(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) deletePendFindingFindingHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &finding.DeletePendFindingRequest{}
