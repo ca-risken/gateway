@@ -56,7 +56,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/untag-finding", svc.untagFindingFindingHandler)
 				r.Post("/put-resource", svc.putResourceFindingHandler)
 				r.Post("/delete-resource", svc.deleteResourceFindingHandler)
-				r.Post("/put-pend-finding", svc.putPendFindingFindingHandler)
+				r.Post("/put-pend-finding", svc.putPendFindingHandler)
 				r.Post("/delete-pend-finding", svc.deletePendFindingFindingHandler)
 				r.Post("/put-finding-setting", svc.putFindingSettingFindingHandler)
 				r.Post("/delete-finding-setting", svc.deleteFindingSettingFindingHandler)

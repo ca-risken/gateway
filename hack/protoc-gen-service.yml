@@ -37,4 +37,5 @@ excludes:
   - IAMService.AuthenticateAccessToken
   - IAMService.PutAccessToken
   - ProjectService.CreateProject
+  - FindingService.PutPendFinding
   - AWSService.AttachDataSource
