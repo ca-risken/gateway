@@ -345,6 +345,14 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 	if u.accessTokenID == 0 || u.accessTokenProjectID == 0 {
 		return false
 	}
+	p := &requestProject{}
+	err := bind(p, r)
+	if err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
+	}
+	if p.ProjectID != 0 && p.ProjectID != u.accessTokenProjectID {
+		return false
+	}
 	req := &iam.IsAuthorizedTokenRequest{
 		AccessTokenId: u.accessTokenID,
 		ProjectId:     u.accessTokenProjectID,
