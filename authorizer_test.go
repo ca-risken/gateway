@@ -160,27 +160,39 @@ func TestAuthzProjectForToken(t *testing.T) {
 		mockErr      error
 	}{
 		{
-			name:         "OK",
-			inputUser:    &requestUser{accessTokenID: 123},
+			name:         "OK1",
+			inputUser:    &requestUser{accessTokenID: 123, accessTokenProjectID: 1},
 			inputProject: "project_id=1",
 			mockResp:     &iam.IsAuthorizedTokenResponse{Ok: true},
 			want:         true,
 		},
 		{
+			name:      "OK2",
+			inputUser: &requestUser{accessTokenID: 123, accessTokenProjectID: 1},
+			mockResp:  &iam.IsAuthorizedTokenResponse{Ok: true},
+			want:      true,
+		},
+		{
 			name:         "NG No token",
-			inputUser:    &requestUser{sub: "sub"},
+			inputUser:    &requestUser{sub: "sub", accessTokenProjectID: 1},
 			inputProject: "project_id=1",
 			want:         false,
 		},
 		{
 			name:         "NG Invalid project",
-			inputUser:    &requestUser{accessTokenID: 123},
-			inputProject: "project_id=aaa",
+			inputUser:    &requestUser{accessTokenID: 123, accessTokenProjectID: 0},
+			inputProject: "project_id=0",
+			want:         false,
+		},
+		{
+			name:         "NG Invalid project(unmatch)",
+			inputUser:    &requestUser{accessTokenID: 123, accessTokenProjectID: 1},
+			inputProject: "project_id=2",
 			want:         false,
 		},
 		{
 			name:         "NG IAM error",
-			inputUser:    &requestUser{accessTokenID: 123},
+			inputUser:    &requestUser{accessTokenID: 123, accessTokenProjectID: 1},
 			inputProject: "project_id=1",
 			want:         false,
 			mockErr:      errors.New("something error"),
@@ -190,7 +202,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
 				iamMock.On("IsAuthorizedToken", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
 			}
-			req, _ := http.NewRequest(http.MethodGet, "/api/v1/service/action?"+c.inputProject, nil)
+			req, _ := http.NewRequest(http.MethodGet, "/api/v1/service/action/?"+c.inputProject, nil)
 			got := svc.authzProjectForToken(c.inputUser, req)
 			if got != c.want {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)

@@ -27,7 +27,8 @@ type requestUser struct {
 	name   string
 
 	// program access
-	accessTokenID uint32
+	accessTokenID        uint32
+	accessTokenProjectID uint32
 }
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
@@ -183,7 +184,10 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			return
 		}
 		next.ServeHTTP(w, r.WithContext(
-			context.WithValue(ctx, userKey, &requestUser{accessTokenID: accessTokenID})))
+			context.WithValue(ctx, userKey, &requestUser{
+				accessTokenID:        accessTokenID,
+				accessTokenProjectID: projectID,
+			})))
 	}
 	return http.HandlerFunc(fn)
 }
@@ -338,7 +342,7 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 
 func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
-	if zero.IsZeroVal(u.accessTokenID) {
+	if u.accessTokenID == 0 || u.accessTokenProjectID == 0 {
 		return false
 	}
 	p := &requestProject{}
@@ -346,12 +350,12 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 	if err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
-	if zero.IsZeroVal(p.ProjectID) {
+	if p.ProjectID != 0 && p.ProjectID != u.accessTokenProjectID {
 		return false
 	}
 	req := &iam.IsAuthorizedTokenRequest{
 		AccessTokenId: u.accessTokenID,
-		ProjectId:     p.ProjectID,
+		ProjectId:     u.accessTokenProjectID,
 		ActionName:    getActionNameFromURI(r.URL.Path),
 		ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
 	}
