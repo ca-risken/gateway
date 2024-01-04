@@ -62,9 +62,14 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		Path:   "/",
 		Secure: r.Header.Get("X-Forwarded-Proto") == "https",
 	})
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{
-		"user_id": signinUser.userID,
-	})
+	resp := map[string]interface{}{}
+	if signinUser.userID != 0 {
+		resp["user_id"] = signinUser.userID
+	} else if signinUser.accessTokenID != 0 && signinUser.accessTokenProjectID != 0 {
+		resp["access_token_id"] = signinUser.accessTokenID
+		resp["project_id"] = signinUser.accessTokenProjectID
+	}
+	writeResponse(ctx, w, http.StatusOK, resp)
 }
 
 func (g *gatewayService) UpdateUserFromIdp(next http.Handler) http.Handler {
