@@ -874,7 +874,7 @@ request-project_role_notification:
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
 		--data '{"project_id":1001,"user_id":1001}' \
-		'http://localhost:8000/api/v1/alert/request-project-role-notification/'
+		'http://localhost:8000/api/v1/alert/request-project_role_notification/'
 
 
 .PHONY: get-report
