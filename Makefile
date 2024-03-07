@@ -865,6 +865,18 @@ delete-alert_cond_notification:
 		--data '{"alert_condition_id":1001,"notification_id":1001,"project_id":1001}' \
 		'http://localhost:8000/api/v1/alert/delete-condition_notification/'
 
+
+.PHONY: request-project-role-notification
+request-project-role-notification:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001,"user_id":1001}' \
+		'http://localhost:8000/api/v1/alert/request-project-role-notification/'
+
+
 .PHONY: get-report
 get-report:
 	curl -is -XGET \
