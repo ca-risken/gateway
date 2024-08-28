@@ -32,6 +32,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Use(svc.UpdateUserFromIdp)
 			r.Get("/", signinHandler)
 		})
+		r.Route("/signout", func(r chi.Router) {
+			r.Use(svc.UpdateUserFromIdp)
+			r.Get("/", signoutHandler)
+		})
 
 		r.Route("/finding", func(r chi.Router) {
 			r.Use(svc.authzWithProject)
