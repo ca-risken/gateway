@@ -9,6 +9,10 @@ import (
 	"github.com/ca-risken/common/pkg/logging"
 )
 
+const (
+	XSRF_TOKEN = "XSRF-TOKEN"
+)
+
 // signinHandler: OIDC proxy backend signin process.
 func signinHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -21,7 +25,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 	token := make([]byte, 24)
 	_, _ = rand.Read(token)
 	http.SetCookie(w, &http.Cookie{
-		Name:   "XSRF-TOKEN",
+		Name:   XSRF_TOKEN,
 		Value:  base64.RawURLEncoding.EncodeToString(token),
 		Path:   "/",
 		Secure: r.Header.Get("X-Forwarded-Proto") == "https",
@@ -39,7 +43,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // signoutHandler
-func signoutHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) signoutHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	signinUser, err := getRequestUser(r)
 	if err != nil {
@@ -48,26 +52,27 @@ func signoutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Remove all cookies
-	cookieList := []string{}
-	for _, cookie := range r.Cookies() {
-		c := &http.Cookie{
-			Name:     cookie.Name,
+	// Remove cookies
+	for _, cookie := range g.sessionCookieName {
+		http.SetCookie(w, &http.Cookie{
+			Name:     cookie,
 			Value:    "",
-			Path:     cookie.Path,
+			Path:     "/",
 			MaxAge:   -1,
 			Expires:  time.Unix(0, 0),
-			HttpOnly: cookie.HttpOnly,
-			Secure:   cookie.Secure,
-		}
-		http.SetCookie(w, c)
-		cookieList = append(cookieList, cookie.Name)
+			HttpOnly: true,
+			Secure:   r.Header.Get("X-Forwarded-Proto") == "https",
+		})
 	}
+	http.SetCookie(w, &http.Cookie{
+		Name:    XSRF_TOKEN,
+		Value:   "",
+		Path:    "/",
+		MaxAge:  -1,
+		Expires: time.Unix(0, 0),
+		Secure:  r.Header.Get("X-Forwarded-Proto") == "https",
+	})
 	appLogger.WithItems(ctx, logging.InfoLevel,
-		map[string]interface{}{
-			"user_id":         signinUser.userID,
-			"cleared_cookies": cookieList,
-		},
-		"Signout")
+		map[string]interface{}{"user_id": signinUser.userID}, "Signout")
 	writeResponse(ctx, w, http.StatusOK, nil)
 }

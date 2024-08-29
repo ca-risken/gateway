@@ -34,7 +34,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 		r.Route("/signout", func(r chi.Router) {
 			r.Use(svc.UpdateUserFromIdp)
-			r.Get("/", signoutHandler)
+			r.Get("/", svc.signoutHandler)
 		})
 
 		r.Route("/finding", func(r chi.Router) {

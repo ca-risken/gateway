@@ -84,7 +84,7 @@ func TestValidCSRFToken(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/test", nil)
 			req.Header.Add("X-XSRF-TOKEN", c.inputHeader)
-			req.AddCookie(&http.Cookie{Name: "XSRF-TOKEN", Value: c.inputCookie})
+			req.AddCookie(&http.Cookie{Name: XSRF_TOKEN, Value: c.inputCookie})
 			got := validCSRFToken(req)
 			if got != c.want {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)

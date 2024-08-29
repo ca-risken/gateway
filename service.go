@@ -30,22 +30,23 @@ const (
 )
 
 type gatewayService struct {
-	envName          string
-	port             string
-	uidHeader        string
-	oidcDataHeader   string
-	findingClient    finding.FindingServiceClient
-	iamClient        iam.IAMServiceClient
-	projectClient    project.ProjectServiceClient
-	alertClient      alert.AlertServiceClient
-	reportClient     report.ReportServiceClient
-	awsClient        aws.AWSServiceClient
-	osintClient      osint.OsintServiceClient
-	diagnosisClient  diagnosis.DiagnosisServiceClient
-	codeClient       code.CodeServiceClient
-	googleClient     google.GoogleServiceClient
-	claimsClient     claimsInterface
-	datasourceClient datasource.DataSourceServiceClient
+	envName           string
+	port              string
+	uidHeader         string
+	oidcDataHeader    string
+	sessionCookieName []string
+	findingClient     finding.FindingServiceClient
+	iamClient         iam.IAMServiceClient
+	projectClient     project.ProjectServiceClient
+	alertClient       alert.AlertServiceClient
+	reportClient      report.ReportServiceClient
+	awsClient         aws.AWSServiceClient
+	osintClient       osint.OsintServiceClient
+	diagnosisClient   diagnosis.DiagnosisServiceClient
+	codeClient        code.CodeServiceClient
+	googleClient      google.GoogleServiceClient
+	claimsClient      claimsInterface
+	datasourceClient  datasource.DataSourceServiceClient
 }
 
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
@@ -64,22 +65,23 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		return nil, err
 	}
 	return &gatewayService{
-		envName:          conf.EnvName,
-		port:             conf.Port,
-		uidHeader:        conf.UserIdentityHeader,
-		oidcDataHeader:   conf.OidcDataHeader,
-		findingClient:    finding.NewFindingServiceClient(coreConn),
-		iamClient:        iam.NewIAMServiceClient(coreConn),
-		projectClient:    project.NewProjectServiceClient(coreConn),
-		alertClient:      alert.NewAlertServiceClient(coreConn),
-		reportClient:     report.NewReportServiceClient(coreConn),
-		awsClient:        aws.NewAWSServiceClient(datasourceConn),
-		osintClient:      osint.NewOsintServiceClient(datasourceConn),
-		diagnosisClient:  diagnosis.NewDiagnosisServiceClient(datasourceConn),
-		codeClient:       code.NewCodeServiceClient(datasourceConn),
-		googleClient:     google.NewGoogleServiceClient(datasourceConn),
-		claimsClient:     newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
-		datasourceClient: datasource.NewDataSourceServiceClient(datasourceConn),
+		envName:           conf.EnvName,
+		port:              conf.Port,
+		uidHeader:         conf.UserIdentityHeader,
+		oidcDataHeader:    conf.OidcDataHeader,
+		sessionCookieName: conf.SessionCookieName,
+		findingClient:     finding.NewFindingServiceClient(coreConn),
+		iamClient:         iam.NewIAMServiceClient(coreConn),
+		projectClient:     project.NewProjectServiceClient(coreConn),
+		alertClient:       alert.NewAlertServiceClient(coreConn),
+		reportClient:      report.NewReportServiceClient(coreConn),
+		awsClient:         aws.NewAWSServiceClient(datasourceConn),
+		osintClient:       osint.NewOsintServiceClient(datasourceConn),
+		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(datasourceConn),
+		codeClient:        code.NewCodeServiceClient(datasourceConn),
+		googleClient:      google.NewGoogleServiceClient(datasourceConn),
+		claimsClient:      newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
+		datasourceClient:  datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil
 }
 

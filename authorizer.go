@@ -278,7 +278,7 @@ func validCSRFToken(r *http.Request) bool {
 	if headerToken == "" {
 		return false
 	}
-	cookieToken, err := r.Cookie("XSRF-TOKEN")
+	cookieToken, err := r.Cookie(XSRF_TOKEN)
 	if err != nil || cookieToken.Value == "" {
 		return false
 	}
