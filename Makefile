@@ -1346,4 +1346,58 @@ delete-finding-setting:
 		--data '{"project_id":1001, "finding_setting_id":1001}' \
 		'http://localhost:8000/api/v1/finding/delete-finding-setting/'
 
+.PHONY: list-azure-datasource
+list-azure-datasource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/azure/list-azure-datasource/'
+
+.PHONY: list-azure
+list-azure:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/azure/list-azure/?project_id=1001'
+
+.PHONY: get-rel-azure-datasource
+get-rel-azure-datasource:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/azure/get-rel-azure-datasource/?project_id=1001&azure_id=1001&azure_data_source_id=1001'
+
+.PHONY: put-azure
+put-azure:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "azure": {"azure_id":1002, "name":"test", "project_id":1001, "subscription_id":"test", "verification_code": "01234567"}}' \
+		'http://localhost:8000/api/v1/azure/put-azure/'
+
+.PHONY: delete-azure
+delete-azure:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "azure_id":1002}' \
+		'http://localhost:8000/api/v1/azure/delete-azure/'
+
+.PHONY: invoke-scan-azure
+invoke-scan-azure:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "azure_id":1001, "azure_data_source_id":1001}' \
+		'http://localhost:8000/api/v1/azure/invoke-scan-azure/'
+
 FAKE:

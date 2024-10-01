@@ -13,6 +13,7 @@ import (
 	"github.com/ca-risken/core/proto/project"
 	"github.com/ca-risken/core/proto/report"
 	"github.com/ca-risken/datasource-api/proto/aws"
+	"github.com/ca-risken/datasource-api/proto/azure"
 	"github.com/ca-risken/datasource-api/proto/code"
 	"github.com/ca-risken/datasource-api/proto/datasource"
 	"github.com/ca-risken/datasource-api/proto/diagnosis"
@@ -45,6 +46,7 @@ type gatewayService struct {
 	diagnosisClient   diagnosis.DiagnosisServiceClient
 	codeClient        code.CodeServiceClient
 	googleClient      google.GoogleServiceClient
+	azureClient       azure.AzureServiceClient
 	claimsClient      claimsInterface
 	datasourceClient  datasource.DataSourceServiceClient
 }
@@ -80,6 +82,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(datasourceConn),
 		codeClient:        code.NewCodeServiceClient(datasourceConn),
 		googleClient:      google.NewGoogleServiceClient(datasourceConn),
+		azureClient:       azure.NewAzureServiceClient(datasourceConn),
 		claimsClient:      newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
 		datasourceClient:  datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil

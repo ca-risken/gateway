@@ -277,6 +277,26 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 		})
 
+		r.Route("/azure", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				// project any
+				r.Get("/list-azure-datasource", svc.listAzureDataSourceAzureHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Get("/list-azure", svc.listAzureAzureHandler)
+				r.Get("/get-rel-azure-datasource", svc.getRelAzureDataSourceAzureHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/put-azure", svc.putAzureAzureHandler)
+					r.Post("/delete-azure", svc.deleteAzureAzureHandler)
+					r.Post("/attach-azure-datasource", svc.attachRelAzureDataSourceAzureHandler)
+					r.Post("/detach-azure-datasource", svc.detachRelAzureDataSourceAzureHandler)
+					r.Post("/invoke-scan-azure", svc.invokeScanAllAzureHandler)
+				})
+			})
+		})
+
 		r.Route("/datasource", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
