@@ -36,6 +36,7 @@ type gatewayService struct {
 	uidHeader         string
 	oidcDataHeader    string
 	sessionCookieName []string
+	sessionTimeoutSec int
 	findingClient     finding.FindingServiceClient
 	iamClient         iam.IAMServiceClient
 	projectClient     project.ProjectServiceClient
@@ -72,6 +73,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		uidHeader:         conf.UserIdentityHeader,
 		oidcDataHeader:    conf.OidcDataHeader,
 		sessionCookieName: conf.SessionCookieName,
+		sessionTimeoutSec: conf.SessionTimeoutSec,
 		findingClient:     finding.NewFindingServiceClient(coreConn),
 		iamClient:         iam.NewIAMServiceClient(coreConn),
 		projectClient:     project.NewProjectServiceClient(coreConn),

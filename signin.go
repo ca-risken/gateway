@@ -14,7 +14,7 @@ const (
 )
 
 // signinHandler: OIDC proxy backend signin process.
-func signinHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) signinHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	signinUser, err := getRequestUser(r)
 	if err != nil {
@@ -28,6 +28,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		Name:   XSRF_TOKEN,
 		Value:  base64.RawURLEncoding.EncodeToString(token),
 		Path:   "/",
+		MaxAge: g.sessionTimeoutSec,
 		Secure: r.Header.Get("X-Forwarded-Proto") == "https",
 	})
 	appLogger.WithItems(ctx, logging.InfoLevel, map[string]interface{}{"user_id": signinUser.userID}, "Signin")
