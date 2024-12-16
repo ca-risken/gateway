@@ -36,6 +36,7 @@ type AppConfig struct {
 	OidcDataHeader     string   `required:"true" split_words:"true" default:"x-amzn-oidc-data"`
 	IdpProviderName    []string `required:"true" split_words:"true" default:"YOUR_IDP1,YOUR_IDP2"`
 	SessionCookieName  []string `split_words:"true" default:"AWSELBAuthSessionCookie-0,AWSELBAuthSessionCookie-1"`
+	SessionTimeoutSec  int      `split_words:"true" default:"2592000"`
 	VerifyIDToken      bool     `split_words:"true" default:"false"`
 	UserIdpKey         string   `split_words:"true" default:"preferred_username"`
 	Region             string   `default:"ap-northeast-1"`

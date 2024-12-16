@@ -18,6 +18,9 @@ import (
 )
 
 func TestSigninHandler(t *testing.T) {
+	svc := gatewayService{
+		sessionTimeoutSec: 1,
+	}
 	cases := []struct {
 		name  string
 		input *requestUser
@@ -39,7 +42,7 @@ func TestSigninHandler(t *testing.T) {
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodGet, "/api/v1/signin", nil)
 			req = req.WithContext(context.WithValue(req.Context(), userKey, c.input))
-			signinHandler(rec, req)
+			svc.signinHandler(rec, req)
 			got := rec.Result().StatusCode
 			if got != c.want {
 				t.Fatalf("Unexpected responce. want=%d, got=%d", c.want, got)
@@ -428,7 +431,7 @@ func GetTestHandler() http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		_, err := w.Write([]byte("OK"))
 		if err != nil {
-			log.Fatalf(err.Error())
+			log.Fatal(err)
 		}
 	}
 	return http.HandlerFunc(fn)
