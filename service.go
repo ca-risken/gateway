@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/ca-risken/common/pkg/logging"
+	"github.com/ca-risken/core/proto/ai"
 	"github.com/ca-risken/core/proto/alert"
 	"github.com/ca-risken/core/proto/finding"
 	"github.com/ca-risken/core/proto/iam"
@@ -48,6 +49,7 @@ type gatewayService struct {
 	codeClient        code.CodeServiceClient
 	googleClient      google.GoogleServiceClient
 	azureClient       azure.AzureServiceClient
+	aiClient          ai.AIServiceClient
 	claimsClient      claimsInterface
 	datasourceClient  datasource.DataSourceServiceClient
 }
@@ -85,6 +87,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		codeClient:        code.NewCodeServiceClient(datasourceConn),
 		googleClient:      google.NewGoogleServiceClient(datasourceConn),
 		azureClient:       azure.NewAzureServiceClient(datasourceConn),
+		aiClient:          ai.NewAIServiceClient(coreConn),
 		claimsClient:      newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
 		datasourceClient:  datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil

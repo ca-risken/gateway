@@ -885,12 +885,23 @@ get-report:
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		'http://localhost:8000/api/v1/report/get-report/?project_id=1001'
 
+.PHONY: get-report-all
 get-report-all:
 	curl -is -XGET \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		'http://localhost:8000/api/v1/report/get-report-all/?project_id=1001'
+
+.PHONY: chat-ai
+chat-ai:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"question":"What mountain is the highest in the world?", "chat_history": [{"role":1, "content":"hello!"}, {"role":2, "content":"Hi, I am a chatbot."}]}' \
+		'http://localhost:8000/api/v1/ai/chat-ai/'
 
 .PHONY: list-aws
 list-aws:
