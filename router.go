@@ -168,6 +168,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 		})
 
+		r.Route("/ai", func(r chi.Router) {
+			r.Post("/chat-ai", svc.chatAIAiHandler)
+		})
+
 		r.Route("/aws", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)

@@ -1,11 +1,6 @@
-FROM golang:1.18.2 as builder
+FROM golang:1.18.2 AS builder
 WORKDIR /go/src/github.com/ca-risken/gateway/
 ADD *.go go.* ./
-ARG GITHUB_USER
-ARG GITHUB_TOKEN
-RUN echo "machine github.com" > ~/.netrc
-RUN echo "login $GITHUB_USER" >> ~/.netrc
-RUN echo "password $GITHUB_TOKEN" >> ~/.netrc
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -buildvcs=false -o /go/bin/
 
