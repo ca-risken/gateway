@@ -188,11 +188,9 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 
 		if isHumanAccess(u) {
 			// Human Access
-			if !g.authzProject(u, r) {
-				if !g.authzOrganization(u, r) {
-					http.Error(w, "Unauthorized the project resource for human access", http.StatusForbidden)
-					return
-				}
+			if !g.authzProject(u, r) && !g.authzOrganization(u, r) {
+				http.Error(w, "Unauthorized the project resource for human access", http.StatusForbidden)
+				return
 			}
 		} else {
 			// Program Access
