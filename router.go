@@ -188,6 +188,35 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 		})
 
+		r.Route("/organization", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType(contenTypeJSON))
+				r.Post("/create-organization", svc.createOrganizationHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithOrganization)
+				r.Get("/list-organization", svc.ListOrganizationHandler)
+				r.Get("/list-project-in-organization", svc.ListProjectInOrganizationHandler)
+				r.Get("/list-organization-role", svc.ListOrganizationRoleHandler)
+				r.Get("/get-organization-role", svc.ListProjectInOrganizationRoleHandler)
+				r.Get("/list-organization-policy", svc.ListOrganizationPolicyHandler)
+				r.Get("/get-organization-policy", svc.ListProjectInOrganizationPolicyHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/update-organization", svc.updateOrganizationHandler)
+					r.Post("/put-organization-role", svc.putOrganizationRoleHandler)
+					r.Post("/put-organization-policy", svc.putOrganizationPolicyHandler)
+					r.Post("/attach-organization-role", svc.attachOrganizationRoleHandler)
+					r.Post("/attach-organization-policy", svc.attachOrganizationPolicyHandler)
+					r.Post("/detach-organization-role", svc.detachOrganizationRoleHandler)
+					r.Post("/detach-organization-policy", svc.detachOrganizationPolicyHandler)
+					r.Post("/delete-organization", svc.deleteOrganizationHandler)
+					r.Post("/delete-organization-role", svc.deleteOrganizationRoleHandler)
+					r.Post("/delete-organization-policy", svc.deleteOrganizationPolicyHandler)
+				})
+			})
+		})
+
 		r.Route("/osint", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
