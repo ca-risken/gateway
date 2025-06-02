@@ -113,12 +113,16 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
-				r.Use(middleware.AllowContentType(contenTypeJSON))
-				r.Post("/update-project", svc.updateProjectProjectHandler)
-				r.Post("/delete-project", svc.deleteProjectProjectHandler)
-				r.Post("/tag-project", svc.tagProjectProjectHandler)
-				r.Post("/untag-project", svc.untagProjectProjectHandler)
+				r.Get("/list-organization-invitation", svc.ListOrganizationInvitationHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/update-project", svc.updateProjectProjectHandler)
+					r.Post("/delete-project", svc.deleteProjectProjectHandler)
+					r.Post("/tag-project", svc.tagProjectProjectHandler)
+					r.Post("/untag-project", svc.untagProjectProjectHandler)
+				})
 			})
+
 		})
 
 		r.Route("/alert", func(r chi.Router) {
@@ -184,6 +188,38 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/invoke-scan", svc.invokeScanAwsHandler)
 					r.Post("/attach-datasource", svc.attachDataSourceHandler)
 					r.Post("/detach-datasource", svc.detachDataSourceAwsHandler)
+				})
+			})
+		})
+
+		r.Route("/organization", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType(contenTypeJSON))
+				r.Post("/create-organization", svc.createOrganizationHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithOrganization)
+				r.Get("/list-organization", svc.ListOrganizationHandler)
+				r.Get("/list-project-in-organization", svc.ListProjectInOrganizationHandler)
+				r.Get("/list-organization-role", svc.ListOrganizationRoleHandler)
+				r.Get("/get-organization-role", svc.ListProjectInOrganizationRoleHandler)
+				r.Get("/list-organization-policy", svc.ListOrganizationPolicyHandler)
+				r.Get("/get-organization-policy", svc.ListProjectInOrganizationPolicyHandler)
+				r.Get("/list-organization-invitation", svc.ListOrganizationInvitationHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/update-organization", svc.updateOrganizationHandler)
+					r.Post("/put-organization-role", svc.putOrganizationRoleHandler)
+					r.Post("/put-organization-policy", svc.putOrganizationPolicyHandler)
+					r.Post("/attach-organization-role", svc.attachOrganizationRoleHandler)
+					r.Post("/attach-organization-policy", svc.attachOrganizationPolicyHandler)
+					r.Post("/detach-organization-role", svc.detachOrganizationRoleHandler)
+					r.Post("/detach-organization-policy", svc.detachOrganizationPolicyHandler)
+					r.Post("/delete-organization", svc.deleteOrganizationHandler)
+					r.Post("/delete-organization-role", svc.deleteOrganizationRoleHandler)
+					r.Post("/delete-organization-policy", svc.deleteOrganizationPolicyHandler)
+					r.Post("/put-organization-invitation", svc.putOrganizationInvitationHandler)
+					r.Post("/delete-organization-invitation", svc.deleteOrganizationInvitationHandler)
 				})
 			})
 		})
