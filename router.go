@@ -113,7 +113,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
-				r.Get("/list-project-invitation", svc.ListProjectInvitationHandler)
+				r.Get("/list-organization-invitation", svc.ListOrganizationInvitationHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/update-project", svc.updateProjectProjectHandler)
