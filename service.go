@@ -11,6 +11,8 @@ import (
 	"github.com/ca-risken/core/proto/alert"
 	"github.com/ca-risken/core/proto/finding"
 	"github.com/ca-risken/core/proto/iam"
+
+	// orgiam "github.com/ca-risken/core/proto/organization_iam"
 	"github.com/ca-risken/core/proto/project"
 	"github.com/ca-risken/core/proto/report"
 	"github.com/ca-risken/datasource-api/proto/aws"
@@ -40,18 +42,19 @@ type gatewayService struct {
 	sessionTimeoutSec int
 	findingClient     finding.FindingServiceClient
 	iamClient         iam.IAMServiceClient
-	projectClient     project.ProjectServiceClient
-	alertClient       alert.AlertServiceClient
-	reportClient      report.ReportServiceClient
-	awsClient         aws.AWSServiceClient
-	osintClient       osint.OsintServiceClient
-	diagnosisClient   diagnosis.DiagnosisServiceClient
-	codeClient        code.CodeServiceClient
-	googleClient      google.GoogleServiceClient
-	azureClient       azure.AzureServiceClient
-	aiClient          ai.AIServiceClient
-	claimsClient      claimsInterface
-	datasourceClient  datasource.DataSourceServiceClient
+	// organizationIamClient orgiam.OrganizationIAMServiceClient
+	projectClient    project.ProjectServiceClient
+	alertClient      alert.AlertServiceClient
+	reportClient     report.ReportServiceClient
+	awsClient        aws.AWSServiceClient
+	osintClient      osint.OsintServiceClient
+	diagnosisClient  diagnosis.DiagnosisServiceClient
+	codeClient       code.CodeServiceClient
+	googleClient     google.GoogleServiceClient
+	azureClient      azure.AzureServiceClient
+	aiClient         ai.AIServiceClient
+	claimsClient     claimsInterface
+	datasourceClient datasource.DataSourceServiceClient
 }
 
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
@@ -78,18 +81,19 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		sessionTimeoutSec: conf.SessionTimeoutSec,
 		findingClient:     finding.NewFindingServiceClient(coreConn),
 		iamClient:         iam.NewIAMServiceClient(coreConn),
-		projectClient:     project.NewProjectServiceClient(coreConn),
-		alertClient:       alert.NewAlertServiceClient(coreConn),
-		reportClient:      report.NewReportServiceClient(coreConn),
-		awsClient:         aws.NewAWSServiceClient(datasourceConn),
-		osintClient:       osint.NewOsintServiceClient(datasourceConn),
-		diagnosisClient:   diagnosis.NewDiagnosisServiceClient(datasourceConn),
-		codeClient:        code.NewCodeServiceClient(datasourceConn),
-		googleClient:      google.NewGoogleServiceClient(datasourceConn),
-		azureClient:       azure.NewAzureServiceClient(datasourceConn),
-		aiClient:          ai.NewAIServiceClient(coreConn),
-		claimsClient:      newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
-		datasourceClient:  datasource.NewDataSourceServiceClient(datasourceConn),
+		// organizationIamClient: orgiam.NewOrganizationIAMServiceClient(coreConn),
+		projectClient:    project.NewProjectServiceClient(coreConn),
+		alertClient:      alert.NewAlertServiceClient(coreConn),
+		reportClient:     report.NewReportServiceClient(coreConn),
+		awsClient:        aws.NewAWSServiceClient(datasourceConn),
+		osintClient:      osint.NewOsintServiceClient(datasourceConn),
+		diagnosisClient:  diagnosis.NewDiagnosisServiceClient(datasourceConn),
+		codeClient:       code.NewCodeServiceClient(datasourceConn),
+		googleClient:     google.NewGoogleServiceClient(datasourceConn),
+		azureClient:      azure.NewAzureServiceClient(datasourceConn),
+		aiClient:         ai.NewAIServiceClient(coreConn),
+		claimsClient:     newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
+		datasourceClient: datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil
 }
 
