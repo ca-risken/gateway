@@ -188,7 +188,7 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 
 		if isHumanAccess(u) {
 			// Human Access
-			if !g.authzProject(u, r) && !g.authzOrganization(u, r) {
+			if !(g.authzProject(u, r) || g.authzOrganization(u, r)) {
 				http.Error(w, "Unauthorized the project resource for human access", http.StatusForbidden)
 				return
 			}
@@ -446,7 +446,6 @@ func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool
 		UserId:         u.userID,
 		OrganizationId: o.OrganizationID,
 		ActionName:     getActionNameFromURI(r.URL.Path),
-		ResourceName:   getServiceNameFromURI(r.URL.Path) + "/resource_any",
 	}
 	resp, err := g.organizationIamClient.IsAuthorized(ctx, req)
 	if err != nil {
