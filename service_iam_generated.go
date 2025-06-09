@@ -51,6 +51,27 @@ func (g *gatewayService) getUserIamHandler(w http.ResponseWriter, r *http.Reques
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) updateUserAdminIamHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &iam.UpdateUserAdminRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateUserAdminRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.iamClient.UpdateUserAdmin(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) listRoleIamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &iam.ListRoleRequest{}

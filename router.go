@@ -319,6 +319,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/attach-admin-role", svc.attachAdminRoleHandler)
 				r.Post("/detach-admin-role", svc.detachAdminRoleHandler)
+				r.Post("/update-user-admin", svc.updateUserAdminIamHandler)
 			})
 		})
 	})
