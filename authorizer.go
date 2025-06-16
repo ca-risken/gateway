@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/ca-risken/core/proto/iam"
+	"github.com/ca-risken/core/proto/organization_iam"
 	"github.com/vikyd/zero"
 )
 
@@ -442,12 +443,12 @@ func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool
 	if o.OrganizationID == 0 {
 		return false
 	}
-	req := &orgiam.IsAuthorizedRequest{
+	req := &organization_iam.IsAuthorizedOrganizationRequest{
 		UserId:         u.userID,
 		OrganizationId: o.OrganizationID,
 		ActionName:     getActionNameFromURI(r.URL.Path),
 	}
-	resp, err := g.organizationIamClient.IsAuthorized(ctx, req)
+	resp, err := g.organization_iamClient.IsAuthorizedOrganization(ctx, req)
 	if err != nil {
 		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganization request, request=%+v, err=%+v", req, err)
 		return false
