@@ -193,13 +193,13 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 
 		r.Route("/organization", func(r chi.Router) {
+			r.Get("/list-organization", svc.listOrganizationOrganizationHandler)
 			r.Group(func(r chi.Router) {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/create-organization", svc.createOrganizationOrganizationHandler)
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithOrganization)
-				r.Get("/list-organization", svc.listOrganizationOrganizationHandler)
 				r.Get("/list-project-in-organization", svc.listProjectsInOrganizationOrganizationHandler)
 				r.Get("/list-organization-invitation", svc.listOrganizationInvitationOrganizationHandler)
 				r.Get("/list-organization-role", svc.listOrganizationRoleOrganization_iamHandler)
