@@ -120,6 +120,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-project", svc.deleteProjectProjectHandler)
 					r.Post("/tag-project", svc.tagProjectProjectHandler)
 					r.Post("/untag-project", svc.untagProjectProjectHandler)
+					r.Post("/reply-organization-invitation", svc.replyOrganizationInvitationOrganizationHandler)
 				})
 			})
 
