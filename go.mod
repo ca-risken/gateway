@@ -2,8 +2,6 @@ module github.com/ca-risken/gateway
 
 go 1.23.3
 
-toolchain go1.24.2
-
 require (
 	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
