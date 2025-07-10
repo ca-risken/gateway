@@ -201,7 +201,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithOrganization)
-				r.Get("/list-project-in-organization", svc.listProjectsInOrganizationOrganizationHandler)
 				r.Get("/list-organization-invitation", svc.listOrganizationInvitationOrganizationHandler)
 				r.Get("/list-organization-role", svc.listOrganizationRoleOrganization_iamHandler)
 				r.Get("/get-organization-role", svc.getOrganizationRoleOrganization_iamHandler)
@@ -213,7 +212,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/put-organization-invitation", svc.putOrganizationInvitationOrganizationHandler)
 					r.Post("/delete-organization", svc.deleteOrganizationOrganizationHandler)
 					r.Post("/delete-organization-invitation", svc.deleteOrganizationInvitationOrganizationHandler)
-					r.Post("/remove-projects-in-organization", svc.removeProjectsInOrganizationOrganizationHandler)
 					r.Post("/put-organization-role", svc.putOrganizationRoleOrganization_iamHandler)
 					r.Post("/put-organization-policy", svc.putOrganizationPolicyOrganization_iamHandler)
 					r.Post("/attach-organization-role", svc.attachOrganizationRoleOrganization_iamHandler)

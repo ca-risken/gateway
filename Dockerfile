@@ -1,4 +1,4 @@
-FROM golang:1.18.2 AS builder
+FROM golang:1.23.3 AS builder
 WORKDIR /go/src/github.com/ca-risken/gateway/
 ADD *.go go.* ./
 RUN go mod download
