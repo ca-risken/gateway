@@ -432,7 +432,7 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 
 func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
-	if zero.IsZeroVal(u.userID) {
+	if u.userID == 0 {
 		return false
 	}
 	o := &requestOrganization{}
