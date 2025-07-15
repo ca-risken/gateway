@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/ca-risken/core/proto/iam"
+	"github.com/ca-risken/core/proto/organization_iam"
 	"github.com/vikyd/zero"
 )
 
@@ -232,6 +233,40 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
+func (g *gatewayService) authzWithOrganization(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		buf, err := io.ReadAll(r.Body)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
+			http.Error(w, "Could not read body", http.StatusInternalServerError)
+			return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+
+		u, err := getRequestUser(r)
+		if err != nil {
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
+			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+
+		if !isHumanAccess(u) {
+			http.Error(w, "Organization API does not support program access", http.StatusForbidden)
+			return
+		}
+
+		if !g.authzOrganization(u, r) {
+			http.Error(w, "Unauthorized the organization resource", http.StatusForbidden)
+			return
+		}
+
+		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
 func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -287,6 +322,10 @@ func validCSRFToken(r *http.Request) bool {
 
 type requestProject struct {
 	ProjectID uint32 `json:"project_id"`
+}
+
+type requestOrganization struct {
+	OrganizationID uint32 `json:"organization_id"`
 }
 
 func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
@@ -386,6 +425,32 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 	}
 	if !resp.Ok {
 		appLogger.Debugf(ctx, "user=%d is not Admin, request=%+v", u.userID, req)
+		return false
+	}
+	return resp.Ok
+}
+
+func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool {
+	ctx := r.Context()
+	if u.userID == 0 {
+		return false
+	}
+	o := &requestOrganization{}
+	err := bind(o, r)
+	if err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
+	}
+	if o.OrganizationID == 0 {
+		return false
+	}
+	req := &organization_iam.IsAuthorizedOrganizationRequest{
+		UserId:         u.userID,
+		OrganizationId: o.OrganizationID,
+		ActionName:     getActionNameFromURI(r.URL.Path),
+	}
+	resp, err := g.organization_iamClient.IsAuthorizedOrganization(ctx, req)
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganization request, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok

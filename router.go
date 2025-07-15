@@ -113,12 +113,17 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
-				r.Use(middleware.AllowContentType(contenTypeJSON))
-				r.Post("/update-project", svc.updateProjectProjectHandler)
-				r.Post("/delete-project", svc.deleteProjectProjectHandler)
-				r.Post("/tag-project", svc.tagProjectProjectHandler)
-				r.Post("/untag-project", svc.untagProjectProjectHandler)
+				r.Get("/list-organization-invitation", svc.listOrganizationInvitationOrganizationHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/update-project", svc.updateProjectProjectHandler)
+					r.Post("/delete-project", svc.deleteProjectProjectHandler)
+					r.Post("/tag-project", svc.tagProjectProjectHandler)
+					r.Post("/untag-project", svc.untagProjectProjectHandler)
+					r.Post("/reply-organization-invitation", svc.replyOrganizationInvitationOrganizationHandler)
+				})
 			})
+
 		})
 
 		r.Route("/alert", func(r chi.Router) {
@@ -184,6 +189,37 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/invoke-scan", svc.invokeScanAwsHandler)
 					r.Post("/attach-datasource", svc.attachDataSourceHandler)
 					r.Post("/detach-datasource", svc.detachDataSourceAwsHandler)
+				})
+			})
+		})
+
+		r.Route("/organization", func(r chi.Router) {
+			r.Get("/list-organization", svc.listOrganizationOrganizationHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType(contenTypeJSON))
+				r.Post("/create-organization", svc.createOrganizationOrganizationHandler)
+			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithOrganization)
+				r.Get("/list-organization-invitation", svc.listOrganizationInvitationOrganizationHandler)
+				r.Get("/list-organization-role", svc.listOrganizationRoleOrganization_iamHandler)
+				r.Get("/get-organization-role", svc.getOrganizationRoleOrganization_iamHandler)
+				r.Get("/list-organization-policy", svc.listOrganizationPolicyOrganization_iamHandler)
+				r.Get("/get-organization-policy", svc.getOrganizationPolicyOrganization_iamHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/update-organization", svc.updateOrganizationOrganizationHandler)
+					r.Post("/put-organization-invitation", svc.putOrganizationInvitationOrganizationHandler)
+					r.Post("/delete-organization", svc.deleteOrganizationOrganizationHandler)
+					r.Post("/delete-organization-invitation", svc.deleteOrganizationInvitationOrganizationHandler)
+					r.Post("/put-organization-role", svc.putOrganizationRoleOrganization_iamHandler)
+					r.Post("/put-organization-policy", svc.putOrganizationPolicyOrganization_iamHandler)
+					r.Post("/attach-organization-role", svc.attachOrganizationRoleOrganization_iamHandler)
+					r.Post("/attach-organization-policy", svc.attachOrganizationPolicyOrganization_iamHandler)
+					r.Post("/detach-organization-role", svc.detachOrganizationRoleOrganization_iamHandler)
+					r.Post("/detach-organization-policy", svc.detachOrganizationPolicyOrganization_iamHandler)
+					r.Post("/delete-organization-role", svc.deleteOrganizationRoleOrganization_iamHandler)
+					r.Post("/delete-organization-policy", svc.deleteOrganizationPolicyOrganization_iamHandler)
 				})
 			})
 		})
