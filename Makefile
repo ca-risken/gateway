@@ -297,11 +297,11 @@ is-admin:
 .PHONY: put-user
 put-user:
 	curl -is -XPOST \
-		--header 'x-amzn-oidc-identity: alice' \
+		--header 'x-amzn-oidc-identity: carol' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"user":{"sub":"sub", "name":"nm", "activated":true}}' \
+		--data '{"user":{"sub":"carol", "name":"carol", "activated":true, "user_idp_key":"carol"}}' \
 		'http://localhost:8000/api/v1/iam/put-user/'
 
 .PHONY: list-role
