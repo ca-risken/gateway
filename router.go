@@ -201,6 +201,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithOrganization)
+				r.Get("/list-organization-finding", svc.listFindingFindingHandler)
 				r.Get("/list-organization-invitation", svc.listOrganizationInvitationOrganizationHandler)
 				r.Get("/list-organization-role", svc.listOrganizationRoleOrganization_iamHandler)
 				r.Get("/get-organization-role", svc.getOrganizationRoleOrganization_iamHandler)
