@@ -14,6 +14,7 @@ excludes:
   - IAMService.IsAuthorized
   - IAMService.IsAuthorizedAdmin
   - IAMService.IsAuthorizedToken
+  - IAMService.GetUserByUserIdpKey
   - ProjectService.IsActive
   - ReportService.CollectReportFinding
   - ReportService.PurgeReportFinding
