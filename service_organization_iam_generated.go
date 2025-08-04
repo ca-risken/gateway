@@ -135,27 +135,6 @@ func (g *gatewayService) detachOrganizationRoleOrganization_iamHandler(w http.Re
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) attachOrganizationRoleByOrganizationUserReservedOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &organization_iam.AttachOrganizationRoleByOrganizationUserReservedRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "AttachOrganizationRoleByOrganizationUserReservedRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.organization_iamClient.AttachOrganizationRoleByOrganizationUserReserved(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) listOrganizationPolicyOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.ListOrganizationPolicyRequest{}
@@ -272,27 +251,6 @@ func (g *gatewayService) detachOrganizationPolicyOrganization_iamHandler(w http.
 		return
 	}
 	resp, err := g.organization_iamClient.DetachOrganizationPolicy(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) isAuthorizedOrganizationOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &organization_iam.IsAuthorizedOrganizationRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "IsAuthorizedOrganizationRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.organization_iamClient.IsAuthorizedOrganization(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)

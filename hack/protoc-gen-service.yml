@@ -19,6 +19,8 @@ excludes:
   - ReportService.CollectReportFinding
   - ReportService.PurgeReportFinding
   - ProjectService.CleanProject
+  - OrganizationIAMService.IsAuthorizedOrganization
+  - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
