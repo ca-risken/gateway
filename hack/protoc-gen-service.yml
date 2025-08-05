@@ -14,10 +14,13 @@ excludes:
   - IAMService.IsAuthorized
   - IAMService.IsAuthorizedAdmin
   - IAMService.IsAuthorizedToken
+  - IAMService.GetUserByUserIdpKey
   - ProjectService.IsActive
   - ReportService.CollectReportFinding
   - ReportService.PurgeReportFinding
   - ProjectService.CleanProject
+  - OrganizationIAMService.IsAuthorizedOrganization
+  - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
