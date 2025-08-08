@@ -877,21 +877,47 @@ request-project-role-notification:
 		'http://localhost:8000/api/v1/alert/request-project-role-notification/'
 
 
+.PHONY: get-report-finding
+get-report-finding:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/report/get-report-finding/?project_id=1001'
+
+.PHONY: get-report-finding-all
+get-report-finding-all:
+	curl -is -XGET \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		'http://localhost:8000/api/v1/report/get-report-finding-all/?project_id=1001'
+
 .PHONY: get-report
 get-report:
 	curl -is -XGET \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/report/get-report/?project_id=1001'
+		'http://localhost:8000/api/v1/report/get-report/?project_id=1001&report_id=1001'
 
-.PHONY: get-report-all
-get-report-all:
+.PHONY: list-report
+list-report:
 	curl -is -XGET \
 		--header 'x-amzn-oidc-identity: alice' \
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
-		'http://localhost:8000/api/v1/report/get-report-all/?project_id=1001'
+		'http://localhost:8000/api/v1/report/list-report/?project_id=1001'
+
+.PHONY: put-report
+put-report:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "name":"report-name", "type":"Markdown", "status":"OK", "content":"# title"}' \
+		'http://localhost:8000/api/v1/report/put-report/'
 
 .PHONY: chat-ai
 chat-ai:
@@ -902,6 +928,16 @@ chat-ai:
 		--header 'Content-Type: application/json' \
 		--data '{"question":"What mountain is the highest in the world?", "chat_history": [{"role":1, "content":"hello!"}, {"role":2, "content":"Hi, I am a chatbot."}]}' \
 		'http://localhost:8000/api/v1/ai/chat-ai/'
+
+.PHONY: generate-report
+generate-report:
+	curl -is -XPOST \
+		--header 'x-amzn-oidc-identity: alice' \
+		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
+		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
+		--header 'Content-Type: application/json' \
+		--data '{"project_id":1001, "name":"report-name", "prompt":"直近1ヶ月で生成されたAWSのFindingレポートを作成してください。"}' \
+		'http://localhost:8000/api/v1/ai/generate-report/'
 
 .PHONY: list-aws
 list-aws:
