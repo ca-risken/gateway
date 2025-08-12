@@ -216,6 +216,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/get-organization-role", svc.getOrganizationRoleOrganization_iamHandler)
 				r.Get("/list-organization-policy", svc.listOrganizationPolicyOrganization_iamHandler)
 				r.Get("/get-organization-policy", svc.getOrganizationPolicyOrganization_iamHandler)
+				r.Get("/list-organization-user-reserved", svc.listOrganizationUserReservedOrganization_iamHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/update-organization", svc.updateOrganizationOrganizationHandler)
@@ -230,6 +231,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/detach-organization-policy", svc.detachOrganizationPolicyOrganization_iamHandler)
 					r.Post("/delete-organization-role", svc.deleteOrganizationRoleOrganization_iamHandler)
 					r.Post("/delete-organization-policy", svc.deleteOrganizationPolicyOrganization_iamHandler)
+					r.Post("/delete-organization-user-reserved", svc.deleteOrganizationUserReservedOrganization_iamHandler)
+					r.Post("/put-organization-user-reserved", svc.putOrganizationUserReservedOrganization_iamHandler)
 				})
 			})
 		})
