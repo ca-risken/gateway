@@ -35,10 +35,15 @@ github.com/ca-risken/common/pkg/rpc v0.0.0-20220601065422-5b97bd6efc9b h1:zKrHCx
 github.com/ca-risken/common/pkg/rpc v0.0.0-20220601065422-5b97bd6efc9b/go.mod h1:fnvFF8ESVirs5LV36leyFKf3FbuqjLDhJnipGJgDZtA=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20230727031236-b35703d5c59d h1:d+QWOmwmL2YjVWmTlbabmhdCSTnDuiJWxSf8siQbSrM=
 github.com/ca-risken/common/pkg/tracer v0.0.0-20230727031236-b35703d5c59d/go.mod h1:c6ENRTqNN5hOCB85fZHvEjMhDWt87dpN20Wz6j91InU=
+<<<<<<< HEAD
 github.com/ca-risken/core v0.16.1-0.20250804082627-6b97ec1cb49d h1:7uvFjVMcOZccA3L4nT/e3emVONqbzWs0WaDS31nAhAA=
 github.com/ca-risken/core v0.16.1-0.20250804082627-6b97ec1cb49d/go.mod h1:hKlz8v1FofEEPK0AMerb8itPJdf6iRoB7C5ja9qaJ6o=
 github.com/ca-risken/core v0.16.1-0.20250812013345-92d22693f0f8 h1:Yg44k+5sAPUxxSYQ6Zo8HbpYntqYmE0arcLJrdL9ZtA=
 github.com/ca-risken/core v0.16.1-0.20250812013345-92d22693f0f8/go.mod h1:hKlz8v1FofEEPK0AMerb8itPJdf6iRoB7C5ja9qaJ6o=
+=======
+github.com/ca-risken/core v0.16.1-0.20250807231451-c02cec79311b h1:wJbyBdi34XiDelKyo+W8/DgzLsL5fsNJXrTJK5l45LI=
+github.com/ca-risken/core v0.16.1-0.20250807231451-c02cec79311b/go.mod h1:hKlz8v1FofEEPK0AMerb8itPJdf6iRoB7C5ja9qaJ6o=
+>>>>>>> origin/master
 github.com/ca-risken/datasource-api v0.14.1-0.20250507090244-76e8ac1b1c07 h1:vtnOKOe0Ft1rW2XhGjGKLoBkdqEXJsCFGWAu9orH2ww=
 github.com/ca-risken/datasource-api v0.14.1-0.20250507090244-76e8ac1b1c07/go.mod h1:VTWGp3qSrjhb9NRO2R1SbsU4ZF3LqerGuwhF8VyWDgw=
 github.com/cenkalti/backoff/v4 v4.2.0 h1:HN5dHm3WBOgndBH6E8V0q2jIYIR3s9yglV8k/+MN3u4=
