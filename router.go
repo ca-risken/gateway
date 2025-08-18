@@ -66,6 +66,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-finding-setting", svc.deleteFindingSettingFindingHandler)
 				r.Post("/put-recommend", svc.putRecommendFindingHandler)
 			})
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithOrganization)
+				r.Get("/list-finding-for-org", svc.listFindingForOrgFindingHandler)
+			})
 		})
 
 		r.Route("/iam", func(r chi.Router) {
@@ -201,7 +205,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithOrganization)
-				r.Get("/list-organization-finding", svc.listFindingFindingHandler)
 				r.Get("/list-organization-invitation", svc.listOrganizationInvitationOrganizationHandler)
 				r.Get("/list-organization-role", svc.listOrganizationRoleOrganization_iamHandler)
 				r.Get("/get-organization-role", svc.getOrganizationRoleOrganization_iamHandler)
