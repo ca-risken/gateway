@@ -170,17 +170,27 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		r.Route("/report", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
-				r.Get("/get-report", svc.getReportFindingReportHandler)
+				r.Get("/get-report-finding", svc.getReportFindingReportHandler)
+				r.Get("/get-report", svc.getReportReportHandler)
+				r.Get("/list-report", svc.listReportReportHandler)
+				r.Group(func(r chi.Router) {
+					r.Use(middleware.AllowContentType(contenTypeJSON))
+					r.Post("/put-report", svc.putReportReportHandler)
+				})
 			})
 			r.Group(func(r chi.Router) {
 				// Admin API
 				r.Use(svc.authzOnlyAdmin)
-				r.Get("/get-report-all", svc.getReportFindingAllReportHandler)
+				r.Get("/get-report-finding-all", svc.getReportFindingAllReportHandler)
 			})
 		})
 
 		r.Route("/ai", func(r chi.Router) {
 			r.Post("/chat-ai", svc.chatAIAiHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithProject)
+				r.Post("/generate-report", svc.generateReportAiHandler)
+			})
 		})
 
 		r.Route("/aws", func(r chi.Router) {
@@ -212,6 +222,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/get-organization-role", svc.getOrganizationRoleOrganization_iamHandler)
 				r.Get("/list-organization-policy", svc.listOrganizationPolicyOrganization_iamHandler)
 				r.Get("/get-organization-policy", svc.getOrganizationPolicyOrganization_iamHandler)
+				r.Get("/list-organization-user-reserved", svc.listOrganizationUserReservedOrganization_iamHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/update-organization", svc.updateOrganizationOrganizationHandler)
@@ -226,6 +237,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/detach-organization-policy", svc.detachOrganizationPolicyOrganization_iamHandler)
 					r.Post("/delete-organization-role", svc.deleteOrganizationRoleOrganization_iamHandler)
 					r.Post("/delete-organization-policy", svc.deleteOrganizationPolicyOrganization_iamHandler)
+					r.Post("/delete-organization-user-reserved", svc.deleteOrganizationUserReservedOrganization_iamHandler)
+					r.Post("/put-organization-user-reserved", svc.putOrganizationUserReservedOrganization_iamHandler)
 				})
 			})
 		})
