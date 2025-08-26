@@ -50,3 +50,66 @@ func (g *gatewayService) getReportFindingAllReportHandler(w http.ResponseWriter,
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
+
+func (g *gatewayService) getReportReportHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &report.GetReportRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetReportRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.reportClient.GetReport(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) listReportReportHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &report.ListReportRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListReportRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.reportClient.ListReport(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) putReportReportHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &report.PutReportRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutReportRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.reportClient.PutReport(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
