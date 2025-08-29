@@ -71,6 +71,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithOrganization)
 				r.Get("/list-finding-for-organization", svc.listFindingForOrgFindingHandler)
+				r.Get("/list-finding-tag-name-for-organization", svc.listFindingTagNameFindingHandler)
+				r.Get("/list-resource-for-organization", svc.listResourceFindingHandler)
 			})
 		})
 
