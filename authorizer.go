@@ -414,9 +414,7 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 		return false
 	}
 	req := &iam.IsAuthorizedAdminRequest{
-		UserId:       u.userID,
-		ActionName:   getActionNameFromURI(r.URL.Path),
-		ResourceName: getServiceNameFromURI(r.URL.Path) + "/resource_any",
+		UserId: u.userID,
 	}
 	resp, err := g.iamClient.IsAuthorizedAdmin(ctx, req)
 	if err != nil {
