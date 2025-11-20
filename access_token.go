@@ -17,13 +17,13 @@ func generateAccessToken() string {
 	return base64.RawURLEncoding.EncodeToString(buf)
 }
 
-// encodeAccessToken is encoding AccessToken. Format: urlEncode({project_id}@{access_token_id}@{plain_text})
-func encodeAccessToken(projectID, accessTokenID uint32, plainText string) string {
-	return base64.RawURLEncoding.EncodeToString([]byte(fmt.Sprint(projectID) + "@" + fmt.Sprint(accessTokenID) + "@" + plainText))
+// encodeAccessToken is encoding AccessToken. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
+func encodeAccessToken(ownerID, accessTokenID uint32, plainText string) string {
+	return base64.RawURLEncoding.EncodeToString([]byte(fmt.Sprint(ownerID) + "@" + fmt.Sprint(accessTokenID) + "@" + plainText))
 }
 
-// decodeAccessToken is decoding AccessToken, and return access_token_id, plain_text. Format: urlEncode({project_id}@{access_token_id}@{plain_text})
-func decodeAccessToken(ctx context.Context, accessToken string) (projectID, accessTokenID uint32, plainText string, err error) {
+// decodeAccessToken is decoding AccessToken, and return access_token_id, plain_text. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
+func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
 	tokenBody, err := base64.RawURLEncoding.DecodeString(accessToken)
 	if err != nil {
 		appLogger.Warnf(ctx, "Failed to decode access token, err=%+v", err)
@@ -35,13 +35,21 @@ func decodeAccessToken(ctx context.Context, accessToken string) (projectID, acce
 	}
 	pID, err := strconv.ParseUint(parts[0], 10, 32)
 	if err != nil {
-		appLogger.Warnf(ctx, "Failed to parse project_id, id=%s, err=%+v", parts[0], err)
+		appLogger.Warnf(ctx, "Failed to parse owner_id, raw=%s, err=%+v", parts[0], err)
 		return 0, 0, "", err
 	}
 	aID, err := strconv.ParseUint(parts[1], 10, 32)
 	if err != nil {
-		appLogger.Warnf(ctx, "Failed to parse access_token_id, id=%s, err=%+v", parts[0], err)
+		appLogger.Warnf(ctx, "Failed to parse access_token_id, raw=%s, err=%+v", parts[1], err)
 		return 0, 0, "", err
 	}
 	return uint32(pID), uint32(aID), parts[2], nil
+}
+
+func encodeOrganizationAccessToken(organizationID, accessTokenID uint32, plainText string) string {
+	return encodeAccessToken(organizationID, accessTokenID, plainText)
+}
+
+func decodeOrganizationAccessToken(ctx context.Context, accessToken string) (organizationID, accessTokenID uint32, plainText string, err error) {
+	return decodeAccessToken(ctx, accessToken)
 }

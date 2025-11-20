@@ -241,6 +241,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-organization-user-reserved", svc.deleteOrganizationUserReservedOrganization_iamHandler)
 					r.Post("/put-organization-user-reserved", svc.putOrganizationUserReservedOrganization_iamHandler)
 					r.Post("/put-organization-access-token", svc.putOrganizationAccessTokenOrganization_iamHandler)
+					r.Post("/generate-organization-access-token", svc.generateOrganizationAccessTokenOrganization_iamHandler)
+					r.Post("/update-organization-access-token", svc.updateOrganizationAccessTokenOrganization_iamHandler)
 					r.Post("/delete-organization-access-token", svc.deleteOrganizationAccessTokenOrganization_iamHandler)
 					r.Post("/authenticate-organization-access-token", svc.authenticateOrganizationAccessTokenOrganization_iamHandler)
 					r.Post("/attach-organization-access-token-role", svc.attachOrganizationAccessTokenRoleOrganization_iamHandler)

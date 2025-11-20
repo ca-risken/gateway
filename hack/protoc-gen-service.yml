@@ -42,3 +42,5 @@ excludes:
   - ProjectService.CreateProject
   - FindingService.PutPendFinding
   - AWSService.AttachDataSource
+  - OrganizationIAMService.AuthenticateOrganizationAccessToken
+  - OrganizationIAMService.PutOrganizationAccessToken

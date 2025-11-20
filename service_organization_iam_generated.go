@@ -345,27 +345,6 @@ func (g *gatewayService) listOrganizationAccessTokenOrganization_iamHandler(w ht
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &organization_iam.PutOrganizationAccessTokenRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrganizationAccessTokenRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.organization_iamClient.PutOrganizationAccessToken(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) deleteOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DeleteOrganizationAccessTokenRequest{}
@@ -377,27 +356,6 @@ func (g *gatewayService) deleteOrganizationAccessTokenOrganization_iamHandler(w 
 		return
 	}
 	resp, err := g.organization_iamClient.DeleteOrganizationAccessToken(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) authenticateOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &organization_iam.AuthenticateOrganizationAccessTokenRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "AuthenticateOrganizationAccessTokenRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
