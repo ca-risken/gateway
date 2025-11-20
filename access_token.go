@@ -45,11 +45,3 @@ func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, access
 	}
 	return uint32(pID), uint32(aID), parts[2], nil
 }
-
-func encodeOrganizationAccessToken(organizationID, accessTokenID uint32, plainText string) string {
-	return encodeAccessToken(organizationID, accessTokenID, plainText)
-}
-
-func decodeOrganizationAccessToken(ctx context.Context, accessToken string) (organizationID, accessTokenID uint32, plainText string, err error) {
-	return decodeAccessToken(ctx, accessToken)
-}

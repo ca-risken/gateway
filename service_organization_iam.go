@@ -16,7 +16,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrganizationAccessTokenRequest", err)
 	}
 	u, err := getRequestUser(r)
-	if err != nil || zero.IsZeroVal(u.userID) {
+	if err != nil || u.userID == 0 {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Failed to get user info, userInfo=%+v, err=%+v", u, err)})
 		return
 	}
@@ -58,7 +58,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: &generateAccessTokenResponse{
 		AccessTokenID: resp.AccessToken.AccessTokenId,
-		AccessToken:   encodeOrganizationAccessToken(resp.AccessToken.OrganizationId, resp.AccessToken.AccessTokenId, req.PlainTextToken),
+		AccessToken:   encodeAccessToken(resp.AccessToken.OrganizationId, resp.AccessToken.AccessTokenId, req.PlainTextToken),
 	}})
 }
 
@@ -69,7 +69,7 @@ func (g *gatewayService) updateOrganizationAccessTokenOrganization_iamHandler(w 
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrganizationAccessTokenRequest", err)
 	}
 	u, err := getRequestUser(r)
-	if err != nil || zero.IsZeroVal(u.userID) {
+	if err != nil || u.userID == 0 {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Failed to get user info, userInfo=%+v, err=%+v", u, err)})
 		return
 	}
@@ -84,52 +84,6 @@ func (g *gatewayService) updateOrganizationAccessTokenOrganization_iamHandler(w 
 	}
 
 	resp, err := g.organization_iamClient.PutOrganizationAccessToken(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) putOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
-	g.updateOrganizationAccessTokenOrganization_iamHandler(w, r)
-}
-
-type authenticateOrganizationAccessTokenRequest struct {
-	AccessToken string `json:"access_token"`
-	*organization_iam.AuthenticateOrganizationAccessTokenRequest
-}
-
-func newAuthenticateOrganizationAccessTokenRequest() *authenticateOrganizationAccessTokenRequest {
-	return &authenticateOrganizationAccessTokenRequest{
-		AuthenticateOrganizationAccessTokenRequest: &organization_iam.AuthenticateOrganizationAccessTokenRequest{},
-	}
-}
-
-func (g *gatewayService) authenticateOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := newAuthenticateOrganizationAccessTokenRequest()
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "AuthenticateOrganizationAccessTokenRequest", err)
-	}
-	if req.AccessToken != "" {
-		orgID, accessTokenID, plainTextToken, err := decodeOrganizationAccessToken(ctx, req.AccessToken)
-		if err != nil {
-			writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: errors.New("invalid token format")})
-			return
-		}
-		req.OrganizationId = orgID
-		req.AccessTokenId = accessTokenID
-		req.PlainTextToken = plainTextToken
-	}
-	if err := req.AuthenticateOrganizationAccessTokenRequest.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, req.AuthenticateOrganizationAccessTokenRequest)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
