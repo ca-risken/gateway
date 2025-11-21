@@ -13,6 +13,8 @@ import (
 
 	"github.com/ca-risken/core/proto/iam"
 	iammocks "github.com/ca-risken/core/proto/iam/mocks"
+	"github.com/ca-risken/core/proto/organization_iam"
+	organizationiammocks "github.com/ca-risken/core/proto/organization_iam/mocks"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/stretchr/testify/mock"
 )
@@ -46,6 +48,80 @@ func TestSigninHandler(t *testing.T) {
 			got := rec.Result().StatusCode
 			if got != c.want {
 				t.Fatalf("Unexpected responce. want=%d, got=%d", c.want, got)
+			}
+		})
+	}
+}
+
+func TestAuthnOrgToken(t *testing.T) {
+	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
+	svc := gatewayService{
+		organization_iamClient: orgIAMMock,
+	}
+	orgID := uint32(10)
+	accessTokenID := uint32(20)
+	plainToken := "plain-text"
+	validToken := "Bearer " + organizationTokenPrefix + encodeAccessToken(orgID, accessTokenID, plainToken)
+
+	cases := []struct {
+		name          string
+		authorization string
+		expectUser    bool
+	}{
+		{
+			name:          "Valid organization token",
+			authorization: validToken,
+			expectUser:    true,
+		},
+		{
+			name:          "Skip non org token",
+			authorization: "Bearer something-else",
+			expectUser:    false,
+		},
+		{
+			name:          "No header",
+			authorization: "",
+			expectUser:    false,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.expectUser {
+				orgIAMMock.On("AuthenticateOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.AuthenticateOrganizationAccessTokenRequest) bool {
+					return req.OrganizationId == orgID &&
+						req.AccessTokenId == accessTokenID &&
+						req.PlainTextToken == plainToken
+				})).Return(&organization_iam.AuthenticateOrganizationAccessTokenResponse{
+					AccessToken: &organization_iam.OrganizationAccessToken{
+						AccessTokenId: accessTokenID,
+					},
+				}, nil).Once()
+			}
+			rec := httptest.NewRecorder()
+			req := httptest.NewRequest(http.MethodGet, "/api/v1/organization", nil)
+			if c.authorization != "" {
+				req.Header.Set("Authorization", c.authorization)
+			}
+
+			nextCalled := false
+			handler := svc.authnOrgToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				nextCalled = true
+				u, err := getRequestUser(r)
+				if c.expectUser {
+					if err != nil {
+						t.Fatalf("want user but got error: %+v", err)
+					}
+					if u.organizationAccessTokenID != accessTokenID || u.organizationID != orgID {
+						t.Fatalf("unexpected user info: %+v", u)
+					}
+				} else if err == nil {
+					t.Fatalf("unexpected user found: %+v", u)
+				}
+			}))
+
+			handler.ServeHTTP(rec, req)
+			if !nextCalled {
+				t.Fatalf("next handler was not called")
 			}
 		})
 	}
@@ -362,6 +438,11 @@ func TestIsHumanAccess(t *testing.T) {
 		{
 			name:  "Not human 2",
 			input: &requestUser{sub: "sub", accessTokenID: 1, userID: 1},
+			want:  false,
+		},
+		{
+			name:  "Organization token",
+			input: &requestUser{sub: "sub", organizationAccessTokenID: 1, organizationID: 2},
 			want:  false,
 		},
 		{

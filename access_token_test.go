@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/base64"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -31,6 +32,17 @@ func TestEncodeAccessToken(t *testing.T) {
 				t.Fatalf("Unexpected responce. want=%s, got=%s", c.want, got)
 			}
 		})
+	}
+}
+
+func TestEncodeOrganizationAccessToken(t *testing.T) {
+	got := encodeOrganizationAccessToken(1, 2, "plain")
+	wantSuffix := encodeAccessToken(1, 2, "plain")
+	if !strings.HasPrefix(got, organizationTokenPrefix) {
+		t.Fatalf("organization token must have prefix, got=%s", got)
+	}
+	if !strings.HasSuffix(got, wantSuffix) {
+		t.Fatalf("organization token suffix mismatch, want suffix=%s, got=%s", wantSuffix, got)
 	}
 }
 

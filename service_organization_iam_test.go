@@ -90,8 +90,22 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 			if c.wantStatus != http.StatusOK {
 				key = errorJSONKey
 			}
-			if _, ok := resp[key]; !ok {
+			value, ok := resp[key]
+			if !ok {
 				t.Fatalf("Unexpected no response key: want key=%s", key)
+			}
+			if c.wantStatus == http.StatusOK {
+				data, ok := value.(map[string]interface{})
+				if !ok {
+					t.Fatalf("Unexpected response data type: %#v", value)
+				}
+				token, ok := data["access_token"].(string)
+				if !ok {
+					t.Fatalf("Access token is missing or not string: %#v", data)
+				}
+				if !strings.HasPrefix(token, organizationTokenPrefix) {
+					t.Fatalf("Access token must contain prefix: %s", token)
+				}
 			}
 		})
 	}

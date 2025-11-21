@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+const organizationTokenPrefix = "risken-org@"
+
 // generateAccessToken return random accessToken text
 func generateAccessToken() string {
 	buf := make([]byte, 64)
@@ -20,6 +22,10 @@ func generateAccessToken() string {
 // encodeAccessToken is encoding AccessToken. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
 func encodeAccessToken(ownerID, accessTokenID uint32, plainText string) string {
 	return base64.RawURLEncoding.EncodeToString([]byte(fmt.Sprint(ownerID) + "@" + fmt.Sprint(accessTokenID) + "@" + plainText))
+}
+
+func encodeOrganizationAccessToken(ownerID, accessTokenID uint32, plainText string) string {
+	return organizationTokenPrefix + encodeAccessToken(ownerID, accessTokenID, plainText)
 }
 
 // decodeAccessToken is decoding AccessToken, and return access_token_id, plain_text. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})

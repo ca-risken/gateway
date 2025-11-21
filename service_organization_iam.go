@@ -58,7 +58,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: &generateAccessTokenResponse{
 		AccessTokenID: resp.AccessToken.AccessTokenId,
-		AccessToken:   encodeAccessToken(resp.AccessToken.OrganizationId, resp.AccessToken.AccessTokenId, req.PlainTextToken),
+		AccessToken:   encodeOrganizationAccessToken(resp.AccessToken.OrganizationId, resp.AccessToken.AccessTokenId, req.PlainTextToken),
 	}})
 }
 

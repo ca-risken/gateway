@@ -26,12 +26,14 @@ type requestUser struct {
 	name   string
 
 	// program access
-	accessTokenID        uint32
-	accessTokenProjectID uint32
+	accessTokenID             uint32
+	accessTokenProjectID      uint32
+	organizationAccessTokenID uint32
+	organizationID            uint32
 }
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
-	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (zero.IsZeroVal(u.userID) && zero.IsZeroVal(u.accessTokenID)) {
+	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (zero.IsZeroVal(u.userID) && zero.IsZeroVal(u.accessTokenID) && zero.IsZeroVal(u.organizationAccessTokenID)) {
 		return nil, errors.New("user not found")
 	}
 	return r.Context().Value(userKey).(*requestUser), nil
@@ -138,6 +140,11 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
+		if strings.HasPrefix(tokenBody, organizationTokenPrefix) {
+			// Organization token is handled by authnOrgToken middleware.
+			next.ServeHTTP(w, r)
+			return
+		}
 		projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
 		if err != nil {
 			// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
@@ -164,6 +171,50 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			context.WithValue(ctx, userKey, &requestUser{
 				accessTokenID:        accessTokenID,
 				accessTokenProjectID: projectID,
+			})))
+	}
+	return http.HandlerFunc(fn)
+}
+
+// Authentication for organization access token
+func (g *gatewayService) authnOrgToken(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		bearer := r.Header.Get("Authorization")
+		tokenBody := ""
+		if len(bearer) > 7 && strings.ToUpper(bearer[0:7]) == "BEARER " {
+			tokenBody = strings.TrimSpace(bearer[7:])
+		}
+		if tokenBody == "" || !strings.HasPrefix(tokenBody, organizationTokenPrefix) {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		orgToken := strings.TrimPrefix(tokenBody, organizationTokenPrefix)
+		orgID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, orgToken)
+		if err != nil {
+			next.ServeHTTP(w, r)
+			return
+		}
+		resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
+			OrganizationId: orgID,
+			AccessTokenId:  accessTokenID,
+			PlainTextToken: plainTextToken,
+		})
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
+			next.ServeHTTP(w, r)
+			return
+		}
+		if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
+			appLogger.Error(ctx, "Failed to get OrganizationAccessTokenId")
+			next.ServeHTTP(w, r)
+			return
+		}
+		next.ServeHTTP(w, r.WithContext(
+			context.WithValue(ctx, userKey, &requestUser{
+				organizationAccessTokenID: accessTokenID,
+				organizationID:            orgID,
 			})))
 	}
 	return http.HandlerFunc(fn)
@@ -287,7 +338,7 @@ func isHumanAccess(u *requestUser) bool {
 	if u == nil || zero.IsZeroVal(u.userID) {
 		return false
 	}
-	if !zero.IsZeroVal(u.accessTokenID) {
+	if !zero.IsZeroVal(u.accessTokenID) || !zero.IsZeroVal(u.organizationAccessTokenID) {
 		return false
 	}
 	return true
