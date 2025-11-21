@@ -28,7 +28,7 @@ func encodeOrganizationAccessToken(ownerID, accessTokenID uint32, plainText stri
 	return organizationTokenPrefix + encodeAccessToken(ownerID, accessTokenID, plainText)
 }
 
-// decodeAccessToken is decoding AccessToken, and return access_token_id, plain_text. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
+// decodeAccessToken decodes AccessToken. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
 func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
 	tokenBody, err := base64.RawURLEncoding.DecodeString(accessToken)
 	if err != nil {
@@ -50,4 +50,12 @@ func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, access
 		return 0, 0, "", err
 	}
 	return uint32(pID), uint32(aID), parts[2], nil
+}
+
+func decodeOrganizationAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
+	if !strings.HasPrefix(accessToken, organizationTokenPrefix) {
+		appLogger.Warnf(ctx, "Invalid organization token prefix")
+		return 0, 0, "", errors.New("invalid organization token")
+	}
+	return decodeAccessToken(ctx, strings.TrimPrefix(accessToken, organizationTokenPrefix))
 }

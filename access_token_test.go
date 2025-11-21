@@ -104,3 +104,18 @@ func TestDecodeAccessToken(t *testing.T) {
 		})
 	}
 }
+
+func TestDecodeOrganizationAccessToken(t *testing.T) {
+	ctx := context.Background()
+	ownerID, accessTokenID, plainText, err := decodeOrganizationAccessToken(ctx, encodeOrganizationAccessToken(1, 2, "plain"))
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+	if ownerID != 1 || accessTokenID != 2 || plainText != "plain" {
+		t.Fatalf("unexpected decoded result: %d %d %s", ownerID, accessTokenID, plainText)
+	}
+
+	if _, _, _, err := decodeOrganizationAccessToken(ctx, encodeAccessToken(1, 2, "plain")); err == nil {
+		t.Fatalf("expected error for token without prefix")
+	}
+}

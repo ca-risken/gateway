@@ -190,8 +190,7 @@ func (g *gatewayService) authnOrgToken(next http.Handler) http.Handler {
 			return
 		}
 
-		orgToken := strings.TrimPrefix(tokenBody, organizationTokenPrefix)
-		orgID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, orgToken)
+		orgID, accessTokenID, plainTextToken, err := decodeOrganizationAccessToken(ctx, tokenBody)
 		if err != nil {
 			next.ServeHTTP(w, r)
 			return
