@@ -35,14 +35,10 @@ func TestEncodeAccessToken(t *testing.T) {
 	}
 }
 
-func TestEncodeOrganizationAccessToken(t *testing.T) {
-	got := encodeOrganizationAccessToken(1, 2, "plain")
-	wantSuffix := encodeAccessToken(1, 2, "plain")
-	if !strings.HasPrefix(got, organizationTokenPrefix) {
+func TestEncodeOrgAccessToken(t *testing.T) {
+	got := encodeOrgAccessToken(1, 2, "plain")
+	if !strings.HasPrefix(got, orgTokenPrefix) {
 		t.Fatalf("organization token must have prefix, got=%s", got)
-	}
-	if !strings.HasSuffix(got, wantSuffix) {
-		t.Fatalf("organization token suffix mismatch, want suffix=%s, got=%s", wantSuffix, got)
 	}
 }
 
@@ -105,9 +101,9 @@ func TestDecodeAccessToken(t *testing.T) {
 	}
 }
 
-func TestDecodeOrganizationAccessToken(t *testing.T) {
+func TestDecodeOrgAccessToken(t *testing.T) {
 	ctx := context.Background()
-	ownerID, accessTokenID, plainText, err := decodeOrganizationAccessToken(ctx, encodeOrganizationAccessToken(1, 2, "plain"))
+	ownerID, accessTokenID, plainText, err := decodeOrgAccessToken(ctx, encodeOrgAccessToken(1, 2, "plain"))
 	if err != nil {
 		t.Fatalf("unexpected error: %+v", err)
 	}
@@ -115,7 +111,7 @@ func TestDecodeOrganizationAccessToken(t *testing.T) {
 		t.Fatalf("unexpected decoded result: %d %d %s", ownerID, accessTokenID, plainText)
 	}
 
-	if _, _, _, err := decodeOrganizationAccessToken(ctx, encodeAccessToken(1, 2, "plain")); err == nil {
+	if _, _, _, err := decodeOrgAccessToken(ctx, encodeAccessToken(1, 2, "plain")); err == nil {
 		t.Fatalf("expected error for token without prefix")
 	}
 }

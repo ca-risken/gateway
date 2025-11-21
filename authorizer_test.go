@@ -61,7 +61,7 @@ func TestAuthnOrgToken(t *testing.T) {
 	orgID := uint32(10)
 	accessTokenID := uint32(20)
 	plainToken := "plain-text"
-	validToken := "Bearer " + organizationTokenPrefix + encodeAccessToken(orgID, accessTokenID, plainToken)
+	validToken := "Bearer " + encodeOrgAccessToken(orgID, accessTokenID, plainToken)
 
 	cases := []struct {
 		name          string

@@ -103,7 +103,7 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 				if !ok {
 					t.Fatalf("Access token is missing or not string: %#v", data)
 				}
-				if !strings.HasPrefix(token, organizationTokenPrefix) {
+				if !strings.HasPrefix(token, orgTokenPrefix) {
 					t.Fatalf("Access token must contain prefix: %s", token)
 				}
 			}

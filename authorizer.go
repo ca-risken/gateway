@@ -33,7 +33,7 @@ type requestUser struct {
 }
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
-	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (zero.IsZeroVal(u.userID) && zero.IsZeroVal(u.accessTokenID) && zero.IsZeroVal(u.organizationAccessTokenID)) {
+	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (u.userID == 0 && u.accessTokenID == 0 && u.organizationAccessTokenID == 0) {
 		return nil, errors.New("user not found")
 	}
 	return r.Context().Value(userKey).(*requestUser), nil
@@ -140,7 +140,7 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		if strings.HasPrefix(tokenBody, organizationTokenPrefix) {
+		if isOrgAccessToken(tokenBody) {
 			// Organization token is handled by authnOrgToken middleware.
 			next.ServeHTTP(w, r)
 			return
@@ -185,12 +185,12 @@ func (g *gatewayService) authnOrgToken(next http.Handler) http.Handler {
 		if len(bearer) > 7 && strings.ToUpper(bearer[0:7]) == "BEARER " {
 			tokenBody = strings.TrimSpace(bearer[7:])
 		}
-		if tokenBody == "" || !strings.HasPrefix(tokenBody, organizationTokenPrefix) {
+		if tokenBody == "" || !isOrgAccessToken(tokenBody) {
 			next.ServeHTTP(w, r)
 			return
 		}
 
-		orgID, accessTokenID, plainTextToken, err := decodeOrganizationAccessToken(ctx, tokenBody)
+		orgID, accessTokenID, plainTextToken, err := decodeOrgAccessToken(ctx, tokenBody)
 		if err != nil {
 			next.ServeHTTP(w, r)
 			return
@@ -337,7 +337,10 @@ func isHumanAccess(u *requestUser) bool {
 	if u == nil || zero.IsZeroVal(u.userID) {
 		return false
 	}
-	if !zero.IsZeroVal(u.accessTokenID) || !zero.IsZeroVal(u.organizationAccessTokenID) {
+	if u.accessTokenID != 0 {
+		return false
+	}
+	if u.organizationAccessTokenID != 0 {
 		return false
 	}
 	return true

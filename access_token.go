@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const organizationTokenPrefix = "risken-org@"
+const orgTokenPrefix = "risken-org@"
 
 // generateAccessToken return random accessToken text
 func generateAccessToken() string {
@@ -24,8 +24,8 @@ func encodeAccessToken(ownerID, accessTokenID uint32, plainText string) string {
 	return base64.RawURLEncoding.EncodeToString([]byte(fmt.Sprint(ownerID) + "@" + fmt.Sprint(accessTokenID) + "@" + plainText))
 }
 
-func encodeOrganizationAccessToken(ownerID, accessTokenID uint32, plainText string) string {
-	return organizationTokenPrefix + encodeAccessToken(ownerID, accessTokenID, plainText)
+func encodeOrgAccessToken(ownerID, accessTokenID uint32, plainText string) string {
+	return orgTokenPrefix + encodeAccessToken(ownerID, accessTokenID, plainText)
 }
 
 // decodeAccessToken decodes AccessToken. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
@@ -52,10 +52,14 @@ func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, access
 	return uint32(pID), uint32(aID), parts[2], nil
 }
 
-func decodeOrganizationAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
-	if !strings.HasPrefix(accessToken, organizationTokenPrefix) {
+func decodeOrgAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
+	if !strings.HasPrefix(accessToken, orgTokenPrefix) {
 		appLogger.Warnf(ctx, "Invalid organization token prefix")
 		return 0, 0, "", errors.New("invalid organization token")
 	}
-	return decodeAccessToken(ctx, strings.TrimPrefix(accessToken, organizationTokenPrefix))
+	return decodeAccessToken(ctx, strings.TrimPrefix(accessToken, orgTokenPrefix))
+}
+
+func isOrgAccessToken(token string) bool {
+	return strings.HasPrefix(token, orgTokenPrefix)
 }
