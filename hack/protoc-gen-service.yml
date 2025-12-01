@@ -20,6 +20,7 @@ excludes:
   - ReportService.PurgeReportFinding
   - ProjectService.CleanProject
   - OrganizationIAMService.IsAuthorizedOrganization
+  - OrganizationIAMService.IsAuthorizedOrganizationToken
   - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
   ## datasource-api
   - AWSService.InvokeScanAll

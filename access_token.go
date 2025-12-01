@@ -53,7 +53,7 @@ func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, access
 }
 
 func decodeOrgAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
-	if !strings.HasPrefix(accessToken, orgTokenPrefix) {
+	if !isOrgAccessToken(accessToken) {
 		appLogger.Warnf(ctx, "Invalid organization token prefix")
 		return 0, 0, "", errors.New("invalid organization token")
 	}

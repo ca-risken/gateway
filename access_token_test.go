@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/base64"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -37,7 +36,7 @@ func TestEncodeAccessToken(t *testing.T) {
 
 func TestEncodeOrgAccessToken(t *testing.T) {
 	got := encodeOrgAccessToken(1, 2, "plain")
-	if !strings.HasPrefix(got, orgTokenPrefix) {
+	if !isOrgAccessToken(got) {
 		t.Fatalf("organization token must have prefix, got=%s", got)
 	}
 }

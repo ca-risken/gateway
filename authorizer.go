@@ -26,14 +26,14 @@ type requestUser struct {
 	name   string
 
 	// program access
-	accessTokenID             uint32
-	accessTokenProjectID      uint32
-	organizationAccessTokenID uint32
-	organizationID            uint32
+	accessTokenID        uint32
+	accessTokenProjectID uint32
+	orgAccessTokenID     uint32
+	orgID                uint32
 }
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
-	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (u.userID == 0 && u.accessTokenID == 0 && u.organizationAccessTokenID == 0) {
+	if u, ok := r.Context().Value(userKey).(*requestUser); !ok || u == nil || (u.userID == 0 && u.accessTokenID == 0 && u.orgAccessTokenID == 0) {
 		return nil, errors.New("user not found")
 	}
 	return r.Context().Value(userKey).(*requestUser), nil
@@ -212,8 +212,8 @@ func (g *gatewayService) authnOrgToken(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r.WithContext(
 			context.WithValue(ctx, userKey, &requestUser{
-				organizationAccessTokenID: accessTokenID,
-				organizationID:            orgID,
+				orgAccessTokenID: accessTokenID,
+				orgID:            orgID,
 			})))
 	}
 	return http.HandlerFunc(fn)
@@ -301,14 +301,16 @@ func (g *gatewayService) authzWithOrganization(next http.Handler) http.Handler {
 			return
 		}
 
-		if !isHumanAccess(u) {
-			http.Error(w, "Organization API does not support program access", http.StatusForbidden)
-			return
-		}
-
-		if !g.authzOrganization(u, r) {
-			http.Error(w, "Unauthorized the organization resource", http.StatusForbidden)
-			return
+		if isHumanAccess(u) {
+			if !g.authzOrganization(u, r) {
+				http.Error(w, "Unauthorized the organization resource for human access", http.StatusForbidden)
+				return
+			}
+		} else {
+			if !g.authzOrgForToken(u, r) {
+				http.Error(w, "Unauthorized the organization resource for token access", http.StatusForbidden)
+				return
+			}
 		}
 
 		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
@@ -340,7 +342,7 @@ func isHumanAccess(u *requestUser) bool {
 	if u.accessTokenID != 0 {
 		return false
 	}
-	if u.organizationAccessTokenID != 0 {
+	if u.orgAccessTokenID != 0 {
 		return false
 	}
 	return true
@@ -502,6 +504,32 @@ func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool
 	resp, err := g.organization_iamClient.IsAuthorizedOrganization(ctx, req)
 	if err != nil {
 		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganization request, request=%+v, err=%+v", req, err)
+		return false
+	}
+	return resp.Ok
+}
+
+func (g *gatewayService) authzOrgForToken(u *requestUser, r *http.Request) bool {
+	ctx := r.Context()
+	if u.orgAccessTokenID == 0 || u.orgID == 0 {
+		return false
+	}
+	o := &requestOrganization{}
+	err := bind(o, r)
+	if err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
+	}
+	if o.OrganizationID != 0 && o.OrganizationID != u.orgID {
+		return false
+	}
+	req := &organization_iam.IsAuthorizedOrganizationTokenRequest{
+		OrganizationId: u.orgID,
+		AccessTokenId:  u.orgAccessTokenID,
+		ActionName:     getActionNameFromURI(r.URL.Path),
+	}
+	resp, err := g.organization_iamClient.IsAuthorizedOrganizationToken(ctx, req)
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganizationToken request, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok
