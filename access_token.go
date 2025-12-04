@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const orgTokenPrefix = "risken-org@"
+const orgTokenPrefix = "risken_org_"
 
 // generateAccessToken return random accessToken text
 func generateAccessToken() string {

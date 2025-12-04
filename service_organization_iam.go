@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/ca-risken/core/proto/organization_iam"
-	"github.com/vikyd/zero"
 )
 
 func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +77,7 @@ func (g *gatewayService) updateOrganizationAccessTokenOrganization_iamHandler(w 
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	if zero.IsZeroVal(req.AccessTokenId) {
+	if req.AccessTokenId == 0 {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: errors.New("Required access_token_id")})
 		return
 	}
