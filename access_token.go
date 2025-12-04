@@ -28,7 +28,7 @@ func encodeOrgAccessToken(ownerID, accessTokenID uint32, plainText string) strin
 	return orgTokenPrefix + encodeAccessToken(ownerID, accessTokenID, plainText)
 }
 
-// decodeAccessToken decodes AccessToken. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
+// decodeAccessToken is decoding AccessToken, and return access_token_id, plain_text. Format: urlEncode({owner_id}@{access_token_id}@{plain_text})
 func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
 	tokenBody, err := base64.RawURLEncoding.DecodeString(accessToken)
 	if err != nil {
@@ -39,17 +39,17 @@ func decodeAccessToken(ctx context.Context, accessToken string) (ownerID, access
 	if len(parts) != 3 {
 		return 0, 0, "", errors.New("invalid token, token must contain three values")
 	}
-	pID, err := strconv.ParseUint(parts[0], 10, 32)
+	oID, err := strconv.ParseUint(parts[0], 10, 32)
 	if err != nil {
-		appLogger.Warnf(ctx, "Failed to parse owner_id, raw=%s, err=%+v", parts[0], err)
+		appLogger.Warnf(ctx, "Failed to parse owner_id, id=%s, err=%+v", parts[0], err)
 		return 0, 0, "", err
 	}
 	aID, err := strconv.ParseUint(parts[1], 10, 32)
 	if err != nil {
-		appLogger.Warnf(ctx, "Failed to parse access_token_id, raw=%s, err=%+v", parts[1], err)
+		appLogger.Warnf(ctx, "Failed to parse access_token_id, id=%s, err=%+v", parts[1], err)
 		return 0, 0, "", err
 	}
-	return uint32(pID), uint32(aID), parts[2], nil
+	return uint32(oID), uint32(aID), parts[2], nil
 }
 
 func decodeOrgAccessToken(ctx context.Context, accessToken string) (ownerID, accessTokenID uint32, plainText string, err error) {
