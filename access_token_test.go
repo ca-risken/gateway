@@ -102,12 +102,12 @@ func TestDecodeAccessToken(t *testing.T) {
 
 func TestDecodeOrgAccessToken(t *testing.T) {
 	ctx := context.Background()
-	ownerID, accessTokenID, plainText, err := decodeOrgAccessToken(ctx, encodeOrgAccessToken(1, 2, "plain"))
+	unitID, accessTokenID, plainText, err := decodeOrgAccessToken(ctx, encodeOrgAccessToken(1, 2, "plain"))
 	if err != nil {
 		t.Fatalf("unexpected error: %+v", err)
 	}
-	if ownerID != 1 || accessTokenID != 2 || plainText != "plain" {
-		t.Fatalf("unexpected decoded result: %d %d %s", ownerID, accessTokenID, plainText)
+	if unitID != 1 || accessTokenID != 2 || plainText != "plain" {
+		t.Fatalf("unexpected decoded result: %d %d %s", unitID, accessTokenID, plainText)
 	}
 
 	if _, _, _, err := decodeOrgAccessToken(ctx, encodeAccessToken(1, 2, "plain")); err == nil {
