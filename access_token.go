@@ -39,7 +39,7 @@ func decodeAccessToken(ctx context.Context, accessToken string) (unitID, accessT
 	if len(parts) != 3 {
 		return 0, 0, "", errors.New("invalid token, token must contain three values")
 	}
-	oID, err := strconv.ParseUint(parts[0], 10, 32)
+	uID, err := strconv.ParseUint(parts[0], 10, 32)
 	if err != nil {
 		appLogger.Warnf(ctx, "Failed to parse unit_id, id=%s, err=%+v", parts[0], err)
 		return 0, 0, "", err
@@ -49,7 +49,7 @@ func decodeAccessToken(ctx context.Context, accessToken string) (unitID, accessT
 		appLogger.Warnf(ctx, "Failed to parse access_token_id, id=%s, err=%+v", parts[1], err)
 		return 0, 0, "", err
 	}
-	return uint32(oID), uint32(aID), parts[2], nil
+	return uint32(uID), uint32(aID), parts[2], nil
 }
 
 func decodeOrgAccessToken(ctx context.Context, accessToken string) (unitID, accessTokenID uint32, plainText string, err error) {
