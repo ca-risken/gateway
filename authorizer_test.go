@@ -13,6 +13,8 @@ import (
 
 	"github.com/ca-risken/core/proto/iam"
 	iammocks "github.com/ca-risken/core/proto/iam/mocks"
+	"github.com/ca-risken/core/proto/organization_iam"
+	organizationiammocks "github.com/ca-risken/core/proto/organization_iam/mocks"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/stretchr/testify/mock"
 )
@@ -46,6 +48,80 @@ func TestSigninHandler(t *testing.T) {
 			got := rec.Result().StatusCode
 			if got != c.want {
 				t.Fatalf("Unexpected responce. want=%d, got=%d", c.want, got)
+			}
+		})
+	}
+}
+
+func TestAuthnOrgToken(t *testing.T) {
+	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
+	svc := gatewayService{
+		organization_iamClient: orgIAMMock,
+	}
+	orgID := uint32(10)
+	accessTokenID := uint32(20)
+	plainToken := "plain-text"
+	validToken := "Bearer " + encodeOrgAccessToken(orgID, accessTokenID, plainToken)
+
+	cases := []struct {
+		name          string
+		authorization string
+		expectUser    bool
+	}{
+		{
+			name:          "Valid organization token",
+			authorization: validToken,
+			expectUser:    true,
+		},
+		{
+			name:          "Skip non org token",
+			authorization: "Bearer something-else",
+			expectUser:    false,
+		},
+		{
+			name:          "No header",
+			authorization: "",
+			expectUser:    false,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.expectUser {
+				orgIAMMock.On("AuthenticateOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.AuthenticateOrganizationAccessTokenRequest) bool {
+					return req.OrganizationId == orgID &&
+						req.AccessTokenId == accessTokenID &&
+						req.PlainTextToken == plainToken
+				})).Return(&organization_iam.AuthenticateOrganizationAccessTokenResponse{
+					AccessToken: &organization_iam.OrganizationAccessToken{
+						AccessTokenId: accessTokenID,
+					},
+				}, nil).Once()
+			}
+			rec := httptest.NewRecorder()
+			req := httptest.NewRequest(http.MethodGet, "/api/v1/organization", nil)
+			if c.authorization != "" {
+				req.Header.Set("Authorization", c.authorization)
+			}
+
+			nextCalled := false
+			handler := svc.authnOrgToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				nextCalled = true
+				u, err := getRequestUser(r)
+				if c.expectUser {
+					if err != nil {
+						t.Fatalf("want user but got error: %+v", err)
+					}
+					if u.orgAccessTokenID != accessTokenID || u.orgID != orgID {
+						t.Fatalf("unexpected user info: %+v", u)
+					}
+				} else if err == nil {
+					t.Fatalf("unexpected user found: %+v", u)
+				}
+			}))
+
+			handler.ServeHTTP(rec, req)
+			if !nextCalled {
+				t.Fatalf("next handler was not called")
 			}
 		})
 	}
@@ -214,6 +290,88 @@ func TestAuthzProjectForToken(t *testing.T) {
 	}
 }
 
+func TestAuthzOrgForToken(t *testing.T) {
+	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
+	svc := gatewayService{
+		organization_iamClient: orgIAMMock,
+	}
+	const orgID = uint32(100)
+	const tokenID = uint32(200)
+
+	cases := []struct {
+		name      string
+		inputUser *requestUser
+		query     string
+		want      bool
+		mockResp  *organization_iam.IsAuthorizedOrganizationTokenResponse
+		mockErr   error
+	}{
+		{
+			name:      "OK with organization id",
+			inputUser: &requestUser{orgID: orgID, orgAccessTokenID: tokenID},
+			query:     fmt.Sprintf("organization_id=%d", orgID),
+			want:      true,
+			mockResp:  &organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: true},
+		},
+		{
+			name:      "OK without organization id",
+			inputUser: &requestUser{orgID: orgID, orgAccessTokenID: tokenID},
+			want:      true,
+			mockResp:  &organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: true},
+		},
+		{
+			name:      "NG missing token info",
+			inputUser: &requestUser{orgID: orgID},
+			query:     fmt.Sprintf("organization_id=%d", orgID),
+			want:      false,
+		},
+		{
+			name:      "NG mismatched organization id",
+			inputUser: &requestUser{orgID: orgID, orgAccessTokenID: tokenID},
+			query:     "organization_id=999",
+			want:      false,
+		},
+		{
+			name:      "NG authz error",
+			inputUser: &requestUser{orgID: orgID, orgAccessTokenID: tokenID},
+			query:     fmt.Sprintf("organization_id=%d", orgID),
+			want:      false,
+			mockErr:   errors.New("something error"),
+		},
+		{
+			name:      "NG unauthorized response",
+			inputUser: &requestUser{orgID: orgID, orgAccessTokenID: tokenID},
+			query:     fmt.Sprintf("organization_id=%d", orgID),
+			want:      false,
+			mockResp:  &organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: false},
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.mockResp != nil || c.mockErr != nil {
+				orgIAMMock.On(
+					"IsAuthorizedOrganizationToken",
+					mock.Anything,
+					mock.MatchedBy(func(req *organization_iam.IsAuthorizedOrganizationTokenRequest) bool {
+						return req.OrganizationId == c.inputUser.orgID &&
+							req.AccessTokenId == c.inputUser.orgAccessTokenID &&
+							req.ActionName == "organization/action"
+					}),
+				).Return(c.mockResp, c.mockErr).Once()
+			}
+			uri := "/api/v1/organization/action"
+			if c.query != "" {
+				uri = uri + "?" + c.query
+			}
+			req, _ := http.NewRequest(http.MethodGet, uri, nil)
+			got := svc.authzOrgForToken(c.inputUser, req)
+			if got != c.want {
+				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
+			}
+		})
+	}
+}
+
 func TestGetActionNameFromURI(t *testing.T) {
 	cases := []struct {
 		name  string
@@ -362,6 +520,11 @@ func TestIsHumanAccess(t *testing.T) {
 		{
 			name:  "Not human 2",
 			input: &requestUser{sub: "sub", accessTokenID: 1, userID: 1},
+			want:  false,
+		},
+		{
+			name:  "Organization token",
+			input: &requestUser{sub: "sub", orgAccessTokenID: 1, orgID: 2},
 			want:  false,
 		},
 		{

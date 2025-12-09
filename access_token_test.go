@@ -34,6 +34,13 @@ func TestEncodeAccessToken(t *testing.T) {
 	}
 }
 
+func TestEncodeOrgAccessToken(t *testing.T) {
+	got := encodeOrgAccessToken(1, 2, "plain")
+	if !isOrgAccessToken(got) {
+		t.Fatalf("organization token must have prefix, got=%s", got)
+	}
+}
+
 func TestDecodeAccessToken(t *testing.T) {
 	cases := []struct {
 		name              string
@@ -90,5 +97,20 @@ func TestDecodeAccessToken(t *testing.T) {
 				t.Fatalf("Unexpected responce. wantPlainText=%s, gotPlainText=%s", c.wantPlainText, gotPlainText)
 			}
 		})
+	}
+}
+
+func TestDecodeOrgAccessToken(t *testing.T) {
+	ctx := context.Background()
+	unitID, accessTokenID, plainText, err := decodeOrgAccessToken(ctx, encodeOrgAccessToken(1, 2, "plain"))
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+	if unitID != 1 || accessTokenID != 2 || plainText != "plain" {
+		t.Fatalf("unexpected decoded result: %d %d %s", unitID, accessTokenID, plainText)
+	}
+
+	if _, _, _, err := decodeOrgAccessToken(ctx, encodeAccessToken(1, 2, "plain")); err == nil {
+		t.Fatalf("expected error for token without prefix")
 	}
 }
