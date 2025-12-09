@@ -53,41 +53,48 @@ func TestSigninHandler(t *testing.T) {
 	}
 }
 
-func TestAuthnOrgToken(t *testing.T) {
-	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
-	svc := gatewayService{
-		organization_iamClient: orgIAMMock,
-	}
-	orgID := uint32(10)
-	accessTokenID := uint32(20)
+func TestAuthnToken(t *testing.T) {
+	projectID := uint32(10)
+	orgID := uint32(20)
+	accessTokenID := uint32(30)
 	plainToken := "plain-text"
-	validToken := "Bearer " + encodeOrgAccessToken(orgID, accessTokenID, plainToken)
+	projectToken := "Bearer " + encodeAccessToken(projectID, accessTokenID, plainToken)
+	orgToken := "Bearer " + encodeOrgAccessToken(orgID, accessTokenID, plainToken)
 
 	cases := []struct {
 		name          string
 		authorization string
 		expectUser    bool
+		assert        func(t *testing.T, u *requestUser)
+		setupMocks    func(iamMock *iammocks.IAMServiceClient, orgMock *organizationiammocks.OrganizationIAMServiceClient)
 	}{
 		{
-			name:          "Valid organization token",
-			authorization: validToken,
+			name:          "Project token",
+			authorization: projectToken,
 			expectUser:    true,
+			setupMocks: func(iamMock *iammocks.IAMServiceClient, _ *organizationiammocks.OrganizationIAMServiceClient) {
+				iamMock.On("AuthenticateAccessToken", mock.Anything, mock.MatchedBy(func(req *iam.AuthenticateAccessTokenRequest) bool {
+					return req.ProjectId == projectID &&
+						req.AccessTokenId == accessTokenID &&
+						req.PlainTextToken == plainToken
+				})).Return(&iam.AuthenticateAccessTokenResponse{
+					AccessToken: &iam.AccessToken{
+						AccessTokenId: accessTokenID,
+					},
+				}, nil).Once()
+			},
+			assert: func(t *testing.T, u *requestUser) {
+				if u.accessTokenID != accessTokenID || u.accessTokenProjectID != projectID {
+					t.Fatalf("unexpected project token info: %+v", u)
+				}
+			},
 		},
 		{
-			name:          "Skip non org token",
-			authorization: "Bearer something-else",
-			expectUser:    false,
-		},
-		{
-			name:          "No header",
-			authorization: "",
-			expectUser:    false,
-		},
-	}
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if c.expectUser {
-				orgIAMMock.On("AuthenticateOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.AuthenticateOrganizationAccessTokenRequest) bool {
+			name:          "Organization token",
+			authorization: orgToken,
+			expectUser:    true,
+			setupMocks: func(_ *iammocks.IAMServiceClient, orgMock *organizationiammocks.OrganizationIAMServiceClient) {
+				orgMock.On("AuthenticateOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.AuthenticateOrganizationAccessTokenRequest) bool {
 					return req.OrganizationId == orgID &&
 						req.AccessTokenId == accessTokenID &&
 						req.PlainTextToken == plainToken
@@ -96,7 +103,34 @@ func TestAuthnOrgToken(t *testing.T) {
 						AccessTokenId: accessTokenID,
 					},
 				}, nil).Once()
+			},
+			assert: func(t *testing.T, u *requestUser) {
+				if u.orgAccessTokenID != accessTokenID || u.orgID != orgID {
+					t.Fatalf("unexpected org token info: %+v", u)
+				}
+			},
+		},
+		{
+			name:          "Skip invalid token",
+			authorization: "Bearer something-else",
+		},
+		{
+			name: "No header",
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			iamMock := iammocks.NewIAMServiceClient(t)
+			orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
+			svc := gatewayService{
+				iamClient:              iamMock,
+				organization_iamClient: orgIAMMock,
 			}
+			if c.setupMocks != nil {
+				c.setupMocks(iamMock, orgIAMMock)
+			}
+
 			rec := httptest.NewRecorder()
 			req := httptest.NewRequest(http.MethodGet, "/api/v1/organization", nil)
 			if c.authorization != "" {
@@ -104,16 +138,14 @@ func TestAuthnOrgToken(t *testing.T) {
 			}
 
 			nextCalled := false
-			handler := svc.authnOrgToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			handler := svc.authnToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				nextCalled = true
 				u, err := getRequestUser(r)
 				if c.expectUser {
 					if err != nil {
 						t.Fatalf("want user but got error: %+v", err)
 					}
-					if u.orgAccessTokenID != accessTokenID || u.orgID != orgID {
-						t.Fatalf("unexpected user info: %+v", u)
-					}
+					c.assert(t, u)
 				} else if err == nil {
 					t.Fatalf("unexpected user found: %+v", u)
 				}

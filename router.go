@@ -23,7 +23,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.StripSlashes)
 	r.Use(svc.authn)
-	r.Use(svc.authnOrgToken)
 	r.Use(svc.authnToken)
 	r.Use(svc.verifyCSRF)
 	r.NotFound(notFoundHandler)

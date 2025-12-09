@@ -127,7 +127,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-// Authentication for programable API access
+// Authentication for programable API access (project and organization tokens)
 func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -141,8 +141,31 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			return
 		}
 		if isOrgAccessToken(tokenBody) {
-			// Organization token is handled by authnOrgToken middleware.
-			next.ServeHTTP(w, r)
+			orgID, accessTokenID, plainTextToken, err := decodeOrgAccessToken(ctx, tokenBody)
+			if err != nil {
+				next.ServeHTTP(w, r)
+				return
+			}
+			resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
+				OrganizationId: orgID,
+				AccessTokenId:  accessTokenID,
+				PlainTextToken: plainTextToken,
+			})
+			if err != nil {
+				appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
+				next.ServeHTTP(w, r)
+				return
+			}
+			if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
+				appLogger.Error(ctx, "Failed to get OrganizationAccessTokenId")
+				next.ServeHTTP(w, r)
+				return
+			}
+			next.ServeHTTP(w, r.WithContext(
+				context.WithValue(ctx, userKey, &requestUser{
+					orgAccessTokenID: accessTokenID,
+					orgID:            orgID,
+				})))
 			return
 		}
 		projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
@@ -171,49 +194,6 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			context.WithValue(ctx, userKey, &requestUser{
 				accessTokenID:        accessTokenID,
 				accessTokenProjectID: projectID,
-			})))
-	}
-	return http.HandlerFunc(fn)
-}
-
-// Authentication for organization access token
-func (g *gatewayService) authnOrgToken(next http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-		bearer := r.Header.Get("Authorization")
-		tokenBody := ""
-		if len(bearer) > 7 && strings.ToUpper(bearer[0:7]) == "BEARER " {
-			tokenBody = strings.TrimSpace(bearer[7:])
-		}
-		if tokenBody == "" || !isOrgAccessToken(tokenBody) {
-			next.ServeHTTP(w, r)
-			return
-		}
-
-		orgID, accessTokenID, plainTextToken, err := decodeOrgAccessToken(ctx, tokenBody)
-		if err != nil {
-			next.ServeHTTP(w, r)
-			return
-		}
-		resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
-			OrganizationId: orgID,
-			AccessTokenId:  accessTokenID,
-			PlainTextToken: plainTextToken,
-		})
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
-			next.ServeHTTP(w, r)
-			return
-		}
-		if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
-			appLogger.Error(ctx, "Failed to get OrganizationAccessTokenId")
-			next.ServeHTTP(w, r)
-			return
-		}
-		next.ServeHTTP(w, r.WithContext(
-			context.WithValue(ctx, userKey, &requestUser{
-				orgAccessTokenID: accessTokenID,
-				orgID:            orgID,
 			})))
 	}
 	return http.HandlerFunc(fn)
