@@ -29,7 +29,7 @@ type requestUser struct {
 	accessTokenID        uint32
 	accessTokenProjectID uint32
 	orgAccessTokenID     uint32
-	orgID                uint32
+	orgAccessTokenOrgID  uint32
 }
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
@@ -163,8 +163,8 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			}
 			next.ServeHTTP(w, r.WithContext(
 				context.WithValue(ctx, userKey, &requestUser{
-					orgAccessTokenID: accessTokenID,
-					orgID:            orgID,
+					orgAccessTokenID:    accessTokenID,
+					orgAccessTokenOrgID: orgID,
 				})))
 			return
 		}
@@ -363,6 +363,11 @@ type requestOrganization struct {
 	OrganizationID uint32 `json:"organization_id"`
 }
 
+type requestProjectScope struct {
+	ProjectID      uint32 `json:"project_id"`
+	OrganizationID uint32 `json:"organization_id"`
+}
+
 func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
 	if zero.IsZeroVal(u.userID) {
@@ -392,29 +397,50 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 
 func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
-	if u.accessTokenID == 0 || u.accessTokenProjectID == 0 {
-		return false
-	}
-	p := &requestProject{}
-	err := bind(p, r)
-	if err != nil {
+	scope := &requestProjectScope{}
+	if err := bind(scope, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
-	if p.ProjectID != 0 && p.ProjectID != u.accessTokenProjectID {
-		return false
+	appLogger.Warnf(ctx, "requestUser: %+v, scope: %+v", u, scope)
+	if u.accessTokenID != 0 && u.accessTokenProjectID != 0 {
+		if scope.ProjectID != 0 && scope.ProjectID != u.accessTokenProjectID {
+			return false
+		}
+		req := &iam.IsAuthorizedTokenRequest{
+			AccessTokenId: u.accessTokenID,
+			ProjectId:     u.accessTokenProjectID,
+			ActionName:    getActionNameFromURI(r.URL.Path),
+			ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
+		}
+		resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to IsAuthorizedToken request, request=%+v, err=%+v", req, err)
+			return false
+		}
+		return resp.Ok
 	}
-	req := &iam.IsAuthorizedTokenRequest{
-		AccessTokenId: u.accessTokenID,
-		ProjectId:     u.accessTokenProjectID,
-		ActionName:    getActionNameFromURI(r.URL.Path),
-		ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
+	if u.orgAccessTokenID != 0 && u.orgAccessTokenOrgID != 0 {
+		if scope.OrganizationID != 0 && scope.OrganizationID != u.orgAccessTokenOrgID {
+			return false
+		}
+		if scope.ProjectID == 0 {
+			appLogger.Warnf(ctx, "Project ID is required for organization token request")
+			return false
+		}
+		req := &organization_iam.IsAuthorizedOrganizationTokenRequest{
+			OrganizationId: u.orgAccessTokenOrgID,
+			AccessTokenId:  u.orgAccessTokenID,
+			ProjectId:      scope.ProjectID,
+			ActionName:     getActionNameFromURI(r.URL.Path),
+		}
+		resp, err := g.organization_iamClient.IsAuthorizedOrganizationToken(ctx, req)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganizationToken request, request=%+v, err=%+v", req, err)
+			return false
+		}
+		return resp.Ok
 	}
-	resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
-	if err != nil {
-		appLogger.Errorf(ctx, "Failed to IsAuthorizedToken request, request=%+v, err=%+v", req, err)
-		return false
-	}
-	return resp.Ok
+	return false
 }
 
 const prefixURI = "/api/v1/"
@@ -491,7 +517,7 @@ func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool
 
 func (g *gatewayService) authzOrgForToken(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
-	if u.orgAccessTokenID == 0 || u.orgID == 0 {
+	if u.orgAccessTokenID == 0 || u.orgAccessTokenOrgID == 0 {
 		return false
 	}
 	o := &requestOrganization{}
@@ -499,11 +525,11 @@ func (g *gatewayService) authzOrgForToken(u *requestUser, r *http.Request) bool 
 	if err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
-	if o.OrganizationID != 0 && o.OrganizationID != u.orgID {
+	if o.OrganizationID != 0 && o.OrganizationID != u.orgAccessTokenOrgID {
 		return false
 	}
 	req := &organization_iam.IsAuthorizedOrganizationTokenRequest{
-		OrganizationId: u.orgID,
+		OrganizationId: u.orgAccessTokenOrgID,
 		AccessTokenId:  u.orgAccessTokenID,
 		ActionName:     getActionNameFromURI(r.URL.Path),
 	}
