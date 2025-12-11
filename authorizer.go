@@ -141,62 +141,71 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			return
 		}
 		if isOrgAccessToken(tokenBody) {
-			orgID, accessTokenID, plainTextToken, err := decodeOrgAccessToken(ctx, tokenBody)
-			if err != nil {
-				next.ServeHTTP(w, r)
+			if g.authnTokenOrg(ctx, tokenBody, next, w, r) {
 				return
 			}
-			resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
-				OrganizationId: orgID,
-				AccessTokenId:  accessTokenID,
-				PlainTextToken: plainTextToken,
-			})
-			if err != nil {
-				appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
-				next.ServeHTTP(w, r)
+		} else {
+			if g.authnTokenProject(ctx, tokenBody, next, w, r) {
 				return
 			}
-			if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
-				appLogger.Error(ctx, "Failed to get OrganizationAccessTokenId")
-				next.ServeHTTP(w, r)
-				return
-			}
-			next.ServeHTTP(w, r.WithContext(
-				context.WithValue(ctx, userKey, &requestUser{
-					orgAccessTokenID:    accessTokenID,
-					orgAccessTokenOrgID: orgID,
-				})))
-			return
 		}
-		projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
-		if err != nil {
-			// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
-			next.ServeHTTP(w, r)
-			return
-		}
-		resp, err := g.iamClient.AuthenticateAccessToken(ctx, &iam.AuthenticateAccessTokenRequest{
-			ProjectId:      projectID,
-			AccessTokenId:  accessTokenID,
-			PlainTextToken: plainTextToken,
-		})
-		if err != nil {
-			// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
-			appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
-			next.ServeHTTP(w, r)
-			return
-		}
-		if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
-			appLogger.Error(ctx, "Failed to get AccessTokenId")
-			next.ServeHTTP(w, r)
-			return
-		}
-		next.ServeHTTP(w, r.WithContext(
-			context.WithValue(ctx, userKey, &requestUser{
-				accessTokenID:        accessTokenID,
-				accessTokenProjectID: projectID,
-			})))
+		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
+}
+
+func (g *gatewayService) authnTokenOrg(ctx context.Context, tokenBody string, next http.Handler, w http.ResponseWriter, r *http.Request) bool {
+	orgID, accessTokenID, plainTextToken, err := decodeOrgAccessToken(ctx, tokenBody)
+	if err != nil {
+		return false
+	}
+	resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
+		OrganizationId: orgID,
+		AccessTokenId:  accessTokenID,
+		PlainTextToken: plainTextToken,
+	})
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
+		return false
+	}
+	if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
+		appLogger.Error(ctx, "Failed to get OrganizationAccessTokenId")
+		return false
+	}
+	next.ServeHTTP(w, r.WithContext(
+		context.WithValue(ctx, userKey, &requestUser{
+			orgAccessTokenID:    accessTokenID,
+			orgAccessTokenOrgID: orgID,
+		})))
+	return true
+}
+
+func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string, next http.Handler, w http.ResponseWriter, r *http.Request) bool {
+	projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
+	if err != nil {
+		// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
+		return false
+	}
+	resp, err := g.iamClient.AuthenticateAccessToken(ctx, &iam.AuthenticateAccessTokenRequest{
+		ProjectId:      projectID,
+		AccessTokenId:  accessTokenID,
+		PlainTextToken: plainTextToken,
+	})
+	if err != nil {
+		// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
+		appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
+		return false
+	}
+	if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
+		appLogger.Error(ctx, "Failed to get AccessTokenId")
+		return false
+	}
+	next.ServeHTTP(w, r.WithContext(
+		context.WithValue(ctx, userKey, &requestUser{
+			accessTokenID:        accessTokenID,
+			accessTokenProjectID: projectID,
+		})))
+	return true
 }
 
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
