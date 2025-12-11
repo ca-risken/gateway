@@ -363,11 +363,6 @@ type requestOrganization struct {
 	OrganizationID uint32 `json:"organization_id"`
 }
 
-type requestProjectScope struct {
-	ProjectID      uint32 `json:"project_id"`
-	OrganizationID uint32 `json:"organization_id"`
-}
-
 func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
 	if zero.IsZeroVal(u.userID) {
@@ -397,11 +392,10 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 
 func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
-	scope := &requestProjectScope{}
+	scope := &requestProject{}
 	if err := bind(scope, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
-	appLogger.Warnf(ctx, "requestUser: %+v, scope: %+v", u, scope)
 	if u.accessTokenID != 0 && u.accessTokenProjectID != 0 {
 		if scope.ProjectID != 0 && scope.ProjectID != u.accessTokenProjectID {
 			return false
@@ -420,9 +414,6 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 		return resp.Ok
 	}
 	if u.orgAccessTokenID != 0 && u.orgAccessTokenOrgID != 0 {
-		if scope.OrganizationID != 0 && scope.OrganizationID != u.orgAccessTokenOrgID {
-			return false
-		}
 		if scope.ProjectID == 0 {
 			appLogger.Warnf(ctx, "Project ID is required for organization token request")
 			return false

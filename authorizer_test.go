@@ -327,7 +327,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 		{
 			name:      "OK org token with project id",
 			inputUser: &requestUser{orgAccessTokenID: tokenID, orgAccessTokenOrgID: orgID},
-			query:     fmt.Sprintf("project_id=%d&organization_id=%d", projectID, orgID),
+			query:     fmt.Sprintf("project_id=%d", projectID),
 			want:      true,
 			setup: func() {
 				orgIAMMock.On("IsAuthorizedOrganizationToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.IsAuthorizedOrganizationTokenRequest) bool {
@@ -341,12 +341,6 @@ func TestAuthzProjectForToken(t *testing.T) {
 		{
 			name:      "NG org token missing project id",
 			inputUser: &requestUser{orgAccessTokenID: tokenID, orgAccessTokenOrgID: orgID},
-			want:      false,
-		},
-		{
-			name:      "NG org token mismatched organization",
-			inputUser: &requestUser{orgAccessTokenID: tokenID, orgAccessTokenOrgID: orgID},
-			query:     fmt.Sprintf("project_id=%d&organization_id=%d", projectID, orgID+1),
 			want:      false,
 		},
 		{
