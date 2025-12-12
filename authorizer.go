@@ -29,7 +29,7 @@ type requestUser struct {
 	accessTokenID        uint32
 	accessTokenProjectID uint32
 	orgAccessTokenID     uint32
-	orgID                uint32
+	orgAccessTokenOrgID  uint32
 }
 
 func getRequestUser(r *http.Request) (*requestUser, error) {
@@ -127,7 +127,7 @@ func (g *gatewayService) authn(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-// Authentication for programable API access
+// Authentication for programable API access (project and organization tokens)
 func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -141,82 +141,71 @@ func (g *gatewayService) authnToken(next http.Handler) http.Handler {
 			return
 		}
 		if isOrgAccessToken(tokenBody) {
-			// Organization token is handled by authnOrgToken middleware.
-			next.ServeHTTP(w, r)
-			return
+			if g.authnTokenOrg(ctx, tokenBody, next, w, r) {
+				return
+			}
+		} else {
+			if g.authnTokenProject(ctx, tokenBody, next, w, r) {
+				return
+			}
 		}
-		projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
-		if err != nil {
-			// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
-			next.ServeHTTP(w, r)
-			return
-		}
-		resp, err := g.iamClient.AuthenticateAccessToken(ctx, &iam.AuthenticateAccessTokenRequest{
-			ProjectId:      projectID,
-			AccessTokenId:  accessTokenID,
-			PlainTextToken: plainTextToken,
-		})
-		if err != nil {
-			// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
-			appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
-			next.ServeHTTP(w, r)
-			return
-		}
-		if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
-			appLogger.Error(ctx, "Failed to get AccessTokenId")
-			next.ServeHTTP(w, r)
-			return
-		}
-		next.ServeHTTP(w, r.WithContext(
-			context.WithValue(ctx, userKey, &requestUser{
-				accessTokenID:        accessTokenID,
-				accessTokenProjectID: projectID,
-			})))
+		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
 }
 
-// Authentication for organization access token
-func (g *gatewayService) authnOrgToken(next http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-		bearer := r.Header.Get("Authorization")
-		tokenBody := ""
-		if len(bearer) > 7 && strings.ToUpper(bearer[0:7]) == "BEARER " {
-			tokenBody = strings.TrimSpace(bearer[7:])
-		}
-		if tokenBody == "" || !isOrgAccessToken(tokenBody) {
-			next.ServeHTTP(w, r)
-			return
-		}
-
-		orgID, accessTokenID, plainTextToken, err := decodeOrgAccessToken(ctx, tokenBody)
-		if err != nil {
-			next.ServeHTTP(w, r)
-			return
-		}
-		resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
-			OrganizationId: orgID,
-			AccessTokenId:  accessTokenID,
-			PlainTextToken: plainTextToken,
-		})
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
-			next.ServeHTTP(w, r)
-			return
-		}
-		if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
-			appLogger.Error(ctx, "Failed to get OrganizationAccessTokenId")
-			next.ServeHTTP(w, r)
-			return
-		}
-		next.ServeHTTP(w, r.WithContext(
-			context.WithValue(ctx, userKey, &requestUser{
-				orgAccessTokenID: accessTokenID,
-				orgID:            orgID,
-			})))
+func (g *gatewayService) authnTokenOrg(ctx context.Context, tokenBody string, next http.Handler, w http.ResponseWriter, r *http.Request) bool {
+	orgID, accessTokenID, plainTextToken, err := decodeOrgAccessToken(ctx, tokenBody)
+	if err != nil {
+		return false
 	}
-	return http.HandlerFunc(fn)
+	resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
+		OrganizationId: orgID,
+		AccessTokenId:  accessTokenID,
+		PlainTextToken: plainTextToken,
+	})
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
+		return false
+	}
+	if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
+		appLogger.Error(ctx, "Failed to get OrganizationAccessTokenId")
+		return false
+	}
+	next.ServeHTTP(w, r.WithContext(
+		context.WithValue(ctx, userKey, &requestUser{
+			orgAccessTokenID:    accessTokenID,
+			orgAccessTokenOrgID: orgID,
+		})))
+	return true
+}
+
+func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string, next http.Handler, w http.ResponseWriter, r *http.Request) bool {
+	projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
+	if err != nil {
+		// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
+		return false
+	}
+	resp, err := g.iamClient.AuthenticateAccessToken(ctx, &iam.AuthenticateAccessTokenRequest{
+		ProjectId:      projectID,
+		AccessTokenId:  accessTokenID,
+		PlainTextToken: plainTextToken,
+	})
+	if err != nil {
+		// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
+		appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
+		return false
+	}
+	if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
+		appLogger.Error(ctx, "Failed to get AccessTokenId")
+		return false
+	}
+	next.ServeHTTP(w, r.WithContext(
+		context.WithValue(ctx, userKey, &requestUser{
+			accessTokenID:        accessTokenID,
+			accessTokenProjectID: projectID,
+		})))
+	return true
 }
 
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
@@ -412,29 +401,46 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 
 func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
-	if u.accessTokenID == 0 || u.accessTokenProjectID == 0 {
-		return false
-	}
-	p := &requestProject{}
-	err := bind(p, r)
-	if err != nil {
+	scope := &requestProject{}
+	if err := bind(scope, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
-	if p.ProjectID != 0 && p.ProjectID != u.accessTokenProjectID {
-		return false
+	if u.accessTokenID != 0 && u.accessTokenProjectID != 0 {
+		if scope.ProjectID != 0 && scope.ProjectID != u.accessTokenProjectID {
+			return false
+		}
+		req := &iam.IsAuthorizedTokenRequest{
+			AccessTokenId: u.accessTokenID,
+			ProjectId:     u.accessTokenProjectID,
+			ActionName:    getActionNameFromURI(r.URL.Path),
+			ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
+		}
+		resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to IsAuthorizedToken request, request=%+v, err=%+v", req, err)
+			return false
+		}
+		return resp.Ok
 	}
-	req := &iam.IsAuthorizedTokenRequest{
-		AccessTokenId: u.accessTokenID,
-		ProjectId:     u.accessTokenProjectID,
-		ActionName:    getActionNameFromURI(r.URL.Path),
-		ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
+	if u.orgAccessTokenID != 0 && u.orgAccessTokenOrgID != 0 {
+		if scope.ProjectID == 0 {
+			appLogger.Warnf(ctx, "Project ID is required for organization token request")
+			return false
+		}
+		req := &organization_iam.IsAuthorizedOrganizationTokenRequest{
+			OrganizationId: u.orgAccessTokenOrgID,
+			AccessTokenId:  u.orgAccessTokenID,
+			ProjectId:      scope.ProjectID,
+			ActionName:     getActionNameFromURI(r.URL.Path),
+		}
+		resp, err := g.organization_iamClient.IsAuthorizedOrganizationToken(ctx, req)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganizationToken request, request=%+v, err=%+v", req, err)
+			return false
+		}
+		return resp.Ok
 	}
-	resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
-	if err != nil {
-		appLogger.Errorf(ctx, "Failed to IsAuthorizedToken request, request=%+v, err=%+v", req, err)
-		return false
-	}
-	return resp.Ok
+	return false
 }
 
 const prefixURI = "/api/v1/"
@@ -511,7 +517,7 @@ func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool
 
 func (g *gatewayService) authzOrgForToken(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
-	if u.orgAccessTokenID == 0 || u.orgID == 0 {
+	if u.orgAccessTokenID == 0 || u.orgAccessTokenOrgID == 0 {
 		return false
 	}
 	o := &requestOrganization{}
@@ -519,11 +525,11 @@ func (g *gatewayService) authzOrgForToken(u *requestUser, r *http.Request) bool 
 	if err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
-	if o.OrganizationID != 0 && o.OrganizationID != u.orgID {
+	if o.OrganizationID != 0 && o.OrganizationID != u.orgAccessTokenOrgID {
 		return false
 	}
 	req := &organization_iam.IsAuthorizedOrganizationTokenRequest{
-		OrganizationId: u.orgID,
+		OrganizationId: u.orgAccessTokenOrgID,
 		AccessTokenId:  u.orgAccessTokenID,
 		ActionName:     getActionNameFromURI(r.URL.Path),
 	}
