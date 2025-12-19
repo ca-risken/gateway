@@ -39,6 +39,9 @@ func (g *gatewayService) signinHandler(w http.ResponseWriter, r *http.Request) {
 	} else if signinUser.accessTokenID != 0 && signinUser.accessTokenProjectID != 0 {
 		resp["access_token_id"] = signinUser.accessTokenID
 		resp["project_id"] = signinUser.accessTokenProjectID
+	} else if signinUser.orgAccessTokenID != 0 && signinUser.orgAccessTokenOrgID != 0 {
+		resp["org_access_token_id"] = signinUser.orgAccessTokenID
+		resp["organization_id"] = signinUser.orgAccessTokenOrgID
 	}
 	writeResponse(ctx, w, http.StatusOK, resp)
 }
