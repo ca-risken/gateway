@@ -45,3 +45,4 @@ excludes:
   - AWSService.AttachDataSource
   - OrganizationIAMService.AuthenticateOrganizationAccessToken
   - OrganizationIAMService.PutOrganizationAccessToken
+  - OrgAlertService.ListOrgNotificationByProject
