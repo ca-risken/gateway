@@ -165,17 +165,6 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/test-notification", svc.testNotificationAlertHandler)
 				})
 			})
-			r.Group(func(r chi.Router) {
-				r.Use(svc.authzWithOrganization)
-				r.Get("/list-organization-notification", svc.listOrgNotificationOrg_alertHandler)
-				r.Get("/get-organization-notification", svc.getOrgNotificationOrg_alertHandler)
-				r.Group(func(r chi.Router) {
-					r.Use(middleware.AllowContentType(contenTypeJSON))
-					r.Post("/put-organization-notification", svc.putOrgNotificationOrg_alertHandler)
-					r.Post("/delete-organization-notification", svc.deleteOrgNotificationOrg_alertHandler)
-					r.Post("/test-organization-notification", svc.testOrgNotificationOrg_alertHandler)
-				})
-			})
 		})
 
 		r.Route("/report", func(r chi.Router) {
@@ -235,6 +224,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Get("/get-organization-policy", svc.getOrganizationPolicyOrganization_iamHandler)
 				r.Get("/list-organization-user-reserved", svc.listOrganizationUserReservedOrganization_iamHandler)
 				r.Get("/list-organization-access-token", svc.listOrganizationAccessTokenOrganization_iamHandler)
+				r.Get("/list-organization-notification", svc.listOrgNotificationOrg_alertHandler)
+				r.Get("/get-organization-notification", svc.getOrgNotificationOrg_alertHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/update-organization", svc.updateOrganizationOrganizationHandler)
@@ -256,6 +247,9 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-organization-access-token", svc.deleteOrganizationAccessTokenOrganization_iamHandler)
 					r.Post("/attach-organization-access-token-role", svc.attachOrganizationAccessTokenRoleOrganization_iamHandler)
 					r.Post("/detach-organization-access-token-role", svc.detachOrganizationAccessTokenRoleOrganization_iamHandler)
+					r.Post("/put-organization-notification", svc.putOrgNotificationOrg_alertHandler)
+					r.Post("/delete-organization-notification", svc.deleteOrgNotificationOrg_alertHandler)
+					r.Post("/test-organization-notification", svc.testOrgNotificationOrg_alertHandler)
 				})
 			})
 		})
