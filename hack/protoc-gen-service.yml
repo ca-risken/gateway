@@ -39,6 +39,10 @@ excludes:
   - DataSourceService.NotifyScanError
   - CodeService.GetGitleaksCache
   - CodeService.PutGitleaksCache
+  - CodeService.ListCodescanTargetRepository
+  - CodeService.PutGitleaksRepository
+  - CodeService.PutDependencyRepository
+  - CodeService.PutCodeScanRepository
   # Ignore for customized proxy
   - IAMService.PutUser
   - IAMService.AuthenticateAccessToken
