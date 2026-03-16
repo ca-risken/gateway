@@ -22,6 +22,7 @@ excludes:
   - OrganizationIAMService.IsAuthorizedOrganization
   - OrganizationIAMService.IsAuthorizedOrganizationToken
   - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
+  - OrgAlertService.ListOrgNotificationByProject
   - FindingService.GetAlertAISummary
   - FindingService.UpdateFindingAISummary
   ## datasource-api
@@ -47,4 +48,3 @@ excludes:
   - AWSService.AttachDataSource
   - OrganizationIAMService.AuthenticateOrganizationAccessToken
   - OrganizationIAMService.PutOrganizationAccessToken
-  - OrgAlertService.ListOrgNotificationByProject
