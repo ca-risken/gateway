@@ -22,6 +22,8 @@ excludes:
   - OrganizationIAMService.IsAuthorizedOrganization
   - OrganizationIAMService.IsAuthorizedOrganizationToken
   - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
+  - FindingService.GetAlertAISummary
+  - FindingService.UpdateFindingAISummary
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
