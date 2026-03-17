@@ -124,7 +124,7 @@ func TestAuthnToken(t *testing.T) {
 			orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
 			svc := gatewayService{
 				iamClient:              iamMock,
-				organization_iamClient: orgIAMMock,
+				org_iamClient: orgIAMMock,
 			}
 			if c.setupMocks != nil {
 				c.setupMocks(iamMock, orgIAMMock)
@@ -261,7 +261,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
 	svc := gatewayService{
 		iamClient:              iamMock,
-		organization_iamClient: orgIAMMock,
+		org_iamClient: orgIAMMock,
 	}
 
 	const projectID = uint32(1)
@@ -386,7 +386,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 func TestAuthzOrgForToken(t *testing.T) {
 	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
 	svc := gatewayService{
-		organization_iamClient: orgIAMMock,
+		org_iamClient: orgIAMMock,
 	}
 	const orgID = uint32(100)
 	const tokenID = uint32(200)

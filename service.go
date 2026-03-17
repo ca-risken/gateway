@@ -46,7 +46,7 @@ type gatewayService struct {
 	alertClient            alert.AlertServiceClient
 	reportClient           report.ReportServiceClient
 	organizationClient     organization.OrganizationServiceClient
-	organization_iamClient organization_iam.OrganizationIAMServiceClient
+	org_iamClient organization_iam.OrganizationIAMServiceClient
 	awsClient              aws.AWSServiceClient
 	osintClient            osint.OsintServiceClient
 	diagnosisClient        diagnosis.DiagnosisServiceClient
@@ -86,7 +86,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		alertClient:            alert.NewAlertServiceClient(coreConn),
 		reportClient:           report.NewReportServiceClient(coreConn),
 		organizationClient:     organization.NewOrganizationServiceClient(coreConn),
-		organization_iamClient: organization_iam.NewOrganizationIAMServiceClient(coreConn),
+		org_iamClient: organization_iam.NewOrganizationIAMServiceClient(coreConn),
 		awsClient:              aws.NewAWSServiceClient(datasourceConn),
 		osintClient:            osint.NewOsintServiceClient(datasourceConn),
 		diagnosisClient:        diagnosis.NewDiagnosisServiceClient(datasourceConn),

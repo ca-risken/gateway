@@ -16,7 +16,7 @@ import (
 
 func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 	orgIAMMock := organization_iammocks.NewOrganizationIAMServiceClient(t)
-	svc := gatewayService{organization_iamClient: orgIAMMock}
+	svc := gatewayService{org_iamClient: orgIAMMock}
 
 	cases := []struct {
 		name       string
@@ -77,7 +77,7 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization/generate-organization-access-token/", strings.NewReader(c.input))
 			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
-			svc.generateOrganizationAccessTokenOrganization_iamHandler(rec, req)
+			svc.generateOrganizationAccessTokenOrg_iamHandler(rec, req)
 
 			if rec.Code != c.wantStatus {
 				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)
@@ -113,7 +113,7 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 
 func TestUpdateOrganizationAccessTokenHandler(t *testing.T) {
 	orgIAMMock := organization_iammocks.NewOrganizationIAMServiceClient(t)
-	svc := gatewayService{organization_iamClient: orgIAMMock}
+	svc := gatewayService{org_iamClient: orgIAMMock}
 
 	cases := []struct {
 		name       string
@@ -160,7 +160,7 @@ func TestUpdateOrganizationAccessTokenHandler(t *testing.T) {
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization/update-organization-access-token/", strings.NewReader(c.input))
 			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
-			svc.updateOrganizationAccessTokenOrganization_iamHandler(rec, req)
+			svc.updateOrganizationAccessTokenOrg_iamHandler(rec, req)
 
 			if rec.Code != c.wantStatus {
 				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)

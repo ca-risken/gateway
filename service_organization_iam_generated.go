@@ -9,7 +9,7 @@ import (
 	"github.com/ca-risken/core/proto/organization_iam"
 )
 
-func (g *gatewayService) listOrganizationRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) listOrganizationRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.ListOrganizationRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -19,7 +19,7 @@ func (g *gatewayService) listOrganizationRoleOrganization_iamHandler(w http.Resp
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.ListOrganizationRole(ctx, req)
+	resp, err := g.org_iamClient.ListOrganizationRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -30,7 +30,7 @@ func (g *gatewayService) listOrganizationRoleOrganization_iamHandler(w http.Resp
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) getOrganizationRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) getOrganizationRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.GetOrganizationRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -40,7 +40,7 @@ func (g *gatewayService) getOrganizationRoleOrganization_iamHandler(w http.Respo
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.GetOrganizationRole(ctx, req)
+	resp, err := g.org_iamClient.GetOrganizationRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -51,7 +51,7 @@ func (g *gatewayService) getOrganizationRoleOrganization_iamHandler(w http.Respo
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putOrganizationRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) putOrganizationRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.PutOrganizationRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -61,7 +61,7 @@ func (g *gatewayService) putOrganizationRoleOrganization_iamHandler(w http.Respo
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.PutOrganizationRole(ctx, req)
+	resp, err := g.org_iamClient.PutOrganizationRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -72,7 +72,7 @@ func (g *gatewayService) putOrganizationRoleOrganization_iamHandler(w http.Respo
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) deleteOrganizationRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) deleteOrganizationRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DeleteOrganizationRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -82,7 +82,7 @@ func (g *gatewayService) deleteOrganizationRoleOrganization_iamHandler(w http.Re
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.DeleteOrganizationRole(ctx, req)
+	resp, err := g.org_iamClient.DeleteOrganizationRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -93,7 +93,7 @@ func (g *gatewayService) deleteOrganizationRoleOrganization_iamHandler(w http.Re
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) attachOrganizationRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) attachOrganizationRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.AttachOrganizationRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -103,7 +103,7 @@ func (g *gatewayService) attachOrganizationRoleOrganization_iamHandler(w http.Re
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.AttachOrganizationRole(ctx, req)
+	resp, err := g.org_iamClient.AttachOrganizationRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -114,7 +114,7 @@ func (g *gatewayService) attachOrganizationRoleOrganization_iamHandler(w http.Re
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) detachOrganizationRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) detachOrganizationRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DetachOrganizationRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -124,7 +124,7 @@ func (g *gatewayService) detachOrganizationRoleOrganization_iamHandler(w http.Re
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.DetachOrganizationRole(ctx, req)
+	resp, err := g.org_iamClient.DetachOrganizationRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -135,7 +135,7 @@ func (g *gatewayService) detachOrganizationRoleOrganization_iamHandler(w http.Re
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) listOrganizationPolicyOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) listOrganizationPolicyOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.ListOrganizationPolicyRequest{}
 	if err := bind(req, r); err != nil {
@@ -145,7 +145,7 @@ func (g *gatewayService) listOrganizationPolicyOrganization_iamHandler(w http.Re
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.ListOrganizationPolicy(ctx, req)
+	resp, err := g.org_iamClient.ListOrganizationPolicy(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -156,7 +156,7 @@ func (g *gatewayService) listOrganizationPolicyOrganization_iamHandler(w http.Re
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) getOrganizationPolicyOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) getOrganizationPolicyOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.GetOrganizationPolicyRequest{}
 	if err := bind(req, r); err != nil {
@@ -166,7 +166,7 @@ func (g *gatewayService) getOrganizationPolicyOrganization_iamHandler(w http.Res
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.GetOrganizationPolicy(ctx, req)
+	resp, err := g.org_iamClient.GetOrganizationPolicy(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -177,7 +177,7 @@ func (g *gatewayService) getOrganizationPolicyOrganization_iamHandler(w http.Res
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putOrganizationPolicyOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) putOrganizationPolicyOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.PutOrganizationPolicyRequest{}
 	if err := bind(req, r); err != nil {
@@ -187,7 +187,7 @@ func (g *gatewayService) putOrganizationPolicyOrganization_iamHandler(w http.Res
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.PutOrganizationPolicy(ctx, req)
+	resp, err := g.org_iamClient.PutOrganizationPolicy(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -198,7 +198,7 @@ func (g *gatewayService) putOrganizationPolicyOrganization_iamHandler(w http.Res
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) deleteOrganizationPolicyOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) deleteOrganizationPolicyOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DeleteOrganizationPolicyRequest{}
 	if err := bind(req, r); err != nil {
@@ -208,7 +208,7 @@ func (g *gatewayService) deleteOrganizationPolicyOrganization_iamHandler(w http.
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.DeleteOrganizationPolicy(ctx, req)
+	resp, err := g.org_iamClient.DeleteOrganizationPolicy(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -219,7 +219,7 @@ func (g *gatewayService) deleteOrganizationPolicyOrganization_iamHandler(w http.
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) attachOrganizationPolicyOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) attachOrganizationPolicyOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.AttachOrganizationPolicyRequest{}
 	if err := bind(req, r); err != nil {
@@ -229,7 +229,7 @@ func (g *gatewayService) attachOrganizationPolicyOrganization_iamHandler(w http.
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.AttachOrganizationPolicy(ctx, req)
+	resp, err := g.org_iamClient.AttachOrganizationPolicy(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -240,7 +240,7 @@ func (g *gatewayService) attachOrganizationPolicyOrganization_iamHandler(w http.
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) detachOrganizationPolicyOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) detachOrganizationPolicyOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DetachOrganizationPolicyRequest{}
 	if err := bind(req, r); err != nil {
@@ -250,7 +250,7 @@ func (g *gatewayService) detachOrganizationPolicyOrganization_iamHandler(w http.
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.DetachOrganizationPolicy(ctx, req)
+	resp, err := g.org_iamClient.DetachOrganizationPolicy(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -261,7 +261,7 @@ func (g *gatewayService) detachOrganizationPolicyOrganization_iamHandler(w http.
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) listOrganizationUserReservedOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) listOrganizationUserReservedOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.ListOrganizationUserReservedRequest{}
 	if err := bind(req, r); err != nil {
@@ -271,7 +271,7 @@ func (g *gatewayService) listOrganizationUserReservedOrganization_iamHandler(w h
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.ListOrganizationUserReserved(ctx, req)
+	resp, err := g.org_iamClient.ListOrganizationUserReserved(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -282,7 +282,7 @@ func (g *gatewayService) listOrganizationUserReservedOrganization_iamHandler(w h
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putOrganizationUserReservedOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) putOrganizationUserReservedOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.PutOrganizationUserReservedRequest{}
 	if err := bind(req, r); err != nil {
@@ -292,7 +292,7 @@ func (g *gatewayService) putOrganizationUserReservedOrganization_iamHandler(w ht
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.PutOrganizationUserReserved(ctx, req)
+	resp, err := g.org_iamClient.PutOrganizationUserReserved(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -303,7 +303,7 @@ func (g *gatewayService) putOrganizationUserReservedOrganization_iamHandler(w ht
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) deleteOrganizationUserReservedOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) deleteOrganizationUserReservedOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DeleteOrganizationUserReservedRequest{}
 	if err := bind(req, r); err != nil {
@@ -313,7 +313,7 @@ func (g *gatewayService) deleteOrganizationUserReservedOrganization_iamHandler(w
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.DeleteOrganizationUserReserved(ctx, req)
+	resp, err := g.org_iamClient.DeleteOrganizationUserReserved(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -324,7 +324,7 @@ func (g *gatewayService) deleteOrganizationUserReservedOrganization_iamHandler(w
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) listOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) listOrganizationAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.ListOrganizationAccessTokenRequest{}
 	if err := bind(req, r); err != nil {
@@ -334,7 +334,7 @@ func (g *gatewayService) listOrganizationAccessTokenOrganization_iamHandler(w ht
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.ListOrganizationAccessToken(ctx, req)
+	resp, err := g.org_iamClient.ListOrganizationAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -345,7 +345,7 @@ func (g *gatewayService) listOrganizationAccessTokenOrganization_iamHandler(w ht
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) deleteOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) deleteOrganizationAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DeleteOrganizationAccessTokenRequest{}
 	if err := bind(req, r); err != nil {
@@ -355,7 +355,7 @@ func (g *gatewayService) deleteOrganizationAccessTokenOrganization_iamHandler(w 
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.DeleteOrganizationAccessToken(ctx, req)
+	resp, err := g.org_iamClient.DeleteOrganizationAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -366,7 +366,7 @@ func (g *gatewayService) deleteOrganizationAccessTokenOrganization_iamHandler(w 
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) attachOrganizationAccessTokenRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) attachOrganizationAccessTokenRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.AttachOrganizationAccessTokenRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -376,7 +376,7 @@ func (g *gatewayService) attachOrganizationAccessTokenRoleOrganization_iamHandle
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.AttachOrganizationAccessTokenRole(ctx, req)
+	resp, err := g.org_iamClient.AttachOrganizationAccessTokenRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -387,7 +387,7 @@ func (g *gatewayService) attachOrganizationAccessTokenRoleOrganization_iamHandle
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) detachOrganizationAccessTokenRoleOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) detachOrganizationAccessTokenRoleOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.DetachOrganizationAccessTokenRoleRequest{}
 	if err := bind(req, r); err != nil {
@@ -397,7 +397,7 @@ func (g *gatewayService) detachOrganizationAccessTokenRoleOrganization_iamHandle
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
-	resp, err := g.organization_iamClient.DetachOrganizationAccessTokenRole(ctx, req)
+	resp, err := g.org_iamClient.DetachOrganizationAccessTokenRole(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)

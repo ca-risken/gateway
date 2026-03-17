@@ -8,7 +8,7 @@ import (
 	"github.com/ca-risken/core/proto/organization_iam"
 )
 
-func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) generateOrganizationAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.PutOrganizationAccessTokenRequest{}
 	if err := bind(req, r); err != nil {
@@ -27,7 +27,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(
 		return
 	}
 
-	list, err := g.organization_iamClient.ListOrganizationAccessToken(ctx, &organization_iam.ListOrganizationAccessTokenRequest{
+	list, err := g.org_iamClient.ListOrganizationAccessToken(ctx, &organization_iam.ListOrganizationAccessTokenRequest{
 		OrganizationId: req.OrganizationId,
 		Name:           req.Name,
 	})
@@ -43,7 +43,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(
 		return
 	}
 
-	resp, err := g.organization_iamClient.PutOrganizationAccessToken(ctx, req)
+	resp, err := g.org_iamClient.PutOrganizationAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -61,7 +61,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrganization_iamHandler(
 	}})
 }
 
-func (g *gatewayService) updateOrganizationAccessTokenOrganization_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) updateOrganizationAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &organization_iam.PutOrganizationAccessTokenRequest{}
 	if err := bind(req, r); err != nil {
@@ -82,7 +82,7 @@ func (g *gatewayService) updateOrganizationAccessTokenOrganization_iamHandler(w 
 		return
 	}
 
-	resp, err := g.organization_iamClient.PutOrganizationAccessToken(ctx, req)
+	resp, err := g.org_iamClient.PutOrganizationAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
