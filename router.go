@@ -249,6 +249,18 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 		})
 
+		r.Route("/organization-alert", func(r chi.Router) {
+			r.Use(svc.authzWithOrganization)
+			r.Get("/list-notification", svc.listOrgNotificationOrg_alertHandler)
+			r.Get("/get-notification", svc.getOrgNotificationOrg_alertHandler)
+			r.Group(func(r chi.Router) {
+				r.Use(middleware.AllowContentType(contenTypeJSON))
+				r.Post("/put-notification", svc.putOrgNotificationOrg_alertHandler)
+				r.Post("/delete-notification", svc.deleteOrgNotificationOrg_alertHandler)
+				r.Post("/test-notification", svc.testOrgNotificationOrg_alertHandler)
+			})
+		})
+
 		r.Route("/osint", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
