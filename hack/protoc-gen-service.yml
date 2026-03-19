@@ -49,6 +49,7 @@ excludes:
   - IAMService.PutAccessToken
   - ProjectService.CreateProject
   - FindingService.PutPendFinding
+  - AIService.ChatAI
   - AWSService.AttachDataSource
   - OrganizationIAMService.AuthenticateOrganizationAccessToken
   - OrganizationIAMService.PutOrganizationAccessToken
