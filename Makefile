@@ -926,7 +926,7 @@ chat-ai:
 		--header 'X-XSRF-TOKEN: xxxxxxxxx' \
 		--header 'Cookie: XSRF-TOKEN=xxxxxxxxx;' \
 		--header 'Content-Type: application/json' \
-		--data '{"project_id":1001, "question":"What mountain is the highest in the world?", "chat_history": [{"role":1, "content":"hello!"}, {"role":2, "content":"Hi, I am a chatbot."}]}' \
+		--data '{"project_id":1001, "question":"プロジェクト内のFindingを調べて", "chat_history": [{"role":1, "content":"hello!"}, {"role":2, "content":"Hi, I am a chatbot."}]}' \
 		'http://localhost:8000/api/v1/ai/chat-ai/'
 
 .PHONY: generate-report
