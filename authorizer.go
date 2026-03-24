@@ -385,11 +385,18 @@ func (g *gatewayService) authzProject(u *requestUser, r *http.Request) bool {
 	if zero.IsZeroVal(p.ProjectID) {
 		return false
 	}
+	return g.isAuthorizedProject(ctx, u.userID, p.ProjectID, r.URL.Path)
+}
+
+func (g *gatewayService) isAuthorizedProject(ctx context.Context, userID, projectID uint32, uri string) bool {
+	if zero.IsZeroVal(userID) || zero.IsZeroVal(projectID) {
+		return false
+	}
 	req := &iam.IsAuthorizedRequest{
-		UserId:       u.userID,
-		ProjectId:    p.ProjectID,
-		ActionName:   getActionNameFromURI(r.URL.Path),
-		ResourceName: getServiceNameFromURI(r.URL.Path) + "/resource_any",
+		UserId:       userID,
+		ProjectId:    projectID,
+		ActionName:   getActionNameFromURI(uri),
+		ResourceName: getServiceNameFromURI(uri) + "/resource_any",
 	}
 	resp, err := g.iamClient.IsAuthorized(ctx, req)
 	if err != nil {
@@ -409,18 +416,7 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 		if scope.ProjectID != 0 && scope.ProjectID != u.accessTokenProjectID {
 			return false
 		}
-		req := &iam.IsAuthorizedTokenRequest{
-			AccessTokenId: u.accessTokenID,
-			ProjectId:     u.accessTokenProjectID,
-			ActionName:    getActionNameFromURI(r.URL.Path),
-			ResourceName:  getServiceNameFromURI(r.URL.Path) + "/resource_any",
-		}
-		resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to IsAuthorizedToken request, request=%+v, err=%+v", req, err)
-			return false
-		}
-		return resp.Ok
+		return g.isAuthorizedProjectToken(ctx, u.accessTokenID, u.accessTokenProjectID, r.URL.Path)
 	}
 	if u.orgAccessTokenID != 0 && u.orgAccessTokenOrgID != 0 {
 		if scope.ProjectID == 0 {
@@ -441,6 +437,24 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 		return resp.Ok
 	}
 	return false
+}
+
+func (g *gatewayService) isAuthorizedProjectToken(ctx context.Context, accessTokenID, projectID uint32, uri string) bool {
+	if zero.IsZeroVal(accessTokenID) || zero.IsZeroVal(projectID) {
+		return false
+	}
+	req := &iam.IsAuthorizedTokenRequest{
+		AccessTokenId: accessTokenID,
+		ProjectId:     projectID,
+		ActionName:    getActionNameFromURI(uri),
+		ResourceName:  getServiceNameFromURI(uri) + "/resource_any",
+	}
+	resp, err := g.iamClient.IsAuthorizedToken(ctx, req)
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedToken request, request=%+v, err=%+v", req, err)
+		return false
+	}
+	return resp.Ok
 }
 
 const prefixURI = "/api/v1/"

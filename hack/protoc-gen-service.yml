@@ -22,6 +22,10 @@ excludes:
   - OrgIAMService.IsAuthorizedOrg
   - OrgIAMService.IsAuthorizedOrgToken
   - OrgIAMService.AttachOrgRoleByOrgUserReserved
+  - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
+  - OrgAlertService.ListOrgNotificationByProject
+  - FindingService.GetAlertAISummary
+  - FindingService.UpdateFindingAISummary
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
@@ -46,6 +50,7 @@ excludes:
   - IAMService.PutAccessToken
   - ProjectService.CreateProject
   - FindingService.PutPendFinding
+  - AIService.ChatAI
   - AWSService.AttachDataSource
   - OrgIAMService.AuthenticateOrgAccessToken
   - OrgIAMService.PutOrgAccessToken
