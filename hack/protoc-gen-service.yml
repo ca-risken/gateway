@@ -22,7 +22,6 @@ excludes:
   - OrgIAMService.IsAuthorizedOrg
   - OrgIAMService.IsAuthorizedOrgToken
   - OrgIAMService.AttachOrgRoleByOrgUserReserved
-  - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
   - OrgAlertService.ListOrgNotificationByProject
   - FindingService.GetAlertAISummary
   - FindingService.UpdateFindingAISummary

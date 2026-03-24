@@ -9,13 +9,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ca-risken/core/proto/organization_iam"
-	organization_iammocks "github.com/ca-risken/core/proto/organization_iam/mocks"
+	"github.com/ca-risken/core/proto/org_iam"
+	org_iammocks "github.com/ca-risken/core/proto/org_iam/mocks"
 	"github.com/stretchr/testify/mock"
 )
 
 func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
-	orgIAMMock := organization_iammocks.NewOrganizationIAMServiceClient(t)
+	orgIAMMock := org_iammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{org_iamClient: orgIAMMock}
 
 	cases := []struct {
@@ -28,13 +28,13 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 			name:  "OK",
 			input: `{"organization_id":1, "name":"token-A"}`,
 			mockSetup: func() {
-				orgIAMMock.On("ListOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.ListOrganizationAccessTokenRequest) bool {
+				orgIAMMock.On("ListOrgAccessToken", mock.Anything, mock.MatchedBy(func(req *org_iam.ListOrgAccessTokenRequest) bool {
 					return req.OrganizationId == 1 && req.Name == "token-A"
-				})).Return(&organization_iam.ListOrganizationAccessTokenResponse{}, nil).Once()
-				orgIAMMock.On("PutOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.PutOrganizationAccessTokenRequest) bool {
+				})).Return(&org_iam.ListOrgAccessTokenResponse{}, nil).Once()
+				orgIAMMock.On("PutOrgAccessToken", mock.Anything, mock.MatchedBy(func(req *org_iam.PutOrgAccessTokenRequest) bool {
 					return req.OrganizationId == 1 && req.LastUpdatedUserId == 1 && req.AccessTokenId == 0 && req.PlainTextToken != ""
-				})).Return(&organization_iam.PutOrganizationAccessTokenResponse{
-					AccessToken: &organization_iam.OrganizationAccessToken{
+				})).Return(&org_iam.PutOrgAccessTokenResponse{
+					AccessToken: &org_iam.OrgAccessToken{
 						OrganizationId: 1,
 						AccessTokenId:  10,
 					},
@@ -46,8 +46,8 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 			name:  "NG duplicate name",
 			input: `{"organization_id":1, "name":"token-A"}`,
 			mockSetup: func() {
-				orgIAMMock.On("ListOrganizationAccessToken", mock.Anything, mock.Anything).Return(&organization_iam.ListOrganizationAccessTokenResponse{
-					AccessToken: []*organization_iam.OrganizationAccessToken{{}},
+				orgIAMMock.On("ListOrgAccessToken", mock.Anything, mock.Anything).Return(&org_iam.ListOrgAccessTokenResponse{
+					AccessToken: []*org_iam.OrgAccessToken{{}},
 				}, nil).Once()
 			},
 			wantStatus: http.StatusBadRequest,
@@ -61,8 +61,8 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 			name:  "NG backend error",
 			input: `{"organization_id":1, "name":"token-A"}`,
 			mockSetup: func() {
-				orgIAMMock.On("ListOrganizationAccessToken", mock.Anything, mock.Anything).Return(&organization_iam.ListOrganizationAccessTokenResponse{}, nil).Once()
-				orgIAMMock.On("PutOrganizationAccessToken", mock.Anything, mock.Anything).Return(nil, errors.New("something wrong")).Once()
+				orgIAMMock.On("ListOrgAccessToken", mock.Anything, mock.Anything).Return(&org_iam.ListOrgAccessTokenResponse{}, nil).Once()
+				orgIAMMock.On("PutOrgAccessToken", mock.Anything, mock.Anything).Return(nil, errors.New("something wrong")).Once()
 			},
 			wantStatus: http.StatusInternalServerError,
 		},
@@ -77,7 +77,7 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization/generate-organization-access-token/", strings.NewReader(c.input))
 			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
-			svc.generateOrganizationAccessTokenOrg_iamHandler(rec, req)
+			svc.generateOrgAccessTokenOrg_iamHandler(rec, req)
 
 			if rec.Code != c.wantStatus {
 				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)
@@ -112,7 +112,7 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 }
 
 func TestUpdateOrganizationAccessTokenHandler(t *testing.T) {
-	orgIAMMock := organization_iammocks.NewOrganizationIAMServiceClient(t)
+	orgIAMMock := org_iammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{org_iamClient: orgIAMMock}
 
 	cases := []struct {
@@ -125,9 +125,9 @@ func TestUpdateOrganizationAccessTokenHandler(t *testing.T) {
 			name:  "OK",
 			input: `{"organization_id":1, "access_token_id":1, "name":"token-A"}`,
 			mockSetup: func() {
-				orgIAMMock.On("PutOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.PutOrganizationAccessTokenRequest) bool {
+				orgIAMMock.On("PutOrgAccessToken", mock.Anything, mock.MatchedBy(func(req *org_iam.PutOrgAccessTokenRequest) bool {
 					return req.OrganizationId == 1 && req.AccessTokenId == 1 && req.LastUpdatedUserId == 1
-				})).Return(&organization_iam.PutOrganizationAccessTokenResponse{}, nil).Once()
+				})).Return(&org_iam.PutOrgAccessTokenResponse{}, nil).Once()
 			},
 			wantStatus: http.StatusOK,
 		},
@@ -145,7 +145,7 @@ func TestUpdateOrganizationAccessTokenHandler(t *testing.T) {
 			name:  "NG backend error",
 			input: `{"organization_id":1, "access_token_id":1, "name":"token-A"}`,
 			mockSetup: func() {
-				orgIAMMock.On("PutOrganizationAccessToken", mock.Anything, mock.Anything).Return(nil, errors.New("something wrong")).Once()
+				orgIAMMock.On("PutOrgAccessToken", mock.Anything, mock.Anything).Return(nil, errors.New("something wrong")).Once()
 			},
 			wantStatus: http.StatusInternalServerError,
 		},
@@ -160,7 +160,7 @@ func TestUpdateOrganizationAccessTokenHandler(t *testing.T) {
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization/update-organization-access-token/", strings.NewReader(c.input))
 			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
-			svc.updateOrganizationAccessTokenOrg_iamHandler(rec, req)
+			svc.updateOrgAccessTokenOrg_iamHandler(rec, req)
 
 			if rec.Code != c.wantStatus {
 				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)

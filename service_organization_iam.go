@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ca-risken/core/proto/organization_iam"
+	"github.com/ca-risken/core/proto/org_iam"
 )
 
-func (g *gatewayService) generateOrganizationAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) generateOrgAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &organization_iam.PutOrganizationAccessTokenRequest{}
+	req := &org_iam.PutOrgAccessTokenRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrganizationAccessTokenRequest", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrgAccessTokenRequest", err)
 	}
 	u, err := getRequestUser(r)
 	if err != nil || u.userID == 0 {
@@ -27,7 +27,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrg_iamHandler(w http.Re
 		return
 	}
 
-	list, err := g.org_iamClient.ListOrganizationAccessToken(ctx, &organization_iam.ListOrganizationAccessTokenRequest{
+	list, err := g.org_iamClient.ListOrgAccessToken(ctx, &org_iam.ListOrgAccessTokenRequest{
 		OrganizationId: req.OrganizationId,
 		Name:           req.Name,
 	})
@@ -43,7 +43,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrg_iamHandler(w http.Re
 		return
 	}
 
-	resp, err := g.org_iamClient.PutOrganizationAccessToken(ctx, req)
+	resp, err := g.org_iamClient.PutOrgAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
@@ -52,7 +52,7 @@ func (g *gatewayService) generateOrganizationAccessTokenOrg_iamHandler(w http.Re
 		return
 	}
 	if resp == nil || resp.AccessToken == nil {
-		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "Invalid response from OrganizationIAMService"})
+		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "Invalid response from OrgIAMService"})
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: &generateAccessTokenResponse{
@@ -61,11 +61,11 @@ func (g *gatewayService) generateOrganizationAccessTokenOrg_iamHandler(w http.Re
 	}})
 }
 
-func (g *gatewayService) updateOrganizationAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) updateOrgAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &organization_iam.PutOrganizationAccessTokenRequest{}
+	req := &org_iam.PutOrgAccessTokenRequest{}
 	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrganizationAccessTokenRequest", err)
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrgAccessTokenRequest", err)
 	}
 	u, err := getRequestUser(r)
 	if err != nil || u.userID == 0 {
@@ -82,7 +82,7 @@ func (g *gatewayService) updateOrganizationAccessTokenOrg_iamHandler(w http.Resp
 		return
 	}
 
-	resp, err := g.org_iamClient.PutOrganizationAccessToken(ctx, req)
+	resp, err := g.org_iamClient.PutOrgAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)

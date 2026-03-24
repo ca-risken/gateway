@@ -13,7 +13,7 @@ import (
 	"github.com/ca-risken/core/proto/iam"
 	"github.com/ca-risken/core/proto/org_alert"
 	"github.com/ca-risken/core/proto/organization"
-	"github.com/ca-risken/core/proto/organization_iam"
+	"github.com/ca-risken/core/proto/org_iam"
 	"github.com/ca-risken/core/proto/project"
 	"github.com/ca-risken/core/proto/report"
 	"github.com/ca-risken/datasource-api/proto/aws"
@@ -47,7 +47,7 @@ type gatewayService struct {
 	alertClient        alert.AlertServiceClient
 	reportClient       report.ReportServiceClient
 	organizationClient organization.OrganizationServiceClient
-	org_iamClient      organization_iam.OrganizationIAMServiceClient
+	org_iamClient      org_iam.OrgIAMServiceClient
 	org_alertClient    org_alert.OrgAlertServiceClient
 	awsClient          aws.AWSServiceClient
 	osintClient        osint.OsintServiceClient
@@ -88,7 +88,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		alertClient:        alert.NewAlertServiceClient(coreConn),
 		reportClient:       report.NewReportServiceClient(coreConn),
 		organizationClient: organization.NewOrganizationServiceClient(coreConn),
-		org_iamClient:      organization_iam.NewOrganizationIAMServiceClient(coreConn),
+		org_iamClient:      org_iam.NewOrgIAMServiceClient(coreConn),
 		org_alertClient:    org_alert.NewOrgAlertServiceClient(coreConn),
 		awsClient:          aws.NewAWSServiceClient(datasourceConn),
 		osintClient:        osint.NewOsintServiceClient(datasourceConn),

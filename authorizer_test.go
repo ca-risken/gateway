@@ -12,8 +12,8 @@ import (
 
 	"github.com/ca-risken/core/proto/iam"
 	iammocks "github.com/ca-risken/core/proto/iam/mocks"
-	"github.com/ca-risken/core/proto/organization_iam"
-	organizationiammocks "github.com/ca-risken/core/proto/organization_iam/mocks"
+	"github.com/ca-risken/core/proto/org_iam"
+	orgiammocks "github.com/ca-risken/core/proto/org_iam/mocks"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/stretchr/testify/mock"
 )
@@ -65,13 +65,13 @@ func TestAuthnToken(t *testing.T) {
 		authorization string
 		expectUser    bool
 		assert        func(t *testing.T, u *requestUser)
-		setupMocks    func(iamMock *iammocks.IAMServiceClient, orgMock *organizationiammocks.OrganizationIAMServiceClient)
+		setupMocks    func(iamMock *iammocks.IAMServiceClient, orgMock *orgiammocks.OrgIAMServiceClient)
 	}{
 		{
 			name:          "Project token",
 			authorization: projectToken,
 			expectUser:    true,
-			setupMocks: func(iamMock *iammocks.IAMServiceClient, _ *organizationiammocks.OrganizationIAMServiceClient) {
+			setupMocks: func(iamMock *iammocks.IAMServiceClient, _ *orgiammocks.OrgIAMServiceClient) {
 				iamMock.On("AuthenticateAccessToken", mock.Anything, mock.MatchedBy(func(req *iam.AuthenticateAccessTokenRequest) bool {
 					return req.ProjectId == projectID &&
 						req.AccessTokenId == accessTokenID &&
@@ -92,13 +92,13 @@ func TestAuthnToken(t *testing.T) {
 			name:          "Organization token",
 			authorization: orgToken,
 			expectUser:    true,
-			setupMocks: func(_ *iammocks.IAMServiceClient, orgMock *organizationiammocks.OrganizationIAMServiceClient) {
-				orgMock.On("AuthenticateOrganizationAccessToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.AuthenticateOrganizationAccessTokenRequest) bool {
+			setupMocks: func(_ *iammocks.IAMServiceClient, orgMock *orgiammocks.OrgIAMServiceClient) {
+				orgMock.On("AuthenticateOrgAccessToken", mock.Anything, mock.MatchedBy(func(req *org_iam.AuthenticateOrgAccessTokenRequest) bool {
 					return req.OrganizationId == orgID &&
 						req.AccessTokenId == accessTokenID &&
 						req.PlainTextToken == plainToken
-				})).Return(&organization_iam.AuthenticateOrganizationAccessTokenResponse{
-					AccessToken: &organization_iam.OrganizationAccessToken{
+				})).Return(&org_iam.AuthenticateOrgAccessTokenResponse{
+					AccessToken: &org_iam.OrgAccessToken{
 						AccessTokenId: accessTokenID,
 					},
 				}, nil).Once()
@@ -121,7 +121,7 @@ func TestAuthnToken(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			iamMock := iammocks.NewIAMServiceClient(t)
-			orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
+			orgIAMMock := orgiammocks.NewOrgIAMServiceClient(t)
 			svc := gatewayService{
 				iamClient:              iamMock,
 				org_iamClient: orgIAMMock,
@@ -258,7 +258,7 @@ func TestAuthzProject(t *testing.T) {
 
 func TestAuthzProjectForToken(t *testing.T) {
 	iamMock := iammocks.NewIAMServiceClient(t)
-	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
+	orgIAMMock := orgiammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{
 		iamClient:              iamMock,
 		org_iamClient: orgIAMMock,
@@ -330,12 +330,12 @@ func TestAuthzProjectForToken(t *testing.T) {
 			query:     fmt.Sprintf("project_id=%d", projectID),
 			want:      true,
 			setup: func() {
-				orgIAMMock.On("IsAuthorizedOrganizationToken", mock.Anything, mock.MatchedBy(func(req *organization_iam.IsAuthorizedOrganizationTokenRequest) bool {
+				orgIAMMock.On("IsAuthorizedOrgToken", mock.Anything, mock.MatchedBy(func(req *org_iam.IsAuthorizedOrgTokenRequest) bool {
 					return req.OrganizationId == orgID &&
 						req.AccessTokenId == tokenID &&
 						req.ProjectId == projectID &&
 						req.ActionName == "service/action"
-				})).Return(&organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: true}, nil).Once()
+				})).Return(&org_iam.IsAuthorizedOrgTokenResponse{Ok: true}, nil).Once()
 			},
 		},
 		{
@@ -349,8 +349,8 @@ func TestAuthzProjectForToken(t *testing.T) {
 			query:     fmt.Sprintf("project_id=%d", projectID),
 			want:      false,
 			setup: func() {
-				orgIAMMock.On("IsAuthorizedOrganizationToken", mock.Anything, mock.Anything).
-					Return((*organization_iam.IsAuthorizedOrganizationTokenResponse)(nil), errors.New("auth error")).Once()
+				orgIAMMock.On("IsAuthorizedOrgToken", mock.Anything, mock.Anything).
+					Return((*org_iam.IsAuthorizedOrgTokenResponse)(nil), errors.New("auth error")).Once()
 			},
 		},
 		{
@@ -359,8 +359,8 @@ func TestAuthzProjectForToken(t *testing.T) {
 			query:     fmt.Sprintf("project_id=%d", projectID),
 			want:      false,
 			setup: func() {
-				orgIAMMock.On("IsAuthorizedOrganizationToken", mock.Anything, mock.Anything).
-					Return(&organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: false}, nil).Once()
+				orgIAMMock.On("IsAuthorizedOrgToken", mock.Anything, mock.Anything).
+					Return(&org_iam.IsAuthorizedOrgTokenResponse{Ok: false}, nil).Once()
 			},
 		},
 	}
@@ -384,7 +384,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 }
 
 func TestAuthzOrgForToken(t *testing.T) {
-	orgIAMMock := organizationiammocks.NewOrganizationIAMServiceClient(t)
+	orgIAMMock := orgiammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{
 		org_iamClient: orgIAMMock,
 	}
@@ -396,7 +396,7 @@ func TestAuthzOrgForToken(t *testing.T) {
 		inputUser *requestUser
 		query     string
 		want      bool
-		mockResp  *organization_iam.IsAuthorizedOrganizationTokenResponse
+		mockResp  *org_iam.IsAuthorizedOrgTokenResponse
 		mockErr   error
 	}{
 		{
@@ -404,13 +404,13 @@ func TestAuthzOrgForToken(t *testing.T) {
 			inputUser: &requestUser{orgAccessTokenOrgID: orgID, orgAccessTokenID: tokenID},
 			query:     fmt.Sprintf("organization_id=%d", orgID),
 			want:      true,
-			mockResp:  &organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: true},
+			mockResp:  &org_iam.IsAuthorizedOrgTokenResponse{Ok: true},
 		},
 		{
 			name:      "OK without organization id",
 			inputUser: &requestUser{orgAccessTokenOrgID: orgID, orgAccessTokenID: tokenID},
 			want:      true,
-			mockResp:  &organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: true},
+			mockResp:  &org_iam.IsAuthorizedOrgTokenResponse{Ok: true},
 		},
 		{
 			name:      "NG missing token info",
@@ -436,16 +436,16 @@ func TestAuthzOrgForToken(t *testing.T) {
 			inputUser: &requestUser{orgAccessTokenOrgID: orgID, orgAccessTokenID: tokenID},
 			query:     fmt.Sprintf("organization_id=%d", orgID),
 			want:      false,
-			mockResp:  &organization_iam.IsAuthorizedOrganizationTokenResponse{Ok: false},
+			mockResp:  &org_iam.IsAuthorizedOrgTokenResponse{Ok: false},
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			if c.mockResp != nil || c.mockErr != nil {
 				orgIAMMock.On(
-					"IsAuthorizedOrganizationToken",
+					"IsAuthorizedOrgToken",
 					mock.Anything,
-					mock.MatchedBy(func(req *organization_iam.IsAuthorizedOrganizationTokenRequest) bool {
+					mock.MatchedBy(func(req *org_iam.IsAuthorizedOrgTokenRequest) bool {
 						return req.OrganizationId == c.inputUser.orgAccessTokenOrgID &&
 							req.AccessTokenId == c.inputUser.orgAccessTokenID &&
 							req.ActionName == "organization/action"
