@@ -165,7 +165,7 @@ func (g *gatewayService) authnTokenOrg(ctx context.Context, tokenBody string, ne
 		PlainTextToken: plainTextToken,
 	})
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
+		appLogger.Errorf(ctx, "Failed to AuthenticateOrgAccessToken API, err=%+v", err)
 		return false
 	}
 	if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
