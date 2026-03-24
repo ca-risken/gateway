@@ -19,9 +19,9 @@ excludes:
   - ReportService.CollectReportFinding
   - ReportService.PurgeReportFinding
   - ProjectService.CleanProject
-  - OrganizationIAMService.IsAuthorizedOrganization
-  - OrganizationIAMService.IsAuthorizedOrganizationToken
-  - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
+  - OrgIAMService.IsAuthorizedOrg
+  - OrgIAMService.IsAuthorizedOrgToken
+  - OrgIAMService.AttachOrgRoleByOrgUserReserved
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
@@ -47,5 +47,5 @@ excludes:
   - ProjectService.CreateProject
   - FindingService.PutPendFinding
   - AWSService.AttachDataSource
-  - OrganizationIAMService.AuthenticateOrganizationAccessToken
-  - OrganizationIAMService.PutOrganizationAccessToken
+  - OrgIAMService.AuthenticateOrgAccessToken
+  - OrgIAMService.PutOrgAccessToken

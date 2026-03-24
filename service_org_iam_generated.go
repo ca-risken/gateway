@@ -135,27 +135,6 @@ func (g *gatewayService) detachOrgRoleOrg_iamHandler(w http.ResponseWriter, r *h
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) attachOrgRoleByOrgUserReservedOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &org_iam.AttachOrgRoleByOrgUserReservedRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "AttachOrgRoleByOrgUserReservedRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.org_iamClient.AttachOrgRoleByOrgUserReserved(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) listOrgPolicyOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &org_iam.ListOrgPolicyRequest{}
@@ -282,48 +261,6 @@ func (g *gatewayService) detachOrgPolicyOrg_iamHandler(w http.ResponseWriter, r 
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) isAuthorizedOrgOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &org_iam.IsAuthorizedOrgRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "IsAuthorizedOrgRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.org_iamClient.IsAuthorizedOrg(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) isAuthorizedOrgTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &org_iam.IsAuthorizedOrgTokenRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "IsAuthorizedOrgTokenRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.org_iamClient.IsAuthorizedOrgToken(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) listOrgUserReservedOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &org_iam.ListOrgUserReservedRequest{}
@@ -408,27 +345,6 @@ func (g *gatewayService) listOrgAccessTokenOrg_iamHandler(w http.ResponseWriter,
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
-func (g *gatewayService) putOrgAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &org_iam.PutOrgAccessTokenRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutOrgAccessTokenRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.org_iamClient.PutOrgAccessToken(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
 func (g *gatewayService) deleteOrgAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &org_iam.DeleteOrgAccessTokenRequest{}
@@ -440,27 +356,6 @@ func (g *gatewayService) deleteOrgAccessTokenOrg_iamHandler(w http.ResponseWrite
 		return
 	}
 	resp, err := g.org_iamClient.DeleteOrgAccessToken(ctx, req)
-	if err != nil {
-		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
-			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
-		}
-		return
-	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
-}
-
-func (g *gatewayService) authenticateOrgAccessTokenOrg_iamHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := &org_iam.AuthenticateOrgAccessTokenRequest{}
-	if err := bind(req, r); err != nil {
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "AuthenticateOrgAccessTokenRequest", err)
-	}
-	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
-	}
-	resp, err := g.org_iamClient.AuthenticateOrgAccessToken(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)

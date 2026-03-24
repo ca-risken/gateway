@@ -30,6 +30,27 @@ func (g *gatewayService) listOrgNotificationOrg_alertHandler(w http.ResponseWrit
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
 
+func (g *gatewayService) listOrgNotificationByProjectOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &org_alert.ListOrgNotificationByProjectRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListOrgNotificationByProjectRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.org_alertClient.ListOrgNotificationByProject(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
 func (g *gatewayService) getOrgNotificationOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &org_alert.GetOrgNotificationRequest{}
@@ -83,6 +104,27 @@ func (g *gatewayService) deleteOrgNotificationOrg_alertHandler(w http.ResponseWr
 		return
 	}
 	resp, err := g.org_alertClient.DeleteOrgNotification(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) testOrgNotificationOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &org_alert.TestOrgNotificationRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "TestOrgNotificationRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.org_alertClient.TestOrgNotification(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
