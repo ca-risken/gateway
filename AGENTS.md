@@ -58,7 +58,7 @@ Two auth paths:
 ### Authorization Levels
 
 - `authzWithProject` — Project-scoped authorization via `IAMService.IsAuthorized`
-- `authzWithOrganization` — Organization-scoped authorization via `OrganizationIAMService.IsAuthorizedOrganization`
+- `authzWithOrganization` — Organization-scoped authorization via `OrgIAMService.IsAuthorizedOrganization`
 
 ### Dependencies
 
