@@ -19,9 +19,9 @@ excludes:
   - ReportService.CollectReportFinding
   - ReportService.PurgeReportFinding
   - ProjectService.CleanProject
-  - OrganizationIAMService.IsAuthorizedOrganization
-  - OrganizationIAMService.IsAuthorizedOrganizationToken
-  - OrganizationIAMService.AttachOrganizationRoleByOrganizationUserReserved
+  - OrgIAMService.IsAuthorizedOrg
+  - OrgIAMService.IsAuthorizedOrgToken
+  - OrgIAMService.AttachOrgRoleByOrgUserReserved
   - OrgAlertService.ListOrgNotificationByProject
   - FindingService.GetAlertAISummary
   - FindingService.UpdateFindingAISummary
@@ -51,5 +51,5 @@ excludes:
   - FindingService.PutPendFinding
   - AIService.ChatAI
   - AWSService.AttachDataSource
-  - OrganizationIAMService.AuthenticateOrganizationAccessToken
-  - OrganizationIAMService.PutOrganizationAccessToken
+  - OrgIAMService.AuthenticateOrgAccessToken
+  - OrgIAMService.PutOrgAccessToken
