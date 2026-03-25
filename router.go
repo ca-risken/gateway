@@ -69,7 +69,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				})
 			})
 			r.Group(func(r chi.Router) {
-				r.Use(svc.authzWithOrganization)
+				r.Use(svc.authzWithOrg)
 				r.Get("/list-finding-for-organization", svc.listFindingForOrgFindingHandler)
 			})
 		})
@@ -216,7 +216,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/create-organization", svc.createOrganizationOrganizationHandler)
 			})
 			r.Group(func(r chi.Router) {
-				r.Use(svc.authzWithOrganization)
+				r.Use(svc.authzWithOrg)
 				r.Get("/list-organization-invitation", svc.listOrganizationInvitationOrganizationHandler)
 				r.Get("/list-organization-role", svc.listOrgRoleOrg_iamHandler)
 				r.Get("/get-organization-role", svc.getOrgRoleOrg_iamHandler)
@@ -250,7 +250,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 		})
 
 		r.Route("/organization-alert", func(r chi.Router) {
-			r.Use(svc.authzWithOrganization)
+			r.Use(svc.authzWithOrg)
 			r.Get("/list-notification", svc.listOrgNotificationOrg_alertHandler)
 			r.Get("/get-notification", svc.getOrgNotificationOrg_alertHandler)
 			r.Group(func(r chi.Router) {

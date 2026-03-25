@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
+func TestGenerateOrgAccessTokenHandler(t *testing.T) {
 	orgIAMMock := org_iammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{org_iamClient: orgIAMMock}
 
@@ -111,7 +111,7 @@ func TestGenerateOrganizationAccessTokenHandler(t *testing.T) {
 	}
 }
 
-func TestUpdateOrganizationAccessTokenHandler(t *testing.T) {
+func TestUpdateOrgAccessTokenHandler(t *testing.T) {
 	orgIAMMock := org_iammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{org_iamClient: orgIAMMock}
 

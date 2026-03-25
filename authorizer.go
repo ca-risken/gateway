@@ -272,7 +272,7 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func (g *gatewayService) authzWithOrganization(next http.Handler) http.Handler {
+func (g *gatewayService) authzWithOrg(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		buf, err := io.ReadAll(r.Body)
@@ -291,7 +291,7 @@ func (g *gatewayService) authzWithOrganization(next http.Handler) http.Handler {
 		}
 
 		if isHumanAccess(u) {
-			if !g.authzOrganization(u, r) {
+			if !g.authzOrg(u, r) {
 				http.Error(w, "Unauthorized the organization resource for human access", http.StatusForbidden)
 				return
 			}
@@ -503,7 +503,7 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 	return resp.Ok
 }
 
-func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool {
+func (g *gatewayService) authzOrg(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
 	if u.userID == 0 {
 		return false
