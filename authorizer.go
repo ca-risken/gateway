@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/ca-risken/core/proto/iam"
-	"github.com/ca-risken/core/proto/organization_iam"
+	"github.com/ca-risken/core/proto/org_iam"
 	"github.com/vikyd/zero"
 )
 
@@ -159,13 +159,13 @@ func (g *gatewayService) authnTokenOrg(ctx context.Context, tokenBody string, ne
 	if err != nil {
 		return false
 	}
-	resp, err := g.organization_iamClient.AuthenticateOrganizationAccessToken(ctx, &organization_iam.AuthenticateOrganizationAccessTokenRequest{
+	resp, err := g.org_iamClient.AuthenticateOrgAccessToken(ctx, &org_iam.AuthenticateOrgAccessTokenRequest{
 		OrganizationId: orgID,
 		AccessTokenId:  accessTokenID,
 		PlainTextToken: plainTextToken,
 	})
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to AuthenticateOrganizationAccessToken API, err=%+v", err)
+		appLogger.Errorf(ctx, "Failed to AuthenticateOrgAccessToken API, err=%+v", err)
 		return false
 	}
 	if resp.AccessToken == nil || resp.AccessToken.AccessTokenId == 0 {
@@ -272,7 +272,7 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func (g *gatewayService) authzWithOrganization(next http.Handler) http.Handler {
+func (g *gatewayService) authzWithOrg(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		buf, err := io.ReadAll(r.Body)
@@ -291,7 +291,7 @@ func (g *gatewayService) authzWithOrganization(next http.Handler) http.Handler {
 		}
 
 		if isHumanAccess(u) {
-			if !g.authzOrganization(u, r) {
+			if !g.authzOrg(u, r) {
 				http.Error(w, "Unauthorized the organization resource for human access", http.StatusForbidden)
 				return
 			}
@@ -423,15 +423,15 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 			appLogger.Warnf(ctx, "Project ID is required for organization token request")
 			return false
 		}
-		req := &organization_iam.IsAuthorizedOrganizationTokenRequest{
+		req := &org_iam.IsAuthorizedOrgTokenRequest{
 			OrganizationId: u.orgAccessTokenOrgID,
 			AccessTokenId:  u.orgAccessTokenID,
 			ProjectId:      scope.ProjectID,
 			ActionName:     getActionNameFromURI(r.URL.Path),
 		}
-		resp, err := g.organization_iamClient.IsAuthorizedOrganizationToken(ctx, req)
+		resp, err := g.org_iamClient.IsAuthorizedOrgToken(ctx, req)
 		if err != nil {
-			appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganizationToken request, request=%+v, err=%+v", req, err)
+			appLogger.Errorf(ctx, "Failed to IsAuthorizedOrgToken request, request=%+v, err=%+v", req, err)
 			return false
 		}
 		return resp.Ok
@@ -503,7 +503,7 @@ func (g *gatewayService) authzAdmin(u *requestUser, r *http.Request) bool {
 	return resp.Ok
 }
 
-func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool {
+func (g *gatewayService) authzOrg(u *requestUser, r *http.Request) bool {
 	ctx := r.Context()
 	if u.userID == 0 {
 		return false
@@ -516,14 +516,14 @@ func (g *gatewayService) authzOrganization(u *requestUser, r *http.Request) bool
 	if o.OrganizationID == 0 {
 		return false
 	}
-	req := &organization_iam.IsAuthorizedOrganizationRequest{
+	req := &org_iam.IsAuthorizedOrgRequest{
 		UserId:         u.userID,
 		OrganizationId: o.OrganizationID,
 		ActionName:     getActionNameFromURI(r.URL.Path),
 	}
-	resp, err := g.organization_iamClient.IsAuthorizedOrganization(ctx, req)
+	resp, err := g.org_iamClient.IsAuthorizedOrg(ctx, req)
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganization request, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrg request, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok
@@ -542,14 +542,14 @@ func (g *gatewayService) authzOrgForToken(u *requestUser, r *http.Request) bool 
 	if o.OrganizationID != 0 && o.OrganizationID != u.orgAccessTokenOrgID {
 		return false
 	}
-	req := &organization_iam.IsAuthorizedOrganizationTokenRequest{
+	req := &org_iam.IsAuthorizedOrgTokenRequest{
 		OrganizationId: u.orgAccessTokenOrgID,
 		AccessTokenId:  u.orgAccessTokenID,
 		ActionName:     getActionNameFromURI(r.URL.Path),
 	}
-	resp, err := g.organization_iamClient.IsAuthorizedOrganizationToken(ctx, req)
+	resp, err := g.org_iamClient.IsAuthorizedOrgToken(ctx, req)
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrganizationToken request, request=%+v, err=%+v", req, err)
+		appLogger.Errorf(ctx, "Failed to IsAuthorizedOrgToken request, request=%+v, err=%+v", req, err)
 		return false
 	}
 	return resp.Ok
