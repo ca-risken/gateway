@@ -74,7 +74,7 @@ func TestGenerateOrgAccessTokenHandler(t *testing.T) {
 				c.mockSetup()
 			}
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization/generate-organization-access-token/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization-iam/generate-access-token/", strings.NewReader(c.input))
 			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
 			svc.generateOrgAccessTokenOrg_iamHandler(rec, req)
@@ -157,7 +157,7 @@ func TestUpdateOrgAccessTokenHandler(t *testing.T) {
 				c.mockSetup()
 			}
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization/update-organization-access-token/", strings.NewReader(c.input))
+			req, _ := http.NewRequest(http.MethodPost, "/api/v1/organization-iam/update-access-token/", strings.NewReader(c.input))
 			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{userID: 1}))
 			req.Header.Add("Content-Type", "application/json")
 			svc.updateOrgAccessTokenOrg_iamHandler(rec, req)
