@@ -324,6 +324,37 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
+func (g *gatewayService) authzOnlyProjectMember(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		buf, err := io.ReadAll(r.Body)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
+			http.Error(w, "Could not read body", http.StatusInternalServerError)
+			return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+
+		u, err := getRequestUser(r)
+		if err != nil {
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
+			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		if !isHumanAccess(u) {
+			http.Error(w, "This API is only available for human access", http.StatusForbidden)
+			return
+		}
+		if !g.authzProject(u, r) {
+			http.Error(w, "Unauthorized the project resource for human access", http.StatusForbidden)
+			return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
 func isHumanAccess(u *requestUser) bool {
 	if u == nil || zero.IsZeroVal(u.userID) {
 		return false
