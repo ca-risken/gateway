@@ -324,6 +324,56 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
+func (g *gatewayService) authzOnlyProjectMember(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		buf, err := io.ReadAll(r.Body)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
+			http.Error(w, "Could not read body", http.StatusInternalServerError)
+			return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+
+		u, err := getRequestUser(r)
+		if err != nil {
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
+			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		if !isHumanAccess(u) {
+			http.Error(w, "This API is only available for human access", http.StatusForbidden)
+			return
+		}
+		p := &requestProject{}
+		if err := bind(p, r); err != nil {
+			appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
+		}
+		if !g.isProjectMember(ctx, u.userID, p.ProjectID) {
+			http.Error(w, "You are not a member of this project", http.StatusForbidden)
+			return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
+func (g *gatewayService) isProjectMember(ctx context.Context, userID, projectID uint32) bool {
+	if zero.IsZeroVal(userID) || zero.IsZeroVal(projectID) {
+		return false
+	}
+	resp, err := g.iamClient.ListRole(ctx, &iam.ListRoleRequest{
+		ProjectId: projectID,
+		UserId:    userID,
+	})
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to ListRole request, user_id=%d, project_id=%d, err=%+v", userID, projectID, err)
+		return false
+	}
+	return len(resp.RoleId) > 0
+}
+
 func isHumanAccess(u *requestUser) bool {
 	if u == nil || zero.IsZeroVal(u.userID) {
 		return false
