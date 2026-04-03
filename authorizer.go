@@ -345,14 +345,33 @@ func (g *gatewayService) authzOnlyProjectMember(next http.Handler) http.Handler 
 			http.Error(w, "This API is only available for human access", http.StatusForbidden)
 			return
 		}
-		if !g.authzProject(u, r) {
-			http.Error(w, "Unauthorized the project resource for human access", http.StatusForbidden)
+		p := &requestProject{}
+		if err := bind(p, r); err != nil {
+			appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
+		}
+		if !g.isProjectMember(ctx, u.userID, p.ProjectID) {
+			http.Error(w, "You are not a member of this project", http.StatusForbidden)
 			return
 		}
 		r.Body = io.NopCloser(bytes.NewBuffer(buf))
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
+}
+
+func (g *gatewayService) isProjectMember(ctx context.Context, userID, projectID uint32) bool {
+	if zero.IsZeroVal(userID) || zero.IsZeroVal(projectID) {
+		return false
+	}
+	resp, err := g.iamClient.ListRole(ctx, &iam.ListRoleRequest{
+		ProjectId: projectID,
+		UserId:    userID,
+	})
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to ListRole request, user_id=%d, project_id=%d, err=%+v", userID, projectID, err)
+		return false
+	}
+	return len(resp.RoleId) > 0
 }
 
 func isHumanAccess(u *requestUser) bool {
