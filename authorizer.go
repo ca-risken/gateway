@@ -324,7 +324,7 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func (g *gatewayService) authzOnlyProjectMember(next http.Handler) http.Handler {
+func (g *gatewayService) authzOnlyProjectRoleHolder(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		buf, err := io.ReadAll(r.Body)
@@ -349,7 +349,7 @@ func (g *gatewayService) authzOnlyProjectMember(next http.Handler) http.Handler 
 		if err := bind(p, r); err != nil {
 			appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 		}
-		if !g.isProjectMember(ctx, u.userID, p.ProjectID) {
+		if !g.hasProjectRole(ctx, u.userID, p.ProjectID) {
 			http.Error(w, "You are not a member of this project", http.StatusForbidden)
 			return
 		}
@@ -359,8 +359,8 @@ func (g *gatewayService) authzOnlyProjectMember(next http.Handler) http.Handler 
 	return http.HandlerFunc(fn)
 }
 
-func (g *gatewayService) isProjectMember(ctx context.Context, userID, projectID uint32) bool {
-	if zero.IsZeroVal(userID) || zero.IsZeroVal(projectID) {
+func (g *gatewayService) hasProjectRole(ctx context.Context, userID, projectID uint32) bool {
+	if userID == 0 || projectID == 0 {
 		return false
 	}
 	resp, err := g.iamClient.ListRole(ctx, &iam.ListRoleRequest{
