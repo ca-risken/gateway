@@ -148,7 +148,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(middleware.AllowContentType(contenTypeJSON))
 				r.Post("/request-project-role-notification", svc.requestProjectRoleNotificationAlertHandler)
 				r.Group(func(r chi.Router) {
-					r.Use(svc.authzOnlyProjectRoleHolder)
+					r.Use(svc.authzWithProjectMember)
 					r.Post("/put-alert-first-viewed-at", svc.putAlertFirstViewedAtAlertHandler)
 				})
 				r.Group(func(r chi.Router) {

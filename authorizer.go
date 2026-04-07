@@ -324,7 +324,7 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func (g *gatewayService) authzOnlyProjectRoleHolder(next http.Handler) http.Handler {
+func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		buf, err := io.ReadAll(r.Body)
@@ -349,6 +349,7 @@ func (g *gatewayService) authzOnlyProjectRoleHolder(next http.Handler) http.Hand
 		if err := bind(p, r); err != nil {
 			appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 		}
+		// TODO: Using a dummy action. Consider replacing with a dedicated API action.
 		if !g.isAuthorizedProject(ctx, u.userID, p.ProjectID, "/api/v1/alert/list-alert") {
 			http.Error(w, "You are not a member of this project", http.StatusForbidden)
 			return
