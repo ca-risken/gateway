@@ -349,7 +349,7 @@ func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler 
 		if err := bind(p, r); err != nil {
 			appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 		}
-		if zero.IsZeroVal(p.ProjectID) {
+		if p.ProjectID == 0 {
 			http.Error(w, "You are not a member of this project", http.StatusForbidden)
 			return
 		}
