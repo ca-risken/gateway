@@ -349,6 +349,10 @@ func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler 
 		if err := bind(p, r); err != nil {
 			appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 		}
+		if zero.IsZeroVal(p.ProjectID) {
+			http.Error(w, "You are not a member of this project", http.StatusForbidden)
+			return
+		}
 		// TODO: Using a dummy action. Consider replacing with a dedicated API action.
 		if !g.isAuthorizedProject(ctx, u.userID, p.ProjectID, "/api/v1/alert/list-alert") {
 			http.Error(w, "You are not a member of this project", http.StatusForbidden)
