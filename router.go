@@ -224,8 +224,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/put-organization-invitation", svc.putOrganizationInvitationOrganizationHandler)
 					r.Post("/delete-organization", svc.deleteOrganizationOrganizationHandler)
 					r.Post("/delete-organization-invitation", svc.deleteOrganizationInvitationOrganizationHandler)
-					r.Post("/create-project-with-organization", svc.createProjectWithOrganizationHandler)
-				})
+					r.Post("/create-project-with-organization", svc.createProjectWithOrganizationOrganizationHandler)
+					})
 			})
 		})
 
