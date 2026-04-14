@@ -324,6 +324,47 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
+func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		buf, err := io.ReadAll(r.Body)
+		if err != nil {
+			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
+			http.Error(w, "Could not read body", http.StatusInternalServerError)
+			return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+
+		u, err := getRequestUser(r)
+		if err != nil {
+			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
+			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		if !isHumanAccess(u) {
+			http.Error(w, "This API is only available for human access", http.StatusForbidden)
+			return
+		}
+		p := &requestProject{}
+		if err := bind(p, r); err != nil {
+			appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
+		}
+		if p.ProjectID == 0 {
+			http.Error(w, "You are not a member of this project", http.StatusForbidden)
+			return
+		}
+		// TODO: Using a dummy action. Consider replacing with a dedicated API action.
+		if !g.isAuthorizedProject(ctx, u.userID, p.ProjectID, "/api/v1/alert/list-alert") {
+			http.Error(w, "You are not a member of this project", http.StatusForbidden)
+			return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
+
 func isHumanAccess(u *requestUser) bool {
 	if u == nil || zero.IsZeroVal(u.userID) {
 		return false
