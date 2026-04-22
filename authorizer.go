@@ -19,6 +19,8 @@ const (
 	userKey key = iota
 )
 
+const maxAuthzBodyBytes int64 = 1 << 20 // 1MiB
+
 type requestUser struct {
 	// human access
 	sub    string
@@ -211,18 +213,15 @@ func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		buf, err := readRequestBodyWithLimit(w, r)
+		if err != nil {
+			handleAuthzBodyReadError(ctx, w, err)
 			return
 		}
 
@@ -248,18 +247,15 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		buf, err := readRequestBodyWithLimit(w, r)
+		if err != nil {
+			handleAuthzBodyReadError(ctx, w, err)
 			return
 		}
 		if !g.authzAdmin(u, r) {
@@ -275,18 +271,15 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 func (g *gatewayService) authzWithOrg(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		buf, err := readRequestBodyWithLimit(w, r)
+		if err != nil {
+			handleAuthzBodyReadError(ctx, w, err)
 			return
 		}
 
@@ -327,14 +320,6 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
@@ -343,6 +328,11 @@ func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler 
 		}
 		if !isHumanAccess(u) {
 			http.Error(w, "This API is only available for human access", http.StatusForbidden)
+			return
+		}
+		buf, err := readRequestBodyWithLimit(w, r)
+		if err != nil {
+			handleAuthzBodyReadError(ctx, w, err)
 			return
 		}
 		p := &requestProject{}
@@ -364,6 +354,25 @@ func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler 
 	return http.HandlerFunc(fn)
 }
 
+func readRequestBodyWithLimit(w http.ResponseWriter, r *http.Request) ([]byte, error) {
+	r.Body = http.MaxBytesReader(w, r.Body, maxAuthzBodyBytes)
+	buf, err := io.ReadAll(r.Body)
+	if err != nil {
+		return nil, err
+	}
+	r.Body = io.NopCloser(bytes.NewBuffer(buf))
+	return buf, nil
+}
+
+func handleAuthzBodyReadError(ctx context.Context, w http.ResponseWriter, err error) {
+	var maxBytesErr *http.MaxBytesError
+	if errors.As(err, &maxBytesErr) {
+		http.Error(w, "Request entity too large", http.StatusRequestEntityTooLarge)
+		return
+	}
+	appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
+	http.Error(w, "Could not read body", http.StatusInternalServerError)
+}
 
 func isHumanAccess(u *requestUser) bool {
 	if u == nil || zero.IsZeroVal(u.userID) {
