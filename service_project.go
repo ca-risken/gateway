@@ -11,24 +11,25 @@ func (g *gatewayService) createProjectHandler(w http.ResponseWriter, r *http.Req
 	ctx := r.Context()
 	user, err := getRequestUser(r)
 	if err != nil {
-		writeResponse(ctx, w, http.StatusUnauthorized, map[string]interface{}{errorJSONKey: errors.New("InvalidUser")})
+		writeResponse(ctx, w, http.StatusUnauthorized, map[string]any{errorJSONKey: errors.New("InvalidUser")})
+		return
 	}
 	req := &project.CreateProjectRequest{}
-	req.UserId = user.userID // force update by own userID
 	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "CreateProjectRequest", err)
 	}
+	req.UserId = user.userID // force update by own userID
 	if err := req.Validate(); err != nil {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]any{errorJSONKey: err.Error()})
 		return
 	}
 	resp, err := g.projectClient.CreateProject(ctx, req)
 	if err != nil {
 		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
 			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
-			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]any{errorJSONKey: "InternalServerError"})
 		}
 		return
 	}
-	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+	writeResponse(ctx, w, http.StatusOK, map[string]any{successJSONKey: resp})
 }
