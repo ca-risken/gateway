@@ -185,6 +185,21 @@ func TestBindBodyJSON(t *testing.T) {
 	}
 }
 
+func TestBindBodyJSONTooLarge(t *testing.T) {
+	originalLimit := maxRequestBodyBytes
+	maxRequestBodyBytes = 8
+	t.Cleanup(func() {
+		maxRequestBodyBytes = originalLimit
+	})
+
+	req, err := http.NewRequest(http.MethodPost, "/test", strings.NewReader(`{"param1":123}`))
+	require.NoError(t, err)
+
+	got := param{}
+	err = bindBodyJSON(&got, req)
+	require.ErrorIs(t, err, errRequestBodyTooLarge)
+}
+
 func TestStringSeparator(t *testing.T) {
 	cases := []struct {
 		name      string

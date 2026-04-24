@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"errors"
-	"io"
 	"net/http"
 	"strings"
 
@@ -80,7 +78,7 @@ func (g *gatewayService) UpdateUserFromIdp(next http.Handler) http.Handler {
 				Activated:  true,
 			},
 		}
-		// 既存のユーザーであれば、手動でNameを変更している可能性があるので、contextのユーザー名を使用する
+		// Preserve the name from the request context because an existing user may have changed it manually.
 		u, err := getRequestUser(r)
 		if err == nil && u != nil && u.name != "" {
 			putUserRequest.User.Name = u.name
@@ -183,7 +181,7 @@ func (g *gatewayService) authnTokenOrg(ctx context.Context, tokenBody string, ne
 func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string, next http.Handler, w http.ResponseWriter, r *http.Request) bool {
 	projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
 	if err != nil {
-		// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
+		// TODO: Check whether any downstream handlers allow missing access tokens; otherwise return 403 immediately.
 		return false
 	}
 	resp, err := g.iamClient.AuthenticateAccessToken(ctx, &iam.AuthenticateAccessTokenRequest{
@@ -192,7 +190,7 @@ func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string
 		PlainTextToken: plainTextToken,
 	})
 	if err != nil {
-		// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
+		// TODO: Check whether any downstream handlers continue after auth errors; otherwise return 403 as early as possible.
 		appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
 		return false
 	}
@@ -211,18 +209,15 @@ func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string
 func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		buf, err := bufferRequestBody(r)
+		if err != nil {
+			writeRequestBodyError(ctx, w, err)
 			return
 		}
 
@@ -239,7 +234,9 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 				return
 			}
 		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
+		if len(buf) > 0 {
+			restoreRequestBody(r, buf) // Restore the request body so downstream handlers can read it again.
+		}
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
@@ -248,14 +245,6 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
@@ -266,7 +255,6 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 			http.Error(w, "Unauthorized admin API", http.StatusForbidden)
 			return
 		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
@@ -275,18 +263,15 @@ func (g *gatewayService) authzOnlyAdmin(next http.Handler) http.Handler {
 func (g *gatewayService) authzWithOrg(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
 			http.Error(w, "Unauthenticated", http.StatusUnauthorized)
+			return
+		}
+		buf, err := bufferRequestBody(r)
+		if err != nil {
+			writeRequestBodyError(ctx, w, err)
 			return
 		}
 
@@ -302,7 +287,9 @@ func (g *gatewayService) authzWithOrg(next http.Handler) http.Handler {
 			}
 		}
 
-		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
+		if len(buf) > 0 {
+			restoreRequestBody(r, buf) // Restore the request body so downstream handlers can read it again.
+		}
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
@@ -327,14 +314,6 @@ func (g *gatewayService) verifyCSRF(next http.Handler) http.Handler {
 func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
-			http.Error(w, "Could not read body", http.StatusInternalServerError)
-			return
-		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
-
 		u, err := getRequestUser(r)
 		if err != nil {
 			appLogger.Infof(ctx, "Unauthenticated: %+v", err)
@@ -343,6 +322,11 @@ func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler 
 		}
 		if !isHumanAccess(u) {
 			http.Error(w, "This API is only available for human access", http.StatusForbidden)
+			return
+		}
+		buf, err := bufferRequestBody(r)
+		if err != nil {
+			writeRequestBodyError(ctx, w, err)
 			return
 		}
 		p := &requestProject{}
@@ -358,12 +342,13 @@ func (g *gatewayService) authzWithProjectMember(next http.Handler) http.Handler 
 			http.Error(w, "You are not a member of this project", http.StatusForbidden)
 			return
 		}
-		r.Body = io.NopCloser(bytes.NewBuffer(buf))
+		if len(buf) > 0 {
+			restoreRequestBody(r, buf)
+		}
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
 }
-
 
 func isHumanAccess(u *requestUser) bool {
 	if u == nil || zero.IsZeroVal(u.userID) {

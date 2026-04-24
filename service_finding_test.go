@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/ca-risken/core/proto/finding"
 	findingmocks "github.com/ca-risken/core/proto/finding/mocks"
@@ -113,5 +115,43 @@ func TestPutPendFindingHandler(t *testing.T) {
 				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
 			}
 		})
+	}
+}
+
+func TestGetAISummaryStreamHandler_DisablesWriteTimeout(t *testing.T) {
+	findingMock := findingmocks.NewFindingServiceClient(t)
+	streamMock := findingmocks.NewFindingService_GetAISummaryStreamClient(t)
+	svc := gatewayService{
+		findingClient: findingMock,
+	}
+
+	findingMock.On("GetAISummaryStream", mock.Anything, mock.Anything).Return(streamMock, nil).Once()
+	streamMock.On("Recv").Return(&finding.GetAISummaryResponse{Answer: "first"}, nil).Once()
+	streamMock.On("Recv").Run(func(args mock.Arguments) {
+		time.Sleep(80 * time.Millisecond)
+	}).Return(&finding.GetAISummaryResponse{Answer: "second"}, nil).Once()
+	streamMock.On("Recv").Return((*finding.GetAISummaryResponse)(nil), io.EOF).Once()
+
+	server := httptest.NewUnstartedServer(http.HandlerFunc(svc.getAISummaryStreamHandler))
+	server.Config.WriteTimeout = 50 * time.Millisecond
+	server.Start()
+	defer server.Close()
+
+	resp, err := http.Get(server.URL + "?project_id=1&finding_id=1&lang=ja")
+	if err != nil {
+		t.Fatalf("failed to request SSE endpoint: err=%+v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read SSE response body: err=%+v", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected HTTP status code: got=%d, body=%q", resp.StatusCode, string(body))
+	}
+	if got := string(body); got != "firstsecond" {
+		t.Fatalf("unexpected SSE body: got=%q", got)
 	}
 }
