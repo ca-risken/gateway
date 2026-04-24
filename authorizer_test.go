@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -17,6 +19,19 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/stretchr/testify/mock"
 )
+
+type readCounterBody struct {
+	readCount int
+}
+
+func (b *readCounterBody) Read(_ []byte) (int, error) {
+	b.readCount++
+	return 0, io.EOF
+}
+
+func (b *readCounterBody) Close() error {
+	return nil
+}
 
 func TestSigninHandler(t *testing.T) {
 	svc := gatewayService{
@@ -123,7 +138,7 @@ func TestAuthnToken(t *testing.T) {
 			iamMock := iammocks.NewIAMServiceClient(t)
 			orgIAMMock := orgiammocks.NewOrgIAMServiceClient(t)
 			svc := gatewayService{
-				iamClient:              iamMock,
+				iamClient:     iamMock,
 				org_iamClient: orgIAMMock,
 			}
 			if c.setupMocks != nil {
@@ -260,7 +275,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 	iamMock := iammocks.NewIAMServiceClient(t)
 	orgIAMMock := orgiammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{
-		iamClient:              iamMock,
+		iamClient:     iamMock,
 		org_iamClient: orgIAMMock,
 	}
 
@@ -380,6 +395,97 @@ func TestAuthzProjectForToken(t *testing.T) {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
 			}
 		})
+	}
+}
+
+func TestAuthzMiddlewareSkipsBodyReadWhenUnauthenticated(t *testing.T) {
+	svc := gatewayService{}
+	cases := []struct {
+		name   string
+		wrap   func(http.Handler) http.Handler
+		method string
+		target string
+	}{
+		{
+			name:   "project",
+			wrap:   svc.authzWithProject,
+			method: http.MethodPost,
+			target: "/api/v1/finding/put-finding",
+		},
+		{
+			name:   "admin",
+			wrap:   svc.authzOnlyAdmin,
+			method: http.MethodGet,
+			target: "/api/v1/report/get-report-finding-all",
+		},
+		{
+			name:   "organization",
+			wrap:   svc.authzWithOrg,
+			method: http.MethodPost,
+			target: "/api/v1/organization/update-organization",
+		},
+		{
+			name:   "project-member",
+			wrap:   svc.authzWithProjectMember,
+			method: http.MethodPost,
+			target: "/api/v1/alert/put-alert-first-viewed-at",
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			body := &readCounterBody{}
+			req, err := http.NewRequest(c.method, c.target, body)
+			if err != nil {
+				t.Fatalf("failed to create request: %v", err)
+			}
+			rec := httptest.NewRecorder()
+			called := false
+			handler := c.wrap(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				called = true
+				w.WriteHeader(http.StatusOK)
+			}))
+
+			handler.ServeHTTP(rec, req)
+
+			if rec.Code != http.StatusUnauthorized {
+				t.Fatalf("unexpected status: want=%d got=%d", http.StatusUnauthorized, rec.Code)
+			}
+			if called {
+				t.Fatal("next handler should not be called")
+			}
+			if body.readCount != 0 {
+				t.Fatalf("request body was read before authentication: readCount=%d", body.readCount)
+			}
+		})
+	}
+}
+
+func TestAuthzWithProjectRejectsOversizedBody(t *testing.T) {
+	originalLimit := maxRequestBodyBytes
+	maxRequestBodyBytes = 8
+	t.Cleanup(func() {
+		maxRequestBodyBytes = originalLimit
+	})
+
+	svc := gatewayService{}
+	req, err := http.NewRequest(http.MethodPost, "/api/v1/finding/put-finding", bytes.NewBufferString(`{"project_id":1,"name":"too-large"}`))
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{sub: "sub", userID: 1}))
+	rec := httptest.NewRecorder()
+	called := false
+
+	svc.authzWithProject(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		called = true
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusRequestEntityTooLarge {
+		t.Fatalf("unexpected status: want=%d got=%d", http.StatusRequestEntityTooLarge, rec.Code)
+	}
+	if called {
+		t.Fatal("next handler should not be called")
 	}
 }
 

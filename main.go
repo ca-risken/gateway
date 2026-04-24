@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/ca-risken/common/pkg/profiler"
 	"github.com/ca-risken/common/pkg/tracer"
@@ -43,6 +44,12 @@ type AppConfig struct {
 
 	CoreAddr             string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8080"`
 	DataSourceAPISvcAddr string `required:"true" split_words:"true" default:"datasource-api.datasource.svc.cluster.local:8081"`
+	MaxRequestBodyBytes  int64  `split_words:"true" default:"1048576"`
+	ReadHeaderTimeoutSec int    `split_words:"true" default:"5"`
+	ReadTimeoutSec       int    `split_words:"true" default:"30"`
+	WriteTimeoutSec      int    `split_words:"true" default:"30"`
+	IdleTimeoutSec       int    `split_words:"true" default:"120"`
+	MaxHeaderBytes       int    `split_words:"true" default:"1048576"`
 }
 
 func main() {
@@ -86,10 +93,23 @@ func main() {
 	if err != nil {
 		appLogger.Fatal(ctx, err.Error())
 	}
+	maxRequestBodyBytes = appConfig.MaxRequestBodyBytes
 	router := newRouter(svc)
 	appLogger.Infof(ctx, "starting http server at :%s", svc.port)
-	err = http.ListenAndServe(":"+svc.port, router)
+	err = newHTTPServer(&appConfig, router).ListenAndServe()
 	if err != nil {
 		appLogger.Fatal(ctx, err.Error())
+	}
+}
+
+func newHTTPServer(conf *AppConfig, handler http.Handler) *http.Server {
+	return &http.Server{
+		Addr:              ":" + conf.Port,
+		Handler:           handler,
+		ReadHeaderTimeout: time.Duration(conf.ReadHeaderTimeoutSec) * time.Second,
+		ReadTimeout:       time.Duration(conf.ReadTimeoutSec) * time.Second,
+		WriteTimeout:      time.Duration(conf.WriteTimeoutSec) * time.Second,
+		IdleTimeout:       time.Duration(conf.IdleTimeoutSec) * time.Second,
+		MaxHeaderBytes:    conf.MaxHeaderBytes,
 	}
 }

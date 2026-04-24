@@ -22,6 +22,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.Use(httpLogger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.StripSlashes)
+	r.Use(limitRequestBody)
 	r.Use(svc.authn)
 	r.Use(svc.authnToken)
 	r.Use(svc.verifyCSRF)
@@ -228,7 +229,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 					r.Post("/delete-organization", svc.deleteOrganizationOrganizationHandler)
 					r.Post("/delete-organization-invitation", svc.deleteOrganizationInvitationOrganizationHandler)
 					r.Post("/create-project-with-organization", svc.createProjectWithOrganizationOrganizationHandler)
-					})
+				})
 			})
 		})
 

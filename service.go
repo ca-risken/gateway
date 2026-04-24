@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"time"
 
@@ -12,8 +13,8 @@ import (
 	"github.com/ca-risken/core/proto/finding"
 	"github.com/ca-risken/core/proto/iam"
 	"github.com/ca-risken/core/proto/org_alert"
-	"github.com/ca-risken/core/proto/organization"
 	"github.com/ca-risken/core/proto/org_iam"
+	"github.com/ca-risken/core/proto/organization"
 	"github.com/ca-risken/core/proto/project"
 	"github.com/ca-risken/core/proto/report"
 	"github.com/ca-risken/datasource-api/proto/aws"
@@ -129,6 +130,33 @@ func commonHeader(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
+}
+
+func limitRequestBody(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		if !requestMethodHasBody(r.Method) || r.Body == nil {
+			next.ServeHTTP(w, r)
+			return
+		}
+		limit := getMaxRequestBodyBytes()
+		if r.ContentLength > limit {
+			writeRequestBodyError(r.Context(), w, errRequestBodyTooLarge)
+			return
+		}
+		r.Body = http.MaxBytesReader(w, r.Body, limit)
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
+func writeRequestBodyError(ctx context.Context, w http.ResponseWriter, err error) {
+	if errors.Is(err, errRequestBodyTooLarge) {
+		appLogger.Warnf(ctx, "Request body exceeds limit, err=%+v", err)
+		http.Error(w, "Request body too large", http.StatusRequestEntityTooLarge)
+		return
+	}
+	appLogger.Errorf(ctx, "Failed to read body, err=%+v", err)
+	http.Error(w, "Could not read body", http.StatusInternalServerError)
 }
 
 func writeResponse(ctx context.Context, w http.ResponseWriter, status int, body map[string]interface{}) {
