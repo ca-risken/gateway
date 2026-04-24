@@ -78,7 +78,7 @@ func (g *gatewayService) UpdateUserFromIdp(next http.Handler) http.Handler {
 				Activated:  true,
 			},
 		}
-		// 既存のユーザーであれば、手動でNameを変更している可能性があるので、contextのユーザー名を使用する
+		// Preserve the name from the request context because an existing user may have changed it manually.
 		u, err := getRequestUser(r)
 		if err == nil && u != nil && u.name != "" {
 			putUserRequest.User.Name = u.name
@@ -181,7 +181,7 @@ func (g *gatewayService) authnTokenOrg(ctx context.Context, tokenBody string, ne
 func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string, next http.Handler, w http.ResponseWriter, r *http.Request) bool {
 	projectID, accessTokenID, plainTextToken, err := decodeAccessToken(ctx, tokenBody)
 	if err != nil {
-		// TODO アクセストークンが不要な後続処理があるかを確認、不要な場合はすぐに403などを返したい
+		// TODO: Check whether any downstream handlers allow missing access tokens; otherwise return 403 immediately.
 		return false
 	}
 	resp, err := g.iamClient.AuthenticateAccessToken(ctx, &iam.AuthenticateAccessTokenRequest{
@@ -190,7 +190,7 @@ func (g *gatewayService) authnTokenProject(ctx context.Context, tokenBody string
 		PlainTextToken: plainTextToken,
 	})
 	if err != nil {
-		// TODO 認証でエラーになった後に継続する後続の処理があるか確認、できる限りすぐに403などを返したい
+		// TODO: Check whether any downstream handlers continue after auth errors; otherwise return 403 as early as possible.
 		appLogger.Errorf(ctx, "Failed to AuthenticateAccessToken API, err=%+v", err)
 		return false
 	}
@@ -235,7 +235,7 @@ func (g *gatewayService) authzWithProject(next http.Handler) http.Handler {
 			}
 		}
 		if len(buf) > 0 {
-			restoreRequestBody(r, buf) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
+			restoreRequestBody(r, buf) // Restore the request body so downstream handlers can read it again.
 		}
 		next.ServeHTTP(w, r)
 	}
@@ -288,7 +288,7 @@ func (g *gatewayService) authzWithOrg(next http.Handler) http.Handler {
 		}
 
 		if len(buf) > 0 {
-			restoreRequestBody(r, buf) // 後続のハンドラでもリクエストボディを読み取れるように上書きしとく
+			restoreRequestBody(r, buf) // Restore the request body so downstream handlers can read it again.
 		}
 		next.ServeHTTP(w, r)
 	}

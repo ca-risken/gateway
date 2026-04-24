@@ -941,8 +941,8 @@ func TestUpdateUserFromIdp(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/api/v1/signin", nil)
 			req.Header.Set("uid", c.userID)
 			req.Header.Set("oidc", c.oidcData)
-			// テスト時にrequestにcontextを注入しても反映されないため、
-			// テスト用に作成したmiddlewareでヘッダに挿入した値をcontextに注入します
+			// Injecting context directly into the request does not take effect in this test setup,
+			// so the test middleware copies the header value into the request context.
 			if c.requestUser != nil {
 				req.Header.Set("test-requestUser-userID", fmt.Sprint(c.requestUser.userID))
 				req.Header.Set("test-requestUser-userName", c.requestUser.name)
