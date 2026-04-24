@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/ca-risken/core/proto/iam"
@@ -123,7 +124,7 @@ func TestAuthnToken(t *testing.T) {
 			iamMock := iammocks.NewIAMServiceClient(t)
 			orgIAMMock := orgiammocks.NewOrgIAMServiceClient(t)
 			svc := gatewayService{
-				iamClient:              iamMock,
+				iamClient:     iamMock,
 				org_iamClient: orgIAMMock,
 			}
 			if c.setupMocks != nil {
@@ -260,7 +261,7 @@ func TestAuthzProjectForToken(t *testing.T) {
 	iamMock := iammocks.NewIAMServiceClient(t)
 	orgIAMMock := orgiammocks.NewOrgIAMServiceClient(t)
 	svc := gatewayService{
-		iamClient:              iamMock,
+		iamClient:     iamMock,
 		org_iamClient: orgIAMMock,
 	}
 
@@ -680,6 +681,49 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 				t.Fatalf("Unexpected response. want=%t, got=%t", c.want, got)
 			}
 		})
+	}
+}
+
+type errorReadCloser struct{}
+
+func (r *errorReadCloser) Read(_ []byte) (int, error) {
+	return 0, errors.New("must not read body")
+}
+
+func (r *errorReadCloser) Close() error {
+	return nil
+}
+
+func TestAuthzWithProject_UnauthenticatedDoesNotReadBody(t *testing.T) {
+	svc := gatewayService{}
+	handler := svc.authzWithProject(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		t.Fatal("next handler must not be called")
+	}))
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/alert/list-alert", nil)
+	req.Body = &errorReadCloser{}
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Result().StatusCode != http.StatusUnauthorized {
+		t.Fatalf("Unexpected response. want=%d, got=%d", http.StatusUnauthorized, rec.Result().StatusCode)
+	}
+}
+
+func TestAuthzWithProject_RequestBodyTooLarge(t *testing.T) {
+	svc := gatewayService{}
+	handler := svc.authzWithProject(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		t.Fatal("next handler must not be called")
+	}))
+	oversizedPayload := fmt.Sprintf(`{"project_id":1,"junk":"%s"}`, strings.Repeat("A", int(maxAuthzBodyBytes)+1))
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/alert/list-alert", strings.NewReader(oversizedPayload))
+	req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{sub: "sub", userID: 1}))
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Result().StatusCode != http.StatusRequestEntityTooLarge {
+		t.Fatalf("Unexpected response. want=%d, got=%d", http.StatusRequestEntityTooLarge, rec.Result().StatusCode)
 	}
 }
 
