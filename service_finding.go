@@ -35,6 +35,9 @@ func (g *gatewayService) getAISummaryStreamHandler(w http.ResponseWriter, r *htt
 		writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "Streaming unsupported!"})
 		return
 	}
+	if err := http.NewResponseController(w).SetWriteDeadline(time.Time{}); err != nil && !errors.Is(err, http.ErrNotSupported) {
+		appLogger.Warnf(ctx, "Failed to disable write deadline for SSE, err=%+v", err)
+	}
 	// Set headers for SSE
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
