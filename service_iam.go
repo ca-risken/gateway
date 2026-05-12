@@ -14,13 +14,19 @@ func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) 
 	user, err := getRequestUserSub(r)
 	if err != nil {
 		writeResponse(ctx, w, http.StatusUnauthorized, map[string]interface{}{errorJSONKey: errors.New("InvalidUser")})
+		return
 	}
-	req := &iam.PutUserRequest{
-		User: &iam.UserForUpsert{},
-	}
-	req.User.Sub = user.sub // force update sub
+	req := &iam.PutUserRequest{}
 	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutUserRequest", err)
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	if req.User == nil {
+		err := errors.New("Required user")
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutUserRequest", err)
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
 	}
 	oidcData := r.Header.Get(g.oidcDataHeader)
 	claims, err := g.claimsClient.getClaims(ctx, oidcData)
@@ -33,6 +39,7 @@ func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) 
 		writeResponse(ctx, w, http.StatusForbidden, map[string]interface{}{errorJSONKey: errors.New("userIdpKey is not found in token")})
 		return
 	}
+	req.User.Sub = user.sub
 	req.User.UserIdpKey = userIdpKey
 	if err := req.Validate(); err != nil {
 		appLogger.Debugf(ctx, "debug: %v", err)
