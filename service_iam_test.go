@@ -15,74 +15,184 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+type countingClaimsClient struct {
+	claims         *jwt.MapClaims
+	userIdpKey     string
+	err            error
+	getClaimsCalls int
+}
+
+func (c *countingClaimsClient) getClaims(ctx context.Context, tokenString string) (*jwt.MapClaims, error) {
+	c.getClaimsCalls++
+	return c.claims, c.err
+}
+
+func (c *countingClaimsClient) getUserName(claims *jwt.MapClaims) string {
+	return ""
+}
+
+func (c *countingClaimsClient) getUserIdpKey(claims *jwt.MapClaims) string {
+	return c.userIdpKey
+}
+
 func TestPutUserHandler(t *testing.T) {
-	iamMock := iammocks.NewIAMServiceClient(t)
-	svc := gatewayService{
-		iamClient: iamMock,
-	}
 	cases := []struct {
-		name       string
-		input      string
-		claims     *jwt.MapClaims
-		userIdpKey string
-		claimsErr  error
-		mockResp   *iam.PutUserResponse
-		mockErr    error
-		wantStatus int
+		name            string
+		input           string
+		user            *requestUser
+		claims          *jwt.MapClaims
+		userIdpKey      string
+		claimsErr       error
+		mockResp        *iam.PutUserResponse
+		mockErr         error
+		wantStatus      int
+		wantClaimsCalls int
+		wantPutUser     bool
+		wantSub         string
+		wantName        string
+		wantActivated   bool
+		wantUserIdpKey  string
 	}{
 		{
-			name:  "OK",
-			input: `{"user": {"sub":"xxx", "name":"nm1", "activated":true}}`,
+			name:  "OK ignores attacker controlled sub",
+			input: `{"user": {"sub":"attacker-controlled-sub", "name":"nm1", "activated":true}}`,
+			user:  &requestUser{sub: "authenticated-sub", userID: 1},
 			claims: &jwt.MapClaims{
 				"user_idp_key": "uik",
 			},
-			userIdpKey: "uik",
-			mockResp:   &iam.PutUserResponse{},
-			wantStatus: http.StatusOK,
+			userIdpKey:      "uik",
+			mockResp:        &iam.PutUserResponse{},
+			wantStatus:      http.StatusOK,
+			wantClaimsCalls: 1,
+			wantPutUser:     true,
+			wantSub:         "authenticated-sub",
+			wantName:        "nm1",
+			wantActivated:   true,
+			wantUserIdpKey:  "uik",
 		},
 		{
-			name:  "NG Invalid parameter",
-			input: `invalid_param`,
+			name:  "OK keeps existing request format",
+			input: `{"user": {"sub":"authenticated-sub", "name":"nm2", "activated":true}}`,
+			user:  &requestUser{sub: "authenticated-sub", userID: 1},
 			claims: &jwt.MapClaims{
 				"user_idp_key": "uik",
 			},
-			userIdpKey: "uik",
-			wantStatus: http.StatusBadRequest,
+			userIdpKey:      "uik",
+			mockResp:        &iam.PutUserResponse{},
+			wantStatus:      http.StatusOK,
+			wantClaimsCalls: 1,
+			wantPutUser:     true,
+			wantSub:         "authenticated-sub",
+			wantName:        "nm2",
+			wantActivated:   true,
+			wantUserIdpKey:  "uik",
 		},
 		{
-			name:       "NG verifying token error",
-			input:      `{"user": {"sub":"xxx", "name":"nm2", "activated":true}}`,
-			claimsErr:  errors.New("something error"),
-			wantStatus: http.StatusForbidden,
+			name:  "OK empty sub in body is ignored",
+			input: `{"user": {"sub":"", "name":"nm3", "activated":true}}`,
+			user:  &requestUser{sub: "authenticated-sub", userID: 1},
+			claims: &jwt.MapClaims{
+				"user_idp_key": "uik",
+			},
+			userIdpKey:      "uik",
+			mockResp:        &iam.PutUserResponse{},
+			wantStatus:      http.StatusOK,
+			wantClaimsCalls: 1,
+			wantPutUser:     true,
+			wantSub:         "authenticated-sub",
+			wantName:        "nm3",
+			wantActivated:   true,
+			wantUserIdpKey:  "uik",
 		},
 		{
-			name:       "NG userIdpKey is empty",
-			input:      `{"user": {"sub":"xxx", "name":"nm3", "activated":true}}`,
-			claims:     &jwt.MapClaims{},
-			userIdpKey: "",
-			wantStatus: http.StatusForbidden,
+			name:            "NG user is missing",
+			input:           `{}`,
+			user:            &requestUser{sub: "authenticated-sub", userID: 1},
+			wantStatus:      http.StatusBadRequest,
+			wantClaimsCalls: 0,
+		},
+		{
+			name:            "NG user is null",
+			input:           `{"user":null}`,
+			user:            &requestUser{sub: "authenticated-sub", userID: 1},
+			wantStatus:      http.StatusBadRequest,
+			wantClaimsCalls: 0,
+		},
+		{
+			name:            "NG Invalid parameter",
+			input:           `invalid_param`,
+			user:            &requestUser{sub: "authenticated-sub", userID: 1},
+			wantStatus:      http.StatusBadRequest,
+			wantClaimsCalls: 0,
+		},
+		{
+			name:            "NG Invalid user",
+			input:           `{"user": {"sub":"victim-sub", "name":"nm4", "activated":true}}`,
+			user:            &requestUser{userID: 1},
+			wantStatus:      http.StatusUnauthorized,
+			wantClaimsCalls: 0,
+		},
+		{
+			name:            "NG verifying token error",
+			input:           `{"user": {"sub":"victim-sub", "name":"nm5", "activated":true}}`,
+			user:            &requestUser{sub: "authenticated-sub", userID: 1},
+			claimsErr:       errors.New("something error"),
+			wantStatus:      http.StatusForbidden,
+			wantClaimsCalls: 1,
+		},
+		{
+			name:            "NG userIdpKey is empty",
+			input:           `{"user": {"sub":"victim-sub", "name":"nm6", "activated":true}}`,
+			user:            &requestUser{sub: "authenticated-sub", userID: 1},
+			claims:          &jwt.MapClaims{},
+			userIdpKey:      "",
+			wantStatus:      http.StatusForbidden,
+			wantClaimsCalls: 1,
 		},
 		{
 			name:  "NG Backend service error",
-			input: `{"user": {"sub":"xxx", "name":"nm4", "activated":true}}`,
+			input: `{"user": {"sub":"victim-sub", "name":"nm7", "activated":true}}`,
+			user:  &requestUser{sub: "authenticated-sub", userID: 1},
 			claims: &jwt.MapClaims{
 				"user_idp_key": "uik",
 			},
-			userIdpKey: "uik",
-			wantStatus: http.StatusInternalServerError,
-			mockErr:    errors.New("something wrong"),
+			userIdpKey:      "uik",
+			wantStatus:      http.StatusInternalServerError,
+			wantClaimsCalls: 1,
+			wantPutUser:     true,
+			wantSub:         "authenticated-sub",
+			wantName:        "nm7",
+			wantActivated:   true,
+			wantUserIdpKey:  "uik",
+			mockErr:         errors.New("something wrong"),
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			svc.claimsClient = newMockClaimsClient(c.claims, "", c.userIdpKey, c.claimsErr)
-			if c.mockResp != nil || c.mockErr != nil {
-				iamMock.On("PutUser", mock.Anything, mock.Anything).Return(c.mockResp, c.mockErr).Once()
+			iamMock := iammocks.NewIAMServiceClient(t)
+			claimsMock := &countingClaimsClient{
+				claims:     c.claims,
+				userIdpKey: c.userIdpKey,
+				err:        c.claimsErr,
+			}
+			svc := gatewayService{
+				iamClient:    iamMock,
+				claimsClient: claimsMock,
+			}
+			if c.wantPutUser {
+				iamMock.On("PutUser", mock.Anything, mock.MatchedBy(func(req *iam.PutUserRequest) bool {
+					return req != nil &&
+						req.GetUser() != nil &&
+						req.GetUser().GetSub() == c.wantSub &&
+						req.GetUser().GetName() == c.wantName &&
+						req.GetUser().GetActivated() == c.wantActivated &&
+						req.GetUser().GetUserIdpKey() == c.wantUserIdpKey
+				})).Return(c.mockResp, c.mockErr).Once()
 			}
 			// Invoke HTTP Request
 			rec := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodPost, "/api/v1/iam/put-user/", strings.NewReader(c.input))
-			req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{sub: "xxx", userID: 1}))
+			req = req.WithContext(context.WithValue(req.Context(), userKey, c.user))
 			req.Header.Add("Content-Type", "application/json")
 			svc.putUserHandler(rec, req)
 			// Check Response
@@ -99,6 +209,12 @@ func TestPutUserHandler(t *testing.T) {
 			}
 			if _, ok := resp[jsonKey]; !ok {
 				t.Fatalf("Unexpected no response key: want key=%s", jsonKey)
+			}
+			if claimsMock.getClaimsCalls != c.wantClaimsCalls {
+				t.Fatalf("Unexpected claims call count: want=%d, got=%d", c.wantClaimsCalls, claimsMock.getClaimsCalls)
+			}
+			if !c.wantPutUser {
+				iamMock.AssertNotCalled(t, "PutUser", mock.Anything, mock.Anything)
 			}
 		})
 	}
