@@ -366,6 +366,7 @@ func isHumanAccess(u *requestUser) bool {
 var ignoreURI4CSRF = []string{
 	"/healthz",
 	"/api/v1/signin",
+	"/api/v1/slack/actions",
 }
 
 func shouldVerifyCSRFTokenURI(uri string) bool {

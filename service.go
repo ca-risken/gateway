@@ -59,6 +59,10 @@ type gatewayService struct {
 	aiClient           ai.AIServiceClient
 	claimsClient       claimsInterface
 	datasourceClient   datasource.DataSourceServiceClient
+
+	slackSigningSecret       string
+	slackActionSigningSecret string
+	slackViewOpener          slackViewOpener
 }
 
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
@@ -77,29 +81,32 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		return nil, err
 	}
 	return &gatewayService{
-		envName:            conf.EnvName,
-		port:               conf.Port,
-		uidHeader:          conf.UserIdentityHeader,
-		oidcDataHeader:     conf.OidcDataHeader,
-		sessionCookieName:  conf.SessionCookieName,
-		sessionTimeoutSec:  conf.SessionTimeoutSec,
-		findingClient:      finding.NewFindingServiceClient(coreConn),
-		iamClient:          iam.NewIAMServiceClient(coreConn),
-		projectClient:      project.NewProjectServiceClient(coreConn),
-		alertClient:        alert.NewAlertServiceClient(coreConn),
-		reportClient:       report.NewReportServiceClient(coreConn),
-		organizationClient: organization.NewOrganizationServiceClient(coreConn),
-		org_iamClient:      org_iam.NewOrgIAMServiceClient(coreConn),
-		org_alertClient:    org_alert.NewOrgAlertServiceClient(coreConn),
-		awsClient:          aws.NewAWSServiceClient(datasourceConn),
-		osintClient:        osint.NewOsintServiceClient(datasourceConn),
-		diagnosisClient:    diagnosis.NewDiagnosisServiceClient(datasourceConn),
-		codeClient:         code.NewCodeServiceClient(datasourceConn),
-		googleClient:       google.NewGoogleServiceClient(datasourceConn),
-		azureClient:        azure.NewAzureServiceClient(datasourceConn),
-		aiClient:           ai.NewAIServiceClient(coreConn),
-		claimsClient:       newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
-		datasourceClient:   datasource.NewDataSourceServiceClient(datasourceConn),
+		envName:                  conf.EnvName,
+		port:                     conf.Port,
+		uidHeader:                conf.UserIdentityHeader,
+		oidcDataHeader:           conf.OidcDataHeader,
+		sessionCookieName:        conf.SessionCookieName,
+		sessionTimeoutSec:        conf.SessionTimeoutSec,
+		findingClient:            finding.NewFindingServiceClient(coreConn),
+		iamClient:                iam.NewIAMServiceClient(coreConn),
+		projectClient:            project.NewProjectServiceClient(coreConn),
+		alertClient:              alert.NewAlertServiceClient(coreConn),
+		reportClient:             report.NewReportServiceClient(coreConn),
+		organizationClient:       organization.NewOrganizationServiceClient(coreConn),
+		org_iamClient:            org_iam.NewOrgIAMServiceClient(coreConn),
+		org_alertClient:          org_alert.NewOrgAlertServiceClient(coreConn),
+		awsClient:                aws.NewAWSServiceClient(datasourceConn),
+		osintClient:              osint.NewOsintServiceClient(datasourceConn),
+		diagnosisClient:          diagnosis.NewDiagnosisServiceClient(datasourceConn),
+		codeClient:               code.NewCodeServiceClient(datasourceConn),
+		googleClient:             google.NewGoogleServiceClient(datasourceConn),
+		azureClient:              azure.NewAzureServiceClient(datasourceConn),
+		aiClient:                 ai.NewAIServiceClient(coreConn),
+		claimsClient:             newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
+		datasourceClient:         datasource.NewDataSourceServiceClient(datasourceConn),
+		slackSigningSecret:       conf.SlackSigningSecret,
+		slackActionSigningSecret: conf.SlackActionSigningSecret,
+		slackViewOpener:          newSlackAPIClient(conf.SlackBotToken),
 	}, nil
 }
 

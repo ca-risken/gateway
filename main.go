@@ -50,6 +50,10 @@ type AppConfig struct {
 	WriteTimeoutSec      int    `split_words:"true" default:"30"`
 	IdleTimeoutSec       int    `split_words:"true" default:"120"`
 	MaxHeaderBytes       int    `split_words:"true" default:"1048576"`
+
+	SlackSigningSecret       string `split_words:"true"`
+	SlackActionSigningSecret string `split_words:"true"`
+	SlackBotToken            string `split_words:"true"`
 }
 
 func main() {
