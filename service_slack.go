@@ -24,9 +24,10 @@ const (
 	slackActionCallbackPend    = "risken_slack_action_pend"
 	slackActionCallbackArchive = "risken_slack_action_archive"
 
-	slackSignatureVersion = "v0"
-	slackSignatureMaxAge  = 5 * time.Minute
-	slackViewsOpenURL     = "https://slack.com/api/views.open"
+	slackSignatureVersion  = "v0"
+	slackSignatureMaxAge   = 5 * time.Minute
+	slackHTTPClientTimeout = 10 * time.Second
+	slackViewsOpenURL      = "https://slack.com/api/views.open"
 )
 
 var (
@@ -117,7 +118,7 @@ type slackTextObject struct {
 func newSlackAPIClient(token string) *slackAPIClient {
 	return &slackAPIClient{
 		token:      token,
-		httpClient: http.DefaultClient,
+		httpClient: &http.Client{Timeout: slackHTTPClientTimeout},
 	}
 }
 
@@ -379,15 +380,10 @@ func plainText(text string) slackTextObject {
 }
 
 func writeSlackEphemeralResponse(w http.ResponseWriter, text string) {
-	body, err := json.Marshal(map[string]string{
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(map[string]string{
 		"response_type": "ephemeral",
 		"text":          text,
 	})
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(body)
 }

@@ -80,6 +80,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		appLogger.Errorf(ctx, "Failed to get grpc connection to datasource api service, err=%+v", err)
 		return nil, err
 	}
+	warnSlackActionConfig(ctx, conf)
 	return &gatewayService{
 		envName:                  conf.EnvName,
 		port:                     conf.Port,
@@ -108,6 +109,22 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		slackActionSigningSecret: conf.SlackActionSigningSecret,
 		slackViewOpener:          newSlackAPIClient(conf.SlackBotToken),
 	}, nil
+}
+
+func warnSlackActionConfig(ctx context.Context, conf *AppConfig) {
+	missingConfigs := []string{}
+	if conf.SlackSigningSecret == "" {
+		missingConfigs = append(missingConfigs, "SLACK_SIGNING_SECRET")
+	}
+	if conf.SlackActionSigningSecret == "" {
+		missingConfigs = append(missingConfigs, "SLACK_ACTION_SIGNING_SECRET")
+	}
+	if conf.SlackBotToken == "" {
+		missingConfigs = append(missingConfigs, "SLACK_BOT_TOKEN")
+	}
+	if len(missingConfigs) > 0 {
+		appLogger.Warnf(ctx, "Slack action endpoint is not fully configured; requests will fail until missing config is set, missing=%v", missingConfigs)
+	}
 }
 
 func getGRPCConn(ctx context.Context, addr string) (*grpc.ClientConn, error) {
