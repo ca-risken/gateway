@@ -332,6 +332,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/put-github-setting", svc.putGitHubSettingCodeHandler)
+					r.Post("/verify-github-app-installation", svc.verifyGitHubAppInstallationCodeHandler)
 					r.Post("/delete-github-setting", svc.deleteGitHubSettingCodeHandler)
 					r.Post("/put-gitleaks-setting", svc.putGitleaksSettingCodeHandler)
 					r.Post("/delete-gitleaks-setting", svc.deleteGitleaksSettingCodeHandler)
