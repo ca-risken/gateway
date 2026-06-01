@@ -26,8 +26,10 @@ const (
 
 	slackSignatureVersion  = "v0"
 	slackSignatureMaxAge   = 5 * time.Minute
-	slackHTTPClientTimeout = 10 * time.Second
-	slackViewsOpenURL      = "https://slack.com/api/views.open"
+	slackHTTPClientTimeout       = 10 * time.Second
+	slackViewsOpenURL            = "https://slack.com/api/views.open"
+	slackAPIResponseMaxBytes     = 64 * 1024
+	slackAPIResponseLogMaxBytes  = 256
 )
 
 var (
@@ -115,6 +117,24 @@ type slackTextObject struct {
 	Text string `json:"text"`
 }
 
+func readSlackAPIResponseBody(r io.Reader) ([]byte, error) {
+	body, err := io.ReadAll(io.LimitReader(r, slackAPIResponseMaxBytes+1))
+	if err != nil {
+		return nil, err
+	}
+	if int64(len(body)) > slackAPIResponseMaxBytes {
+		return nil, fmt.Errorf("slack api response body exceeds max size %d", slackAPIResponseMaxBytes)
+	}
+	return body, nil
+}
+
+func truncateSlackResponseForLog(body []byte) string {
+	if len(body) <= slackAPIResponseLogMaxBytes {
+		return string(body)
+	}
+	return string(body[:slackAPIResponseLogMaxBytes]) + "...(truncated)"
+}
+
 func newSlackAPIClient(token string) *slackAPIClient {
 	return &slackAPIClient{
 		token:      token,
@@ -146,12 +166,12 @@ func (c *slackAPIClient) OpenView(ctx context.Context, triggerID string, view sl
 	}
 	defer resp.Body.Close()
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := readSlackAPIResponseBody(resp.Body)
 	if err != nil {
 		return err
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return fmt.Errorf("slack views.open status=%d body=%s", resp.StatusCode, string(respBody))
+		return fmt.Errorf("slack views.open status=%d body=%s", resp.StatusCode, truncateSlackResponseForLog(respBody))
 	}
 	var slackResp slackAPIResponse
 	if err := json.Unmarshal(respBody, &slackResp); err != nil {
