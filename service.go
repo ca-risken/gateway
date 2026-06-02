@@ -36,29 +36,31 @@ const (
 )
 
 type gatewayService struct {
-	envName            string
-	port               string
-	uidHeader          string
-	oidcDataHeader     string
-	sessionCookieName  []string
-	sessionTimeoutSec  int
-	findingClient      finding.FindingServiceClient
-	iamClient          iam.IAMServiceClient
-	projectClient      project.ProjectServiceClient
-	alertClient        alert.AlertServiceClient
-	reportClient       report.ReportServiceClient
-	organizationClient organization.OrganizationServiceClient
-	org_iamClient      org_iam.OrgIAMServiceClient
-	org_alertClient    org_alert.OrgAlertServiceClient
-	awsClient          aws.AWSServiceClient
-	osintClient        osint.OsintServiceClient
-	diagnosisClient    diagnosis.DiagnosisServiceClient
-	codeClient         code.CodeServiceClient
-	googleClient       google.GoogleServiceClient
-	azureClient        azure.AzureServiceClient
-	aiClient           ai.AIServiceClient
-	claimsClient       claimsInterface
-	datasourceClient   datasource.DataSourceServiceClient
+	envName              string
+	port                 string
+	uidHeader            string
+	oidcDataHeader       string
+	sessionCookieName    []string
+	sessionTimeoutSec    int
+	githubAppInstallURL  string
+	githubAppStateSecret string
+	findingClient        finding.FindingServiceClient
+	iamClient            iam.IAMServiceClient
+	projectClient        project.ProjectServiceClient
+	alertClient          alert.AlertServiceClient
+	reportClient         report.ReportServiceClient
+	organizationClient   organization.OrganizationServiceClient
+	org_iamClient        org_iam.OrgIAMServiceClient
+	org_alertClient      org_alert.OrgAlertServiceClient
+	awsClient            aws.AWSServiceClient
+	osintClient          osint.OsintServiceClient
+	diagnosisClient      diagnosis.DiagnosisServiceClient
+	codeClient           code.CodeServiceClient
+	googleClient         google.GoogleServiceClient
+	azureClient          azure.AzureServiceClient
+	aiClient             ai.AIServiceClient
+	claimsClient         claimsInterface
+	datasourceClient     datasource.DataSourceServiceClient
 }
 
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
@@ -77,29 +79,31 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		return nil, err
 	}
 	return &gatewayService{
-		envName:            conf.EnvName,
-		port:               conf.Port,
-		uidHeader:          conf.UserIdentityHeader,
-		oidcDataHeader:     conf.OidcDataHeader,
-		sessionCookieName:  conf.SessionCookieName,
-		sessionTimeoutSec:  conf.SessionTimeoutSec,
-		findingClient:      finding.NewFindingServiceClient(coreConn),
-		iamClient:          iam.NewIAMServiceClient(coreConn),
-		projectClient:      project.NewProjectServiceClient(coreConn),
-		alertClient:        alert.NewAlertServiceClient(coreConn),
-		reportClient:       report.NewReportServiceClient(coreConn),
-		organizationClient: organization.NewOrganizationServiceClient(coreConn),
-		org_iamClient:      org_iam.NewOrgIAMServiceClient(coreConn),
-		org_alertClient:    org_alert.NewOrgAlertServiceClient(coreConn),
-		awsClient:          aws.NewAWSServiceClient(datasourceConn),
-		osintClient:        osint.NewOsintServiceClient(datasourceConn),
-		diagnosisClient:    diagnosis.NewDiagnosisServiceClient(datasourceConn),
-		codeClient:         code.NewCodeServiceClient(datasourceConn),
-		googleClient:       google.NewGoogleServiceClient(datasourceConn),
-		azureClient:        azure.NewAzureServiceClient(datasourceConn),
-		aiClient:           ai.NewAIServiceClient(coreConn),
-		claimsClient:       newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
-		datasourceClient:   datasource.NewDataSourceServiceClient(datasourceConn),
+		envName:              conf.EnvName,
+		port:                 conf.Port,
+		uidHeader:            conf.UserIdentityHeader,
+		oidcDataHeader:       conf.OidcDataHeader,
+		sessionCookieName:    conf.SessionCookieName,
+		sessionTimeoutSec:    conf.SessionTimeoutSec,
+		githubAppInstallURL:  conf.GithubAppInstallURL,
+		githubAppStateSecret: conf.GithubAppStateSecret,
+		findingClient:        finding.NewFindingServiceClient(coreConn),
+		iamClient:            iam.NewIAMServiceClient(coreConn),
+		projectClient:        project.NewProjectServiceClient(coreConn),
+		alertClient:          alert.NewAlertServiceClient(coreConn),
+		reportClient:         report.NewReportServiceClient(coreConn),
+		organizationClient:   organization.NewOrganizationServiceClient(coreConn),
+		org_iamClient:        org_iam.NewOrgIAMServiceClient(coreConn),
+		org_alertClient:      org_alert.NewOrgAlertServiceClient(coreConn),
+		awsClient:            aws.NewAWSServiceClient(datasourceConn),
+		osintClient:          osint.NewOsintServiceClient(datasourceConn),
+		diagnosisClient:      diagnosis.NewDiagnosisServiceClient(datasourceConn),
+		codeClient:           code.NewCodeServiceClient(datasourceConn),
+		googleClient:         google.NewGoogleServiceClient(datasourceConn),
+		azureClient:          azure.NewAzureServiceClient(datasourceConn),
+		aiClient:             ai.NewAIServiceClient(coreConn),
+		claimsClient:         newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
+		datasourceClient:     datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil
 }
 

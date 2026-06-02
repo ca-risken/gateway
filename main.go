@@ -50,6 +50,8 @@ type AppConfig struct {
 	WriteTimeoutSec      int    `split_words:"true" default:"30"`
 	IdleTimeoutSec       int    `split_words:"true" default:"120"`
 	MaxHeaderBytes       int    `split_words:"true" default:"1048576"`
+	GithubAppInstallURL  string `split_words:"true"`
+	GithubAppStateSecret string `split_words:"true"`
 }
 
 func main() {
