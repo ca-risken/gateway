@@ -778,6 +778,11 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 			input: "/api/v1/signin/",
 			want:  false,
 		},
+		{
+			name:  "github app callback prefix is not ignored",
+			input: "/api/v1/code/github-app/oauth/callback-other",
+			want:  true,
+		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

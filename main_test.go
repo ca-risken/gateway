@@ -37,3 +37,42 @@ func TestNewHTTPServer(t *testing.T) {
 		t.Fatalf("unexpected max header bytes: %d", server.MaxHeaderBytes)
 	}
 }
+
+func TestValidateGatewayConfig(t *testing.T) {
+	cases := []struct {
+		name      string
+		conf      *AppConfig
+		wantError bool
+	}{
+		{
+			name: "github app disabled",
+			conf: &AppConfig{},
+		},
+		{
+			name: "github app enabled with strong state secret",
+			conf: &AppConfig{
+				GithubAppInstallURL:  "https://github.com/apps/risken/installations/new",
+				GithubAppStateSecret: "12345678901234567890123456789012",
+			},
+		},
+		{
+			name: "github app enabled with short state secret",
+			conf: &AppConfig{
+				GithubAppInstallURL:  "https://github.com/apps/risken/installations/new",
+				GithubAppStateSecret: "short",
+			},
+			wantError: true,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			err := validateGatewayConfig(c.conf)
+			if c.wantError && err == nil {
+				t.Fatal("expected error but got nil")
+			}
+			if !c.wantError && err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+		})
+	}
+}

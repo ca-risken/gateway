@@ -33,6 +33,8 @@ import (
 const (
 	successJSONKey = "data"
 	errorJSONKey   = "error"
+
+	minGitHubAppStateSecretBytes = 32
 )
 
 type gatewayService struct {
@@ -66,6 +68,9 @@ type gatewayService struct {
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
 	if conf.Debug {
 		appLogger.Level(logging.DebugLevel)
+	}
+	if err := validateGatewayConfig(conf); err != nil {
+		return nil, err
 	}
 
 	coreConn, err := getGRPCConn(ctx, conf.CoreAddr)
@@ -105,6 +110,16 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		claimsClient:         newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
 		datasourceClient:     datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil
+}
+
+func validateGatewayConfig(conf *AppConfig) error {
+	if conf.GithubAppInstallURL == "" {
+		return nil
+	}
+	if len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
+		return errors.New("github app state secret must be at least 32 bytes when github app install url is configured")
+	}
+	return nil
 }
 
 func getGRPCConn(ctx context.Context, addr string) (*grpc.ClientConn, error) {
