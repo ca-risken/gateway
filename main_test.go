@@ -49,6 +49,13 @@ func TestValidateGatewayConfig(t *testing.T) {
 			conf: &AppConfig{},
 		},
 		{
+			name: "github app disabled with short state secret",
+			conf: &AppConfig{
+				GithubAppStateSecret: "short",
+			},
+			wantError: true,
+		},
+		{
 			name: "github app enabled with strong state secret",
 			conf: &AppConfig{
 				GithubAppInstallURL:  "https://github.com/apps/risken/installations/new",

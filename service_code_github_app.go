@@ -68,15 +68,15 @@ func (g *gatewayService) githubAppInstallURLHandler(w http.ResponseWriter, r *ht
 
 func (g *gatewayService) githubAppOAuthCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	u, err := getRequestUser(r)
-	if err != nil || !isHumanAccess(u) {
-		writeResponse(ctx, w, http.StatusUnauthorized, map[string]any{errorJSONKey: "Unauthenticated"})
-		return
-	}
 	state, err := g.verifyGitHubAppOAuthState(r.URL.Query().Get("state"), time.Now())
 	if err != nil {
 		appLogger.Warnf(ctx, "Invalid github app oauth state: err=%+v", err)
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]any{errorJSONKey: "Invalid GitHub App OAuth state"})
+		return
+	}
+	u, err := getRequestUser(r)
+	if err != nil || !isHumanAccess(u) {
+		g.redirectGitHubAppOAuthResult(w, r, state.ReturnTo, "failed")
 		return
 	}
 	if state.UserID != u.userID {

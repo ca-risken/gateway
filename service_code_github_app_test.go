@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -131,5 +132,24 @@ func TestRedirectGitHubAppOAuthResultRejectsInvalidReturnTo(t *testing.T) {
 				t.Fatalf("Unexpected Location: %s", got)
 			}
 		})
+	}
+}
+
+func TestGitHubAppOAuthCallbackHandlerRedirectsWhenSessionExpired(t *testing.T) {
+	svc := &gatewayService{githubAppStateSecret: "12345678901234567890123456789012"}
+	rawState, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", time.Now())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/code/github-app/oauth/callback?state="+url.QueryEscape(rawState)+"&code=oauth-code", nil)
+	rec := httptest.NewRecorder()
+
+	svc.githubAppOAuthCallbackHandler(rec, req)
+
+	if rec.Code != http.StatusFound {
+		t.Fatalf("Unexpected status. want=%d, got=%d", http.StatusFound, rec.Code)
+	}
+	if got := rec.Header().Get("Location"); got != "/code/github?github_app_oauth=failed&project_id=1001" {
+		t.Fatalf("Unexpected Location: %s", got)
 	}
 }
