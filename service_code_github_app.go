@@ -125,7 +125,7 @@ func normalizeGitHubAppReturnTo(returnTo string, projectID uint32) (string, erro
 	if err != nil {
 		return "", err
 	}
-	if u.IsAbs() || u.Host != "" || !strings.HasPrefix(returnTo, "/") || strings.HasPrefix(returnTo, "//") {
+	if u.IsAbs() || u.Host != "" || !strings.HasPrefix(returnTo, "/") || strings.HasPrefix(returnTo, "//") || strings.ContainsRune(returnTo, '\\') {
 		return "", errors.New("return_to must be a relative path")
 	}
 	return returnTo, nil

@@ -75,6 +75,9 @@ func TestNormalizeGitHubAppReturnTo(t *testing.T) {
 	if _, err := normalizeGitHubAppReturnTo("//attacker.example/path", 1001); err == nil {
 		t.Fatal("Expected protocol-relative URL error but got none")
 	}
+	if _, err := normalizeGitHubAppReturnTo(`/\attacker.example/path`, 1001); err == nil {
+		t.Fatal("Expected backslash URL error but got none")
+	}
 	if _, err := normalizeGitHubAppReturnTo("code/github", 1001); err == nil {
 		t.Fatal("Expected non-relative path error but got none")
 	}
