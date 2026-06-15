@@ -1,15 +1,33 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/ca-risken/core/proto/iam"
+	iammocks "github.com/ca-risken/core/proto/iam/mocks"
+	"github.com/stretchr/testify/mock"
 )
 
 const testGitHubAppStateSecret = "12345678901234567890123456789012"
+
+func newGitHubAppOAuthCallbackRequest(t *testing.T, svc *gatewayService, userID uint32) *http.Request {
+	t.Helper()
+	rawState, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", time.Now())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/code/github-app/oauth/callback?state="+url.QueryEscape(rawState)+"&code=oauth-code", nil)
+	if userID != 0 {
+		req = req.WithContext(context.WithValue(req.Context(), userKey, &requestUser{userID: userID}))
+	}
+	return req
+}
 
 func TestGitHubAppOAuthState(t *testing.T) {
 	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
@@ -168,11 +186,7 @@ func TestRedirectGitHubAppOAuthResultRejectsInvalidReturnTo(t *testing.T) {
 
 func TestGitHubAppOAuthCallbackHandlerRedirectsWhenSessionExpired(t *testing.T) {
 	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
-	rawState, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", time.Now())
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	req := httptest.NewRequest(http.MethodGet, "/api/v1/code/github-app/oauth/callback?state="+url.QueryEscape(rawState)+"&code=oauth-code", nil)
+	req := newGitHubAppOAuthCallbackRequest(t, svc, 0)
 	rec := httptest.NewRecorder()
 
 	svc.githubAppOAuthCallbackHandler(rec, req)
@@ -181,6 +195,41 @@ func TestGitHubAppOAuthCallbackHandlerRedirectsWhenSessionExpired(t *testing.T) 
 		t.Fatalf("Unexpected status. want=%d, got=%d", http.StatusFound, rec.Code)
 	}
 	if got := rec.Header().Get("Location"); got != "/code/github?github_app_oauth=session_expired&project_id=1001" {
+		t.Fatalf("Unexpected Location: %s", got)
+	}
+}
+
+func TestGitHubAppOAuthCallbackHandlerRedirectsWhenUserMismatch(t *testing.T) {
+	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
+	req := newGitHubAppOAuthCallbackRequest(t, svc, 21)
+	rec := httptest.NewRecorder()
+
+	svc.githubAppOAuthCallbackHandler(rec, req)
+
+	if rec.Code != http.StatusFound {
+		t.Fatalf("Unexpected status. want=%d, got=%d", http.StatusFound, rec.Code)
+	}
+	if got := rec.Header().Get("Location"); got != "/code/github?github_app_oauth=unauthorized&project_id=1001" {
+		t.Fatalf("Unexpected Location: %s", got)
+	}
+}
+
+func TestGitHubAppOAuthCallbackHandlerRedirectsWhenProjectUnauthorized(t *testing.T) {
+	iamMock := iammocks.NewIAMServiceClient(t)
+	iamMock.On("IsAuthorized", mock.Anything, mock.Anything).Return(&iam.IsAuthorizedResponse{Ok: false}, nil).Once()
+	svc := &gatewayService{
+		githubAppStateSecret: testGitHubAppStateSecret,
+		iamClient:            iamMock,
+	}
+	req := newGitHubAppOAuthCallbackRequest(t, svc, 20)
+	rec := httptest.NewRecorder()
+
+	svc.githubAppOAuthCallbackHandler(rec, req)
+
+	if rec.Code != http.StatusFound {
+		t.Fatalf("Unexpected status. want=%d, got=%d", http.StatusFound, rec.Code)
+	}
+	if got := rec.Header().Get("Location"); got != "/code/github?github_app_oauth=unauthorized&project_id=1001" {
 		t.Fatalf("Unexpected Location: %s", got)
 	}
 }

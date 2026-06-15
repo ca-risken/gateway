@@ -83,11 +83,11 @@ func (g *gatewayService) githubAppOAuthCallbackHandler(w http.ResponseWriter, r 
 	}
 	if state.UserID != u.userID {
 		appLogger.Warnf(ctx, "GitHub App OAuth state user mismatch: state_user_id=%d, request_user_id=%d", state.UserID, u.userID)
-		writeResponse(ctx, w, http.StatusForbidden, map[string]any{errorJSONKey: "Invalid GitHub App OAuth state"})
+		g.redirectGitHubAppOAuthResult(w, r, state.ReturnTo, "unauthorized")
 		return
 	}
 	if !g.isAuthorizedProject(ctx, u.userID, state.ProjectID, r.URL.Path) {
-		writeResponse(ctx, w, http.StatusForbidden, map[string]any{errorJSONKey: "Unauthorized the project resource for human access"})
+		g.redirectGitHubAppOAuthResult(w, r, state.ReturnTo, "unauthorized")
 		return
 	}
 	oauthCode := r.URL.Query().Get("code")
