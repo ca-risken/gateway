@@ -185,6 +185,9 @@ func (g *gatewayService) verifyGitHubAppOAuthState(rawState string, now time.Tim
 	if state.ProjectID == 0 || state.GithubSettingID == 0 || state.UserID == 0 || state.ReturnTo == "" {
 		return nil, errors.New("invalid state payload")
 	}
+	if err := validateGitHubAppReturnTo(state.ReturnTo); err != nil {
+		return nil, err
+	}
 	if now.Unix() > state.ExpiresAt {
 		return nil, errors.New("expired state")
 	}

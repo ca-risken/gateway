@@ -9,8 +9,10 @@ import (
 	"time"
 )
 
+const testGitHubAppStateSecret = "12345678901234567890123456789012"
+
 func TestGitHubAppOAuthState(t *testing.T) {
-	svc := &gatewayService{githubAppStateSecret: "state-secret"}
+	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
 	now := time.Unix(1700000000, 0)
 
 	rawState, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", now)
@@ -27,9 +29,19 @@ func TestGitHubAppOAuthState(t *testing.T) {
 }
 
 func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
-	svc := &gatewayService{githubAppStateSecret: "state-secret"}
+	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
 	now := time.Unix(1700000000, 0)
 	rawState, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", now)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	invalidReturnToState, err := svc.signGitHubAppOAuthState(&githubAppOAuthState{
+		ProjectID:       1001,
+		GithubSettingID: 10,
+		UserID:          20,
+		ReturnTo:        `/\attacker.example/path`,
+		ExpiresAt:       now.Add(githubAppStateTTL).Unix(),
+	})
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -41,6 +53,7 @@ func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 	}{
 		{name: "invalid format", state: "invalid", now: now},
 		{name: "invalid signature", state: rawState + "x", now: now},
+		{name: "invalid return_to", state: invalidReturnToState, now: now},
 		{name: "expired", state: rawState, now: now.Add(githubAppStateTTL + time.Second)},
 	}
 	for _, c := range cases {
@@ -136,7 +149,7 @@ func TestRedirectGitHubAppOAuthResultRejectsInvalidReturnTo(t *testing.T) {
 }
 
 func TestGitHubAppOAuthCallbackHandlerRedirectsWhenSessionExpired(t *testing.T) {
-	svc := &gatewayService{githubAppStateSecret: "12345678901234567890123456789012"}
+	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
 	rawState, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", time.Now())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
