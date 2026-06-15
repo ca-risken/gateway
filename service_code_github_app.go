@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/hmac"
-	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
@@ -27,7 +26,6 @@ type githubAppOAuthState struct {
 	GithubSettingID uint32 `json:"github_setting_id"`
 	UserID          uint32 `json:"user_id"`
 	ReturnTo        string `json:"return_to"`
-	Nonce           string `json:"nonce"`
 	ExpiresAt       int64  `json:"expires_at"`
 }
 
@@ -134,16 +132,11 @@ func normalizeGitHubAppReturnTo(returnTo string, projectID uint32) (string, erro
 }
 
 func (g *gatewayService) newGitHubAppOAuthState(projectID, githubSettingID, userID uint32, returnTo string, now time.Time) (string, error) {
-	nonceBytes := make([]byte, 16)
-	if _, err := rand.Read(nonceBytes); err != nil {
-		return "", err
-	}
 	state := &githubAppOAuthState{
 		ProjectID:       projectID,
 		GithubSettingID: githubSettingID,
 		UserID:          userID,
 		ReturnTo:        returnTo,
-		Nonce:           base64.RawURLEncoding.EncodeToString(nonceBytes),
 		ExpiresAt:       now.Add(githubAppStateTTL).Unix(),
 	}
 	return g.signGitHubAppOAuthState(state)
@@ -182,7 +175,7 @@ func (g *gatewayService) verifyGitHubAppOAuthState(rawState string, now time.Tim
 	if err := json.Unmarshal(payload, state); err != nil {
 		return nil, err
 	}
-	if state.ProjectID == 0 || state.GithubSettingID == 0 || state.UserID == 0 || state.ReturnTo == "" || state.Nonce == "" {
+	if state.ProjectID == 0 || state.GithubSettingID == 0 || state.UserID == 0 || state.ReturnTo == "" {
 		return nil, errors.New("invalid state payload")
 	}
 	if now.Unix() > state.ExpiresAt {
