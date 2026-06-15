@@ -180,7 +180,7 @@ func TestGitHubAppOAuthCallbackHandlerRedirectsWhenSessionExpired(t *testing.T) 
 	if rec.Code != http.StatusFound {
 		t.Fatalf("Unexpected status. want=%d, got=%d", http.StatusFound, rec.Code)
 	}
-	if got := rec.Header().Get("Location"); got != "/code/github?github_app_oauth=failed&project_id=1001" {
+	if got := rec.Header().Get("Location"); got != "/code/github?github_app_oauth=session_expired&project_id=1001" {
 		t.Fatalf("Unexpected Location: %s", got)
 	}
 }

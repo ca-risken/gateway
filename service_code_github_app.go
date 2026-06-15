@@ -78,7 +78,7 @@ func (g *gatewayService) githubAppOAuthCallbackHandler(w http.ResponseWriter, r 
 	}
 	u, err := getRequestUser(r)
 	if err != nil || !isHumanAccess(u) {
-		g.redirectGitHubAppOAuthResult(w, r, state.ReturnTo, "failed")
+		g.redirectGitHubAppOAuthResult(w, r, state.ReturnTo, "session_expired")
 		return
 	}
 	if state.UserID != u.userID {

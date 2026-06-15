@@ -113,17 +113,20 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 }
 
 func validateGatewayConfig(conf *AppConfig) error {
-	if conf.GithubAppStateSecret != "" && len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
-		return errors.New("github app state secret must be at least 32 bytes")
-	}
 	if conf.GithubAppInstallURL == "" {
+		if conf.GithubAppStateSecret != "" && len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
+			return errors.New("github app state secret must be empty or at least 32 bytes when github app install url is not configured")
+		}
 		return nil
 	}
 	if _, err := parseGitHubAppInstallURL(conf.GithubAppInstallURL); err != nil {
 		return err
 	}
+	if conf.GithubAppStateSecret == "" {
+		return errors.New("github app state secret is required when github app install url is configured")
+	}
 	if len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
-		return errors.New("github app state secret must be at least 32 bytes")
+		return errors.New("github app state secret must be at least 32 bytes when github app install url is configured")
 	}
 	return nil
 }

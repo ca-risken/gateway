@@ -40,9 +40,9 @@ func TestNewHTTPServer(t *testing.T) {
 
 func TestValidateGatewayConfig(t *testing.T) {
 	cases := []struct {
-		name      string
-		conf      *AppConfig
-		wantError bool
+		name       string
+		conf       *AppConfig
+		wantErrMsg string
 	}{
 		{
 			name: "github app disabled",
@@ -53,7 +53,7 @@ func TestValidateGatewayConfig(t *testing.T) {
 			conf: &AppConfig{
 				GithubAppStateSecret: "short",
 			},
-			wantError: true,
+			wantErrMsg: "github app state secret must be empty or at least 32 bytes when github app install url is not configured",
 		},
 		{
 			name: "github app enabled with strong state secret",
@@ -68,7 +68,7 @@ func TestValidateGatewayConfig(t *testing.T) {
 				GithubAppInstallURL:  "https://github.com/apps/risken/installations/new",
 				GithubAppStateSecret: "short",
 			},
-			wantError: true,
+			wantErrMsg: "github app state secret must be at least 32 bytes when github app install url is configured",
 		},
 		{
 			name: "github app enabled with http install url",
@@ -76,7 +76,7 @@ func TestValidateGatewayConfig(t *testing.T) {
 				GithubAppInstallURL:  "http://github.com/apps/risken/installations/new",
 				GithubAppStateSecret: "12345678901234567890123456789012",
 			},
-			wantError: true,
+			wantErrMsg: "github app install url must be https",
 		},
 		{
 			name: "github app enabled with relative install url",
@@ -84,17 +84,20 @@ func TestValidateGatewayConfig(t *testing.T) {
 				GithubAppInstallURL:  "/apps/risken/installations/new",
 				GithubAppStateSecret: "12345678901234567890123456789012",
 			},
-			wantError: true,
+			wantErrMsg: "github app install url must be https",
 		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			err := validateGatewayConfig(c.conf)
-			if c.wantError && err == nil {
+			if c.wantErrMsg != "" && err == nil {
 				t.Fatal("expected error but got nil")
 			}
-			if !c.wantError && err != nil {
+			if c.wantErrMsg == "" && err != nil {
 				t.Fatalf("unexpected error: %v", err)
+			}
+			if c.wantErrMsg != "" && err.Error() != c.wantErrMsg {
+				t.Fatalf("unexpected error. want=%q, got=%q", c.wantErrMsg, err.Error())
 			}
 		})
 	}
