@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
@@ -101,6 +103,32 @@ func TestBuildGitHubAppInstallURLRejectsInvalidConfig(t *testing.T) {
 			}
 			if strings.TrimSpace(err.Error()) == "" {
 				t.Fatal("Expected non-empty error")
+			}
+		})
+	}
+}
+
+func TestRedirectGitHubAppOAuthResultRejectsInvalidReturnTo(t *testing.T) {
+	cases := []struct {
+		name     string
+		returnTo string
+	}{
+		{name: "absolute", returnTo: "https://attacker.example"},
+		{name: "backslash", returnTo: `/\attacker.example/path`},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			svc := &gatewayService{}
+			req := httptest.NewRequest(http.MethodGet, "/api/v1/code/github-app/oauth/callback", nil)
+			rec := httptest.NewRecorder()
+
+			svc.redirectGitHubAppOAuthResult(rec, req, c.returnTo, "success")
+
+			if rec.Code != http.StatusFound {
+				t.Fatalf("Unexpected status. want=%d, got=%d", http.StatusFound, rec.Code)
+			}
+			if got := rec.Header().Get("Location"); got != "/code/github?github_app_oauth=failed" {
+				t.Fatalf("Unexpected Location: %s", got)
 			}
 		})
 	}

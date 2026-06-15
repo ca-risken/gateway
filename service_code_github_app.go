@@ -121,14 +121,21 @@ func normalizeGitHubAppReturnTo(returnTo string, projectID uint32) (string, erro
 	if returnTo == "" {
 		return fmt.Sprintf("/code/github?project_id=%d", projectID), nil
 	}
-	u, err := url.Parse(returnTo)
-	if err != nil {
+	if err := validateGitHubAppReturnTo(returnTo); err != nil {
 		return "", err
 	}
-	if u.IsAbs() || u.Host != "" || !strings.HasPrefix(returnTo, "/") || strings.HasPrefix(returnTo, "//") || strings.ContainsRune(returnTo, '\\') {
-		return "", errors.New("return_to must be a relative path")
-	}
 	return returnTo, nil
+}
+
+func validateGitHubAppReturnTo(returnTo string) error {
+	u, err := url.Parse(returnTo)
+	if err != nil {
+		return err
+	}
+	if u.IsAbs() || u.Host != "" || !strings.HasPrefix(returnTo, "/") || strings.HasPrefix(returnTo, "//") || strings.ContainsRune(returnTo, '\\') {
+		return errors.New("return_to must be a relative path")
+	}
+	return nil
 }
 
 func (g *gatewayService) newGitHubAppOAuthState(projectID, githubSettingID, userID uint32, returnTo string, now time.Time) (string, error) {
@@ -194,12 +201,9 @@ func (g *gatewayService) buildGitHubAppInstallURL(state string) (string, error) 
 	if g.githubAppInstallURL == "" {
 		return "", errors.New("github app install url is required")
 	}
-	u, err := url.Parse(g.githubAppInstallURL)
+	u, err := parseGitHubAppInstallURL(g.githubAppInstallURL)
 	if err != nil {
 		return "", err
-	}
-	if u.Scheme != "https" || u.Host == "" {
-		return "", errors.New("github app install url must be https")
 	}
 	q := u.Query()
 	q.Set("state", state)
@@ -207,7 +211,22 @@ func (g *gatewayService) buildGitHubAppInstallURL(state string) (string, error) 
 	return u.String(), nil
 }
 
+func parseGitHubAppInstallURL(rawURL string) (*url.URL, error) {
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		return nil, err
+	}
+	if u.Scheme != "https" || u.Host == "" {
+		return nil, errors.New("github app install url must be https")
+	}
+	return u, nil
+}
+
 func (g *gatewayService) redirectGitHubAppOAuthResult(w http.ResponseWriter, r *http.Request, returnTo, result string) {
+	if err := validateGitHubAppReturnTo(returnTo); err != nil {
+		http.Redirect(w, r, "/code/github?github_app_oauth=failed", http.StatusFound)
+		return
+	}
 	u, err := url.Parse(returnTo)
 	if err != nil {
 		http.Redirect(w, r, "/code/github?github_app_oauth=failed", http.StatusFound)

@@ -116,6 +116,9 @@ func validateGatewayConfig(conf *AppConfig) error {
 	if conf.GithubAppInstallURL == "" {
 		return nil
 	}
+	if _, err := parseGitHubAppInstallURL(conf.GithubAppInstallURL); err != nil {
+		return err
+	}
 	if len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
 		return errors.New("github app state secret must be at least 32 bytes when github app install url is configured")
 	}

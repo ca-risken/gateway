@@ -63,6 +63,22 @@ func TestValidateGatewayConfig(t *testing.T) {
 			},
 			wantError: true,
 		},
+		{
+			name: "github app enabled with http install url",
+			conf: &AppConfig{
+				GithubAppInstallURL:  "http://github.com/apps/risken/installations/new",
+				GithubAppStateSecret: "12345678901234567890123456789012",
+			},
+			wantError: true,
+		},
+		{
+			name: "github app enabled with relative install url",
+			conf: &AppConfig{
+				GithubAppInstallURL:  "/apps/risken/installations/new",
+				GithubAppStateSecret: "12345678901234567890123456789012",
+			},
+			wantError: true,
+		},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
