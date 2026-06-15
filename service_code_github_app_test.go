@@ -28,6 +28,23 @@ func TestGitHubAppOAuthState(t *testing.T) {
 	}
 }
 
+func TestNewGitHubAppOAuthStateGeneratesUniqueToken(t *testing.T) {
+	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
+	now := time.Unix(1700000000, 0)
+
+	state1, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", now)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	state2, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", now)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if state1 == state2 {
+		t.Fatal("Expected unique state tokens")
+	}
+}
+
 func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
 	now := time.Unix(1700000000, 0)
@@ -40,6 +57,7 @@ func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 		GithubSettingID: 10,
 		UserID:          20,
 		ReturnTo:        `/\attacker.example/path`,
+		Random:          "test-random",
 		ExpiresAt:       now.Add(githubAppStateTTL).Unix(),
 	})
 	if err != nil {

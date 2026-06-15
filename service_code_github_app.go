@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/hmac"
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
@@ -26,6 +27,7 @@ type githubAppOAuthState struct {
 	GithubSettingID uint32 `json:"github_setting_id"`
 	UserID          uint32 `json:"user_id"`
 	ReturnTo        string `json:"return_to"`
+	Random          string `json:"random"`
 	ExpiresAt       int64  `json:"expires_at"`
 }
 
@@ -139,11 +141,16 @@ func validateGitHubAppReturnTo(returnTo string) error {
 }
 
 func (g *gatewayService) newGitHubAppOAuthState(projectID, githubSettingID, userID uint32, returnTo string, now time.Time) (string, error) {
+	randomBytes := make([]byte, 16)
+	if _, err := rand.Read(randomBytes); err != nil {
+		return "", err
+	}
 	state := &githubAppOAuthState{
 		ProjectID:       projectID,
 		GithubSettingID: githubSettingID,
 		UserID:          userID,
 		ReturnTo:        returnTo,
+		Random:          base64.RawURLEncoding.EncodeToString(randomBytes),
 		ExpiresAt:       now.Add(githubAppStateTTL).Unix(),
 	}
 	return g.signGitHubAppOAuthState(state)
@@ -182,7 +189,7 @@ func (g *gatewayService) verifyGitHubAppOAuthState(rawState string, now time.Tim
 	if err := json.Unmarshal(payload, state); err != nil {
 		return nil, err
 	}
-	if state.ProjectID == 0 || state.GithubSettingID == 0 || state.UserID == 0 || state.ReturnTo == "" {
+	if state.ProjectID == 0 || state.GithubSettingID == 0 || state.UserID == 0 || state.ReturnTo == "" || state.Random == "" {
 		return nil, errors.New("invalid state payload")
 	}
 	if err := validateGitHubAppReturnTo(state.ReturnTo); err != nil {
