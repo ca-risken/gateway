@@ -101,13 +101,13 @@ func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 	}
 }
 
-func TestBuildGitHubAppInstallURL(t *testing.T) {
-	svc := &gatewayService{githubAppInstallURL: "https://github.com/apps/risken-codescan/installations/new?existing=1"}
-	got, err := svc.buildGitHubAppInstallURL("state-value")
+func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
+	svc := &gatewayService{githubAppSlug: "risken-codescan"}
+	got, err := svc.buildGitHubAppOAuthStartURL("state-value")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	if got != "https://github.com/apps/risken-codescan/installations/new?existing=1&state=state-value" {
+	if got != "https://github.com/apps/risken-codescan/installations/select_target?state=state-value" {
 		t.Fatalf("Unexpected URL: %s", got)
 	}
 }
@@ -135,19 +135,19 @@ func TestNormalizeGitHubAppReturnTo(t *testing.T) {
 	}
 }
 
-func TestBuildGitHubAppInstallURLRejectsInvalidConfig(t *testing.T) {
+func TestBuildGitHubAppOAuthStartURLRejectsInvalidSlug(t *testing.T) {
 	cases := []struct {
-		name       string
-		installURL string
+		name string
+		slug string
 	}{
 		{name: "empty"},
-		{name: "http", installURL: "http://github.com/apps/risken/installations/new"},
-		{name: "relative", installURL: "/apps/risken/installations/new"},
+		{name: "slash", slug: "owner/risken"},
+		{name: "leading hyphen", slug: "-risken"},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			svc := &gatewayService{githubAppInstallURL: c.installURL}
-			_, err := svc.buildGitHubAppInstallURL("state")
+			svc := &gatewayService{githubAppSlug: c.slug}
+			_, err := svc.buildGitHubAppOAuthStartURL("state")
 			if err == nil {
 				t.Fatal("Expected error but got none")
 			}

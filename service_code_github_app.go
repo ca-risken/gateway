@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -20,7 +21,10 @@ import (
 const (
 	githubAppOAuthCallbackPath = "/api/v1/code/github-app/oauth/callback"
 	githubAppStateTTL          = 10 * time.Minute
+	githubAppInstallURLFormat  = "https://github.com/apps/%s/installations/select_target"
 )
+
+var githubAppSlugPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9-]*$`)
 
 type githubAppOAuthState struct {
 	ProjectID       uint32 `json:"project_id"`
@@ -59,10 +63,10 @@ func (g *gatewayService) githubAppOAuthStartHandler(w http.ResponseWriter, r *ht
 		writeResponse(ctx, w, http.StatusServiceUnavailable, map[string]any{errorJSONKey: "GitHub App OAuth is not configured"})
 		return
 	}
-	installURL, err := g.buildGitHubAppInstallURL(state)
+	installURL, err := g.buildGitHubAppOAuthStartURL(state)
 	if err != nil {
-		appLogger.Errorf(ctx, "Failed to build github app install url: err=%+v", err)
-		writeResponse(ctx, w, http.StatusServiceUnavailable, map[string]any{errorJSONKey: "GitHub App install URL is not configured"})
+		appLogger.Errorf(ctx, "Failed to build github app oauth start url: err=%+v", err)
+		writeResponse(ctx, w, http.StatusServiceUnavailable, map[string]any{errorJSONKey: "GitHub App OAuth start URL is not configured"})
 		return
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]any{successJSONKey: map[string]string{"url": installURL}})
@@ -207,11 +211,11 @@ func signGitHubAppState(payload, secret string) string {
 	return base64.RawURLEncoding.EncodeToString(mac.Sum(nil))
 }
 
-func (g *gatewayService) buildGitHubAppInstallURL(state string) (string, error) {
-	if g.githubAppInstallURL == "" {
-		return "", errors.New("github app install url is required")
+func (g *gatewayService) buildGitHubAppOAuthStartURL(state string) (string, error) {
+	if err := validateGitHubAppSlug(g.githubAppSlug); err != nil {
+		return "", err
 	}
-	u, err := parseGitHubAppInstallURL(g.githubAppInstallURL)
+	u, err := url.Parse(fmt.Sprintf(githubAppInstallURLFormat, g.githubAppSlug))
 	if err != nil {
 		return "", err
 	}
@@ -221,15 +225,11 @@ func (g *gatewayService) buildGitHubAppInstallURL(state string) (string, error) 
 	return u.String(), nil
 }
 
-func parseGitHubAppInstallURL(rawURL string) (*url.URL, error) {
-	u, err := url.Parse(rawURL)
-	if err != nil {
-		return nil, err
+func validateGitHubAppSlug(slug string) error {
+	if !githubAppSlugPattern.MatchString(slug) {
+		return errors.New("github app slug is invalid")
 	}
-	if u.Scheme != "https" || u.Host == "" {
-		return nil, errors.New("github app install url must be https")
-	}
-	return u, nil
+	return nil
 }
 
 func (g *gatewayService) redirectGitHubAppOAuthResult(w http.ResponseWriter, r *http.Request, returnTo, result string) {

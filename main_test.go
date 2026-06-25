@@ -53,38 +53,38 @@ func TestValidateGatewayConfig(t *testing.T) {
 			conf: &AppConfig{
 				GithubAppStateSecret: "short",
 			},
-			wantErrMsg: "github app state secret must be empty or at least 32 bytes when github app install url is not configured",
+			wantErrMsg: "github app state secret must be empty or at least 32 bytes when github app slug is not configured",
 		},
 		{
 			name: "github app enabled with strong state secret",
 			conf: &AppConfig{
-				GithubAppInstallURL:  "https://github.com/apps/risken/installations/new",
+				GithubAppSlug:        "risken",
 				GithubAppStateSecret: "12345678901234567890123456789012",
 			},
 		},
 		{
 			name: "github app enabled with short state secret",
 			conf: &AppConfig{
-				GithubAppInstallURL:  "https://github.com/apps/risken/installations/new",
+				GithubAppSlug:        "risken",
 				GithubAppStateSecret: "short",
 			},
-			wantErrMsg: "github app state secret must be at least 32 bytes when github app install url is configured",
+			wantErrMsg: "github app state secret must be at least 32 bytes when github app slug is configured",
 		},
 		{
-			name: "github app enabled with http install url",
+			name: "github app enabled with slash slug",
 			conf: &AppConfig{
-				GithubAppInstallURL:  "http://github.com/apps/risken/installations/new",
+				GithubAppSlug:        "owner/risken",
 				GithubAppStateSecret: "12345678901234567890123456789012",
 			},
-			wantErrMsg: "github app install url must be https",
+			wantErrMsg: "github app slug is invalid",
 		},
 		{
-			name: "github app enabled with relative install url",
+			name: "github app enabled with empty-like slug",
 			conf: &AppConfig{
-				GithubAppInstallURL:  "/apps/risken/installations/new",
+				GithubAppSlug:        "-risken",
 				GithubAppStateSecret: "12345678901234567890123456789012",
 			},
-			wantErrMsg: "github app install url must be https",
+			wantErrMsg: "github app slug is invalid",
 		},
 	}
 	for _, c := range cases {
