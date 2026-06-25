@@ -31,7 +31,7 @@ type githubAppOAuthState struct {
 	ExpiresAt       int64  `json:"expires_at"`
 }
 
-func (g *gatewayService) githubAppInstallURLHandler(w http.ResponseWriter, r *http.Request) {
+func (g *gatewayService) githubAppOAuthStartHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	u, err := getRequestUser(r)
 	if err != nil || !isHumanAccess(u) {
