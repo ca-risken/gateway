@@ -202,7 +202,29 @@ func (g *gatewayService) verifyGitHubAppOAuthState(rawState string, now time.Tim
 	if now.Unix() > state.ExpiresAt {
 		return nil, errors.New("expired state")
 	}
+	if err := g.consumeGitHubAppOAuthState(rawState, state.ExpiresAt, now); err != nil {
+		return nil, err
+	}
 	return state, nil
+}
+
+func (g *gatewayService) consumeGitHubAppOAuthState(rawState string, expiresAt int64, now time.Time) error {
+	g.githubAppStateMu.Lock()
+	defer g.githubAppStateMu.Unlock()
+	if g.githubAppUsedStates == nil {
+		g.githubAppUsedStates = map[string]int64{}
+	}
+	nowUnix := now.Unix()
+	for usedState, usedExpiresAt := range g.githubAppUsedStates {
+		if nowUnix > usedExpiresAt {
+			delete(g.githubAppUsedStates, usedState)
+		}
+	}
+	if _, ok := g.githubAppUsedStates[rawState]; ok {
+		return errors.New("state has already been used")
+	}
+	g.githubAppUsedStates[rawState] = expiresAt
+	return nil
 }
 
 func signGitHubAppState(payload, secret string) string {

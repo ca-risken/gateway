@@ -63,6 +63,22 @@ func TestNewGitHubAppOAuthStateGeneratesUniqueToken(t *testing.T) {
 	}
 }
 
+func TestVerifyGitHubAppOAuthStateRejectsReplay(t *testing.T) {
+	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
+	now := time.Unix(1700000000, 0)
+
+	rawState, err := svc.newGitHubAppOAuthState(1001, 10, 20, "/code/github?project_id=1001", now)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if _, err := svc.verifyGitHubAppOAuthState(rawState, now.Add(time.Minute)); err != nil {
+		t.Fatalf("Unexpected verify error: %v", err)
+	}
+	if _, err := svc.verifyGitHubAppOAuthState(rawState, now.Add(2*time.Minute)); err == nil {
+		t.Fatal("Expected replay error but got none")
+	}
+}
+
 func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 	svc := &gatewayService{githubAppStateSecret: testGitHubAppStateSecret}
 	now := time.Unix(1700000000, 0)

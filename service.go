@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/ca-risken/common/pkg/logging"
@@ -46,6 +47,8 @@ type gatewayService struct {
 	sessionTimeoutSec    int
 	githubAppSlug        string
 	githubAppStateSecret string
+	githubAppStateMu     sync.Mutex
+	githubAppUsedStates  map[string]int64
 	findingClient        finding.FindingServiceClient
 	iamClient            iam.IAMServiceClient
 	projectClient        project.ProjectServiceClient
