@@ -53,38 +53,22 @@ func TestValidateGatewayConfig(t *testing.T) {
 			conf: &AppConfig{
 				GithubAppStateSecret: "short",
 			},
-			wantErrMsg: "github app state secret must be empty or at least 32 bytes when github app slug is not configured",
+			wantErrMsg: "github app state secret must be empty or at least 32 bytes when github app oauth client id is not configured",
 		},
 		{
 			name: "github app enabled with strong state secret",
 			conf: &AppConfig{
-				GithubAppSlug:        "risken",
-				GithubAppStateSecret: "12345678901234567890123456789012",
+				GithubAppOAuthClientID: "Iv1.0123456789abcdef",
+				GithubAppStateSecret:   "12345678901234567890123456789012",
 			},
 		},
 		{
 			name: "github app enabled with short state secret",
 			conf: &AppConfig{
-				GithubAppSlug:        "risken",
-				GithubAppStateSecret: "short",
+				GithubAppOAuthClientID: "Iv1.0123456789abcdef",
+				GithubAppStateSecret:   "short",
 			},
-			wantErrMsg: "github app state secret must be at least 32 bytes when github app slug is configured",
-		},
-		{
-			name: "github app enabled with slash slug",
-			conf: &AppConfig{
-				GithubAppSlug:        "owner/risken",
-				GithubAppStateSecret: "12345678901234567890123456789012",
-			},
-			wantErrMsg: "github app slug is invalid",
-		},
-		{
-			name: "github app enabled with empty-like slug",
-			conf: &AppConfig{
-				GithubAppSlug:        "-risken",
-				GithubAppStateSecret: "12345678901234567890123456789012",
-			},
-			wantErrMsg: "github app slug is invalid",
+			wantErrMsg: "github app state secret must be at least 32 bytes when github app oauth client id is configured",
 		},
 	}
 	for _, c := range cases {

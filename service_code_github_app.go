@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -21,10 +20,8 @@ import (
 const (
 	githubAppOAuthCallbackPath = "/api/v1/code/github-app/oauth/callback"
 	githubAppStateTTL          = 10 * time.Minute
-	githubAppInstallURLFormat  = "https://github.com/apps/%s/installations/select_target"
+	githubAppOAuthAuthorizeURL = "https://github.com/login/oauth/authorize"
 )
-
-var githubAppSlugPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9-]*$`)
 
 type githubAppOAuthState struct {
 	ProjectID       uint32 `json:"project_id"`
@@ -63,13 +60,13 @@ func (g *gatewayService) githubAppOAuthStartHandler(w http.ResponseWriter, r *ht
 		writeResponse(ctx, w, http.StatusServiceUnavailable, map[string]any{errorJSONKey: "GitHub App OAuth is not configured"})
 		return
 	}
-	installURL, err := g.buildGitHubAppOAuthStartURL(state)
+	oauthURL, err := g.buildGitHubAppOAuthStartURL(state)
 	if err != nil {
 		appLogger.Errorf(ctx, "Failed to build github app oauth start url: err=%+v", err)
 		writeResponse(ctx, w, http.StatusServiceUnavailable, map[string]any{errorJSONKey: "GitHub App OAuth start URL is not configured"})
 		return
 	}
-	writeResponse(ctx, w, http.StatusOK, map[string]any{successJSONKey: map[string]string{"url": installURL}})
+	writeResponse(ctx, w, http.StatusOK, map[string]any{successJSONKey: map[string]string{"url": oauthURL}})
 }
 
 func (g *gatewayService) githubAppOAuthCallbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -212,24 +209,19 @@ func signGitHubAppState(payload, secret string) string {
 }
 
 func (g *gatewayService) buildGitHubAppOAuthStartURL(state string) (string, error) {
-	if err := validateGitHubAppSlug(g.githubAppSlug); err != nil {
-		return "", err
+	clientID := strings.TrimSpace(g.githubAppClientID)
+	if clientID == "" {
+		return "", errors.New("github app oauth client id is required")
 	}
-	u, err := url.Parse(fmt.Sprintf(githubAppInstallURLFormat, g.githubAppSlug))
+	u, err := url.Parse(githubAppOAuthAuthorizeURL)
 	if err != nil {
 		return "", err
 	}
 	q := u.Query()
+	q.Set("client_id", clientID)
 	q.Set("state", state)
 	u.RawQuery = q.Encode()
 	return u.String(), nil
-}
-
-func validateGitHubAppSlug(slug string) error {
-	if !githubAppSlugPattern.MatchString(slug) {
-		return errors.New("github app slug is invalid")
-	}
-	return nil
 }
 
 func (g *gatewayService) redirectGitHubAppOAuthResult(w http.ResponseWriter, r *http.Request, returnTo, result string) {

@@ -44,7 +44,7 @@ type gatewayService struct {
 	oidcDataHeader       string
 	sessionCookieName    []string
 	sessionTimeoutSec    int
-	githubAppSlug        string
+	githubAppClientID    string
 	githubAppStateSecret string
 	findingClient        finding.FindingServiceClient
 	iamClient            iam.IAMServiceClient
@@ -90,7 +90,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		oidcDataHeader:       conf.OidcDataHeader,
 		sessionCookieName:    conf.SessionCookieName,
 		sessionTimeoutSec:    conf.SessionTimeoutSec,
-		githubAppSlug:        conf.GithubAppSlug,
+		githubAppClientID:    conf.GithubAppOAuthClientID,
 		githubAppStateSecret: conf.GithubAppStateSecret,
 		findingClient:        finding.NewFindingServiceClient(coreConn),
 		iamClient:            iam.NewIAMServiceClient(coreConn),
@@ -113,20 +113,17 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 }
 
 func validateGatewayConfig(conf *AppConfig) error {
-	if conf.GithubAppSlug == "" {
+	if conf.GithubAppOAuthClientID == "" {
 		if conf.GithubAppStateSecret != "" && len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
-			return errors.New("github app state secret must be empty or at least 32 bytes when github app slug is not configured")
+			return errors.New("github app state secret must be empty or at least 32 bytes when github app oauth client id is not configured")
 		}
 		return nil
 	}
-	if err := validateGitHubAppSlug(conf.GithubAppSlug); err != nil {
-		return err
-	}
 	if conf.GithubAppStateSecret == "" {
-		return errors.New("github app state secret is required when github app slug is configured")
+		return errors.New("github app state secret is required when github app oauth client id is configured")
 	}
 	if len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
-		return errors.New("github app state secret must be at least 32 bytes when github app slug is configured")
+		return errors.New("github app state secret must be at least 32 bytes when github app oauth client id is configured")
 	}
 	return nil
 }

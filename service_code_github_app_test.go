@@ -102,12 +102,12 @@ func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 }
 
 func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
-	svc := &gatewayService{githubAppSlug: "risken-codescan"}
+	svc := &gatewayService{githubAppClientID: "Iv1.0123456789abcdef"}
 	got, err := svc.buildGitHubAppOAuthStartURL("state-value")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	if got != "https://github.com/apps/risken-codescan/installations/select_target?state=state-value" {
+	if got != "https://github.com/login/oauth/authorize?client_id=Iv1.0123456789abcdef&state=state-value" {
 		t.Fatalf("Unexpected URL: %s", got)
 	}
 }
@@ -135,18 +135,17 @@ func TestNormalizeGitHubAppReturnTo(t *testing.T) {
 	}
 }
 
-func TestBuildGitHubAppOAuthStartURLRejectsInvalidSlug(t *testing.T) {
+func TestBuildGitHubAppOAuthStartURLRejectsMissingClientID(t *testing.T) {
 	cases := []struct {
-		name string
-		slug string
+		name     string
+		clientID string
 	}{
 		{name: "empty"},
-		{name: "slash", slug: "owner/risken"},
-		{name: "leading hyphen", slug: "-risken"},
+		{name: "blank", clientID: "   "},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			svc := &gatewayService{githubAppSlug: c.slug}
+			svc := &gatewayService{githubAppClientID: c.clientID}
 			_, err := svc.buildGitHubAppOAuthStartURL("state")
 			if err == nil {
 				t.Fatal("Expected error but got none")
