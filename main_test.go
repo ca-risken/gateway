@@ -58,7 +58,7 @@ func TestValidateGatewayConfig(t *testing.T) {
 		{
 			name: "github app enabled with strong state secret",
 			conf: &AppConfig{
-				GithubAppOAuthClientID: "Iv1.0123456789abcdef",
+				GithubAppOAuthClientID: "test-github-app-client-id",
 				GithubAppStateSecret:   "12345678901234567890123456789012",
 			},
 		},
@@ -71,7 +71,7 @@ func TestValidateGatewayConfig(t *testing.T) {
 		{
 			name: "github app enabled with short state secret",
 			conf: &AppConfig{
-				GithubAppOAuthClientID: "Iv1.0123456789abcdef",
+				GithubAppOAuthClientID: "test-github-app-client-id",
 				GithubAppStateSecret:   "short",
 			},
 			wantErrMsg: "github app state secret must be at least 32 bytes when github app oauth client id is configured",

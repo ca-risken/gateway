@@ -102,12 +102,12 @@ func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 }
 
 func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
-	svc := &gatewayService{githubAppClientID: "Iv1.0123456789abcdef"}
+	svc := &gatewayService{githubAppClientID: "test-github-app-client-id"}
 	got, err := svc.buildGitHubAppOAuthStartURL("state-value")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	if got != "https://github.com/login/oauth/authorize?client_id=Iv1.0123456789abcdef&state=state-value" {
+	if got != "https://github.com/login/oauth/authorize?client_id=test-github-app-client-id&state=state-value" {
 		t.Fatalf("Unexpected URL: %s", got)
 	}
 }
