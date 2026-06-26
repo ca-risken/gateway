@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -21,7 +22,10 @@ const (
 	githubAppOAuthCallbackPath = "/api/v1/code/github-app/oauth/callback"
 	githubAppStateTTL          = 10 * time.Minute
 	githubAppOAuthAuthorizeURL = "https://github.com/login/oauth/authorize"
+	githubAppInstallURLFormat  = "https://github.com/apps/%s/installations/select_target"
 )
+
+var githubAppSlugPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9-]*$`)
 
 type githubAppOAuthState struct {
 	ProjectID       uint32 `json:"project_id"`
@@ -30,6 +34,21 @@ type githubAppOAuthState struct {
 	ReturnTo        string `json:"return_to"`
 	Random          string `json:"random"`
 	ExpiresAt       int64  `json:"expires_at"`
+}
+
+func (g *gatewayService) githubAppInstallURLHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	if _, err := parseRequiredUint32(r, "project_id"); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]any{errorJSONKey: err.Error()})
+		return
+	}
+	installURL, err := g.buildGitHubAppInstallURL()
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to build github app install url: err=%+v", err)
+		writeResponse(ctx, w, http.StatusServiceUnavailable, map[string]any{errorJSONKey: "GitHub App install URL is not configured"})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]any{successJSONKey: map[string]string{"url": installURL}})
 }
 
 func (g *gatewayService) githubAppOAuthStartHandler(w http.ResponseWriter, r *http.Request) {
@@ -222,6 +241,21 @@ func (g *gatewayService) buildGitHubAppOAuthStartURL(state string) (string, erro
 	q.Set("state", state)
 	u.RawQuery = q.Encode()
 	return u.String(), nil
+}
+
+func (g *gatewayService) buildGitHubAppInstallURL() (string, error) {
+	slug := strings.TrimSpace(g.githubAppSlug)
+	if err := validateGitHubAppSlug(slug); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf(githubAppInstallURLFormat, slug), nil
+}
+
+func validateGitHubAppSlug(slug string) error {
+	if !githubAppSlugPattern.MatchString(slug) {
+		return errors.New("github app slug is invalid")
+	}
+	return nil
 }
 
 func (g *gatewayService) redirectGitHubAppOAuthResult(w http.ResponseWriter, r *http.Request, returnTo, result string) {

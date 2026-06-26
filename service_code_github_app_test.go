@@ -112,6 +112,17 @@ func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
 	}
 }
 
+func TestBuildGitHubAppInstallURL(t *testing.T) {
+	svc := &gatewayService{githubAppSlug: "risken-codescan"}
+	got, err := svc.buildGitHubAppInstallURL()
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if got != "https://github.com/apps/risken-codescan/installations/select_target" {
+		t.Fatalf("Unexpected URL: %s", got)
+	}
+}
+
 func TestNormalizeGitHubAppReturnTo(t *testing.T) {
 	got, err := normalizeGitHubAppReturnTo("", 1001)
 	if err != nil {
@@ -147,6 +158,30 @@ func TestBuildGitHubAppOAuthStartURLRejectsMissingClientID(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			svc := &gatewayService{githubAppClientID: c.clientID}
 			_, err := svc.buildGitHubAppOAuthStartURL("state")
+			if err == nil {
+				t.Fatal("Expected error but got none")
+			}
+			if strings.TrimSpace(err.Error()) == "" {
+				t.Fatal("Expected non-empty error")
+			}
+		})
+	}
+}
+
+func TestBuildGitHubAppInstallURLRejectsInvalidSlug(t *testing.T) {
+	cases := []struct {
+		name string
+		slug string
+	}{
+		{name: "empty"},
+		{name: "blank", slug: "   "},
+		{name: "slash", slug: "owner/risken"},
+		{name: "leading hyphen", slug: "-risken"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			svc := &gatewayService{githubAppSlug: c.slug}
+			_, err := svc.buildGitHubAppInstallURL()
 			if err == nil {
 				t.Fatal("Expected error but got none")
 			}

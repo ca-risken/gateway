@@ -63,12 +63,25 @@ func TestValidateGatewayConfig(t *testing.T) {
 			},
 		},
 		{
+			name: "github app install url enabled with slug only",
+			conf: &AppConfig{
+				GithubAppSlug: "risken",
+			},
+		},
+		{
 			name: "github app enabled with short state secret",
 			conf: &AppConfig{
 				GithubAppOAuthClientID: "Iv1.0123456789abcdef",
 				GithubAppStateSecret:   "short",
 			},
 			wantErrMsg: "github app state secret must be at least 32 bytes when github app oauth client id is configured",
+		},
+		{
+			name: "github app enabled with slash slug",
+			conf: &AppConfig{
+				GithubAppSlug: "owner/risken",
+			},
+			wantErrMsg: "github app slug is invalid",
 		},
 	}
 	for _, c := range cases {
