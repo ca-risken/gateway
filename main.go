@@ -50,9 +50,9 @@ type AppConfig struct {
 	WriteTimeoutSec           int    `split_words:"true" default:"30"`
 	IdleTimeoutSec            int    `split_words:"true" default:"120"`
 	MaxHeaderBytes            int    `split_words:"true" default:"1048576"`
-	GithubAppOAuthClientID    string `split_words:"true"`
-	GithubAppOAuthRedirectURL string `split_words:"true"`
-	GithubAppStateSecret      string `split_words:"true"`
+	GithubAppOAuthClientID    string `envconfig:"GITHUB_APP_OAUTH_CLIENT_ID"`
+	GithubAppOAuthRedirectURL string `envconfig:"GITHUB_APP_OAUTH_REDIRECT_URL"`
+	GithubAppStateSecret      string `envconfig:"GITHUB_APP_STATE_SECRET"`
 }
 
 func main() {
