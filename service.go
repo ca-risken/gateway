@@ -46,6 +46,7 @@ type gatewayService struct {
 	sessionTimeoutSec    int
 	githubAppSlug        string
 	githubAppClientID    string
+	githubAppRedirectURL string
 	githubAppStateSecret string
 	findingClient        finding.FindingServiceClient
 	iamClient            iam.IAMServiceClient
@@ -93,6 +94,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		sessionTimeoutSec:    conf.SessionTimeoutSec,
 		githubAppSlug:        conf.GithubAppSlug,
 		githubAppClientID:    conf.GithubAppOAuthClientID,
+		githubAppRedirectURL: conf.GithubAppOAuthRedirectURL,
 		githubAppStateSecret: conf.GithubAppStateSecret,
 		findingClient:        finding.NewFindingServiceClient(coreConn),
 		iamClient:            iam.NewIAMServiceClient(coreConn),
@@ -125,6 +127,12 @@ func validateGatewayConfig(conf *AppConfig) error {
 			return errors.New("github app state secret must be empty or at least 32 bytes when github app oauth client id is not configured")
 		}
 		return nil
+	}
+	if conf.GithubAppOAuthRedirectURL == "" {
+		return errors.New("github app oauth redirect url is required when github app oauth client id is configured")
+	}
+	if _, err := validateGitHubAppOAuthRedirectURL(conf.GithubAppOAuthRedirectURL); err != nil {
+		return err
 	}
 	if conf.GithubAppStateSecret == "" {
 		return errors.New("github app state secret is required when github app oauth client id is configured")

@@ -42,17 +42,18 @@ type AppConfig struct {
 	UserIdpKey         string   `split_words:"true" default:"preferred_username"`
 	Region             string   `default:"ap-northeast-1"`
 
-	CoreAddr               string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8080"`
-	DataSourceAPISvcAddr   string `required:"true" split_words:"true" default:"datasource-api.datasource.svc.cluster.local:8081"`
-	MaxRequestBodyBytes    int64  `split_words:"true" default:"1048576"`
-	ReadHeaderTimeoutSec   int    `split_words:"true" default:"5"`
-	ReadTimeoutSec         int    `split_words:"true" default:"30"`
-	WriteTimeoutSec        int    `split_words:"true" default:"30"`
-	IdleTimeoutSec         int    `split_words:"true" default:"120"`
-	MaxHeaderBytes         int    `split_words:"true" default:"1048576"`
-	GithubAppSlug          string `split_words:"true"`
-	GithubAppOAuthClientID string `split_words:"true"`
-	GithubAppStateSecret   string `split_words:"true"`
+	CoreAddr                  string `required:"true" split_words:"true" default:"core.core.svc.cluster.local:8080"`
+	DataSourceAPISvcAddr      string `required:"true" split_words:"true" default:"datasource-api.datasource.svc.cluster.local:8081"`
+	MaxRequestBodyBytes       int64  `split_words:"true" default:"1048576"`
+	ReadHeaderTimeoutSec      int    `split_words:"true" default:"5"`
+	ReadTimeoutSec            int    `split_words:"true" default:"30"`
+	WriteTimeoutSec           int    `split_words:"true" default:"30"`
+	IdleTimeoutSec            int    `split_words:"true" default:"120"`
+	MaxHeaderBytes            int    `split_words:"true" default:"1048576"`
+	GithubAppSlug             string `split_words:"true"`
+	GithubAppOAuthClientID    string `split_words:"true"`
+	GithubAppOAuthRedirectURL string `split_words:"true"`
+	GithubAppStateSecret      string `split_words:"true"`
 }
 
 func main() {

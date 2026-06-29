@@ -58,8 +58,9 @@ func TestValidateGatewayConfig(t *testing.T) {
 		{
 			name: "github app enabled with strong state secret",
 			conf: &AppConfig{
-				GithubAppOAuthClientID: "test-github-app-client-id",
-				GithubAppStateSecret:   "12345678901234567890123456789012",
+				GithubAppOAuthClientID:    "test-github-app-client-id",
+				GithubAppOAuthRedirectURL: "https://risken.example/api/v1/code/github-app/oauth/callback",
+				GithubAppStateSecret:      "12345678901234567890123456789012",
 			},
 		},
 		{
@@ -71,10 +72,28 @@ func TestValidateGatewayConfig(t *testing.T) {
 		{
 			name: "github app enabled with short state secret",
 			conf: &AppConfig{
-				GithubAppOAuthClientID: "test-github-app-client-id",
-				GithubAppStateSecret:   "short",
+				GithubAppOAuthClientID:    "test-github-app-client-id",
+				GithubAppOAuthRedirectURL: "https://risken.example/api/v1/code/github-app/oauth/callback",
+				GithubAppStateSecret:      "short",
 			},
 			wantErrMsg: "github app state secret must be at least 32 bytes when github app oauth client id is configured",
+		},
+		{
+			name: "github app enabled without redirect url",
+			conf: &AppConfig{
+				GithubAppOAuthClientID: "test-github-app-client-id",
+				GithubAppStateSecret:   "12345678901234567890123456789012",
+			},
+			wantErrMsg: "github app oauth redirect url is required when github app oauth client id is configured",
+		},
+		{
+			name: "github app enabled with relative redirect url",
+			conf: &AppConfig{
+				GithubAppOAuthClientID:    "test-github-app-client-id",
+				GithubAppOAuthRedirectURL: "/api/v1/code/github-app/oauth/callback",
+				GithubAppStateSecret:      "12345678901234567890123456789012",
+			},
+			wantErrMsg: "github app oauth redirect url must be an absolute http or https URL",
 		},
 		{
 			name: "github app enabled with slash slug",

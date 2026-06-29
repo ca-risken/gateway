@@ -232,12 +232,17 @@ func (g *gatewayService) buildGitHubAppOAuthStartURL(state string) (string, erro
 	if clientID == "" {
 		return "", errors.New("github app oauth client id is required")
 	}
+	redirectURL, err := validateGitHubAppOAuthRedirectURL(g.githubAppRedirectURL)
+	if err != nil {
+		return "", err
+	}
 	u, err := url.Parse(githubAppOAuthAuthorizeURL)
 	if err != nil {
 		return "", err
 	}
 	q := u.Query()
 	q.Set("client_id", clientID)
+	q.Set("redirect_uri", redirectURL)
 	q.Set("state", state)
 	u.RawQuery = q.Encode()
 	return u.String(), nil
@@ -256,6 +261,21 @@ func validateGitHubAppSlug(slug string) error {
 		return errors.New("github app slug is invalid")
 	}
 	return nil
+}
+
+func validateGitHubAppOAuthRedirectURL(redirectURL string) (string, error) {
+	redirectURL = strings.TrimSpace(redirectURL)
+	if redirectURL == "" {
+		return "", errors.New("github app oauth redirect url is required")
+	}
+	u, err := url.Parse(redirectURL)
+	if err != nil {
+		return "", err
+	}
+	if (u.Scheme != "https" && u.Scheme != "http") || u.Host == "" {
+		return "", errors.New("github app oauth redirect url must be an absolute http or https URL")
+	}
+	return redirectURL, nil
 }
 
 func (g *gatewayService) redirectGitHubAppOAuthResult(w http.ResponseWriter, r *http.Request, returnTo, result string) {

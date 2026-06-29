@@ -102,12 +102,15 @@ func TestVerifyGitHubAppOAuthStateRejectsInvalidState(t *testing.T) {
 }
 
 func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
-	svc := &gatewayService{githubAppClientID: "test-github-app-client-id"}
+	svc := &gatewayService{
+		githubAppClientID:    "test-github-app-client-id",
+		githubAppRedirectURL: "https://risken.example/api/v1/code/github-app/oauth/callback",
+	}
 	got, err := svc.buildGitHubAppOAuthStartURL("state-value")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	if got != "https://github.com/login/oauth/authorize?client_id=test-github-app-client-id&state=state-value" {
+	if got != "https://github.com/login/oauth/authorize?client_id=test-github-app-client-id&redirect_uri=https%3A%2F%2Frisken.example%2Fapi%2Fv1%2Fcode%2Fgithub-app%2Foauth%2Fcallback&state=state-value" {
 		t.Fatalf("Unexpected URL: %s", got)
 	}
 }
@@ -157,6 +160,33 @@ func TestBuildGitHubAppOAuthStartURLRejectsMissingClientID(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			svc := &gatewayService{githubAppClientID: c.clientID}
+			_, err := svc.buildGitHubAppOAuthStartURL("state")
+			if err == nil {
+				t.Fatal("Expected error but got none")
+			}
+			if strings.TrimSpace(err.Error()) == "" {
+				t.Fatal("Expected non-empty error")
+			}
+		})
+	}
+}
+
+func TestBuildGitHubAppOAuthStartURLRejectsInvalidRedirectURL(t *testing.T) {
+	cases := []struct {
+		name        string
+		redirectURL string
+	}{
+		{name: "empty"},
+		{name: "blank", redirectURL: "   "},
+		{name: "relative", redirectURL: "/api/v1/code/github-app/oauth/callback"},
+		{name: "host missing", redirectURL: "https:///api/v1/code/github-app/oauth/callback"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			svc := &gatewayService{
+				githubAppClientID:    "test-github-app-client-id",
+				githubAppRedirectURL: c.redirectURL,
+			}
 			_, err := svc.buildGitHubAppOAuthStartURL("state")
 			if err == nil {
 				t.Fatal("Expected error but got none")
