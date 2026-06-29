@@ -232,7 +232,7 @@ func (g *gatewayService) buildGitHubAppOAuthStartURL(state string) (string, erro
 	if clientID == "" {
 		return "", errors.New("github app oauth client id is required")
 	}
-	redirectURL, err := validateGitHubAppOAuthRedirectURL(g.githubAppRedirectURL)
+	redirectURL, err := validateGitHubAppOAuthRedirectURL(g.githubAppRedirectURL, isLocalEnv(g.envName))
 	if err != nil {
 		return "", err
 	}
@@ -263,7 +263,7 @@ func validateGitHubAppSlug(slug string) error {
 	return nil
 }
 
-func validateGitHubAppOAuthRedirectURL(redirectURL string) (string, error) {
+func validateGitHubAppOAuthRedirectURL(redirectURL string, allowLocalHTTP bool) (string, error) {
 	redirectURL = strings.TrimSpace(redirectURL)
 	if redirectURL == "" {
 		return "", errors.New("github app oauth redirect url is required")
@@ -272,10 +272,25 @@ func validateGitHubAppOAuthRedirectURL(redirectURL string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if (u.Scheme != "https" && u.Scheme != "http") || u.Host == "" {
-		return "", errors.New("github app oauth redirect url must be an absolute http or https URL")
+	if u.Host == "" {
+		return "", errors.New("github app oauth redirect url must be an absolute URL")
 	}
-	return redirectURL, nil
+	if u.Scheme == "https" {
+		return redirectURL, nil
+	}
+	if u.Scheme == "http" && allowLocalHTTP && isLocalHost(u.Hostname()) {
+		return redirectURL, nil
+	}
+	return "", errors.New("github app oauth redirect url must use https except local localhost")
+}
+
+func isLocalEnv(envName string) bool {
+	return strings.EqualFold(strings.TrimSpace(envName), "local")
+}
+
+func isLocalHost(host string) bool {
+	host = strings.ToLower(strings.TrimSpace(host))
+	return host == "localhost" || host == "127.0.0.1" || host == "::1"
 }
 
 func (g *gatewayService) redirectGitHubAppOAuthResult(w http.ResponseWriter, r *http.Request, returnTo, result string) {

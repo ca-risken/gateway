@@ -93,7 +93,26 @@ func TestValidateGatewayConfig(t *testing.T) {
 				GithubAppOAuthRedirectURL: "/api/v1/code/github-app/oauth/callback",
 				GithubAppStateSecret:      "12345678901234567890123456789012",
 			},
-			wantErrMsg: "github app oauth redirect url must be an absolute http or https URL",
+			wantErrMsg: "github app oauth redirect url must be an absolute URL",
+		},
+		{
+			name: "github app enabled with local http redirect url",
+			conf: &AppConfig{
+				EnvName:                   "local",
+				GithubAppOAuthClientID:    "test-github-app-client-id",
+				GithubAppOAuthRedirectURL: "http://localhost:8080/api/v1/code/github-app/oauth/callback",
+				GithubAppStateSecret:      "12345678901234567890123456789012",
+			},
+		},
+		{
+			name: "github app enabled with production http redirect url",
+			conf: &AppConfig{
+				EnvName:                   "prod",
+				GithubAppOAuthClientID:    "test-github-app-client-id",
+				GithubAppOAuthRedirectURL: "http://localhost:8080/api/v1/code/github-app/oauth/callback",
+				GithubAppStateSecret:      "12345678901234567890123456789012",
+			},
+			wantErrMsg: "github app oauth redirect url must use https except local localhost",
 		},
 		{
 			name: "github app enabled with slash slug",

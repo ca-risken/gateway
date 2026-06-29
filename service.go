@@ -131,7 +131,7 @@ func validateGatewayConfig(conf *AppConfig) error {
 	if conf.GithubAppOAuthRedirectURL == "" {
 		return errors.New("github app oauth redirect url is required when github app oauth client id is configured")
 	}
-	if _, err := validateGitHubAppOAuthRedirectURL(conf.GithubAppOAuthRedirectURL); err != nil {
+	if _, err := validateGitHubAppOAuthRedirectURL(conf.GithubAppOAuthRedirectURL, isLocalEnv(conf.EnvName)); err != nil {
 		return err
 	}
 	if conf.GithubAppStateSecret == "" {

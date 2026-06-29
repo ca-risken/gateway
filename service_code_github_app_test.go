@@ -115,6 +115,21 @@ func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
 	}
 }
 
+func TestBuildGitHubAppOAuthStartURLAllowsLocalHTTPRedirectURL(t *testing.T) {
+	svc := &gatewayService{
+		envName:              "local",
+		githubAppClientID:    "test-github-app-client-id",
+		githubAppRedirectURL: "http://localhost:8080/api/v1/code/github-app/oauth/callback",
+	}
+	got, err := svc.buildGitHubAppOAuthStartURL("state-value")
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if got != "https://github.com/login/oauth/authorize?client_id=test-github-app-client-id&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fv1%2Fcode%2Fgithub-app%2Foauth%2Fcallback&state=state-value" {
+		t.Fatalf("Unexpected URL: %s", got)
+	}
+}
+
 func TestBuildGitHubAppInstallURL(t *testing.T) {
 	svc := &gatewayService{githubAppSlug: "risken-codescan"}
 	got, err := svc.buildGitHubAppInstallURL()
