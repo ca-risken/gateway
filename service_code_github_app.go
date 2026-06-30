@@ -21,6 +21,7 @@ const (
 	githubAppOAuthCallbackPath = "/api/v1/code/github-app/oauth/callback"
 	githubAppStateTTL          = 10 * time.Minute
 	githubAppOAuthAuthorizeURL = "https://github.com/login/oauth/authorize"
+	githubAppInstallURLFormat  = "https://github.com/apps/%s/installations/select_target"
 )
 
 type githubAppOAuthState struct {
@@ -30,6 +31,17 @@ type githubAppOAuthState struct {
 	ReturnTo        string `json:"return_to"`
 	Random          string `json:"random"`
 	ExpiresAt       int64  `json:"expires_at"`
+}
+
+func (g *gatewayService) githubAppInstallURLHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	installURL, err := g.buildGitHubAppInstallURL()
+	if err != nil {
+		appLogger.Errorf(ctx, "Failed to build github app install url: err=%+v", err)
+		writeResponse(ctx, w, http.StatusServiceUnavailable, map[string]any{errorJSONKey: "GitHub App install URL is not configured"})
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]any{successJSONKey: map[string]string{"url": installURL}})
 }
 
 func (g *gatewayService) githubAppOAuthStartHandler(w http.ResponseWriter, r *http.Request) {
@@ -106,6 +118,36 @@ func (g *gatewayService) githubAppOAuthCallbackHandler(w http.ResponseWriter, r 
 		return
 	}
 	g.redirectGitHubAppOAuthResult(w, r, state.ReturnTo, "success")
+}
+
+func (g *gatewayService) buildGitHubAppInstallURL() (string, error) {
+	slug := strings.TrimSpace(g.githubAppSlug)
+	if slug == "" {
+		return "", errors.New("github app slug is required")
+	}
+	if !isValidGitHubAppSlug(slug) {
+		return "", errors.New("github app slug is invalid")
+	}
+	return fmt.Sprintf(githubAppInstallURLFormat, slug), nil
+}
+
+func isValidGitHubAppSlug(slug string) bool {
+	for _, r := range slug {
+		if r >= 'a' && r <= 'z' {
+			continue
+		}
+		if r >= 'A' && r <= 'Z' {
+			continue
+		}
+		if r >= '0' && r <= '9' {
+			continue
+		}
+		if r == '-' {
+			continue
+		}
+		return false
+	}
+	return true
 }
 
 func parseRequiredUint32(r *http.Request, name string) (uint32, error) {

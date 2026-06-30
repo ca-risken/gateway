@@ -115,6 +115,41 @@ func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
 	}
 }
 
+func TestBuildGitHubAppInstallURL(t *testing.T) {
+	svc := &gatewayService{githubAppSlug: "codescan-app-test"}
+	got, err := svc.buildGitHubAppInstallURL()
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if got != "https://github.com/apps/codescan-app-test/installations/select_target" {
+		t.Fatalf("Unexpected URL: %s", got)
+	}
+}
+
+func TestBuildGitHubAppInstallURLRejectsInvalidSlug(t *testing.T) {
+	cases := []struct {
+		name string
+		slug string
+	}{
+		{name: "empty"},
+		{name: "blank", slug: "   "},
+		{name: "path", slug: "owner/app"},
+		{name: "query", slug: "app?state=value"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			svc := &gatewayService{githubAppSlug: c.slug}
+			_, err := svc.buildGitHubAppInstallURL()
+			if err == nil {
+				t.Fatal("Expected error but got none")
+			}
+			if strings.TrimSpace(err.Error()) == "" {
+				t.Fatal("Expected non-empty error")
+			}
+		})
+	}
+}
+
 func TestBuildGitHubAppOAuthStartURLAllowsLocalHTTPRedirectURL(t *testing.T) {
 	svc := &gatewayService{
 		envName:              "local",
