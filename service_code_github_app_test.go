@@ -157,11 +157,13 @@ func TestIsValidGitHubAppSlug(t *testing.T) {
 		want bool
 	}{
 		{name: "lowercase", slug: "codescan-app-test", want: true},
-		{name: "uppercase", slug: "CodeScan-App-Test", want: true},
 		{name: "number", slug: "codescan-app-1", want: true},
 		{name: "empty", want: false},
+		{name: "uppercase", slug: "CodeScan-App-Test", want: false},
 		{name: "path", slug: "owner/app", want: false},
 		{name: "query", slug: "app?state=value", want: false},
+		{name: "at sign", slug: "app@example", want: false},
+		{name: "plus", slug: "app+test", want: false},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

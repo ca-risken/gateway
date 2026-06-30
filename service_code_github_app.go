@@ -139,9 +139,6 @@ func isValidGitHubAppSlug(slug string) bool {
 		if r >= 'a' && r <= 'z' {
 			continue
 		}
-		if r >= 'A' && r <= 'Z' {
-			continue
-		}
 		if r >= '0' && r <= '9' {
 			continue
 		}
