@@ -324,11 +324,13 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Group(func(r chi.Router) {
 				// project any
 				r.Get("/list-datasource", svc.listDataSourceCodeHandler)
+				r.Get("/github-app/oauth/callback", svc.githubAppOAuthCallbackHandler)
 			})
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
 				r.Get("/list-github-setting", svc.listGitHubSettingCodeHandler)
 				r.Get("/list-gitleaks-cache", svc.listGitleaksCacheCodeHandler)
+				r.Get("/github-app/oauth-start", svc.githubAppOAuthStartHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
 					r.Post("/put-github-setting", svc.putGitHubSettingCodeHandler)

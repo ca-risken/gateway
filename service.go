@@ -33,37 +33,45 @@ import (
 const (
 	successJSONKey = "data"
 	errorJSONKey   = "error"
+
+	minGitHubAppStateSecretBytes = 32
 )
 
 type gatewayService struct {
-	envName            string
-	port               string
-	uidHeader          string
-	oidcDataHeader     string
-	sessionCookieName  []string
-	sessionTimeoutSec  int
-	findingClient      finding.FindingServiceClient
-	iamClient          iam.IAMServiceClient
-	projectClient      project.ProjectServiceClient
-	alertClient        alert.AlertServiceClient
-	reportClient       report.ReportServiceClient
-	organizationClient organization.OrganizationServiceClient
-	org_iamClient      org_iam.OrgIAMServiceClient
-	org_alertClient    org_alert.OrgAlertServiceClient
-	awsClient          aws.AWSServiceClient
-	osintClient        osint.OsintServiceClient
-	diagnosisClient    diagnosis.DiagnosisServiceClient
-	codeClient         code.CodeServiceClient
-	googleClient       google.GoogleServiceClient
-	azureClient        azure.AzureServiceClient
-	aiClient           ai.AIServiceClient
-	claimsClient       claimsInterface
-	datasourceClient   datasource.DataSourceServiceClient
+	envName              string
+	port                 string
+	uidHeader            string
+	oidcDataHeader       string
+	sessionCookieName    []string
+	sessionTimeoutSec    int
+	githubAppClientID    string
+	githubAppRedirectURL string
+	githubAppStateSecret string
+	findingClient        finding.FindingServiceClient
+	iamClient            iam.IAMServiceClient
+	projectClient        project.ProjectServiceClient
+	alertClient          alert.AlertServiceClient
+	reportClient         report.ReportServiceClient
+	organizationClient   organization.OrganizationServiceClient
+	org_iamClient        org_iam.OrgIAMServiceClient
+	org_alertClient      org_alert.OrgAlertServiceClient
+	awsClient            aws.AWSServiceClient
+	osintClient          osint.OsintServiceClient
+	diagnosisClient      diagnosis.DiagnosisServiceClient
+	codeClient           code.CodeServiceClient
+	googleClient         google.GoogleServiceClient
+	azureClient          azure.AzureServiceClient
+	aiClient             ai.AIServiceClient
+	claimsClient         claimsInterface
+	datasourceClient     datasource.DataSourceServiceClient
 }
 
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
 	if conf.Debug {
 		appLogger.Level(logging.DebugLevel)
+	}
+	if err := validateGatewayConfig(conf); err != nil {
+		return nil, err
 	}
 
 	coreConn, err := getGRPCConn(ctx, conf.CoreAddr)
@@ -77,30 +85,55 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		return nil, err
 	}
 	return &gatewayService{
-		envName:            conf.EnvName,
-		port:               conf.Port,
-		uidHeader:          conf.UserIdentityHeader,
-		oidcDataHeader:     conf.OidcDataHeader,
-		sessionCookieName:  conf.SessionCookieName,
-		sessionTimeoutSec:  conf.SessionTimeoutSec,
-		findingClient:      finding.NewFindingServiceClient(coreConn),
-		iamClient:          iam.NewIAMServiceClient(coreConn),
-		projectClient:      project.NewProjectServiceClient(coreConn),
-		alertClient:        alert.NewAlertServiceClient(coreConn),
-		reportClient:       report.NewReportServiceClient(coreConn),
-		organizationClient: organization.NewOrganizationServiceClient(coreConn),
-		org_iamClient:      org_iam.NewOrgIAMServiceClient(coreConn),
-		org_alertClient:    org_alert.NewOrgAlertServiceClient(coreConn),
-		awsClient:          aws.NewAWSServiceClient(datasourceConn),
-		osintClient:        osint.NewOsintServiceClient(datasourceConn),
-		diagnosisClient:    diagnosis.NewDiagnosisServiceClient(datasourceConn),
-		codeClient:         code.NewCodeServiceClient(datasourceConn),
-		googleClient:       google.NewGoogleServiceClient(datasourceConn),
-		azureClient:        azure.NewAzureServiceClient(datasourceConn),
-		aiClient:           ai.NewAIServiceClient(coreConn),
-		claimsClient:       newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
-		datasourceClient:   datasource.NewDataSourceServiceClient(datasourceConn),
+		envName:              conf.EnvName,
+		port:                 conf.Port,
+		uidHeader:            conf.UserIdentityHeader,
+		oidcDataHeader:       conf.OidcDataHeader,
+		sessionCookieName:    conf.SessionCookieName,
+		sessionTimeoutSec:    conf.SessionTimeoutSec,
+		githubAppClientID:    conf.GithubAppOAuthClientID,
+		githubAppRedirectURL: conf.GithubAppOAuthRedirectURL,
+		githubAppStateSecret: conf.GithubAppStateSecret,
+		findingClient:        finding.NewFindingServiceClient(coreConn),
+		iamClient:            iam.NewIAMServiceClient(coreConn),
+		projectClient:        project.NewProjectServiceClient(coreConn),
+		alertClient:          alert.NewAlertServiceClient(coreConn),
+		reportClient:         report.NewReportServiceClient(coreConn),
+		organizationClient:   organization.NewOrganizationServiceClient(coreConn),
+		org_iamClient:        org_iam.NewOrgIAMServiceClient(coreConn),
+		org_alertClient:      org_alert.NewOrgAlertServiceClient(coreConn),
+		awsClient:            aws.NewAWSServiceClient(datasourceConn),
+		osintClient:          osint.NewOsintServiceClient(datasourceConn),
+		diagnosisClient:      diagnosis.NewDiagnosisServiceClient(datasourceConn),
+		codeClient:           code.NewCodeServiceClient(datasourceConn),
+		googleClient:         google.NewGoogleServiceClient(datasourceConn),
+		azureClient:          azure.NewAzureServiceClient(datasourceConn),
+		aiClient:             ai.NewAIServiceClient(coreConn),
+		claimsClient:         newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
+		datasourceClient:     datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil
+}
+
+func validateGatewayConfig(conf *AppConfig) error {
+	if conf.GithubAppOAuthClientID == "" {
+		if conf.GithubAppStateSecret != "" && len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
+			return errors.New("github app state secret must be empty or at least 32 bytes when github app oauth client id is not configured")
+		}
+		return nil
+	}
+	if conf.GithubAppOAuthRedirectURL == "" {
+		return errors.New("github app oauth redirect url is required when github app oauth client id is configured")
+	}
+	if _, err := validateGitHubAppOAuthRedirectURL(conf.GithubAppOAuthRedirectURL, isLocalEnv(conf.EnvName)); err != nil {
+		return err
+	}
+	if conf.GithubAppStateSecret == "" {
+		return errors.New("github app state secret is required when github app oauth client id is configured")
+	}
+	if len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
+		return errors.New("github app state secret must be at least 32 bytes when github app oauth client id is configured")
+	}
+	return nil
 }
 
 func getGRPCConn(ctx context.Context, addr string) (*grpc.ClientConn, error) {
