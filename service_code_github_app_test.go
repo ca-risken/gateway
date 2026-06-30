@@ -150,6 +150,28 @@ func TestBuildGitHubAppInstallURLRejectsInvalidSlug(t *testing.T) {
 	}
 }
 
+func TestIsValidGitHubAppSlug(t *testing.T) {
+	cases := []struct {
+		name string
+		slug string
+		want bool
+	}{
+		{name: "lowercase", slug: "codescan-app-test", want: true},
+		{name: "uppercase", slug: "CodeScan-App-Test", want: true},
+		{name: "number", slug: "codescan-app-1", want: true},
+		{name: "empty", want: false},
+		{name: "path", slug: "owner/app", want: false},
+		{name: "query", slug: "app?state=value", want: false},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if got := isValidGitHubAppSlug(c.slug); got != c.want {
+				t.Fatalf("Unexpected result. want=%t, got=%t", c.want, got)
+			}
+		})
+	}
+}
+
 func TestBuildGitHubAppOAuthStartURLAllowsLocalHTTPRedirectURL(t *testing.T) {
 	svc := &gatewayService{
 		envName:              "local",

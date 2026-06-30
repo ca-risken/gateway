@@ -132,6 +132,9 @@ func (g *gatewayService) buildGitHubAppInstallURL() (string, error) {
 }
 
 func isValidGitHubAppSlug(slug string) bool {
+	if slug == "" {
+		return false
+	}
 	for _, r := range slug {
 		if r >= 'a' && r <= 'z' {
 			continue
