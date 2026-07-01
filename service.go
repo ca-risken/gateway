@@ -47,6 +47,7 @@ type gatewayService struct {
 	githubAppClientID    string
 	githubAppRedirectURL string
 	githubAppStateSecret string
+	githubAppSlug        string
 	findingClient        finding.FindingServiceClient
 	iamClient            iam.IAMServiceClient
 	projectClient        project.ProjectServiceClient
@@ -94,6 +95,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		githubAppClientID:    conf.GithubAppOAuthClientID,
 		githubAppRedirectURL: conf.GithubAppOAuthRedirectURL,
 		githubAppStateSecret: conf.GithubAppStateSecret,
+		githubAppSlug:        conf.GithubAppSlug,
 		findingClient:        finding.NewFindingServiceClient(coreConn),
 		iamClient:            iam.NewIAMServiceClient(coreConn),
 		projectClient:        project.NewProjectServiceClient(coreConn),
@@ -115,6 +117,9 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 }
 
 func validateGatewayConfig(conf *AppConfig) error {
+	if conf.GithubAppSlug != "" && !isValidGitHubAppSlug(conf.GithubAppSlug) {
+		return errors.New("github app slug is invalid")
+	}
 	if conf.GithubAppOAuthClientID == "" {
 		if conf.GithubAppStateSecret != "" && len(conf.GithubAppStateSecret) < minGitHubAppStateSecretBytes {
 			return errors.New("github app state secret must be empty or at least 32 bytes when github app oauth client id is not configured")

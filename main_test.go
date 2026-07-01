@@ -49,6 +49,19 @@ func TestValidateGatewayConfig(t *testing.T) {
 			conf: &AppConfig{},
 		},
 		{
+			name: "github app slug configured",
+			conf: &AppConfig{
+				GithubAppSlug: "codescan-app-test",
+			},
+		},
+		{
+			name: "github app slug invalid",
+			conf: &AppConfig{
+				GithubAppSlug: "owner/app",
+			},
+			wantErrMsg: "github app slug is invalid",
+		},
+		{
 			name: "github app disabled with short state secret",
 			conf: &AppConfig{
 				GithubAppStateSecret: "short",

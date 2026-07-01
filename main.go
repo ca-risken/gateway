@@ -53,6 +53,7 @@ type AppConfig struct {
 	GithubAppOAuthClientID    string `envconfig:"GITHUB_APP_OAUTH_CLIENT_ID"`
 	GithubAppOAuthRedirectURL string `envconfig:"GITHUB_APP_OAUTH_REDIRECT_URL"`
 	GithubAppStateSecret      string `envconfig:"GITHUB_APP_STATE_SECRET"`
+	GithubAppSlug             string `envconfig:"GITHUB_APP_SLUG"`
 }
 
 func main() {

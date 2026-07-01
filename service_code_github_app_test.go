@@ -115,6 +115,65 @@ func TestBuildGitHubAppOAuthStartURL(t *testing.T) {
 	}
 }
 
+func TestBuildGitHubAppInstallURL(t *testing.T) {
+	svc := &gatewayService{githubAppSlug: "codescan-app-test"}
+	got, err := svc.buildGitHubAppInstallURL()
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if got != "https://github.com/apps/codescan-app-test/installations/select_target" {
+		t.Fatalf("Unexpected URL: %s", got)
+	}
+}
+
+func TestBuildGitHubAppInstallURLRejectsInvalidSlug(t *testing.T) {
+	cases := []struct {
+		name string
+		slug string
+	}{
+		{name: "empty"},
+		{name: "blank", slug: "   "},
+		{name: "path", slug: "owner/app"},
+		{name: "query", slug: "app?state=value"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			svc := &gatewayService{githubAppSlug: c.slug}
+			_, err := svc.buildGitHubAppInstallURL()
+			if err == nil {
+				t.Fatal("Expected error but got none")
+			}
+			if strings.TrimSpace(err.Error()) == "" {
+				t.Fatal("Expected non-empty error")
+			}
+		})
+	}
+}
+
+func TestIsValidGitHubAppSlug(t *testing.T) {
+	cases := []struct {
+		name string
+		slug string
+		want bool
+	}{
+		{name: "lowercase", slug: "codescan-app-test", want: true},
+		{name: "number", slug: "codescan-app-1", want: true},
+		{name: "empty", want: false},
+		{name: "uppercase", slug: "CodeScan-App-Test", want: false},
+		{name: "path", slug: "owner/app", want: false},
+		{name: "query", slug: "app?state=value", want: false},
+		{name: "at sign", slug: "app@example", want: false},
+		{name: "plus", slug: "app+test", want: false},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if got := isValidGitHubAppSlug(c.slug); got != c.want {
+				t.Fatalf("Unexpected result. want=%t, got=%t", c.want, got)
+			}
+		})
+	}
+}
+
 func TestBuildGitHubAppOAuthStartURLAllowsLocalHTTPRedirectURL(t *testing.T) {
 	svc := &gatewayService{
 		envName:              "local",
