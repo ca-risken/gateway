@@ -39,6 +39,7 @@ excludes:
   - DataSourceService.NotifyScanError
   - CodeService.GetGitleaksCache
   - CodeService.PutGitleaksCache
+  - CodeService.VerifyGitHubAppUser
   - CodeService.ListCodescanTargetRepository
   - CodeService.PutGitleaksRepository
   - CodeService.PutDependencyRepository

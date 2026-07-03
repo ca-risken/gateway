@@ -330,6 +330,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Use(svc.authzWithProject)
 				r.Get("/list-github-setting", svc.listGitHubSettingCodeHandler)
 				r.Get("/list-gitleaks-cache", svc.listGitleaksCacheCodeHandler)
+				r.Get("/github-app/installation-status", svc.getGitHubAppInstallationStatusCodeHandler)
 				r.Get("/github-app/install-url", svc.githubAppInstallURLHandler)
 				r.Get("/github-app/oauth-start", svc.githubAppOAuthStartHandler)
 				r.Group(func(r chi.Router) {
