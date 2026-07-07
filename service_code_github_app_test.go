@@ -134,21 +134,18 @@ func TestGetGitHubAppInstallationStatusCodeHandler(t *testing.T) {
 	svc := &gatewayService{codeClient: codeMock}
 	codeMock.On("GetGitHubAppInstallationStatus", mock.Anything, mock.MatchedBy(func(req *code.GetGitHubAppInstallationStatusRequest) bool {
 		return req.ProjectId == 1001 &&
-			req.Type == code.Type_ORGANIZATION &&
-			req.BaseUrl == "https://api.github.com/" &&
-			req.TargetResource == "ca-risken"
+			req.GithubSettingId == 1017
 	})).Return(&code.GetGitHubAppInstallationStatusResponse{
 		GithubAppInstallationStatus: &code.GitHubAppInstallationStatus{
 			TargetResource:      "ca-risken",
 			Installed:           true,
 			RepositorySelection: "selected",
-			RepositoryCount:     3,
 			Reason:              code.GitHubAppInstallationReasonInstalled,
 		},
 	}, nil).Once()
 
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest(http.MethodGet, "/api/v1/code/github-app/installation-status?project_id=1001&type=1&base_url=https%3A%2F%2Fapi.github.com%2F&target_resource=ca-risken", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/code/github-app/installation-status?project_id=1001&github_setting_id=1017", nil)
 
 	svc.getGitHubAppInstallationStatusCodeHandler(rec, req)
 
@@ -160,7 +157,7 @@ func TestGetGitHubAppInstallationStatusCodeHandler(t *testing.T) {
 		t.Fatalf("Unexpected json decode error: %v", err)
 	}
 	status := resp[successJSONKey].GetGithubAppInstallationStatus()
-	if !status.GetInstalled() || status.GetTargetResource() != "ca-risken" || status.GetRepositoryCount() != 3 {
+	if !status.GetInstalled() || status.GetTargetResource() != "ca-risken" {
 		t.Fatalf("Unexpected installation status: %+v", status)
 	}
 }
