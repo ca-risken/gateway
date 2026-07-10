@@ -21,6 +21,7 @@ import (
 	"github.com/ca-risken/datasource-api/proto/azure"
 	"github.com/ca-risken/datasource-api/proto/code"
 	"github.com/ca-risken/datasource-api/proto/datasource"
+	"github.com/ca-risken/datasource-api/proto/datasource_ai"
 	"github.com/ca-risken/datasource-api/proto/diagnosis"
 	"github.com/ca-risken/datasource-api/proto/google"
 	"github.com/ca-risken/datasource-api/proto/osint"
@@ -64,7 +65,7 @@ type gatewayService struct {
 	azureClient          azure.AzureServiceClient
 	aiClient             ai.AIServiceClient
 	claimsClient         claimsInterface
-	aiRemediationClient  remediationProposalGenerator
+	datasource_aiClient  datasource_ai.AIServiceClient
 	datasourceClient     datasource.DataSourceServiceClient
 }
 
@@ -113,7 +114,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		azureClient:          azure.NewAzureServiceClient(datasourceConn),
 		aiClient:             ai.NewAIServiceClient(coreConn),
 		claimsClient:         newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
-		aiRemediationClient:  newAIRemediationClient(datasourceConn),
+		datasource_aiClient:  datasource_ai.NewAIServiceClient(datasourceConn),
 		datasourceClient:     datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil
 }

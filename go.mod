@@ -7,7 +7,7 @@ require (
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/tracer v0.0.0-20230727031236-b35703d5c59d
 	github.com/ca-risken/core v0.16.1-0.20260710043110-fb18e3df8745
-	github.com/ca-risken/datasource-api v0.16.1-0.20260710033419-ed8f1044ce8f
+	github.com/ca-risken/datasource-api v0.16.1-0.20260710050008-3115fc56dee3
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/golang-jwt/jwt/v4 v4.4.2

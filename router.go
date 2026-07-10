@@ -198,7 +198,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/generate-report", svc.generateReportAiHandler)
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.AllowContentType(contenTypeJSON))
-					r.Post("/generate-remediation-proposal", svc.generateRemediationProposalDatasourceAIHandler)
+					r.Post("/generate-remediation-proposal", svc.generateRemediationProposalDatasource_aiHandler)
 				})
 			})
 		})

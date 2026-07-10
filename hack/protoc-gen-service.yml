@@ -52,7 +52,6 @@ excludes:
   - ProjectService.CreateProject
   - FindingService.PutPendFinding
   - AIService.ChatAI
-  - AIService.GenerateRemediationProposal
   - AWSService.AttachDataSource
   - OrgIAMService.AuthenticateOrgAccessToken
   - OrgIAMService.PutOrgAccessToken

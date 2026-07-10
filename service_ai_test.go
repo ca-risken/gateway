@@ -13,8 +13,9 @@ import (
 	aimocks "github.com/ca-risken/core/proto/ai/mocks"
 	"github.com/ca-risken/core/proto/iam"
 	iammocks "github.com/ca-risken/core/proto/iam/mocks"
+	"github.com/ca-risken/datasource-api/proto/datasource_ai"
+	datasource_aimocks "github.com/ca-risken/datasource-api/proto/datasource_ai/mocks"
 	"github.com/stretchr/testify/mock"
-	"google.golang.org/protobuf/encoding/protowire"
 )
 
 func TestChatAIAiHandler(t *testing.T) {
@@ -126,16 +127,16 @@ func TestGenerateRemediationProposalDatasourceAIHandler(t *testing.T) {
 	cases := []struct {
 		name       string
 		inputBody  string
-		setupMocks func(*mockRemediationProposalGenerator)
+		setupMocks func(*datasource_aimocks.AIServiceClient)
 		wantStatus int
 	}{
 		{
 			name:      "OK",
 			inputBody: `{"project_id":1001,"finding_id":2001}`,
-			setupMocks: func(aiMock *mockRemediationProposalGenerator) {
-				aiMock.On("GenerateRemediationProposal", mock.Anything, mock.MatchedBy(func(req *generateRemediationProposalRequest) bool {
-					return req.ProjectID == 1001 && req.FindingID == 2001
-				})).Return(&generateRemediationProposalResponse{RemediationProposalID: 3001}, nil).Once()
+			setupMocks: func(aiMock *datasource_aimocks.AIServiceClient) {
+				aiMock.On("GenerateRemediationProposal", mock.Anything, mock.MatchedBy(func(req *datasource_ai.GenerateRemediationProposalRequest) bool {
+					return req.ProjectId == 1001 && req.FindingId == 2001
+				})).Return(&datasource_ai.GenerateRemediationProposalResponse{RemediationProposalId: 3001}, nil).Once()
 			},
 			wantStatus: http.StatusOK,
 		},
@@ -147,7 +148,7 @@ func TestGenerateRemediationProposalDatasourceAIHandler(t *testing.T) {
 		{
 			name:      "NG Backend service error",
 			inputBody: `{"project_id":1001,"finding_id":2001}`,
-			setupMocks: func(aiMock *mockRemediationProposalGenerator) {
+			setupMocks: func(aiMock *datasource_aimocks.AIServiceClient) {
 				aiMock.On("GenerateRemediationProposal", mock.Anything, mock.Anything).Return(nil, errors.New("something wrong")).Once()
 			},
 			wantStatus: http.StatusInternalServerError,
@@ -156,8 +157,8 @@ func TestGenerateRemediationProposalDatasourceAIHandler(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			aiMock := &mockRemediationProposalGenerator{}
-			svc := gatewayService{aiRemediationClient: aiMock}
+			aiMock := datasource_aimocks.NewAIServiceClient(t)
+			svc := gatewayService{datasource_aiClient: aiMock}
 			if c.setupMocks != nil {
 				c.setupMocks(aiMock)
 			}
@@ -165,7 +166,7 @@ func TestGenerateRemediationProposalDatasourceAIHandler(t *testing.T) {
 			rec := httptest.NewRecorder()
 			req := httptest.NewRequest(http.MethodPost, "/api/v1/ai/generate-remediation-proposal", strings.NewReader(c.inputBody))
 
-			svc.generateRemediationProposalDatasourceAIHandler(rec, req)
+			svc.generateRemediationProposalDatasource_aiHandler(rec, req)
 
 			if rec.Code != c.wantStatus {
 				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)
@@ -192,14 +193,14 @@ func TestRemediationProposalRoutesWithProjectAuthz(t *testing.T) {
 		path       string
 		body       string
 		actionName string
-		setupMocks func(*aimocks.AIServiceClient, *mockRemediationProposalGenerator)
+		setupMocks func(*aimocks.AIServiceClient, *datasource_aimocks.AIServiceClient)
 	}{
 		{
 			name:       "GetRemediationProposal",
 			method:     http.MethodGet,
 			path:       "/api/v1/ai/get-remediation-proposal?project_id=1001&remediation_proposal_id=3001",
 			actionName: "ai/get-remediation-proposal",
-			setupMocks: func(aiMock *aimocks.AIServiceClient, _ *mockRemediationProposalGenerator) {
+			setupMocks: func(aiMock *aimocks.AIServiceClient, _ *datasource_aimocks.AIServiceClient) {
 				aiMock.On("GetRemediationProposal", mock.Anything, mock.MatchedBy(func(req *ai.GetRemediationProposalRequest) bool {
 					return req.ProjectId == 1001 && req.RemediationProposalId == 3001
 				})).Return(&ai.GetRemediationProposalResponse{}, nil).Once()
@@ -210,7 +211,7 @@ func TestRemediationProposalRoutesWithProjectAuthz(t *testing.T) {
 			method:     http.MethodGet,
 			path:       "/api/v1/ai/list-remediation-proposal?project_id=1001&finding_id=2001",
 			actionName: "ai/list-remediation-proposal",
-			setupMocks: func(aiMock *aimocks.AIServiceClient, _ *mockRemediationProposalGenerator) {
+			setupMocks: func(aiMock *aimocks.AIServiceClient, _ *datasource_aimocks.AIServiceClient) {
 				aiMock.On("ListRemediationProposal", mock.Anything, mock.MatchedBy(func(req *ai.ListRemediationProposalRequest) bool {
 					return req.ProjectId == 1001 && req.FindingId == 2001
 				})).Return(&ai.ListRemediationProposalResponse{}, nil).Once()
@@ -222,10 +223,10 @@ func TestRemediationProposalRoutesWithProjectAuthz(t *testing.T) {
 			path:       "/api/v1/ai/generate-remediation-proposal",
 			body:       `{"project_id":1001,"finding_id":2001}`,
 			actionName: "ai/generate-remediation-proposal",
-			setupMocks: func(_ *aimocks.AIServiceClient, aiMock *mockRemediationProposalGenerator) {
-				aiMock.On("GenerateRemediationProposal", mock.Anything, mock.MatchedBy(func(req *generateRemediationProposalRequest) bool {
-					return req.ProjectID == 1001 && req.FindingID == 2001
-				})).Return(&generateRemediationProposalResponse{RemediationProposalID: 3001}, nil).Once()
+			setupMocks: func(_ *aimocks.AIServiceClient, aiMock *datasource_aimocks.AIServiceClient) {
+				aiMock.On("GenerateRemediationProposal", mock.Anything, mock.MatchedBy(func(req *datasource_ai.GenerateRemediationProposalRequest) bool {
+					return req.ProjectId == 1001 && req.FindingId == 2001
+				})).Return(&datasource_ai.GenerateRemediationProposalResponse{RemediationProposalId: 3001}, nil).Once()
 			},
 		},
 	}
@@ -233,7 +234,7 @@ func TestRemediationProposalRoutesWithProjectAuthz(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			coreAIMock := aimocks.NewAIServiceClient(t)
-			aiRemediationMock := &mockRemediationProposalGenerator{}
+			datasourceAIMock := datasource_aimocks.NewAIServiceClient(t)
 			iamMock := iammocks.NewIAMServiceClient(t)
 			iamMock.On("IsAuthorizedToken", mock.Anything, mock.MatchedBy(func(req *iam.IsAuthorizedTokenRequest) bool {
 				return req.AccessTokenId == 10 &&
@@ -241,11 +242,11 @@ func TestRemediationProposalRoutesWithProjectAuthz(t *testing.T) {
 					req.ActionName == c.actionName &&
 					req.ResourceName == "ai/resource_any"
 			})).Return(&iam.IsAuthorizedTokenResponse{Ok: true}, nil).Once()
-			c.setupMocks(coreAIMock, aiRemediationMock)
+			c.setupMocks(coreAIMock, datasourceAIMock)
 
 			svc := gatewayService{
 				aiClient:            coreAIMock,
-				aiRemediationClient: aiRemediationMock,
+				datasource_aiClient: datasourceAIMock,
 				iamClient:           iamMock,
 			}
 			rec := httptest.NewRecorder()
@@ -265,42 +266,4 @@ func TestRemediationProposalRoutesWithProjectAuthz(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestAIRemediationProtoCodec(t *testing.T) {
-	codec := aiRemediationProtoCodec{}
-	got, err := codec.Marshal(&generateRemediationProposalRequest{ProjectID: 1001, FindingID: 2001})
-	if err != nil {
-		t.Fatalf("Unexpected marshal error: %v", err)
-	}
-	want := protowire.AppendTag(nil, 1, protowire.VarintType)
-	want = protowire.AppendVarint(want, 1001)
-	want = protowire.AppendTag(want, 2, protowire.VarintType)
-	want = protowire.AppendVarint(want, 2001)
-	if string(got) != string(want) {
-		t.Fatalf("Unexpected marshal bytes: want=%v, got=%v", want, got)
-	}
-
-	responseBody := protowire.AppendTag(nil, 1, protowire.VarintType)
-	responseBody = protowire.AppendVarint(responseBody, 3001)
-	resp := &generateRemediationProposalResponse{}
-	if err := codec.Unmarshal(responseBody, resp); err != nil {
-		t.Fatalf("Unexpected unmarshal error: %v", err)
-	}
-	if resp.RemediationProposalID != 3001 {
-		t.Fatalf("Unexpected remediation proposal ID: want=%d, got=%d", 3001, resp.RemediationProposalID)
-	}
-}
-
-type mockRemediationProposalGenerator struct {
-	mock.Mock
-}
-
-func (m *mockRemediationProposalGenerator) GenerateRemediationProposal(ctx context.Context, req *generateRemediationProposalRequest) (*generateRemediationProposalResponse, error) {
-	args := m.Called(ctx, req)
-	var resp *generateRemediationProposalResponse
-	if args.Get(0) != nil {
-		resp = args.Get(0).(*generateRemediationProposalResponse)
-	}
-	return resp, args.Error(1)
 }
