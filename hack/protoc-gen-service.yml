@@ -25,6 +25,7 @@ excludes:
   - OrgAlertService.ListOrgNotificationByProject
   - FindingService.GetAlertAISummary
   - FindingService.UpdateFindingAISummary
+  - AIService.PutRemediationProposal
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
@@ -51,6 +52,7 @@ excludes:
   - ProjectService.CreateProject
   - FindingService.PutPendFinding
   - AIService.ChatAI
+  - AIService.GenerateRemediationProposal
   - AWSService.AttachDataSource
   - OrgIAMService.AuthenticateOrgAccessToken
   - OrgIAMService.PutOrgAccessToken

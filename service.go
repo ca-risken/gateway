@@ -64,6 +64,7 @@ type gatewayService struct {
 	azureClient          azure.AzureServiceClient
 	aiClient             ai.AIServiceClient
 	claimsClient         claimsInterface
+	aiRemediationClient  remediationProposalGenerator
 	datasourceClient     datasource.DataSourceServiceClient
 }
 
@@ -112,6 +113,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		azureClient:          azure.NewAzureServiceClient(datasourceConn),
 		aiClient:             ai.NewAIServiceClient(coreConn),
 		claimsClient:         newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
+		aiRemediationClient:  newAIRemediationClient(datasourceConn),
 		datasourceClient:     datasource.NewDataSourceServiceClient(datasourceConn),
 	}, nil
 }
