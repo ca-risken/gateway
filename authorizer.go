@@ -367,6 +367,7 @@ var ignoreURI4CSRF = []string{
 	"/healthz",
 	"/api/v1/signin",
 	"/api/v1/slack/actions",
+	githubAppOAuthCallbackPath,
 }
 
 func shouldVerifyCSRFTokenURI(uri string) bool {
