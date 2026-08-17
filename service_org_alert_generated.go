@@ -113,3 +113,66 @@ func (g *gatewayService) testOrgNotificationOrg_alertHandler(w http.ResponseWrit
 	}
 	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
 }
+
+func (g *gatewayService) listOrgAlertCondNotificationOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &org_alert.ListOrgAlertCondNotificationRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListOrgAlertCondNotificationRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.org_alertClient.ListOrgAlertCondNotification(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) getOrgAlertCondNotificationOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &org_alert.GetOrgAlertCondNotificationRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetOrgAlertCondNotificationRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.org_alertClient.GetOrgAlertCondNotification(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
+
+func (g *gatewayService) updateOrgAlertCondNotificationCacheOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	req := &org_alert.UpdateOrgAlertCondNotificationCacheRequest{}
+	if err := bind(req, r); err != nil {
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateOrgAlertCondNotificationCacheRequest", err)
+	}
+	if err := req.Validate(); err != nil {
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
+	}
+	resp, err := g.org_alertClient.UpdateOrgAlertCondNotificationCache(ctx, req)
+	if err != nil {
+		if handleErr := handleGRPCError(ctx, w, err); handleErr != nil {
+			appLogger.Errorf(ctx, "HandleGRPCError: %+v", handleErr)
+			writeResponse(ctx, w, http.StatusInternalServerError, map[string]interface{}{errorJSONKey: "InternalServerError"})
+		}
+		return
+	}
+	writeResponse(ctx, w, http.StatusOK, map[string]interface{}{successJSONKey: resp})
+}
