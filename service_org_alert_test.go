@@ -25,7 +25,7 @@ func TestListOrgAlertCondNotificationHandler(t *testing.T) {
 	}{
 		{
 			name:       "OK four key filter",
-			query:      "organization_id=1&project_id=2&alert_condition_id=3&notification_id=4",
+			query:      "organization_id=1&project_id=2&alert_condition_id=3&notification_id=4&page_size=100&page_offset=200",
 			wantCall:   true,
 			wantStatus: http.StatusOK,
 		},
@@ -36,7 +36,7 @@ func TestListOrgAlertCondNotificationHandler(t *testing.T) {
 		},
 		{
 			name:       "NG backend error",
-			query:      "organization_id=1&project_id=2&alert_condition_id=3&notification_id=4",
+			query:      "organization_id=1&project_id=2&alert_condition_id=3&notification_id=4&page_size=100&page_offset=200",
 			mockErr:    errors.New("something wrong"),
 			wantCall:   true,
 			wantStatus: http.StatusInternalServerError,
@@ -49,7 +49,8 @@ func TestListOrgAlertCondNotificationHandler(t *testing.T) {
 			if c.wantCall {
 				orgAlertMock.On("ListOrgAlertCondNotification", mock.Anything, mock.MatchedBy(func(req *org_alert.ListOrgAlertCondNotificationRequest) bool {
 					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 &&
-						req.GetAlertConditionId() == 3 && req.GetNotificationId() == 4
+						req.GetAlertConditionId() == 3 && req.GetNotificationId() == 4 &&
+						req.GetPageSize() == 100 && req.GetPageOffset() == 200
 				})).Return(&org_alert.ListOrgAlertCondNotificationResponse{}, c.mockErr).Once()
 			}
 			svc := gatewayService{org_alertClient: orgAlertMock}

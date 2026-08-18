@@ -39,6 +39,8 @@ github.com/ca-risken/core v0.16.1-0.20260414074006-9c3094ff3f42 h1:0YEP1pyMjUVUK
 github.com/ca-risken/core v0.16.1-0.20260414074006-9c3094ff3f42/go.mod h1:hKlz8v1FofEEPK0AMerb8itPJdf6iRoB7C5ja9qaJ6o=
 github.com/ca-risken/core v0.16.1-0.20260816234502-f5cc936f272e h1:jH9u2ZxrRC/+3kf5auSHybxdmm+bYep5COH+csrsM5E=
 github.com/ca-risken/core v0.16.1-0.20260816234502-f5cc936f272e/go.mod h1:hKlz8v1FofEEPK0AMerb8itPJdf6iRoB7C5ja9qaJ6o=
+github.com/ca-risken/core v0.16.1-0.20260818072817-9b2df77693c4 h1:RiaxC+T1AdXTDfemK0U8Iob16f8xUBgTrEJpa5A0WQ0=
+github.com/ca-risken/core v0.16.1-0.20260818072817-9b2df77693c4/go.mod h1:hKlz8v1FofEEPK0AMerb8itPJdf6iRoB7C5ja9qaJ6o=
 github.com/ca-risken/datasource-api v0.16.1-0.20260707054244-80eda948c426 h1:IsELcADi9Z8dd9mM/7uMJ6qQIjn1ssNKrbVYkzcsET8=
 github.com/ca-risken/datasource-api v0.16.1-0.20260707054244-80eda948c426/go.mod h1:HtB67lg18k0n3hhCgxfz9qYPQUPWjprArcpCDlig4fM=
 github.com/cenkalti/backoff/v4 v4.2.0 h1:HN5dHm3WBOgndBH6E8V0q2jIYIR3s9yglV8k/+MN3u4=
