@@ -35,6 +35,11 @@ func TestListOrgAlertCondNotificationHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
+			name:       "NG invalid project ID type",
+			query:      "organization_id=1&project_id=abc",
+			wantStatus: http.StatusBadRequest,
+		},
+		{
 			name:       "NG backend error",
 			query:      "organization_id=1&project_id=2&alert_condition_id=3&notification_id=4&page_size=100&page_offset=200",
 			mockErr:    errors.New("something wrong"),
@@ -83,6 +88,11 @@ func TestUpdateOrgAlertCondNotificationCacheHandler(t *testing.T) {
 		{
 			name:       "NG missing notification ID",
 			body:       `{"organization_id":1,"project_id":2,"alert_condition_id":3,"cache_second":900}`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "NG malformed JSON",
+			body:       `{"organization_id":1`,
 			wantStatus: http.StatusBadRequest,
 		},
 		{
