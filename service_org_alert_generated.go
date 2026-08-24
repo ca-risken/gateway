@@ -142,6 +142,8 @@ func (g *gatewayService) getOrgAlertCondNotificationOrg_alertHandler(w http.Resp
 	req := &org_alert.GetOrgAlertCondNotificationRequest{}
 	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetOrgAlertCondNotificationRequest", err)
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})

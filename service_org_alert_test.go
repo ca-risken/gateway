@@ -127,6 +127,30 @@ func TestUpdateOrgAlertCondNotificationCacheHandler(t *testing.T) {
 	}
 }
 
+func TestGetOrgAlertCondNotificationHandlerBindError(t *testing.T) {
+	cases := []struct {
+		name       string
+		query      string
+		wantStatus int
+	}{
+		{name: "NG invalid project ID type", query: "organization_id=1&project_id=abc&alert_condition_id=3&notification_id=4", wantStatus: http.StatusBadRequest},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			orgAlertMock := orgalertmocks.NewOrgAlertServiceClient(t)
+			svc := gatewayService{org_alertClient: orgAlertMock}
+			rec := httptest.NewRecorder()
+			req := httptest.NewRequest(http.MethodGet, "/api/v1/organization-alert/get-alert-cond-notification?"+c.query, nil)
+
+			svc.getOrgAlertCondNotificationOrg_alertHandler(rec, req)
+
+			if rec.Code != c.wantStatus {
+				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)
+			}
+		})
+	}
+}
+
 func TestUpdateOrgAlertProjectNotificationEnabledHandler(t *testing.T) {
 	cases := []struct {
 		name       string
