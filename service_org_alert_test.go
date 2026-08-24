@@ -127,6 +127,66 @@ func TestUpdateOrgAlertCondNotificationCacheHandler(t *testing.T) {
 	}
 }
 
+func TestUpdateOrgAlertProjectNotificationEnabledHandler(t *testing.T) {
+	cases := []struct {
+		name       string
+		body       string
+		wantCall   bool
+		wantStatus int
+	}{
+		{name: "OK project update", body: `{"organization_id":1,"project_id":2,"notification_id":4,"enabled":false}`, wantCall: true, wantStatus: http.StatusOK},
+		{name: "NG missing project", body: `{"organization_id":1,"notification_id":4,"enabled":false}`, wantStatus: http.StatusBadRequest},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			orgAlertMock := orgalertmocks.NewOrgAlertServiceClient(t)
+			if c.wantCall {
+				orgAlertMock.On("UpdateOrgAlertProjectNotificationEnabled", mock.Anything, mock.MatchedBy(func(req *org_alert.UpdateOrgAlertProjectNotificationEnabledRequest) bool {
+					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 && req.GetNotificationId() == 4 && !req.GetEnabled()
+				})).Return(&org_alert.UpdateOrgAlertProjectNotificationEnabledResponse{}, nil).Once()
+			}
+			svc := gatewayService{org_alertClient: orgAlertMock}
+			rec := httptest.NewRecorder()
+			req := httptest.NewRequest(http.MethodPost, "/api/v1/organization-alert/update-project-notification-enabled", strings.NewReader(c.body))
+			req.Header.Set("Content-Type", contenTypeJSON)
+			svc.updateOrgAlertProjectNotificationEnabledOrg_alertHandler(rec, req)
+			if rec.Code != c.wantStatus {
+				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)
+			}
+		})
+	}
+}
+
+func TestUpdateOrgAlertProjectNotificationCacheHandler(t *testing.T) {
+	cases := []struct {
+		name       string
+		body       string
+		wantCall   bool
+		wantStatus int
+	}{
+		{name: "OK project cache update", body: `{"organization_id":1,"project_id":2,"notification_id":4,"cache_second":900}`, wantCall: true, wantStatus: http.StatusOK},
+		{name: "NG invalid cache", body: `{"organization_id":1,"project_id":2,"notification_id":4,"cache_second":31536001}`, wantStatus: http.StatusBadRequest},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			orgAlertMock := orgalertmocks.NewOrgAlertServiceClient(t)
+			if c.wantCall {
+				orgAlertMock.On("UpdateOrgAlertProjectNotificationCache", mock.Anything, mock.MatchedBy(func(req *org_alert.UpdateOrgAlertProjectNotificationCacheRequest) bool {
+					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 && req.GetNotificationId() == 4 && req.GetCacheSecond() == 900
+				})).Return(&org_alert.UpdateOrgAlertProjectNotificationCacheResponse{}, nil).Once()
+			}
+			svc := gatewayService{org_alertClient: orgAlertMock}
+			rec := httptest.NewRecorder()
+			req := httptest.NewRequest(http.MethodPost, "/api/v1/organization-alert/update-project-notification-cache", strings.NewReader(c.body))
+			req.Header.Set("Content-Type", contenTypeJSON)
+			svc.updateOrgAlertProjectNotificationCacheOrg_alertHandler(rec, req)
+			if rec.Code != c.wantStatus {
+				t.Fatalf("Unexpected HTTP status code: want=%d, got=%d", c.wantStatus, rec.Code)
+			}
+		})
+	}
+}
+
 func TestOrgAlertCondNotificationRoutes(t *testing.T) {
 	cases := []struct {
 		name       string
@@ -147,6 +207,13 @@ func TestOrgAlertCondNotificationRoutes(t *testing.T) {
 			method:     http.MethodPost,
 			path:       "/api/v1/organization-alert/update-alert-cond-notification-cache",
 			body:       `{"organization_id":1,"project_id":2,"alert_condition_id":3,"notification_id":4,"cache_second":900}`,
+			wantStatus: http.StatusUnauthorized,
+		},
+		{
+			name:       "project enabled update is protected by organization authorization",
+			method:     http.MethodPost,
+			path:       "/api/v1/organization-alert/update-project-notification-enabled",
+			body:       `{"organization_id":1,"project_id":2,"notification_id":4,"enabled":false}`,
 			wantStatus: http.StatusUnauthorized,
 		},
 		{

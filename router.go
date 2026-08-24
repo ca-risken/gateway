@@ -272,6 +272,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 				r.Post("/delete-notification", svc.deleteOrgNotificationOrg_alertHandler)
 				r.Post("/test-notification", svc.testOrgNotificationOrg_alertHandler)
 				r.Post("/update-alert-cond-notification-cache", svc.updateOrgAlertCondNotificationCacheOrg_alertHandler)
+				r.Post("/update-project-notification-enabled", svc.updateOrgAlertProjectNotificationEnabledOrg_alertHandler)
+				r.Post("/update-project-notification-cache", svc.updateOrgAlertProjectNotificationCacheOrg_alertHandler)
 			})
 		})
 
