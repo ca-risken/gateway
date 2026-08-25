@@ -162,12 +162,13 @@ func (g *gatewayService) getOrgAlertCondNotificationOrg_alertHandler(w http.Resp
 
 func (g *gatewayService) updateOrgAlertCondNotificationCacheOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &org_alert.UpdateOrgAlertCondNotificationCacheRequest{}
-	if err := bind(req, r); err != nil {
+	payload := &updateOrgAlertCondNotificationCachePayload{}
+	if err := bind(payload, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateOrgAlertCondNotificationCacheRequest", err)
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
+	req := payload.toRequest()
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -185,12 +186,13 @@ func (g *gatewayService) updateOrgAlertCondNotificationCacheOrg_alertHandler(w h
 
 func (g *gatewayService) updateOrgAlertProjectNotificationEnabledOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &org_alert.UpdateOrgAlertProjectNotificationEnabledRequest{}
-	if err := bind(req, r); err != nil {
+	payload := &updateOrgAlertProjectNotificationEnabledPayload{}
+	if err := bind(payload, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateOrgAlertProjectNotificationEnabledRequest", err)
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
+	req := payload.toRequest()
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -208,12 +210,13 @@ func (g *gatewayService) updateOrgAlertProjectNotificationEnabledOrg_alertHandle
 
 func (g *gatewayService) updateOrgAlertProjectNotificationCacheOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := &org_alert.UpdateOrgAlertProjectNotificationCacheRequest{}
-	if err := bind(req, r); err != nil {
+	payload := &updateOrgAlertProjectNotificationCachePayload{}
+	if err := bind(payload, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateOrgAlertProjectNotificationCacheRequest", err)
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
 	}
+	req := payload.toRequest()
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return

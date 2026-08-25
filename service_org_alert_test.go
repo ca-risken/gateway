@@ -96,6 +96,11 @@ func TestUpdateOrgAlertCondNotificationCacheHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
+			name:       "NG missing cache second",
+			body:       `{"organization_id":1,"project_id":2,"alert_condition_id":3,"notification_id":4}`,
+			wantStatus: http.StatusBadRequest,
+		},
+		{
 			name:       "NG backend error",
 			body:       `{"organization_id":1,"project_id":2,"alert_condition_id":3,"notification_id":4,"cache_second":900}`,
 			mockErr:    errors.New("something wrong"),
@@ -110,7 +115,7 @@ func TestUpdateOrgAlertCondNotificationCacheHandler(t *testing.T) {
 			if c.wantCall {
 				orgAlertMock.On("UpdateOrgAlertCondNotificationCache", mock.Anything, mock.MatchedBy(func(req *org_alert.UpdateOrgAlertCondNotificationCacheRequest) bool {
 					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 &&
-						req.GetAlertConditionId() == 3 && req.GetNotificationId() == 4 && req.GetCacheSecond() == 900
+						req.GetAlertConditionId() == 3 && req.GetNotificationId() == 4 && req.GetCacheSecond().GetValue() == 900
 				})).Return(&org_alert.UpdateOrgAlertCondNotificationCacheResponse{}, c.mockErr).Once()
 			}
 			svc := gatewayService{org_alertClient: orgAlertMock}
@@ -160,13 +165,14 @@ func TestUpdateOrgAlertProjectNotificationEnabledHandler(t *testing.T) {
 	}{
 		{name: "OK project update", body: `{"organization_id":1,"project_id":2,"notification_id":4,"enabled":false}`, wantCall: true, wantStatus: http.StatusOK},
 		{name: "NG missing project", body: `{"organization_id":1,"notification_id":4,"enabled":false}`, wantStatus: http.StatusBadRequest},
+		{name: "NG missing enabled", body: `{"organization_id":1,"project_id":2,"notification_id":4}`, wantStatus: http.StatusBadRequest},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			orgAlertMock := orgalertmocks.NewOrgAlertServiceClient(t)
 			if c.wantCall {
 				orgAlertMock.On("UpdateOrgAlertProjectNotificationEnabled", mock.Anything, mock.MatchedBy(func(req *org_alert.UpdateOrgAlertProjectNotificationEnabledRequest) bool {
-					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 && req.GetNotificationId() == 4 && !req.GetEnabled()
+					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 && req.GetNotificationId() == 4 && !req.GetEnabled().GetValue()
 				})).Return(&org_alert.UpdateOrgAlertProjectNotificationEnabledResponse{}, nil).Once()
 			}
 			svc := gatewayService{org_alertClient: orgAlertMock}
@@ -190,13 +196,14 @@ func TestUpdateOrgAlertProjectNotificationCacheHandler(t *testing.T) {
 	}{
 		{name: "OK project cache update", body: `{"organization_id":1,"project_id":2,"notification_id":4,"cache_second":900}`, wantCall: true, wantStatus: http.StatusOK},
 		{name: "NG invalid cache", body: `{"organization_id":1,"project_id":2,"notification_id":4,"cache_second":31536001}`, wantStatus: http.StatusBadRequest},
+		{name: "NG missing cache", body: `{"organization_id":1,"project_id":2,"notification_id":4}`, wantStatus: http.StatusBadRequest},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			orgAlertMock := orgalertmocks.NewOrgAlertServiceClient(t)
 			if c.wantCall {
 				orgAlertMock.On("UpdateOrgAlertProjectNotificationCache", mock.Anything, mock.MatchedBy(func(req *org_alert.UpdateOrgAlertProjectNotificationCacheRequest) bool {
-					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 && req.GetNotificationId() == 4 && req.GetCacheSecond() == 900
+					return req.GetOrganizationId() == 1 && req.GetProjectId() == 2 && req.GetNotificationId() == 4 && req.GetCacheSecond().GetValue() == 900
 				})).Return(&org_alert.UpdateOrgAlertProjectNotificationCacheResponse{}, nil).Once()
 			}
 			svc := gatewayService{org_alertClient: orgAlertMock}
