@@ -41,6 +41,11 @@ func TestGetReportFindingForOrganizationReportHandler(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
+			name:       "NG invalid project id",
+			query:      "organization_id=1&project_id=invalid",
+			wantStatus: http.StatusBadRequest,
+		},
+		{
 			name:  "NG backend error",
 			query: "organization_id=1",
 			setup: func(reportMock *reportmocks.ReportServiceClient) {

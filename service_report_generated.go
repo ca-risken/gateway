@@ -35,6 +35,8 @@ func (g *gatewayService) getReportFindingForOrganizationReportHandler(w http.Res
 	req := &report.GetReportFindingForOrganizationRequest{}
 	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetReportFindingForOrganizationRequest", err)
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		return
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
