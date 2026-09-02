@@ -6,7 +6,7 @@ require (
 	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/profiler v0.0.0-20220601065422-5b97bd6efc9b
 	github.com/ca-risken/common/pkg/tracer v0.0.0-20230727031236-b35703d5c59d
-	github.com/ca-risken/core v0.16.1-0.20260825022541-39a710d23c1b
+	github.com/ca-risken/core v0.16.1-0.20260902084744-85792b033902
 	github.com/ca-risken/datasource-api v0.16.1-0.20260707054244-80eda948c426
 	github.com/gassara-kys/envconfig v1.4.4
 	github.com/go-chi/chi/v5 v5.0.7
@@ -18,6 +18,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	github.com/vikyd/zero v0.0.0-20190921142904-0f738d0bc858
 	google.golang.org/grpc v1.54.0
+	google.golang.org/protobuf v1.33.0
 	gopkg.in/DataDog/dd-trace-go.v1 v1.52.0
 )
 
@@ -60,7 +61,6 @@ require (
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
-	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	inet.af/netaddr v0.0.0-20220811202034-502d2d690317 // indirect
 )
