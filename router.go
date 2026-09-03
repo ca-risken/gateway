@@ -173,6 +173,10 @@ func newRouter(svc *gatewayService) *chi.Mux {
 
 		r.Route("/report", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
+				r.Use(svc.authzWithOrg)
+				r.Get("/get-report-finding-for-organization", svc.getReportFindingForOrganizationReportHandler)
+			})
+			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
 				r.Get("/get-report-finding", svc.getReportFindingReportHandler)
 				r.Get("/get-report", svc.getReportReportHandler)
