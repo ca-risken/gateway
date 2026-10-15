@@ -50,7 +50,7 @@ func TestFindingAssetQueryBinding(t *testing.T) {
 func TestFindingAssetResponseJSON(t *testing.T) {
 	cases := []struct {
 		name     string
-		response interface{}
+		response any
 	}{
 		{"project", &finding.ListFindingResponse{Total: 1, Assets: []*finding.FindingAsset{{ProjectId: 1001, AssetType: "VM", AssetKey: "instance", AssetName: "vm", MaxScore: 0.9, FindingCount: 3}}}},
 		{"organization", &finding.ListFindingForOrgResponse{Total: 1, Assets: []*finding.FindingAsset{{ProjectId: 1001, AssetType: "VM", AssetKey: "instance", AssetName: "vm", MaxScore: 0.9, FindingCount: 3}}}},
