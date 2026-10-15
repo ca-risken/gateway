@@ -16,8 +16,8 @@ func TestFindingAssetQueryBinding(t *testing.T) {
 	}{
 		{"project groups", false, "project_id=1001&asset_view=true&from_score=0.8&status=1&sort=finding_count", true},
 		{"organization groups", true, "organization_id=1009&asset_view=true&from_score=0.8&status=1&sort=finding_count", true},
-		{"project expansion", false, "project_id=1001&asset_view=false&asset_type=Workload&asset_key=%5B%22cluster%22%2C%22ns%22%2C%22Deployment%22%2C%22app%22%5D&asset_project_id=1001", false},
-		{"organization expansion", true, "organization_id=1009&asset_view=false&asset_type=Workload&asset_key=%5B%22cluster%22%2C%22ns%22%2C%22Deployment%22%2C%22app%22%5D&asset_project_id=1001", false},
+		{"project expansion", false, "project_id=1001&asset_view=false&asset_type=Workload&asset_key=Lxxp4l0xeIUsX2i4WZFkXUeuVWGiKO9s-7WA9FDl6U0&asset_project_id=1001", false},
+		{"organization expansion", true, "organization_id=1009&asset_view=false&asset_type=Workload&asset_key=Lxxp4l0xeIUsX2i4WZFkXUeuVWGiKO9s-7WA9FDl6U0&asset_project_id=1001", false},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
@@ -41,7 +41,7 @@ func TestFindingAssetQueryBinding(t *testing.T) {
 			if view != c.view {
 				t.Fatalf("asset_view=%v", view)
 			}
-			if !c.view && (key != `["cluster","ns","Deployment","app"]` || typ != "Workload" || project != 1001) {
+			if !c.view && (key != "Lxxp4l0xeIUsX2i4WZFkXUeuVWGiKO9s-7WA9FDl6U0" || typ != "Workload" || project != 1001) {
 				t.Fatalf("expansion filters lost: %s %s %d", typ, key, project)
 			}
 		})
