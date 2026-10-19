@@ -52,8 +52,8 @@ func TestFindingAssetResponseJSON(t *testing.T) {
 		name     string
 		response any
 	}{
-		{"project", &finding.ListFindingResponse{Total: 1, Assets: []*finding.FindingAsset{{ProjectId: 1001, AssetType: "VM", AssetKey: "instance", AssetName: "vm", MaxScore: 0.9, FindingCount: 3}}}},
-		{"organization", &finding.ListFindingForOrgResponse{Total: 1, Assets: []*finding.FindingAsset{{ProjectId: 1001, AssetType: "VM", AssetKey: "instance", AssetName: "vm", MaxScore: 0.9, FindingCount: 3}}}},
+		{"project", &finding.ListFindingResponse{Total: 1, TotalFindingCount: 3, Assets: []*finding.FindingAsset{{ProjectId: 1001, AssetType: "VM", AssetKey: "instance", AssetName: "vm", MaxScore: 0.9, FindingCount: 3, DataSources: []string{"google:scc", "example:scanner"}}}}},
+		{"organization", &finding.ListFindingForOrgResponse{Total: 1, TotalFindingCount: 3, Assets: []*finding.FindingAsset{{ProjectId: 1001, AssetType: "VM", AssetKey: "instance", AssetName: "vm", MaxScore: 0.9, FindingCount: 3, DataSources: []string{"google:scc", "example:scanner"}}}}},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
@@ -62,17 +62,19 @@ func TestFindingAssetResponseJSON(t *testing.T) {
 				t.Fatal(err)
 			}
 			var body struct {
-				Total  int `json:"total"`
-				Assets []struct {
-					Key     string `json:"asset_key"`
-					Count   int    `json:"finding_count"`
-					Project int    `json:"project_id"`
+				Total             int    `json:"total"`
+				TotalFindingCount uint64 `json:"total_finding_count"`
+				Assets            []struct {
+					Sources []string `json:"data_sources"`
+					Key     string   `json:"asset_key"`
+					Count   int      `json:"finding_count"`
+					Project int      `json:"project_id"`
 				} `json:"assets"`
 			}
 			if err := json.Unmarshal(b, &body); err != nil {
 				t.Fatal(err)
 			}
-			if body.Total != 1 || len(body.Assets) != 1 || body.Assets[0].Key != "instance" || body.Assets[0].Count != 3 || body.Assets[0].Project != 1001 {
+			if body.TotalFindingCount != 3 || len(body.Assets) != 1 || len(body.Assets[0].Sources) != 2 || body.Assets[0].Sources[0] != "google:scc" || body.Assets[0].Sources[1] != "example:scanner" || body.Total != 1 || len(body.Assets) != 1 || body.Assets[0].Key != "instance" || body.Assets[0].Count != 3 || body.Assets[0].Project != 1001 {
 				t.Fatalf("unexpected response: %s", b)
 			}
 		})
