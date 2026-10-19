@@ -25,6 +25,8 @@ excludes:
   - OrgAlertService.ListOrgNotificationByProject
   - FindingService.GetAlertAISummary
   - FindingService.UpdateFindingAISummary
+  - AIService.CreateRemediationProposal
+  - AIService.UpdateRemediationProposalStatus
   ## datasource-api
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting

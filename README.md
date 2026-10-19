@@ -84,6 +84,21 @@ excludes:
 
 Implements request handler and add it to router
 
+## Remediation Proposal retrieval APIs
+
+Both endpoints require authentication and project authorization. Query parameters are passed to the Core AI service.
+
+| Method | Path | Query parameters |
+| --- | --- | --- |
+| GET | `/api/v1/ai/get-remediation-proposal` | Required: `project_id`, `remediation_proposal_id` |
+| GET | `/api/v1/ai/list-remediation-proposal` | Required: `project_id`, `finding_id`. Optional: `status` (`PENDING`, `SUCCEEDED`, or `FAILED`) |
+
+Get returns `{"data":{"remediation_proposal":{...}}}`. Each proposal includes its ID, Finding ID, project ID, status, status detail, remediation plan, and generation/creation/update timestamps when populated. The remediation plan is a string; timestamps are Unix seconds. If the proposal does not exist in the requested project, Get returns HTTP 200 with `{"data":{}}`.
+
+List returns `{"data":{"remediation_proposals":[...]}}`, ordered by creation time descending. Omitting `status` returns all statuses. With no matches, the response is HTTP 200 with `{"data":{}}`; the empty repeated field is omitted by the existing JSON serializer.
+
+Unauthenticated requests return HTTP 401, project authorization failures return HTTP 403, and invalid proposal/Finding IDs or statuses return HTTP 400 after authorization. Core errors use the existing gRPC-to-HTTP mapping.
+
 ## Community
 
 Info on reporting bugs, getting help, finding roadmaps,
