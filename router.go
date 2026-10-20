@@ -201,6 +201,12 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			})
 		})
 
+		r.Route("/remediation", func(r chi.Router) {
+			r.Use(svc.authzWithProject)
+			r.Use(middleware.AllowContentType(contenTypeJSON))
+			r.Post("/generate-remediation-proposal", svc.generateRemediationProposalRemediationHandler)
+		})
+
 		r.Route("/aws", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
