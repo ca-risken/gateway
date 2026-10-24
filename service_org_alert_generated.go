@@ -119,8 +119,6 @@ func (g *gatewayService) listOrgAlertCondNotificationOrg_alertHandler(w http.Res
 	req := &org_alert.ListOrgAlertCondNotificationRequest{}
 	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "ListOrgAlertCondNotificationRequest", err)
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -142,8 +140,6 @@ func (g *gatewayService) getOrgAlertCondNotificationOrg_alertHandler(w http.Resp
 	req := &org_alert.GetOrgAlertCondNotificationRequest{}
 	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "GetOrgAlertCondNotificationRequest", err)
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
 	}
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
@@ -162,13 +158,10 @@ func (g *gatewayService) getOrgAlertCondNotificationOrg_alertHandler(w http.Resp
 
 func (g *gatewayService) updateOrgAlertCondNotificationCacheOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	payload := &updateOrgAlertCondNotificationCachePayload{}
-	if err := bind(payload, r); err != nil {
+	req := &org_alert.UpdateOrgAlertCondNotificationCacheRequest{}
+	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateOrgAlertCondNotificationCacheRequest", err)
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
 	}
-	req := payload.toRequest()
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -186,13 +179,10 @@ func (g *gatewayService) updateOrgAlertCondNotificationCacheOrg_alertHandler(w h
 
 func (g *gatewayService) updateOrgAlertProjectNotificationEnabledOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	payload := &updateOrgAlertProjectNotificationEnabledPayload{}
-	if err := bind(payload, r); err != nil {
+	req := &org_alert.UpdateOrgAlertProjectNotificationEnabledRequest{}
+	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateOrgAlertProjectNotificationEnabledRequest", err)
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
 	}
-	req := payload.toRequest()
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
@@ -210,13 +200,10 @@ func (g *gatewayService) updateOrgAlertProjectNotificationEnabledOrg_alertHandle
 
 func (g *gatewayService) updateOrgAlertProjectNotificationCacheOrg_alertHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	payload := &updateOrgAlertProjectNotificationCachePayload{}
-	if err := bind(payload, r); err != nil {
+	req := &org_alert.UpdateOrgAlertProjectNotificationCacheRequest{}
+	if err := bind(req, r); err != nil {
 		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "UpdateOrgAlertProjectNotificationCacheRequest", err)
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
-		return
 	}
-	req := payload.toRequest()
 	if err := req.Validate(); err != nil {
 		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
 		return
