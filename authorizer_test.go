@@ -769,6 +769,11 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 			want:  false,
 		},
 		{
+			name:  "ignore Slack action URI",
+			input: "/api/v1/slack/actions",
+			want:  false,
+		},
+		{
 			name:  "slash suffix 1",
 			input: "/api/v1/uri/",
 			want:  true,
@@ -776,6 +781,11 @@ func TestShouldVerifyCSRFTokenURI(t *testing.T) {
 		{
 			name:  "slash suffix 2",
 			input: "/api/v1/signin/",
+			want:  false,
+		},
+		{
+			name:  "slash suffix Slack action URI",
+			input: "/api/v1/slack/actions/",
 			want:  false,
 		},
 		{

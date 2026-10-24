@@ -54,6 +54,9 @@ type AppConfig struct {
 	GithubAppOAuthRedirectURL string `envconfig:"GITHUB_APP_OAUTH_REDIRECT_URL"`
 	GithubAppStateSecret      string `envconfig:"GITHUB_APP_STATE_SECRET"`
 	GithubAppSlug             string `envconfig:"GITHUB_APP_SLUG"`
+	SlackSigningSecret        string `split_words:"true"`
+	SlackActionSigningSecret  string `split_words:"true"`
+	SlackBotToken             string `split_words:"true"`
 }
 
 func main() {
