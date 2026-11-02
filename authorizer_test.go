@@ -304,12 +304,9 @@ func TestAuthzProjectForToken(t *testing.T) {
 			},
 		},
 		{
-			name:      "OK project token without project id",
+			name:      "NG project token without project id",
 			inputUser: &requestUser{accessTokenID: tokenID, accessTokenProjectID: projectID},
-			want:      true,
-			setup: func() {
-				iamMock.On("IsAuthorizedToken", mock.Anything, mock.Anything).Return(&iam.IsAuthorizedTokenResponse{Ok: true}, nil).Once()
-			},
+			want:      false,
 		},
 		{
 			name:      "NG project token not provided",
