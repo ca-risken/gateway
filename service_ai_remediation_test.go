@@ -35,8 +35,8 @@ func TestRemediationProposalRoutes(t *testing.T) {
 		path     string
 		method   string
 		query    string
-		response interface{}
-		empty    interface{}
+		response any
+		empty    any
 		wantJSON string
 	}{
 		{
