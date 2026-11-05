@@ -28,6 +28,7 @@ excludes:
   - AIService.CreateRemediationProposal
   - AIService.UpdateRemediationProposalStatus
   ## datasource-api
+  - RemediationService.GenerateRemediationProposal
   - AWSService.InvokeScanAll
   - CodeService.GetGitHubSetting
   - CodeService.ListGitHubEnterpriseOrg
