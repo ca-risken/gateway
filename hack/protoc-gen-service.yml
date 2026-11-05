@@ -45,6 +45,11 @@ excludes:
   - CodeService.PutDependencyRepository
   - CodeService.PutCodeScanRepository
   # Ignore for customized proxy
+  - OrgAlertService.ListOrgAlertCondNotification
+  - OrgAlertService.GetOrgAlertCondNotification
+  - OrgAlertService.UpdateOrgAlertCondNotificationCache
+  - OrgAlertService.UpdateOrgAlertProjectNotificationEnabled
+  - OrgAlertService.UpdateOrgAlertProjectNotificationCache
   - ReportService.GetReportFindingForOrganization
   - IAMService.PutUser
   - IAMService.AuthenticateAccessToken
