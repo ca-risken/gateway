@@ -440,7 +440,7 @@ func (g *gatewayService) authzProjectForToken(u *requestUser, r *http.Request) b
 		appLogger.Warnf(ctx, "Failed to bind request, err=%+v", err)
 	}
 	if u.accessTokenID != 0 && u.accessTokenProjectID != 0 {
-		if scope.ProjectID != 0 && scope.ProjectID != u.accessTokenProjectID {
+		if scope.ProjectID == 0 || scope.ProjectID != u.accessTokenProjectID {
 			return false
 		}
 		return g.isAuthorizedProjectToken(ctx, u.accessTokenID, u.accessTokenProjectID, r.URL.Path)
