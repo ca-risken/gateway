@@ -45,6 +45,7 @@ excludes:
   - CodeService.PutDependencyRepository
   - CodeService.PutCodeScanRepository
   # Ignore for customized proxy
+  - ReportService.GetReportFindingForOrganization
   - IAMService.PutUser
   - IAMService.AuthenticateAccessToken
   - IAMService.PutAccessToken
