@@ -44,6 +44,8 @@ excludes:
   - CodeService.PutGitleaksRepository
   - CodeService.PutDependencyRepository
   - CodeService.PutCodeScanRepository
+  - AIService.CreateRemediationProposal
+  - AIService.UpdateRemediationProposalStatus
   # Ignore for customized proxy
   - IAMService.PutUser
   - IAMService.AuthenticateAccessToken
