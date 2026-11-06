@@ -29,6 +29,9 @@ func newRouter(svc *gatewayService) *chi.Mux {
 	r.NotFound(notFoundHandler)
 
 	r.Route("/api/v1", func(r chi.Router) {
+		r.Route("/slack", func(r chi.Router) {
+			r.Post("/actions", svc.slackActionHandler)
+		})
 		r.Route("/signin", func(r chi.Router) {
 			r.Use(svc.UpdateUserFromIdp)
 			r.Get("/", svc.signinHandler)
