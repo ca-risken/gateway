@@ -198,6 +198,8 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
 				r.Post("/generate-report", svc.generateReportAiHandler)
+				r.Get("/get-remediation-proposal", svc.getRemediationProposalAiHandler)
+				r.Get("/list-remediation-proposal", svc.listRemediationProposalAiHandler)
 			})
 		})
 
