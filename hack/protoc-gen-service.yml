@@ -44,6 +44,8 @@ excludes:
   - CodeService.PutGitleaksRepository
   - CodeService.PutDependencyRepository
   - CodeService.PutCodeScanRepository
+  - AIService.CreateRemediationProposal
+  - AIService.UpdateRemediationProposalStatus
   # Ignore for customized proxy
   - IAMService.PutUser
   - IAMService.AuthenticateAccessToken
@@ -54,3 +56,9 @@ excludes:
   - AWSService.AttachDataSource
   - OrgIAMService.AuthenticateOrgAccessToken
   - OrgIAMService.PutOrgAccessToken
+  - OrgAlertService.ListOrgAlertCondNotification
+  - OrgAlertService.GetOrgAlertCondNotification
+  - OrgAlertService.UpdateOrgAlertCondNotificationCache
+  - OrgAlertService.UpdateOrgAlertProjectNotificationEnabled
+  - OrgAlertService.UpdateOrgAlertProjectNotificationCache
+  - ReportService.GetReportFindingForOrganization
