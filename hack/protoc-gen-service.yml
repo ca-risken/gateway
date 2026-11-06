@@ -54,3 +54,9 @@ excludes:
   - AWSService.AttachDataSource
   - OrgIAMService.AuthenticateOrgAccessToken
   - OrgIAMService.PutOrgAccessToken
+  - OrgAlertService.ListOrgAlertCondNotification
+  - OrgAlertService.GetOrgAlertCondNotification
+  - OrgAlertService.UpdateOrgAlertCondNotificationCache
+  - OrgAlertService.UpdateOrgAlertProjectNotificationEnabled
+  - OrgAlertService.UpdateOrgAlertProjectNotificationCache
+  - ReportService.GetReportFindingForOrganization
