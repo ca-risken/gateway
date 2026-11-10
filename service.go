@@ -24,6 +24,7 @@ import (
 	"github.com/ca-risken/datasource-api/proto/diagnosis"
 	"github.com/ca-risken/datasource-api/proto/google"
 	"github.com/ca-risken/datasource-api/proto/osint"
+	"github.com/ca-risken/datasource-api/proto/remediation"
 	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -65,6 +66,7 @@ type gatewayService struct {
 	aiClient             ai.AIServiceClient
 	claimsClient         claimsInterface
 	datasourceClient     datasource.DataSourceServiceClient
+	remediationClient    remediation.RemediationServiceClient
 }
 
 func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, error) {
@@ -113,6 +115,7 @@ func newGatewayService(ctx context.Context, conf *AppConfig) (*gatewayService, e
 		aiClient:             ai.NewAIServiceClient(coreConn),
 		claimsClient:         newClaimsClient(conf.Region, conf.UserIdpKey, conf.IdpProviderName, conf.VerifyIDToken),
 		datasourceClient:     datasource.NewDataSourceServiceClient(datasourceConn),
+		remediationClient:    remediation.NewRemediationServiceClient(datasourceConn),
 	}, nil
 }
 
