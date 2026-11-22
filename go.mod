@@ -1,6 +1,6 @@
 module github.com/ca-risken/gateway
 
-go 1.23.3
+go 1.27.3
 
 require (
 	github.com/ca-risken/common/pkg/logging v0.0.0-20220601065422-5b97bd6efc9b

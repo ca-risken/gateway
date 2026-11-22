@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 
@@ -16,7 +15,7 @@ func (g *gatewayService) generateOrgAccessTokenOrg_iamHandler(w http.ResponseWri
 	}
 	u, err := getRequestUser(r)
 	if err != nil || u.userID == 0 {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Failed to get user info, userInfo=%+v, err=%+v", u, err).Error()})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Sprintf("Failed to get user info, userInfo=%+v, err=%+v", u, err)})
 		return
 	}
 	req.LastUpdatedUserId = u.userID
@@ -39,7 +38,7 @@ func (g *gatewayService) generateOrgAccessTokenOrg_iamHandler(w http.ResponseWri
 		return
 	}
 	if list != nil && len(list.AccessToken) > 0 {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Token already exists, token_name=%s", req.Name).Error()})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Sprintf("Token already exists, token_name=%s", req.Name)})
 		return
 	}
 
@@ -69,7 +68,7 @@ func (g *gatewayService) updateOrgAccessTokenOrg_iamHandler(w http.ResponseWrite
 	}
 	u, err := getRequestUser(r)
 	if err != nil || u.userID == 0 {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Failed to get user info, userInfo=%+v, err=%+v", u, err).Error()})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Sprintf("Failed to get user info, userInfo=%+v, err=%+v", u, err)})
 		return
 	}
 	req.LastUpdatedUserId = u.userID
@@ -78,7 +77,7 @@ func (g *gatewayService) updateOrgAccessTokenOrg_iamHandler(w http.ResponseWrite
 		return
 	}
 	if req.AccessTokenId == 0 {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: errors.New("Required access_token_id").Error()})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: "Required access_token_id"})
 		return
 	}
 

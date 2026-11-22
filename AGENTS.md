@@ -76,7 +76,7 @@ Two auth paths:
 
 ## Conventions
 
-- Go 1.23.3
+- Go 1.27.3
 - All code lives in a single `main` package (no sub-packages)
 - Generated files follow the pattern `service_<name>_generated.go`
 - Custom (non-generated) service handlers are in `service_<name>.go`

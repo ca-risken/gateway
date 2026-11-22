@@ -23,9 +23,9 @@ func (g *gatewayService) putUserHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	if req.User == nil {
-		err := errors.New("Required user")
-		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%+v", "PutUserRequest", err)
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: err.Error()})
+		const message = "Required user"
+		appLogger.Warnf(ctx, "Failed to bind request, req=%s, err=%s", "PutUserRequest", message)
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: message})
 		return
 	}
 	oidcData := r.Header.Get(g.oidcDataHeader)
@@ -70,7 +70,7 @@ func (g *gatewayService) generateAccessTokenHandler(w http.ResponseWriter, r *ht
 	}
 	u, err := getRequestUser(r)
 	if err != nil || zero.IsZeroVal(u.userID) {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Failed to get user info, userInfo=%+v, err=%+v", u, err)})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("failed to get user info, userInfo=%+v, err=%+v", u, err)})
 		return
 	}
 	req.AccessToken.LastUpdatedUserId = u.userID           // Force update
@@ -93,7 +93,7 @@ func (g *gatewayService) generateAccessTokenHandler(w http.ResponseWriter, r *ht
 		return
 	}
 	if len(list.AccessToken) > 0 {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Token already exists, token_name=%s", req.AccessToken.Name)})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("token already exists, token_name=%s", req.AccessToken.Name)})
 		return
 	}
 
@@ -120,7 +120,7 @@ func (g *gatewayService) updateAccessTokenHandler(w http.ResponseWriter, r *http
 	}
 	u, err := getRequestUser(r)
 	if err != nil || zero.IsZeroVal(u.userID) {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("Failed to get user info, userInfo=%+v, err=%+v", u, err)})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: fmt.Errorf("failed to get user info, userInfo=%+v, err=%+v", u, err)})
 		return
 	}
 	req.AccessToken.LastUpdatedUserId = u.userID // Force update data
@@ -131,7 +131,7 @@ func (g *gatewayService) updateAccessTokenHandler(w http.ResponseWriter, r *http
 		return
 	}
 	if zero.IsZeroVal(req.AccessToken.AccessTokenId) {
-		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: errors.New("Required access_token_id")})
+		writeResponse(ctx, w, http.StatusBadRequest, map[string]interface{}{errorJSONKey: errors.New("required access_token_id")})
 		return
 	}
 
