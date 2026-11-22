@@ -54,7 +54,7 @@ func (g *gatewayService) getAISummaryStreamHandler(w http.ResponseWriter, r *htt
 			return
 		}
 		// Send data periodically
-		fmt.Fprintf(w, "%s", resp.Answer)
+		_, _ = fmt.Fprintf(w, "%s", resp.Answer)
 		flusher.Flush()
 		time.Sleep(1 * time.Millisecond)
 	}

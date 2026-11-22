@@ -92,7 +92,7 @@ func fetchALBPublicKey(ctx context.Context, keyURL string) (*ecdsa.PublicKey, er
 	if err != nil {
 		return nil, fmt.Errorf("failed to get public key from %s, err: %w", keyURL, err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	pem, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body from %s, err: %w", keyURL, err)

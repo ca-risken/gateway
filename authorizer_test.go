@@ -958,7 +958,7 @@ func TestUpdateUserFromIdp(t *testing.T) {
 			rec := httptest.NewRecorder()
 			handler.ServeHTTP(rec, req)
 			res := rec.Result()
-			defer res.Body.Close()
+			defer func() { _ = res.Body.Close() }()
 			if c.wantStatusCode != res.StatusCode {
 				t.Fatalf("Unexpected statusCode: want=%+v, got=%+v", c.wantStatusCode, res.StatusCode)
 			}

@@ -74,7 +74,9 @@ func TestFindingAssetResponseJSON(t *testing.T) {
 			if err := json.Unmarshal(b, &body); err != nil {
 				t.Fatal(err)
 			}
-			if body.TotalFindingCount != 3 || len(body.Assets) != 1 || len(body.Assets[0].Sources) != 2 || body.Assets[0].Sources[0] != "google:scc" || body.Assets[0].Sources[1] != "example:scanner" || body.Total != 1 || len(body.Assets) != 1 || body.Assets[0].Key != "instance" || body.Assets[0].Count != 3 || body.Assets[0].Project != 1001 {
+			if body.TotalFindingCount != 3 || body.Total != 1 || len(body.Assets) != 1 ||
+				len(body.Assets[0].Sources) != 2 || body.Assets[0].Sources[0] != "google:scc" || body.Assets[0].Sources[1] != "example:scanner" ||
+				body.Assets[0].Key != "instance" || body.Assets[0].Count != 3 || body.Assets[0].Project != 1001 {
 				t.Fatalf("unexpected response: %s", b)
 			}
 		})
