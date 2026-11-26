@@ -42,6 +42,7 @@ func newRouter(svc *gatewayService) *chi.Mux {
 			r.Group(func(r chi.Router) {
 				r.Use(svc.authzWithProject)
 				r.Get("/list-finding", svc.listFindingFindingHandler)
+				r.Get("/get-finding-count", svc.getFindingCountFindingHandler)
 				r.Get("/get-finding", svc.getFindingFindingHandler)
 				r.Get("/list-finding-tag", svc.listFindingTagFindingHandler)
 				r.Get("/list-finding-tag-name", svc.listFindingTagNameFindingHandler)
